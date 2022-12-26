@@ -297,7 +297,7 @@ class ClassicGameRules:
                 display: PacmanGraphics,
                 quiet: bool = False,
                 catchExceptions: bool = False
-                ):
+                ) -> Game:
 
         agents: List[Agent] = [pacmanAgent, *ghostAgents[:layout.getNumGhosts()]]
         initState = GameState()
@@ -653,7 +653,7 @@ def readCommand(argv):
     return args
 
 
-def loadAgent(pacman: str, nographics: bool):
+def loadAgent(pacman: str, nographics: bool):  # RETURNS A CLASS
 
     print(pacman, type(pacman))
     print(nographics, type(nographics))
@@ -744,6 +744,10 @@ def runGames(layout: _layout.Layout,
     rules = ClassicGameRules(timeout)
     games = []
 
+
+
+
+
     for i in range(numGames):
         beQuiet = i < numTraining
         if beQuiet:
@@ -754,8 +758,22 @@ def runGames(layout: _layout.Layout,
         else:
             gameDisplay = display
             rules.quiet = False
-        game = rules.newGame(layout, pacman, ghosts,
-                             gameDisplay, beQuiet, catchExceptions)
+
+        #####
+        # TODO JOSEPH SPEICAL
+
+        if isinstance(pacman, KeyboardAgent) and isinstance(gameDisplay, PacmanGraphics):
+            pacman.set_graphics_actual(gameDisplay.get_graphics_actual())
+
+        ####
+
+        game = rules.newGame(layout,
+                             pacman,
+                             ghosts,
+                             gameDisplay,
+                             beQuiet,
+                             catchExceptions)
+
         game.run()  # FIXME: GAME RUNS HERE
         if not beQuiet:
             games.append(game)

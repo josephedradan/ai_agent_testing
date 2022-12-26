@@ -21,7 +21,12 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
+from typing import Union
+
+from multiagent.graphicsUtils import GraphicsActual
 
 
 class Agent(ABC):
@@ -34,6 +39,12 @@ class Agent(ABC):
 
     def __init__(self, index=0):
         self.index = index
+
+
+    # TODO IN THE FUTURE USE THIS I THINK
+    # def __init__(self, index=0, graphics_actual: Union[GraphicsActual, None] = None):
+    #     self.index = index
+    #     self._graphics_actual = graphics_actual
 
     @abstractmethod
     def getAction(self, state):

@@ -12,12 +12,13 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-
 import random
+from typing import Union
 
 from multiagent.agent.agent import Agent
 from multiagent.constants import Directions
 # from multiagent.graphicsUtils import keys_pressed, keys_waiting
+from multiagent.graphicsUtils import GraphicsActual
 
 
 class KeyboardAgent(Agent):
@@ -32,18 +33,29 @@ class KeyboardAgent(Agent):
     STOP_KEY = 'q'
 
     def __init__(self, index=0):
+        super().__init__(index)
+
         self.lastMove = Directions.STOP
-        self.index = index
         self.keys = []
 
+        ###
+        # TODO JOSEPH SPEICAL
+
+        self._graphics_actual: Union[GraphicsActual, None] = None
+
+    def set_graphics_actual(self, graphics_actual: GraphicsActual):
+        self._graphics_actual = graphics_actual
+
     def getAction(self, state):
-        from graphicsUtils import keys_waiting
-        from graphicsUtils import keys_pressed
+        # from graphicsUtils import get_keys_waiting
+        # from graphicsUtils import get_keys_pressed
+        #
+        # from multiagent import graphicsUtils
+        # print(f"getAction {graphicsUtils._root_window=}")
 
-        from multiagent import graphicsUtils
-        print(f"getAction {graphicsUtils._root_window=}")
+        # TODO: THIS IS CRASHABLE
+        keys = self._graphics_actual.get_keys_waiting() + self._graphics_actual.get_keys_pressed()
 
-        keys = keys_waiting() + keys_pressed()
         if keys != []:
             self.keys = keys
 
