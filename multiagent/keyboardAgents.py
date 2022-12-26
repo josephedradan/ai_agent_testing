@@ -12,9 +12,12 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-from game import Agent
-from game import Directions
+
 import random
+
+from multiagent.agent.agent import Agent
+from multiagent.constants import Directions
+# from multiagent.graphicsUtils import keys_pressed, keys_waiting
 
 
 class KeyboardAgent(Agent):
@@ -36,6 +39,10 @@ class KeyboardAgent(Agent):
     def getAction(self, state):
         from graphicsUtils import keys_waiting
         from graphicsUtils import keys_pressed
+
+        from multiagent import graphicsUtils
+        print(f"getAction {graphicsUtils._root_window=}")
+
         keys = keys_waiting() + keys_pressed()
         if keys != []:
             self.keys = keys

@@ -47,7 +47,7 @@ class Layout:
     def getNumGhosts(self):
         return self.numGhosts
 
-    def _initializeVisibilityMatrix(self):
+    def initializeVisibilityMatrix(self):
         global VISIBILITY_MATRIX_CACHE
         if reduce(str.__add__, self.layoutText) not in VISIBILITY_MATRIX_CACHE:
             vecs = [(-0.5, 0), (0.5, 0), (0, -0.5), (0, 0.5)]

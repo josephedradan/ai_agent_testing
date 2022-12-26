@@ -49,8 +49,11 @@ import layout as _layout
 from game import Actions
 from game import Directions
 from game import Game
-from game import GameStateData, Agent
+from game import GameStateData
 from graphicsDisplay import PacmanGraphics
+from multiagent.agent.agent import Agent
+from multiagent.agent.ghostAgents import RandomGhost
+from multiagent.keyboardAgents import KeyboardAgent
 from util import manhattanDistance
 from util import nearestPoint
 
@@ -287,8 +290,16 @@ class ClassicGameRules:
     def __init__(self, timeout=30):
         self.timeout = timeout
 
-    def newGame(self, layout, pacmanAgent, ghostAgents, display, quiet=False, catchExceptions=False):
-        agents = [pacmanAgent] + ghostAgents[:layout.getNumGhosts()]
+    def newGame(self,
+                layout: _layout.Layout,
+                pacmanAgent: Agent,
+                ghostAgents: List[Agent],
+                display: PacmanGraphics,
+                quiet: bool = False,
+                catchExceptions: bool = False
+                ):
+
+        agents: List[Agent] = [pacmanAgent, *ghostAgents[:layout.getNumGhosts()]]
         initState = GameState()
         initState.initialize(layout, len(ghostAgents))
         game = Game(agents, display, self, catchExceptions=catchExceptions)
@@ -428,6 +439,7 @@ class GhostRules:
     getLegalActions = staticmethod(getLegalActions)
 
     def applyAction(state, action, ghostIndex):
+        # print("FFF",action, type(action))  # FIXME: action ->    West <class 'str'>
 
         legal = GhostRules.getLegalActions(state, ghostIndex)
         if action not in legal:
@@ -587,7 +599,9 @@ def readCommand(argv):
     # Choose a Pacman agent
     noKeyboard = options.gameToReplay == None and (
             options.textGraphics or options.quietGraphics)
-    pacmanType = loadAgent(options.pacman, noKeyboard)
+    pacmanType = loadAgent(options.pacman, noKeyboard)  # FIXME: PACMAN AGENT HERE
+    print("pacmanType",options.pacman, type(options.pacman))  # FIXME: options.pacman IS A KeyboardAgent
+
     agentOpts = parseAgentArgs(options.agentArgs)
     if options.numTraining > 0:
         args['numTraining'] = options.numTraining
@@ -602,7 +616,8 @@ def readCommand(argv):
         options.numIgnore = int(agentOpts['numTrain'])
 
     # Choose a ghost agent
-    ghostType = loadAgent(options.ghost, noKeyboard)
+    ghostType = loadAgent(options.ghost, noKeyboard)  # FIXME: GHOST AGENTS HERE
+    print(options.ghost, type(options.ghost))  # FIXME: ghostType is RandomGhost
     args['ghosts'] = [ghostType(i + 1) for i in range(options.numGhosts)]
 
     # Choose a display format
@@ -638,7 +653,19 @@ def readCommand(argv):
     return args
 
 
-def loadAgent(pacman, nographics):
+def loadAgent(pacman: str, nographics: bool):
+
+    print(pacman, type(pacman))
+    print(nographics, type(nographics))
+
+    # FIXME: pacman IS KeyboardAgent <class 'str'> OR RandomGhost <class 'str'>
+
+
+    if pacman == "KeyboardAgent":
+        return KeyboardAgent
+    elif pacman == "RandomGhost":
+        return RandomGhost
+
     # Looks through all pythonPath Directories for the right module,
     pythonPathStr = os.path.expandvars("$PYTHONPATH")
     if pythonPathStr.find(';') == -1:
@@ -657,10 +684,15 @@ def loadAgent(pacman, nographics):
                 module = __import__(modulename[:-3])
             except ImportError:
                 continue
+
             if pacman in dir(module):
                 if nographics and modulename == 'keyboardAgents.py':
                     raise Exception(
                         'Using the keyboard requires graphics (not text display)')
+
+                print("FFFF", getattr(module, pacman))
+
+                # FIXME: <class 'keyboardAgents.KeyboardAgent'>  OR  <class 'ghostAgents.RandomGhost'>
                 return getattr(module, pacman)
     raise Exception('The agent ' + pacman +
                     ' is not specified in any *Agents.py.')
@@ -669,6 +701,7 @@ def loadAgent(pacman, nographics):
 def replayGame(layout, actions, display):
     import pacmanAgents
     import ghostAgents
+
     rules = ClassicGameRules()
     agents = [pacmanAgents.GreedyAgent()] + [ghostAgents.RandomGhost(i + 1)
                                              for i in range(layout.getNumGhosts())]
@@ -700,12 +733,13 @@ def runGames(layout: _layout.Layout,
     # FIXME: IDK WHY THIS HERE
     # import __main__
     # __main__.__dict__['_display'] = display
-
+    print("#" * 100)
     __ALL = (layout, pacman, ghosts, display, numGames, record, numTraining, catchExceptions, timeout)
 
     # __DICT = {i: type(i) for i in __ALL}
 
     pprint(__ALL)
+    print("#" * 100)
 
     rules = ClassicGameRules(timeout)
     games = []
@@ -722,7 +756,7 @@ def runGames(layout: _layout.Layout,
             rules.quiet = False
         game = rules.newGame(layout, pacman, ghosts,
                              gameDisplay, beQuiet, catchExceptions)
-        game.run()
+        game.run()  # FIXME: GAME RUNS HERE
         if not beQuiet:
             games.append(game)
 

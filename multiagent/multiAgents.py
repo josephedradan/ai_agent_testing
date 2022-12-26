@@ -16,7 +16,8 @@ from queue import PriorityQueue
 from typing import Tuple, List, Union, Set
 
 import util
-from game import Agent, Grid, AgentState
+from game import Grid, AgentState
+from multiagent.agent.agent import Agent
 from pacman import GameState
 
 

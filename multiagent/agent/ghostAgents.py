@@ -10,14 +10,10 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
-
-from game import Agent
-from game import Actions
-from game import Directions
-import random
-from util import manhattanDistance
-import util
+from multiagent import util
+from multiagent.agent.agent import Agent
+from multiagent.constants import Directions
+from multiagent.game import Actions, manhattanDistance
 
 
 class GhostAgent(Agent):
@@ -25,6 +21,7 @@ class GhostAgent(Agent):
         self.index = index
 
     def getAction(self, state):
+        print(state, type(state))  # FIXME:  <class '__main__.GameState'>
         dist = self.getDistribution(state)
         if len(dist) == 0:
             return Directions.STOP
