@@ -16,8 +16,7 @@ import random
 from typing import Union
 
 from multiagent.agent.agent import Agent
-from multiagent.constants import Directions
-# from multiagent.graphicsUtils import keys_pressed, keys_waiting
+from multiagent.game.directions import Directions
 from multiagent.graphicsUtils import GraphicsActual
 
 

@@ -37,7 +37,7 @@ class Agent(ABC):
     def registerInitialState(self, state): # inspects the starting state
     """
 
-    def __init__(self, index=0):
+    def __init__(self, index:int =0):
         self.index = index
 
 
@@ -47,8 +47,9 @@ class Agent(ABC):
     #     self._graphics_actual = graphics_actual
 
     @abstractmethod
-    def getAction(self, state):
+    def getAction(self, state: GameState):
         """
         The Agent will receive a GameState (from either {pacman, capture, sonar}.py) and
         must return an action from Directions.{North, South, East, West, Stop}
         """
+        pass

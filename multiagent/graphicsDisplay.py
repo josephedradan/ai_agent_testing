@@ -14,7 +14,6 @@
 
 import math
 
-from game import Directions
 from graphicsUtils import *
 
 ###########################

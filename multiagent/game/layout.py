@@ -17,9 +17,7 @@ import random
 from functools import reduce
 from typing import List, Union
 
-from game import Grid
-from multiagent.constants import Directions
-from util import manhattanDistance
+from multiagent.game.grid import Grid
 
 VISIBILITY_MATRIX_CACHE = {}
 
