@@ -50,8 +50,8 @@ from multiagent.game import layout as _layout
 from graphicsDisplay import PacmanGraphics
 from multiagent.agent.agent import Agent
 from multiagent.agent.agent_ghost_random import RandomGhost
-from multiagent.keyboardAgents import KeyboardAgent
-from multiagent.rules.game_rules_classic import ClassicGameRules
+from multiagent.agent.agent_keyboard import KeyboardAgent
+from multiagent.game.rules.game_rules_classic import ClassicGameRules
 
 
 #############################

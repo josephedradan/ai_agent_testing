@@ -24,10 +24,10 @@ Reference:
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
 ###################################################
-from gamestatedate import GameStateData
-from multiagent.rules.common import TIME_PENALTY
-from multiagent.rules.rules_ghost import GhostRules
-from multiagent.rules.rules_pacman import PacmanRules
+from multiagent.game.gamestatedate import GameStateData
+from multiagent.game.rules.common import TIME_PENALTY
+from multiagent.game.rules.rules_ghost import GhostRules
+from multiagent.game.rules.rules_pacman import PacmanRules
 
 
 class GameState:

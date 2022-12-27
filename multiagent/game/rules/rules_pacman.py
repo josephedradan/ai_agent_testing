@@ -22,7 +22,7 @@ Reference:
 
 """
 from multiagent.game.actions import Actions
-from multiagent.rules.common import SCARED_TIME
+from multiagent.game.rules.common import SCARED_TIME
 from multiagent.util import nearestPoint, manhattanDistance
 
 

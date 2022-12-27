@@ -23,7 +23,7 @@ Reference:
 """
 from multiagent.game.actions import Actions
 from multiagent.game.directions import Directions
-from multiagent.rules.common import COLLISION_TOLERANCE
+from multiagent.game.rules.common import COLLISION_TOLERANCE
 from multiagent.util import nearestPoint, manhattanDistance
 
 

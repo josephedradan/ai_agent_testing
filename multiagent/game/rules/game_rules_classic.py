@@ -32,7 +32,7 @@ from multiagent.game import layout as _layout
 ############################################################################
 from multiagent.agent.agent import Agent
 from multiagent.game.game import Game
-from multiagent.gamestate import GameState
+from multiagent.game.gamestate import GameState
 from multiagent.graphicsDisplay import PacmanGraphics
 
 

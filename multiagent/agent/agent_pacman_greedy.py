@@ -25,7 +25,7 @@ import random
 
 from multiagent import util
 from multiagent.agent.agent import Agent
-from multiagent.constants import Directions
+from multiagent.game.directions import Directions
 
 
 class GreedyAgent(Agent):

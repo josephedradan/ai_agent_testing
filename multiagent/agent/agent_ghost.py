@@ -15,7 +15,7 @@ from abc import abstractmethod
 from multiagent import util
 from multiagent.agent.agent import Agent
 from multiagent.game.directions import Directions
-from multiagent.gamestate import GameState
+from multiagent.game.gamestate import GameState
 
 
 class GhostAgent(Agent):
