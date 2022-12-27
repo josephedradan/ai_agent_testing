@@ -22,10 +22,10 @@ import sys
 import projectParams
 import random
 random.seed(0)
-try:
-    from pacman import GameState
-except:
-    pass
+# try:
+#     from pacman import GameState
+# except:
+#     pass
 
 # register arguments and set default values
 def readCommand(argv):

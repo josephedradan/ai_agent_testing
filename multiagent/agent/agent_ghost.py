@@ -15,6 +15,7 @@ from abc import abstractmethod
 from multiagent import util
 from multiagent.agent.agent import Agent
 from multiagent.game.directions import Directions
+from multiagent.game import gamestate
 from multiagent.game.gamestate import GameState
 
 
@@ -24,7 +25,7 @@ class GhostAgent(Agent):
         super().__init__(index)
 
     def getAction(self, state: GameState):
-        print(state, type(state))  # FIXME:  <class '__main__.GameState'>
+
         dist = self.getDistribution(state)
         if len(dist) == 0:
             return Directions.STOP
@@ -32,6 +33,6 @@ class GhostAgent(Agent):
             return util.chooseFromDistribution(dist)
 
     @abstractmethod
-    def getDistribution(self, state):
+    def getDistribution(self, state: GameState):
         "Returns a Counter encoding a distribution over actions from the provided state."
-        util.raiseNotDefined()
+        pass

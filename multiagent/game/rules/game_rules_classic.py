@@ -23,7 +23,7 @@ Reference:
 """
 from typing import List
 
-from multiagent.game import layout as _layout
+from multiagent.game import layout as _layout, gamestate
 
 ############################################################################
 #                     THE HIDDEN SECRETS OF PACMAN                         #

@@ -23,12 +23,15 @@ Reference:
 """
 from multiagent import util
 from multiagent.agent.agent_ghost import GhostAgent
+from multiagent.game import gamestate
+from multiagent.game.gamestate import GameState
 
 
 class RandomGhost(GhostAgent):
     "A ghost that chooses a legal action uniformly at random."
 
-    def getDistribution(self, state):
+    def getDistribution(self, state: GameState):
+
         dist = util.Counter()
         for a in state.getLegalActions(self.index):
             dist[a] = 1.0

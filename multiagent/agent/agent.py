@@ -24,9 +24,8 @@ Reference:
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Union
 
-from multiagent.graphicsUtils import GraphicsActual
+from multiagent.game import gamestate
 
 
 class Agent(ABC):
@@ -37,9 +36,8 @@ class Agent(ABC):
     def registerInitialState(self, state): # inspects the starting state
     """
 
-    def __init__(self, index:int =0):
+    def __init__(self, index: int = 0):
         self.index = index
-
 
     # TODO IN THE FUTURE USE THIS I THINK
     # def __init__(self, index=0, graphics_actual: Union[GraphicsActual, None] = None):

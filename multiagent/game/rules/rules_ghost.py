@@ -27,12 +27,13 @@ from multiagent.game.rules.common import COLLISION_TOLERANCE
 from multiagent.util import nearestPoint, manhattanDistance
 
 
-class GhostRules:
+class GhostRules():
     """
     These functions dictate how ghosts interact with their environment.
     """
     GHOST_SPEED = 1.0
 
+    @staticmethod
     def getLegalActions(state, ghostIndex):
         """
         Ghosts cannot stop, and cannot turn around unless they
@@ -48,8 +49,7 @@ class GhostRules:
             possibleActions.remove(reverse)
         return possibleActions
 
-    getLegalActions = staticmethod(getLegalActions)
-
+    @staticmethod
     def applyAction(state, action, ghostIndex):
         # print("FFF",action, type(action))  # FIXME: action ->    West <class 'str'>
 
@@ -65,8 +65,7 @@ class GhostRules:
         ghostState.configuration = ghostState.configuration.generateSuccessor(
             vector)
 
-    applyAction = staticmethod(applyAction)
-
+    @staticmethod
     def decrementTimer(ghostState):
         timer = ghostState.scaredTimer
         if timer == 1:
@@ -74,8 +73,7 @@ class GhostRules:
                 ghostState.configuration.pos)
         ghostState.scaredTimer = max(0, timer - 1)
 
-    decrementTimer = staticmethod(decrementTimer)
-
+    @staticmethod
     def checkDeath(state, agentIndex):
         pacmanPosition = state.getPacmanPosition()
         if agentIndex == 0:  # Pacman just moved; Anyone can kill him
@@ -90,8 +88,7 @@ class GhostRules:
             if GhostRules.canKill(pacmanPosition, ghostPosition):
                 GhostRules.collide(state, ghostState, agentIndex)
 
-    checkDeath = staticmethod(checkDeath)
-
+    @staticmethod
     def collide(state, ghostState, agentIndex):
         if ghostState.scaredTimer > 0:
             state.data.scoreChange += 200
@@ -104,14 +101,10 @@ class GhostRules:
                 state.data.scoreChange -= 500
                 state.data._lose = True
 
-    collide = staticmethod(collide)
-
+    @staticmethod
     def canKill(pacmanPosition, ghostPosition):
         return manhattanDistance(ghostPosition, pacmanPosition) <= COLLISION_TOLERANCE
 
-    canKill = staticmethod(canKill)
-
+    @staticmethod
     def placeGhost(state, ghostState):
         ghostState.configuration = ghostState.start
-
-    placeGhost = staticmethod(placeGhost)

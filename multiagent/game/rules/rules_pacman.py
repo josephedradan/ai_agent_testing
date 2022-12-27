@@ -21,26 +21,30 @@ Tags:
 Reference:
 
 """
+from multiagent.game import gamestate
 from multiagent.game.actions import Actions
 from multiagent.game.rules.common import SCARED_TIME
 from multiagent.util import nearestPoint, manhattanDistance
 
 
-class PacmanRules:
+class PacmanRules():
     """
     These functions govern how pacman interacts with his environment under
     the classic game rules.
     """
     PACMAN_SPEED = 1
 
+    @staticmethod
     def getLegalActions(state):
         """
         Returns a list of possible actions.
         """
-        return Actions.getPossibleActions(state.getPacmanState().configuration, state.data.layout.walls)
+        return Actions.getPossibleActions(
+            state.getPacmanState().configuration,
+            state.data.layout.walls
+        )
 
-    getLegalActions = staticmethod(getLegalActions)
-
+    @staticmethod
     def applyAction(state, action):
         """
         Edits the state to reflect the results of the action.
@@ -63,8 +67,7 @@ class PacmanRules:
             # Remove food
             PacmanRules.consume(nearest, state)
 
-    applyAction = staticmethod(applyAction)
-
+    @staticmethod
     def consume(position, state):
         x, y = position
         # Eat food
@@ -85,5 +88,3 @@ class PacmanRules:
             # Reset all ghosts' scared timers
             for index in range(1, len(state.data.agentStates)):
                 state.data.agentStates[index].scaredTimer = SCARED_TIME
-
-    consume = staticmethod(consume)

@@ -24,6 +24,8 @@ Reference:
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
 ###################################################
+from __future__ import annotations
+
 from multiagent.game.gamestatedate import GameStateData
 from multiagent.game.rules.common import TIME_PENALTY
 from multiagent.game.rules.rules_ghost import GhostRules

@@ -21,19 +21,24 @@ Tags:
 Reference:
 
 """
+from multiagent import util
 from multiagent.agent.agent_ghost import GhostAgent
+from multiagent.game import gamestate
+from multiagent.game.actions import Actions
+from multiagent.util import manhattanDistance
 
 
 class DirectionalGhost(GhostAgent):
     "A ghost that prefers to rush Pacman, or flee when scared."
 
-    def __init__(self, index, prob_attack=0.8, prob_scaredFlee=0.8):
+    def __init__(self, index: int, prob_attack: float = 0.8, prob_scaredFlee: float = 0.8):
         super().__init__(index)
 
-        self.prob_attack = prob_attack
-        self.prob_scaredFlee = prob_scaredFlee
+        self.prob_attack:float  = prob_attack
+        self.prob_scaredFlee:float = prob_scaredFlee
 
-    def getDistribution(self, state):
+    def getDistribution(self, state: GameState):
+
         # Read variables from state
         ghostState = state.getGhostState(self.index)
         legalActions = state.getLegalActions(self.index)
