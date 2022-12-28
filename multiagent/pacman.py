@@ -45,7 +45,7 @@ import sys
 from pprint import pprint
 from typing import List
 
-from multiagent.agent.agent import Agent
+from multiagent.agent.agent import *
 from multiagent.agent.agent_ghost_random import RandomGhost
 from multiagent.agent.agent_keyboard import KeyboardAgent
 from multiagent.game import layout as _layout

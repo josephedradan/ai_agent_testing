@@ -46,9 +46,6 @@ else:
     pass  # XXX need defaults here
 
 
-
-
-
 class GraphicsActual:
 
     def __init__(self):

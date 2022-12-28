@@ -21,9 +21,15 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from multiagent import util
 from multiagent.agent.agent_ghost import GhostAgent
-from multiagent.game.gamestate import GameState
+
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
 
 class RandomGhost(GhostAgent):

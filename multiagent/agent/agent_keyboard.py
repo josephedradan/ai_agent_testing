@@ -11,14 +11,18 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+from __future__ import annotations
 
 import random
+from typing import TYPE_CHECKING
 from typing import Union
 
 from multiagent.agent.agent import Agent
 from multiagent.game.directions import Directions
-from multiagent.game.gamestate import GameState
 from multiagent.graphics.graphicsUtils import GraphicsActual
+
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
 
 class KeyboardAgent(Agent):

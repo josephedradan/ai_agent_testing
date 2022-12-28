@@ -28,10 +28,12 @@ import json
 from collections import defaultdict
 from pprint import PrettyPrinter
 
-from multiagent.agent.agent import Agent
-from multiagent.agent.agent_ghost_directional import DirectionalGhost
+# from multiagent.agent.agent import Agent
+# from multiagent.agent.agent_ghost_directional import DirectionalGhost
 from multiagent.game import layout
 from multiagent.game.gamestate import GameState
+
+from multiagent.agent import *
 
 pp = PrettyPrinter()
 

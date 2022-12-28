@@ -10,18 +10,23 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
+
+from __future__ import annotations
+
 from abc import abstractmethod
+from typing import TYPE_CHECKING
 
 from multiagent import util
 from multiagent.agent.agent import Agent
 from multiagent.game.directions import Directions
-from multiagent.game import gamestate
-from multiagent.game.gamestate import GameState
+
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
 
 class GhostAgent(Agent):
 
-    def __init__(self, index):
+    def __init__(self, index: int):
         super().__init__(index)
 
     def getAction(self, state: GameState):

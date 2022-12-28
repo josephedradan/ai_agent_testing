@@ -21,12 +21,17 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from multiagent import util
 from multiagent.agent.agent_ghost import GhostAgent
-from multiagent.game import gamestate
 from multiagent.game.actions import Actions
-from multiagent.game.gamestate import GameState
 from multiagent.util import manhattanDistance
+
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
 
 class DirectionalGhost(GhostAgent):
@@ -35,8 +40,8 @@ class DirectionalGhost(GhostAgent):
     def __init__(self, index: int, prob_attack: float = 0.8, prob_scaredFlee: float = 0.8):
         super().__init__(index)
 
-        self.prob_attack:float  = prob_attack
-        self.prob_scaredFlee:float = prob_scaredFlee
+        self.prob_attack: float = prob_attack
+        self.prob_scaredFlee: float = prob_scaredFlee
 
     def getDistribution(self, state: GameState):
 

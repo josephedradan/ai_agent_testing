@@ -21,11 +21,17 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
 import random
+from typing import TYPE_CHECKING
 
 from multiagent import util
 from multiagent.agent.agent import Agent
 from multiagent.game.directions import Directions
+
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
 
 class GreedyAgent(Agent):
@@ -34,7 +40,7 @@ class GreedyAgent(Agent):
         self.evaluationFunction = util.lookup(evalFn, globals())
         assert self.evaluationFunction != None
 
-    def getAction(self, state):
+    def getAction(self, state: GameState):
         # Generate candidate actions
         legal = state.getLegalPacmanActions()
         if Directions.STOP in legal:
