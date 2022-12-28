@@ -21,3 +21,17 @@ Tags:
 Reference:
 
 """
+from collections import Set
+
+from yet.game_state import GameState
+
+
+class World:
+
+    def __init__(self):
+        self.set_game_state: Set[GameState] = set()
+
+    def get_and_reset_world(self):
+        set_game_state_old = self.set_game_state.copy()
+        self.set_game_state = set()
+        return set_game_state_old

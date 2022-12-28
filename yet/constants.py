@@ -21,7 +21,7 @@ Tags:
 Reference:
 
 """
-class Directions:
+class Direction:
     NORTH = 'North'
     SOUTH = 'South'
     EAST = 'East'

@@ -25,9 +25,7 @@ from multiagent.layout import Layout
 
 
 def run():
-
-    layout_ = Layout()
-
+    pass
 
 
 

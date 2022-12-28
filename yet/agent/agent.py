@@ -21,3 +21,16 @@ Tags:
 Reference:
 
 """
+from abc import ABC, abstractmethod
+
+from yet.game_state import GameState
+
+
+class Agent(ABC):
+
+    def __init__(self, index=0):
+        self.index = index
+
+    @abstractmethod
+    def get_action(self, state: GameState):
+        pass
