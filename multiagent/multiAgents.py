@@ -10,15 +10,20 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
+
 import random
 from functools import lru_cache
 from queue import PriorityQueue
-from typing import Tuple, List, Union, Set
+from typing import List
+from typing import Set
+from typing import Tuple
+from typing import Union
 
 import util
-from game import Grid, AgentState
 from multiagent.agent.agent import Agent
-from pacman import GameState
+from multiagent.agent.state_agent import AgentState
+from multiagent.game.gamestate import GameState
+from multiagent.game.grid import Grid
 
 
 def evaluation_function_food_and_ghost(successorGameState: GameState,
@@ -625,7 +630,8 @@ def dfs_recursive_minimax_v1(game_state: GameState,
 
 class AgentGhostContainer:
 
-    def __init__(self, game_state: GameState, index_agent: int, action: str, game_state_previous: GameState):
+    def __init__(self, game_state: GameState, index_agent: int, action: str,
+                 game_state_previous: GameState):
         self.game_state = game_state
         self.index_agent = index_agent
         self.action = action

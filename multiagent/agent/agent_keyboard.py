@@ -16,9 +16,9 @@ import random
 from typing import Union
 
 from multiagent.agent.agent import Agent
-from multiagent.constants import Directions
-# from multiagent.graphicsUtils import keys_pressed, keys_waiting
-from multiagent.graphicsUtils import GraphicsActual
+from multiagent.game.directions import Directions
+from multiagent.game.gamestate import GameState
+from multiagent.graphics.graphicsUtils import GraphicsActual
 
 
 class KeyboardAgent(Agent):
@@ -46,14 +46,14 @@ class KeyboardAgent(Agent):
     def set_graphics_actual(self, graphics_actual: GraphicsActual):
         self._graphics_actual = graphics_actual
 
-    def getAction(self, state):
+    def getAction(self, state: GameState):
         # from graphicsUtils import get_keys_waiting
         # from graphicsUtils import get_keys_pressed
         #
         # from multiagent import graphicsUtils
         # print(f"getAction {graphicsUtils._root_window=}")
 
-        # TODO: THIS IS CRASHABLE
+        # TODO: THIS IS CRASHABLE JOSEPH
         keys = self._graphics_actual.get_keys_waiting() + self._graphics_actual.get_keys_pressed()
 
         if keys != []:

@@ -1,3 +1,26 @@
+"""
+Created by Joseph Edradan
+Github: https://github.com/josephedradan
+
+Date created: 12/27/2022
+
+Purpose:
+
+Details:
+
+Description:
+
+Notes:
+
+IMPORTANT NOTES:
+
+Explanation:
+
+Tags:
+
+Reference:
+
+"""
 # pacmanAgents.py
 # ---------------
 # Licensing Information:  You are free to use or extend these projects for
@@ -12,14 +35,15 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-from pacman import Directions
-from game import Agent
-import random
-import game
-import util
 
 
-class LeftTurnAgent(game.Agent):
+
+
+from multiagent.agent.agent import Agent
+from multiagent.game.directions import Directions
+
+
+class LeftTurnAgent(Agent):
     "An agent that turns left at every opportunity"
 
     def getAction(self, state):
@@ -39,25 +63,3 @@ class LeftTurnAgent(game.Agent):
         return Directions.STOP
 
 
-class GreedyAgent(Agent):
-    def __init__(self, evalFn="scoreEvaluation"):
-        self.evaluationFunction = util.lookup(evalFn, globals())
-        assert self.evaluationFunction != None
-
-    def getAction(self, state):
-        # Generate candidate actions
-        legal = state.getLegalPacmanActions()
-        if Directions.STOP in legal:
-            legal.remove(Directions.STOP)
-
-        successors = [(state.generateSuccessor(0, action), action)
-                      for action in legal]
-        scored = [(self.evaluationFunction(state), action)
-                  for state, action in successors]
-        bestScore = max(scored)[0]
-        bestActions = [pair[1] for pair in scored if pair[0] == bestScore]
-        return random.choice(bestActions)
-
-
-def scoreEvaluation(state):
-    return state.getScore()
