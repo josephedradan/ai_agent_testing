@@ -23,9 +23,12 @@ Reference:
 """
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
+from typing import TYPE_CHECKING
 
-from multiagent.game import gamestate
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
 
 class Agent(ABC):
