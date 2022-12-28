@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0cec50b-c8ad-41f3-9f76-402ae0d958a7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/yet/action.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/action.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yet/agent/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/agent/agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yet/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yet/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yet/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yet/rules_agent/rules_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/rules_agent/rules_agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yet/rules_agent/rules_pacman.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/rules_agent/rules_pacman.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yet/rules_game/rules_game.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/rules_game/rules_game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yet/world.py" beforeDir="false" afterPath="$PROJECT_DIR$/yet/world.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +189,7 @@
       <updated>1670755147234</updated>
       <workItem from="1670755148338" duration="6605000" />
       <workItem from="1671799664308" duration="13214000" />
-      <workItem from="1671948991568" duration="22317000" />
+      <workItem from="1671948991568" duration="22495000" />
     </task>
     <servers />
   </component>
@@ -219,7 +211,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ai_testing$graphicsUtils.coverage" NAME="graphicsUtils Coverage Results" MODIFIED="1672055599554" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$layout.coverage" NAME="layout Coverage Results" MODIFIED="1670761515758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$pacman.coverage" NAME="pacman Coverage Results" MODIFIED="1672220376498" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$pacman.coverage" NAME="pacman Coverage Results" MODIFIED="1672220554420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman__1_.coverage" NAME="pacman Coverage Results" MODIFIED="1670761758642" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$autograder.coverage" NAME="autograder Coverage Results" MODIFIED="1672220069791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
   </component>
