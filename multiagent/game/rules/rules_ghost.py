@@ -21,25 +21,37 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+from typing import List
+from typing import TYPE_CHECKING
+from typing import Union
+
 from multiagent.game.actions import Actions
+from multiagent.game.directions import Action
 from multiagent.game.directions import Directions
 from multiagent.game.rules.common import COLLISION_TOLERANCE
-from multiagent.util import nearestPoint, manhattanDistance
+from multiagent.game.rules.rules_agent import RulesAgent
+from multiagent.util import manhattanDistance
+from multiagent.util import nearestPoint
+
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
 
-class GhostRules():
+class GhostRules(RulesAgent):
     """
     These functions dictate how ghosts interact with their environment.
     """
     GHOST_SPEED = 1.0
 
     @staticmethod
-    def getLegalActions(state, ghostIndex):
+    def getLegalActions(state: GameState, index_agent: Union[int, None] = None) -> List[Directions]:
         """
         Ghosts cannot stop, and cannot turn around unless they
         reach a dead end, but can turn 90 degrees at intersections.
         """
-        conf = state.getGhostState(ghostIndex).configuration
+        conf = state.getGhostState(index_agent).configuration
         possibleActions = Actions.getPossibleActions(
             conf, state.data.layout.walls)
         reverse = Actions.reverseDirection(conf.direction)
@@ -47,17 +59,17 @@ class GhostRules():
             possibleActions.remove(Directions.STOP)
         if reverse in possibleActions and len(possibleActions) > 1:
             possibleActions.remove(reverse)
+
         return possibleActions
 
     @staticmethod
-    def applyAction(state, action, ghostIndex):
-        # print("FFF",action, type(action))  # FIXME: action ->    West <class 'str'>
+    def applyAction(state: GameState, action: Action, index_agent: Union[int] = None):
 
-        legal = GhostRules.getLegalActions(state, ghostIndex)
+        legal = GhostRules.getLegalActions(state, index_agent)
         if action not in legal:
             raise Exception("Illegal ghost action " + str(action))
 
-        ghostState = state.data.agentStates[ghostIndex]
+        ghostState = state.data.agentStates[index_agent]
         speed = GhostRules.GHOST_SPEED
         if ghostState.scaredTimer > 0:
             speed /= 2.0

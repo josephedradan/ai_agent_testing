@@ -16,10 +16,9 @@ import random
 from typing import Union
 
 from multiagent.agent.agent import Agent
-from multiagent.game import gamestate
 from multiagent.game.directions import Directions
 from multiagent.game.gamestate import GameState
-from multiagent.graphicsUtils import GraphicsActual
+from multiagent.graphics.graphicsUtils import GraphicsActual
 
 
 class KeyboardAgent(Agent):

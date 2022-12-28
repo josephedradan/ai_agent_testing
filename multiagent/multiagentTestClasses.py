@@ -20,22 +20,30 @@
 #     state.getScore()
 #           used by multiAgents.scoreEvaluationFunction, which is the default
 #
+from pprint import pprint
+
 import testClasses
 import json
 
 from collections import defaultdict
 from pprint import PrettyPrinter
+
+from multiagent.agent.agent import Agent
+from multiagent.agent.agent_ghost_directional import DirectionalGhost
+from multiagent.game import layout
+from multiagent.game.gamestate import GameState
+
 pp = PrettyPrinter()
 
-from game import Agent
-from pacman import GameState
-from ghostAgents import RandomGhost, DirectionalGhost
+# from game import Agent
+# from pacman import GameState
+# from ghostAgents import RandomGhost, DirectionalGhost
 import random
 import math
 import traceback
 import sys
 import os
-import layout
+# import layout
 import pacman
 import autograder
 # import grading
@@ -471,6 +479,7 @@ class EvalAgentTest(testClasses.TestCase):
 
     def __init__(self, question, testDict):
         super(EvalAgentTest, self).__init__(question, testDict)
+        pprint(testDict)
         self.layoutName = testDict['layoutName']
         self.agentName = testDict['agentName']
         self.ghosts = eval(testDict['ghosts'])

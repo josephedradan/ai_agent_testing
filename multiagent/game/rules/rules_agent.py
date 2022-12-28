@@ -22,21 +22,35 @@ Reference:
 
 """
 
-from abc import ABC, abstractmethod
+from __future__ import annotations
 
-from multiagent.game import gamestate
-# index_agent:Union[int, None] = None
-from multiagent.game.gamestate import GameState
+from abc import ABC
+from abc import abstractmethod
+from typing import List
+from typing import TYPE_CHECKING
+from typing import Union
+
+from multiagent.game.directions import Action
+from multiagent.game.directions import Directions
+
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
 
 class RulesAgent(ABC):
 
-    @abstractmethod
     @staticmethod
-    def getLegalActions(state: GameState):
+    @abstractmethod
+    def getLegalActions(state: GameState, index_agent: Union[int, None] = None) -> List[Directions]:
+        """
+        Returns a list of possible actions.
+        """
         pass
 
-    @abstractmethod
     @staticmethod
-    def applyAction(state: GameState, action):
+    @abstractmethod
+    def applyAction(state: GameState, action: Action, index_agent: Union[int, None] = None):
+        """
+        Edits the state to reflect the results of the action.
+        """
         pass

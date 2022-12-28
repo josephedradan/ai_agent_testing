@@ -14,14 +14,16 @@
 
 import math
 
-from graphicsUtils import *
-
 ###########################
 #  GRAPHICS DISPLAY CODE  #
 ###########################
 
 # Most code by Dan Klein and John Denero written or rewritten for cs188, UC Berkeley.
 # Some code from a Pacman implementation by LiveWires, and used / modified with permission.
+import time
+
+from multiagent.game.directions import Directions
+from multiagent.graphics.graphicsUtils import formatColor, colorToVector, GraphicsActual, writePostscript
 
 DEFAULT_GRID_SIZE = 30.0
 INFO_PANE_HEIGHT = 35
@@ -89,7 +91,6 @@ class InfoPane:
 
         #####
 
-
         self.gridSize = gridSize
         self.width = (layout.width) * gridSize
         self.base = (layout.height + 1) * gridSize
@@ -97,8 +98,6 @@ class InfoPane:
         self.fontSize = 24
         self.textColor = PACMAN_COLOR
         self.drawPane()
-
-
 
     def toScreen(self, pos, y=None):
         """
@@ -514,17 +513,17 @@ class PacmanGraphics:
                         # vertical line
                         self._graphics_actual.line(add(screen, (self.gridSize * WALL_RADIUS, 0)), add(screen,
                                                                                                       (
-                                                                                                      self.gridSize * WALL_RADIUS,
-                                                                                                      self.gridSize * (
-                                                                                                          -0.5) - 1)),
+                                                                                                          self.gridSize * WALL_RADIUS,
+                                                                                                          self.gridSize * (
+                                                                                                              -0.5) - 1)),
                                                    wallColor)
                     if (not nIsWall) and (eIsWall):
                         # horizontal line
                         self._graphics_actual.line(add(screen, (0, self.gridSize * (-1) * WALL_RADIUS)), add(screen,
                                                                                                              (
-                                                                                                             self.gridSize * 0.5 + 1,
-                                                                                                             self.gridSize * (
-                                                                                                                 -1) * WALL_RADIUS)),
+                                                                                                                 self.gridSize * 0.5 + 1,
+                                                                                                                 self.gridSize * (
+                                                                                                                     -1) * WALL_RADIUS)),
                                                    wallColor)
                     if (nIsWall) and (eIsWall) and (not neIsWall):
                         # outer circle
@@ -547,19 +546,19 @@ class PacmanGraphics:
                         # vertical line
                         self._graphics_actual.line(add(screen, (self.gridSize * (-1) * WALL_RADIUS, 0)), add(screen,
                                                                                                              (
-                                                                                                             self.gridSize * (
-                                                                                                                 -1) * WALL_RADIUS,
-                                                                                                             self.gridSize * (
-                                                                                                                 -0.5) - 1)),
+                                                                                                                 self.gridSize * (
+                                                                                                                     -1) * WALL_RADIUS,
+                                                                                                                 self.gridSize * (
+                                                                                                                     -0.5) - 1)),
                                                    wallColor)
                     if (not nIsWall) and (wIsWall):
                         # horizontal line
                         self._graphics_actual.line(add(screen, (0, self.gridSize * (-1) * WALL_RADIUS)), add(screen,
                                                                                                              (
-                                                                                                             self.gridSize * (
-                                                                                                                 -0.5) - 1,
-                                                                                                             self.gridSize * (
-                                                                                                                 -1) * WALL_RADIUS)),
+                                                                                                                 self.gridSize * (
+                                                                                                                     -0.5) - 1,
+                                                                                                                 self.gridSize * (
+                                                                                                                     -1) * WALL_RADIUS)),
                                                    wallColor)
                     if (nIsWall) and (wIsWall) and (not nwIsWall):
                         # outer circle
@@ -582,17 +581,17 @@ class PacmanGraphics:
                         # vertical line
                         self._graphics_actual.line(add(screen, (self.gridSize * WALL_RADIUS, 0)), add(screen,
                                                                                                       (
-                                                                                                      self.gridSize * WALL_RADIUS,
-                                                                                                      self.gridSize * (
-                                                                                                          0.5) + 1)),
+                                                                                                          self.gridSize * WALL_RADIUS,
+                                                                                                          self.gridSize * (
+                                                                                                              0.5) + 1)),
                                                    wallColor)
                     if (not sIsWall) and (eIsWall):
                         # horizontal line
                         self._graphics_actual.line(add(screen, (0, self.gridSize * (1) * WALL_RADIUS)), add(screen,
                                                                                                             (
-                                                                                                            self.gridSize * 0.5 + 1,
-                                                                                                            self.gridSize * (
-                                                                                                                1) * WALL_RADIUS)),
+                                                                                                                self.gridSize * 0.5 + 1,
+                                                                                                                self.gridSize * (
+                                                                                                                    1) * WALL_RADIUS)),
                                                    wallColor)
                     if (sIsWall) and (eIsWall) and (not seIsWall):
                         # outer circle
@@ -615,19 +614,19 @@ class PacmanGraphics:
                         # vertical line
                         self._graphics_actual.line(add(screen, (self.gridSize * (-1) * WALL_RADIUS, 0)), add(screen,
                                                                                                              (
-                                                                                                             self.gridSize * (
-                                                                                                                 -1) * WALL_RADIUS,
-                                                                                                             self.gridSize * (
-                                                                                                                 0.5) + 1)),
+                                                                                                                 self.gridSize * (
+                                                                                                                     -1) * WALL_RADIUS,
+                                                                                                                 self.gridSize * (
+                                                                                                                     0.5) + 1)),
                                                    wallColor)
                     if (not sIsWall) and (wIsWall):
                         # horizontal line
                         self._graphics_actual.line(add(screen, (0, self.gridSize * (1) * WALL_RADIUS)), add(screen,
                                                                                                             (
-                                                                                                            self.gridSize * (
-                                                                                                                -0.5) - 1,
-                                                                                                            self.gridSize * (
-                                                                                                                1) * WALL_RADIUS)),
+                                                                                                                self.gridSize * (
+                                                                                                                    -0.5) - 1,
+                                                                                                                self.gridSize * (
+                                                                                                                    1) * WALL_RADIUS)),
                                                    wallColor)
                     if (sIsWall) and (wIsWall) and (not swIsWall):
                         # outer circle

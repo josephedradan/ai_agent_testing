@@ -45,13 +45,12 @@ import sys
 from pprint import pprint
 from typing import List
 
-from multiagent.game import layout as _layout
-
-from graphicsDisplay import PacmanGraphics
 from multiagent.agent.agent import Agent
 from multiagent.agent.agent_ghost_random import RandomGhost
 from multiagent.agent.agent_keyboard import KeyboardAgent
+from multiagent.game import layout as _layout
 from multiagent.game.rules.game_rules_classic import ClassicGameRules
+from multiagent.graphics.graphicsDisplay import PacmanGraphics
 
 
 #############################
@@ -171,14 +170,14 @@ def readCommand(argv):
 
     # Choose a display format
     if options.quietGraphics:
-        import textDisplay
+        from multiagent.graphics import textDisplay
         args['display'] = textDisplay.NullGraphics()
     elif options.textGraphics:
-        import textDisplay
+        from multiagent.graphics import textDisplay
         textDisplay.SLEEP_TIME = options.frameTime
         args['display'] = textDisplay.PacmanGraphics()
     else:
-        import graphicsDisplay
+        from multiagent.graphics import graphicsDisplay
         args['display'] = graphicsDisplay.PacmanGraphics(
             options.zoom, frameTime=options.frameTime)
     args['numGames'] = options.numGames
@@ -295,7 +294,7 @@ def runGames(layout: _layout.Layout,
         beQuiet = i < numTraining
         if beQuiet:
             # Suppress output and graphics
-            import textDisplay
+            from multiagent.graphics import textDisplay
             gameDisplay = textDisplay.NullGraphics()
             rules.quiet = True
         else:

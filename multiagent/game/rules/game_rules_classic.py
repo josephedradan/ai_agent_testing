@@ -23,7 +23,7 @@ Reference:
 """
 from typing import List
 
-from multiagent.game import layout as _layout, gamestate
+from multiagent.game import layout as _layout
 
 ############################################################################
 #                     THE HIDDEN SECRETS OF PACMAN                         #
@@ -33,7 +33,7 @@ from multiagent.game import layout as _layout, gamestate
 from multiagent.agent.agent import Agent
 from multiagent.game.game import Game
 from multiagent.game.gamestate import GameState
-from multiagent.graphicsDisplay import PacmanGraphics
+from multiagent.graphics.graphicsDisplay import PacmanGraphics
 
 
 class ClassicGameRules:

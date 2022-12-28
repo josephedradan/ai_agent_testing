@@ -21,6 +21,8 @@ Tags:
 Reference:
 
 """
+
+
 class Directions:
     NORTH = 'North'
     SOUTH = 'South'
@@ -41,3 +43,6 @@ class Directions:
                EAST: WEST,
                WEST: EAST,
                STOP: STOP}
+
+
+Action = Directions

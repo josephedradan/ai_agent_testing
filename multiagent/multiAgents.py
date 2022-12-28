@@ -14,12 +14,15 @@
 import random
 from functools import lru_cache
 from queue import PriorityQueue
-from typing import Tuple, List, Union, Set
+from typing import List
+from typing import Set
+from typing import Tuple
+from typing import Union
 
 import util
 from multiagent.agent.agent import Agent
 from multiagent.agent.state_agent import AgentState
-from multiagent.game import gamestate
+from multiagent.game.gamestate import GameState
 from multiagent.game.grid import Grid
 
 

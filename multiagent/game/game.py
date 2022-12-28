@@ -20,43 +20,18 @@
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
 # from util import *
 
+from __future__ import annotations
+
 import sys
 import time
 import traceback
+from typing import List, TYPE_CHECKING
 
-from multiagent.game.grid import Grid
+from multiagent.agent.agent import Agent
 from multiagent.util import TimeoutFunction, TimeoutFunctionException
 
-
-#######################
-# Parts worth reading #
-#######################
-
-
-# class Agent:
-#     """
-#     An agent must define a getAction method, but may also define the
-#     following methods which will be called if they exist:
-#
-#     def registerInitialState(self, state): # inspects the starting state
-#     """
-#
-#     def __init__(self, index=0):
-#         self.index = index
-#
-#     def getAction(self, state):
-#         """
-#         The Agent will receive a GameState (from either {pacman, capture, sonar}.py) and
-#         must return an action from Directions.{North, South, East, West, Stop}
-#         """
-#         raiseNotDefined()
-
-
-
-####################################
-# Parts you shouldn't have to read #
-####################################
-
+if TYPE_CHECKING:
+    from multiagent.game.rules.game_rules_classic import ClassicGameRules
 
 try:
     import boinc
@@ -71,7 +46,14 @@ class Game:
     The Game manages the control flow, soliciting actions from agents.
     """
 
-    def __init__(self, agents, display, rules, startingIndex=0, muteAgents=False, catchExceptions=False):
+    def __init__(self,
+                 agents: List[Agent],
+                 display: PacmanGraphics,
+                 rules: ClassicGameRules,
+                 startingIndex: int = 0,
+                 muteAgents: bool = False,
+                 catchExceptions: bool = False):
+
         self.agentCrashed = False
         self.agents = agents
         self.display = display

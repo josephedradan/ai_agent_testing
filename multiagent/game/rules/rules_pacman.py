@@ -21,13 +21,21 @@ Tags:
 Reference:
 
 """
-from multiagent.game import gamestate
+from __future__ import annotations
+
+from typing import Union, TYPE_CHECKING, List
+
 from multiagent.game.actions import Actions
+from multiagent.game.directions import Action, Directions
 from multiagent.game.rules.common import SCARED_TIME
+from multiagent.game.rules.rules_agent import RulesAgent
 from multiagent.util import nearestPoint, manhattanDistance
 
+if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
 
-class PacmanRules():
+
+class PacmanRules(RulesAgent):
     """
     These functions govern how pacman interacts with his environment under
     the classic game rules.
@@ -35,20 +43,15 @@ class PacmanRules():
     PACMAN_SPEED = 1
 
     @staticmethod
-    def getLegalActions(state):
-        """
-        Returns a list of possible actions.
-        """
+    def getLegalActions(state: GameState, index_agent: Union[int, None] = None) -> List[Directions]:
         return Actions.getPossibleActions(
             state.getPacmanState().configuration,
             state.data.layout.walls
         )
 
     @staticmethod
-    def applyAction(state, action):
-        """
-        Edits the state to reflect the results of the action.
-        """
+    def applyAction(state: GameState, action: Action, index_agent: Union[int, None] = None):
+
         legal = PacmanRules.getLegalActions(state)
         if action not in legal:
             raise Exception("Illegal action " + str(action))

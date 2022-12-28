@@ -25,6 +25,7 @@ from multiagent import util
 from multiagent.agent.agent_ghost import GhostAgent
 from multiagent.game import gamestate
 from multiagent.game.actions import Actions
+from multiagent.game.gamestate import GameState
 from multiagent.util import manhattanDistance
 
 
