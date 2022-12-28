@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
 
 
-class GhostAgent(Agent):
+class AgentGhost(Agent):
 
     def __init__(self, index: int):
         super().__init__(index)

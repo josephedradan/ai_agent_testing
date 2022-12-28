@@ -22,8 +22,8 @@ Reference:
 
 """
 from multiagent.agent.agent import Agent
-from multiagent.agent.agent_ghost_directional import DirectionalGhost
-from multiagent.agent.agent_ghost_random import RandomGhost
+from multiagent.agent.agent_ghost_directional import AgentGhostDirectional
+from multiagent.agent.agent_ghost_random import AgentGhostRandom
 from multiagent.agent.agent_keyboard import KeyboardAgent
 from multiagent.agent.agent_keyboard import KeyboardAgent2
 from multiagent.agent.agent_pacman_greedy import GreedyAgent

@@ -26,7 +26,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from multiagent import util
-from multiagent.agent.agent_ghost import GhostAgent
+from multiagent.agent.agent_ghost import AgentGhost
 from multiagent.game.actions import Actions
 from multiagent.util import manhattanDistance
 
@@ -34,7 +34,7 @@ if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
 
 
-class DirectionalGhost(GhostAgent):
+class AgentGhostDirectional(AgentGhost):
     "A ghost that prefers to rush Pacman, or flee when scared."
 
     def __init__(self, index: int, prob_attack: float = 0.8, prob_scaredFlee: float = 0.8):

@@ -39,7 +39,7 @@ class Agent(ABC):
     def registerInitialState(self, state): # inspects the starting state
     """
 
-    def __init__(self, index: int = 0):
+    def __init__(self, index: int):
         self.index = index
 
     # TODO IN THE FUTURE USE THIS I THINK

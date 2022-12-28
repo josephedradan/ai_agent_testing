@@ -29,7 +29,7 @@ from collections import defaultdict
 from pprint import PrettyPrinter
 
 # from multiagent.agent.agent import Agent
-# from multiagent.agent.agent_ghost_directional import DirectionalGhost
+# from multiagent.agent.agent_ghost_directional import AgentGhostDirectional
 from multiagent.game import layout
 from multiagent.game.gamestate import GameState
 
@@ -39,7 +39,7 @@ pp = PrettyPrinter()
 
 # from game import Agent
 # from pacman import GameState
-# from ghostAgents import RandomGhost, DirectionalGhost
+# from ghostAgents import AgentGhostRandom, AgentGhostDirectional
 import random
 import math
 import traceback
@@ -355,7 +355,7 @@ class PacmanGameTreeTest(testClasses.TestCase):
                            altDepthActions, partialPlyBugActions)
         # check return codes and assign grades
         disp = self.question.getDisplay()
-        stats = run(lay, self.layout_name, pac, [DirectionalGhost(
+        stats = run(lay, self.layout_name, pac, [AgentGhostDirectional(
             i + 1) for i in range(2)], disp, name=self.alg)
         if stats['timeouts'] > 0:
             self.addMessage('Agent timed out on smallClassic.  No credit')
@@ -405,7 +405,7 @@ class PacmanGameTreeTest(testClasses.TestCase):
             ourPacOptions = {}
         pac = PolyAgent(self.seed, multiAgents, ourPacOptions, self.depth)
         disp = self.question.getDisplay()
-        run(lay, self.layout_name, pac, [DirectionalGhost(
+        run(lay, self.layout_name, pac, [AgentGhostDirectional(
             i + 1) for i in range(2)], disp, name=self.alg)
         (optimalActions, altDepthActions, partialPlyBugActions) = pac.getTraces()
         # recover traces and record to file

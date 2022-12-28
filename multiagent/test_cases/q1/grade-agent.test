@@ -15,4 +15,4 @@ winsThresholds: "5 10"
 
 
 randomSeed: "0"
-ghosts: "[RandomGhost(1)]"
+ghosts: "[AgentGhostRandom(1)]"

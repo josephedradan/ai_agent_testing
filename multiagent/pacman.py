@@ -45,9 +45,9 @@ import sys
 from pprint import pprint
 from typing import List
 
-from multiagent.agent.agent import *
-from multiagent.agent.agent_ghost_random import RandomGhost
-from multiagent.agent.agent_keyboard import KeyboardAgent
+from multiagent.agent import *
+# from multiagent.agent.agent_ghost_random import AgentGhostRandom
+# from multiagent.agent.agent_keyboard import KeyboardAgent
 from multiagent.game import layout as _layout
 from multiagent.game.rules.game_rules_classic import ClassicGameRules
 from multiagent.graphics.graphicsDisplay import PacmanGraphics
@@ -108,7 +108,7 @@ def readCommand(argv):
     parser.add_option('-g', '--ghosts', dest='ghost',
                       help=default(
                           'the ghost agent TYPE in the ghostAgents module to use'),
-                      metavar='TYPE', default='RandomGhost')
+                      metavar='TYPE', default='AgentGhostRandom')
     parser.add_option('-k', '--numghosts', type='int', dest='numGhosts',
                       help=default('The maximum number of ghosts to use'), default=4)
     parser.add_option('-z', '--zoom', type='float', dest='zoom',
@@ -165,7 +165,7 @@ def readCommand(argv):
 
     # Choose a ghost agent
     ghostType = loadAgent(options.ghost, noKeyboard)  # FIXME: GHOST AGENTS HERE
-    print(options.ghost, type(options.ghost))  # FIXME: ghostType is RandomGhost
+    print(options.ghost, type(options.ghost))  # FIXME: ghostType is AgentGhostRandom
     args['ghosts'] = [ghostType(i + 1) for i in range(options.numGhosts)]
 
     # Choose a display format
@@ -206,12 +206,12 @@ def loadAgent(pacman: str, nographics: bool):  # RETURNS A CLASS
     print(pacman, type(pacman))
     print(nographics, type(nographics))
 
-    # FIXME: pacman IS KeyboardAgent <class 'str'> OR RandomGhost <class 'str'>
+    # FIXME: pacman IS KeyboardAgent <class 'str'> OR AgentGhostRandom <class 'str'>
 
     if pacman == "KeyboardAgent":
         return KeyboardAgent
-    elif pacman == "RandomGhost":
-        return RandomGhost
+    elif pacman == "AgentGhostRandom":
+        return AgentGhostRandom
 
     # Looks through all pythonPath Directories for the right module,
     pythonPathStr = os.path.expandvars("$PYTHONPATH")
@@ -239,7 +239,7 @@ def loadAgent(pacman: str, nographics: bool):  # RETURNS A CLASS
 
                 print("FFFF", getattr(module, pacman))
 
-                # FIXME: <class 'keyboardAgents.KeyboardAgent'>  OR  <class 'ghostAgents.RandomGhost'>
+                # FIXME: <class 'keyboardAgents.KeyboardAgent'>  OR  <class 'ghostAgents.AgentGhostRandom'>
                 return getattr(module, pacman)
     raise Exception('The agent ' + pacman +
                     ' is not specified in any *Agents.py.')
@@ -250,7 +250,7 @@ def replayGame(layout, actions, display):
     # import ghostAgents
 
     rules = ClassicGameRules()
-    agents = [pacmanAgents.GreedyAgent()] + [ghostAgents.RandomGhost(i + 1)
+    agents = [pacmanAgents.GreedyAgent()] + [ghostAgents.AgentGhostRandom(i + 1)
                                              for i in range(layout.getNumGhosts())]
     game = rules.newGame(layout, agents[0], agents[1:], display)
     state = game.state
