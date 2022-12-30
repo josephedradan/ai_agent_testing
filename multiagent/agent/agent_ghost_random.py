@@ -35,9 +35,9 @@ if TYPE_CHECKING:
 class AgentGhostRandom(AgentGhost):
     "A ghost that chooses a legal action uniformly at random."
 
-    def getDistribution(self, state: GameState):
+    def getDistribution(self, game_state: GameState):
         dist = util.Counter()
-        for a in state.getLegalActions(self.index):
+        for a in game_state.getLegalActions(self.index):
             dist[a] = 1.0
         dist.normalize()
         return dist

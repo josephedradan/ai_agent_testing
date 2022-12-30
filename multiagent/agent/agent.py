@@ -25,7 +25,10 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
+from typing import List
 from typing import TYPE_CHECKING
+
+from multiagent.game.directions import Action
 
 if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
@@ -36,7 +39,7 @@ class Agent(ABC):
     An agent must define a getAction method, but may also define the
     following methods which will be called if they exist:
 
-    def registerInitialState(self, state): # inspects the starting state
+    def registerInitialState(self, game_state): # inspects the starting game_state
     """
 
     def __init__(self, index: int):
@@ -48,7 +51,7 @@ class Agent(ABC):
     #     self._graphics_actual = graphics_actual
 
     @abstractmethod
-    def getAction(self, state: GameState):
+    def getAction(self, game_state: GameState) -> Action:
         """
         The Agent will receive a GameState (from either {pacman, capture, sonar}.py) and
         must return an action from Directions.{North, South, East, West, Stop}

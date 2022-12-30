@@ -37,24 +37,33 @@ Reference:
 
 from __future__ import annotations
 
+from typing import List
 from typing import TYPE_CHECKING
 
-from multiagent.agent.agent import Agent
+from multiagent.agent.agent_pacman import AgentPacman
+from multiagent.game.directions import Action
 from multiagent.game.directions import Directions
 
 if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
 
 
-class LeftTurnAgent(Agent):
-    "An agent that turns left at every opportunity"
+class AgentPacmanLeftTurn(AgentPacman):
+    """
+    An agent that turns left at every opportunity
 
-    def getAction(self, state: GameState):
-        legal = state.getLegalPacmanActions()
-        current = state.getPacmanState().configuration.direction
+    """
+
+    def getAction(self, game_state: GameState) -> Action:
+        legal = game_state.getLegalPacmanActions()
+
+        current = game_state.getPacmanState().configuration.direction
+
         if current == Directions.STOP:
             current = Directions.NORTH
+
         left = Directions.LEFT[current]
+
         if left in legal:
             return left
         if current in legal:

@@ -193,7 +193,7 @@ class PacmanGraphics:
         self.isBlue = isBlue
         self.startGraphics(state)
 
-        # self.drawDistributions(state)
+        # self.drawDistributions(game_state)
         self.distributionImages = None  # Initialized lazily
         self.drawStaticObjects(state)
         self.drawAgentObjects(state)
@@ -716,7 +716,7 @@ class PacmanGraphics:
 
     def updateDistributions(self, distributions):
         "Draws an agent's belief distributions"
-        # copy all distributions so we don't change their state
+        # copy all distributions so we don't change their game_state
         distributions = [x.copy() for x in distributions]
         if self.distributionImages == None:
             self.drawDistributions(self.previousState)

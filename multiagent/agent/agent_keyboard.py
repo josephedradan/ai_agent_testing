@@ -14,10 +14,12 @@
 from __future__ import annotations
 
 import random
+from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
 
 from multiagent.agent.agent import Agent
+from multiagent.game.directions import Action
 from multiagent.game.directions import Directions
 from multiagent.graphics.graphicsUtils import GraphicsActual
 
@@ -25,7 +27,7 @@ if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
 
 
-class KeyboardAgent(Agent):
+class AgentKeyboard(Agent):
     """
     An agent controlled by the keyboard.
     """
@@ -50,7 +52,7 @@ class KeyboardAgent(Agent):
     def set_graphics_actual(self, graphics_actual: GraphicsActual):
         self._graphics_actual = graphics_actual
 
-    def getAction(self, state: GameState):
+    def getAction(self, game_state: GameState) -> Action:
         # from graphicsUtils import get_keys_waiting
         # from graphicsUtils import get_keys_pressed
         #
@@ -63,7 +65,7 @@ class KeyboardAgent(Agent):
         if keys != []:
             self.keys = keys
 
-        legal = state.getLegalActions(self.index)
+        legal = game_state.getLegalActions(self.index)
         move = self.getMove(legal)
 
         if move == Directions.STOP:
@@ -93,7 +95,7 @@ class KeyboardAgent(Agent):
         return move
 
 
-class KeyboardAgent2(KeyboardAgent):
+class AgentKeyboard2(AgentKeyboard):
     """
     A second agent controlled by the keyboard.
     """

@@ -47,7 +47,7 @@ from typing import List
 
 from multiagent.agent import *
 # from multiagent.agent.agent_ghost_random import AgentGhostRandom
-# from multiagent.agent.agent_keyboard import KeyboardAgent
+# from multiagent.agent.agent_keyboard import AgentKeyboard
 from multiagent.game import layout as _layout
 from multiagent.game.rules.game_rules_classic import ClassicGameRules
 from multiagent.graphics.graphicsDisplay import PacmanGraphics
@@ -100,7 +100,7 @@ def readCommand(argv):
     parser.add_option('-p', '--pacman', dest='pacman',
                       help=default(
                           'the agent TYPE in the pacmanAgents module to use'),
-                      metavar='TYPE', default='KeyboardAgent')
+                      metavar='TYPE', default='AgentKeyboard')
     parser.add_option('-t', '--textGraphics', action='store_true', dest='textGraphics',
                       help='Display output as text only', default=False)
     parser.add_option('-q', '--quietTextGraphics', action='store_true', dest='quietGraphics',
@@ -148,7 +148,7 @@ def readCommand(argv):
     noKeyboard = options.gameToReplay == None and (
             options.textGraphics or options.quietGraphics)
     pacmanType = loadAgent(options.pacman, noKeyboard)  # FIXME: PACMAN AGENT HERE
-    print("pacmanType", options.pacman, type(options.pacman))  # FIXME: options.pacman IS A KeyboardAgent
+    print("pacmanType", options.pacman, type(options.pacman))  # FIXME: options.pacman IS A AgentKeyboard
 
     agentOpts = parseAgentArgs(options.agentArgs)
     if options.numTraining > 0:
@@ -201,48 +201,53 @@ def readCommand(argv):
     return args
 
 
-def loadAgent(pacman: str, nographics: bool):  # RETURNS A CLASS
+def loadAgent(agent_: str, nographics: bool):  # RETURNS A CLASS
 
-    print(pacman, type(pacman))
+    print(agent_, type(agent_))
     print(nographics, type(nographics))
 
-    # FIXME: pacman IS KeyboardAgent <class 'str'> OR AgentGhostRandom <class 'str'>
+    # FIXME: pacman IS AgentKeyboard <class 'str'> OR AgentGhostRandom <class 'str'>
 
-    if pacman == "KeyboardAgent":
-        return KeyboardAgent
-    elif pacman == "AgentGhostRandom":
-        return AgentGhostRandom
+    return DICT_K_NAME_V_AGENT.get(agent_)
 
-    # Looks through all pythonPath Directories for the right module,
-    pythonPathStr = os.path.expandvars("$PYTHONPATH")
-    if pythonPathStr.find(';') == -1:
-        pythonPathDirs = pythonPathStr.split(':')
-    else:
-        pythonPathDirs = pythonPathStr.split(';')
-    pythonPathDirs.append('.')
 
-    for moduleDir in pythonPathDirs:
-        if not os.path.isdir(moduleDir):
-            continue
-        moduleNames = [f for f in os.listdir(
-            moduleDir) if f.endswith('gents.py')]
-        for modulename in moduleNames:
-            try:
-                module = __import__(modulename[:-3])
-            except ImportError:
-                continue
+    # if agent_ == "AgentKeyboard":
+    #     return AgentKeyboard
+    # elif agent_ == "AgentGhostRandom":
+    #     return AgentGhostRandom
 
-            if pacman in dir(module):
-                if nographics and modulename == 'keyboardAgents.py':
-                    raise Exception(
-                        'Using the keyboard requires graphics (not text display)')
 
-                print("FFFF", getattr(module, pacman))
 
-                # FIXME: <class 'keyboardAgents.KeyboardAgent'>  OR  <class 'ghostAgents.AgentGhostRandom'>
-                return getattr(module, pacman)
-    raise Exception('The agent ' + pacman +
-                    ' is not specified in any *Agents.py.')
+    # # Looks through all pythonPath Directories for the right module,
+    # pythonPathStr = os.path.expandvars("$PYTHONPATH")
+    # if pythonPathStr.find(';') == -1:
+    #     pythonPathDirs = pythonPathStr.split(':')
+    # else:
+    #     pythonPathDirs = pythonPathStr.split(';')
+    # pythonPathDirs.append('.')
+    #
+    # for moduleDir in pythonPathDirs:
+    #     if not os.path.isdir(moduleDir):
+    #         continue
+    #     moduleNames = [f for f in os.listdir(
+    #         moduleDir) if f.endswith('gents.py')]
+    #     for modulename in moduleNames:
+    #         try:
+    #             module = __import__(modulename[:-3])
+    #         except ImportError:
+    #             continue
+    #
+    #         if pacman in dir(module):
+    #             if nographics and modulename == 'keyboardAgents.py':
+    #                 raise Exception(
+    #                     'Using the keyboard requires graphics (not text display)')
+    #
+    #             print("FFFF", getattr(module, pacman))
+    #
+    #             # FIXME: <class 'keyboardAgents.AgentKeyboard'>  OR  <class 'ghostAgents.AgentGhostRandom'>
+    #             return getattr(module, pacman)
+    # raise Exception('The agent ' + pacman +
+    #                 ' is not specified in any *Agents.py.')
 
 
 def replayGame(layout, actions, display):
@@ -250,8 +255,8 @@ def replayGame(layout, actions, display):
     # import ghostAgents
 
     rules = ClassicGameRules()
-    agents = [pacmanAgents.GreedyAgent()] + [ghostAgents.AgentGhostRandom(i + 1)
-                                             for i in range(layout.getNumGhosts())]
+    agents = [pacmanAgents.AgentPacmanGreedy()] + [ghostAgents.AgentGhostRandom(i + 1)
+                                                   for i in range(layout.getNumGhosts())]
     game = rules.newGame(layout, agents[0], agents[1:], display)
     state = game.state
     display.initialize(state.data)
@@ -304,7 +309,7 @@ def runGames(layout: _layout.Layout,
         #####
         # TODO JOSEPH SPEICAL
 
-        if isinstance(pacman, KeyboardAgent) and isinstance(gameDisplay, PacmanGraphics):
+        if isinstance(pacman, AgentKeyboard) and isinstance(gameDisplay, PacmanGraphics):
             pacman.set_graphics_actual(gameDisplay.get_graphics_actual())
 
         ####

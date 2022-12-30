@@ -22,9 +22,33 @@ Reference:
 
 """
 from multiagent.agent.agent import Agent
+from multiagent.agent.agent_ghost import AgentGhost
 from multiagent.agent.agent_ghost_directional import AgentGhostDirectional
 from multiagent.agent.agent_ghost_random import AgentGhostRandom
-from multiagent.agent.agent_keyboard import KeyboardAgent
-from multiagent.agent.agent_keyboard import KeyboardAgent2
-from multiagent.agent.agent_pacman_greedy import GreedyAgent
-from multiagent.agent.agent_pacman_left_turn_agent import LeftTurnAgent
+from multiagent.agent.agent_keyboard import AgentKeyboard
+from multiagent.agent.agent_keyboard import AgentKeyboard2
+from multiagent.agent.agent_pacman import AgentPacman
+from multiagent.agent.agent_pacman_greedy import AgentPacmanGreedy
+from multiagent.agent.agent_pacman_left_turn import AgentPacmanLeftTurn
+from multiagent.agent.agent_pacman_minimax import AgentPacmanMinimax
+from multiagent.agent.agent_pacman_minimax_alpha_beta import \
+    AgentPacmanMinimaxAlphaBeta
+from multiagent.agent.agent_pacman_reflex import AgentPacmanReflex
+from multiagent.agent.agent_pacman_reflex import AgentPacmanReflex_Attempt_1
+
+DICT_K_NAME_V_AGENT = {
+    Agent.__name__: Agent,
+    AgentGhost.__name__: AgentGhost,
+    AgentGhostDirectional.__name__: AgentGhostDirectional,
+    AgentGhostRandom.__name__: AgentGhostRandom,
+    AgentKeyboard.__name__: AgentKeyboard,
+    AgentKeyboard2.__name__: AgentKeyboard2,
+    AgentPacman.__name__: AgentPacman,
+    AgentPacmanGreedy.__name__: AgentPacmanGreedy,
+    AgentPacmanLeftTurn.__name__: AgentPacmanLeftTurn,
+    AgentPacmanReflex.__name__: AgentPacmanReflex,
+    AgentPacmanReflex_Attempt_1.__name__: AgentPacmanReflex_Attempt_1,
+    AgentPacmanMinimax.__name__: AgentPacmanMinimax,
+    AgentPacmanMinimaxAlphaBeta.__name__: AgentPacmanMinimaxAlphaBeta,
+
+}

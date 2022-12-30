@@ -43,12 +43,12 @@ class AgentGhostDirectional(AgentGhost):
         self.prob_attack: float = prob_attack
         self.prob_scaredFlee: float = prob_scaredFlee
 
-    def getDistribution(self, state: GameState):
+    def getDistribution(self, game_state: GameState):
 
-        # Read variables from state
-        ghostState = state.getGhostState(self.index)
-        legalActions = state.getLegalActions(self.index)
-        pos = state.getGhostPosition(self.index)
+        # Read variables from game_state
+        ghostState = game_state.getGhostState(self.index)
+        legalActions = game_state.getLegalActions(self.index)
+        pos = game_state.getGhostPosition(self.index)
         isScared = ghostState.scaredTimer > 0
 
         speed = 1
@@ -58,9 +58,9 @@ class AgentGhostDirectional(AgentGhost):
         actionVectors = [Actions.directionToVector(
             a, speed) for a in legalActions]
         newPositions = [(pos[0] + a[0], pos[1] + a[1]) for a in actionVectors]
-        pacmanPosition = state.getPacmanPosition()
+        pacmanPosition = game_state.getPacmanPosition()
 
-        # Select best actions given the state
+        # Select best actions given the game_state
         distancesToPacman = [manhattanDistance(
             pos, pacmanPosition) for pos in newPositions]
         if isScared:

@@ -26,6 +26,9 @@ Reference:
 ###################################################
 from __future__ import annotations
 
+from typing import List
+
+from multiagent.game.directions import Action
 from multiagent.game.gamestatedate import GameStateData
 from multiagent.game.rules.common import TIME_PENALTY
 from multiagent.game.rules.rules_ghost import GhostRules
@@ -34,10 +37,10 @@ from multiagent.game.rules.rules_pacman import PacmanRules
 
 class GameState:
     """
-    A GameState specifies the full game state, including the food, capsules,
+    A GameState specifies the full game game_state, including the food, capsules,
     agent configurations and score changes.
 
-    GameStates are used by the Game object to capture the actual state of the game and
+    GameStates are used by the Game object to capture the actual game_state of the game and
     can be used by agents to reason about the game.
 
     Much of the information in a GameState is stored in a GameStateData object.  We
@@ -48,7 +51,7 @@ class GameState:
     """
 
     ####################################################
-    # Accessor methods: use these to access state data #
+    # Accessor methods: use these to access game_state data #
     ####################################################
 
     # static variable keeps track of which states have had getLegalActions called
@@ -69,24 +72,24 @@ class GameState:
         if self.isWin() or self.isLose():
             return []
 
-        if agentIndex == 0:  # Pacman is moving
+        if agentIndex == 0:  # AgentPacman is moving
             return PacmanRules.getLegalActions(self)
         else:
             return GhostRules.getLegalActions(self, agentIndex)
 
     def generateSuccessor(self, agentIndex, action):
         """
-        Returns the successor state after the specified agent takes the action.
+        Returns the successor game_state after the specified agent takes the action.
         """
         # Check that successors exist
         if self.isWin() or self.isLose():
-            raise Exception('Can\'t generate a successor of a terminal state.')
+            raise Exception('Can\'t generate a successor of a terminal game_state.')
 
-        # Copy current state
+        # Copy current game_state
         state = GameState(self)
 
         # Let agent's logic deal with its action's effects on the board
-        if agentIndex == 0:  # Pacman is moving
+        if agentIndex == 0:  # AgentPacman is moving
             state.data._eaten = [False for i in range(state.getNumAgents())]
             PacmanRules.applyAction(state, action)
         else:  # A ghost is moving
@@ -108,12 +111,12 @@ class GameState:
         GameState.explored.add(state)
         return state
 
-    def getLegalPacmanActions(self):
+    def getLegalPacmanActions(self) -> List[Action]:
         return self.getLegalActions(0)
 
     def generatePacmanSuccessor(self, action):
         """
-        Generates the successor state after the specified pacman move
+        Generates the successor game_state after the specified pacman move
         """
         return self.generateSuccessor(0, action)
 
@@ -121,8 +124,8 @@ class GameState:
         """
         Returns an AgentState object for pacman (in game.py)
 
-        state.pos gives the current position
-        state.direction gives the travel vector
+        game_state.pos gives the current position
+        game_state.direction gives the travel vector
         """
         return self.data.agentStates[0].copy()
 
@@ -167,7 +170,7 @@ class GameState:
         Grids can be accessed via list notation, so to check
         if there is food at (x,y), just call
 
-        currentFood = state.getFood()
+        currentFood = game_state.getFood()
         if currentFood[x][y] == True: ...
         """
         return self.data.food
@@ -179,7 +182,7 @@ class GameState:
         Grids can be accessed via list notation, so to check
         if there is a wall at (x,y), just call
 
-        walls = state.getWalls()
+        walls = game_state.getWalls()
         if walls[x][y] == True: ...
         """
         return self.data.layout.walls
@@ -203,9 +206,9 @@ class GameState:
 
     def __init__(self, prevState=None):
         """
-        Generates a new state by copying information from its predecessor.
+        Generates a new game_state by copying information from its predecessor.
         """
-        if prevState != None:  # Initial state
+        if prevState != None:  # Initial game_state
             self.data = GameStateData(prevState.data)
         else:
             self.data = GameStateData()
@@ -233,6 +236,6 @@ class GameState:
 
     def initialize(self, layout, numGhostAgents=1000):
         """
-        Creates an initial game state from a layout array (see layout.py).
+        Creates an initial game game_state from a layout array (see layout.py).
         """
         self.data.initialize(layout, numGhostAgents)

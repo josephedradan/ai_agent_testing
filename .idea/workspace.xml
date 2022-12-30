@@ -2,16 +2,36 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0cec50b-c8ad-41f3-9f76-402ae0d958a7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_expectimax.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_minimax.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_minimax_alpha_beta.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_multi_agent_search.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_reflex.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/evaluation_function/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/evaluation_function/evaluation_function_.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/evaluation_function/evaluation_function_game_state_score.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_ghost.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_ghost.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_ghost_directional.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_ghost_directional.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_ghost_random.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_ghost_random.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_keyboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_keyboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_greedy.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_greedy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_left_turn_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_left_turn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/state_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/state_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/autograder.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/autograder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/gamestate.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/gamestate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/gamestatedate.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/gamestatedate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/rules/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/rules/common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/rules/rules_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/rules/rules_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/graphics/graphicsDisplay.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/graphics/graphicsDisplay.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/multiAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/multiAgents.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/multiagentTestClasses.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/multiagentTestClasses.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/pacman.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/pacman.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/extra/grade-agent.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/extra/grade-agent.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q1/grade-agent.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/q1/grade-agent.test" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q5/grade-agent.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/q5/grade-agent.test" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +83,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../projects_school/san_francisco_state_university/csc_0665-01_artificial_intelligence_fall_2021/assignment_2/multiagent/pacman.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/multiagent/agent" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Python" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../../projects_school/san_francisco_state_university/csc_0665-01_artificial_intelligence_fall_2021/assignment_2/multiagent/pacman.py" />
@@ -73,19 +93,20 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent" />
       <recent name="H:\Programming\Python\projects_github\ai_testing\yet\rules_agent" />
       <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent" />
       <recent name="H:\Programming\Python\projects_github\ai_testing" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent" />
+      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent\evaluation_function" />
       <recent name="H:\Programming\Python\projects_github\ai_testing" />
       <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\graphics" />
-      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent" />
       <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\game" />
-      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.pacman">
+  <component name="RunManager" selected="Python.run">
     <configuration name="autograder" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ai_testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -108,7 +129,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="graphicsUtils" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="pacman AgentPacmanGreedy " type="PythonConfigurationType" factoryName="Python">
       <module name="ai_testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -121,8 +142,8 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="H:\Programming\Python\projects_github\ai_testing\multiagent\graphics\graphicsUtils.py" />
-      <option name="PARAMETERS" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/multiagent/pacman.py" />
+      <option name="PARAMETERS" value="-p AgentPacmanGreedy" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -130,7 +151,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="layout" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="pacman AgentPacmanLeftTurn " type="PythonConfigurationType" factoryName="Python">
       <module name="ai_testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -143,8 +164,8 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="H:\Programming\Python\projects_github\ai_testing\multiagent\game\layout.py" />
-      <option name="PARAMETERS" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/multiagent/pacman.py" />
+      <option name="PARAMETERS" value="-p AgentPacmanLeftTurn" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -174,18 +195,40 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ai_testing" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Python.pacman AgentPacmanGreedy " />
+      <item itemvalue="Python.pacman AgentPacmanLeftTurn " />
       <item itemvalue="Python.pacman" />
-      <item itemvalue="Python.layout" />
+      <item itemvalue="Python.run" />
       <item itemvalue="Python.autograder" />
-      <item itemvalue="Python.graphicsUtils" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.pacman" />
+        <item itemvalue="Python.run" />
         <item itemvalue="Python.autograder" />
-        <item itemvalue="Python.graphicsUtils" />
-        <item itemvalue="Python.layout" />
+        <item itemvalue="Python.pacman" />
         <item itemvalue="Python.pacman" />
       </list>
     </recent_temporary>
@@ -201,6 +244,7 @@
       <workItem from="1670755148338" duration="6605000" />
       <workItem from="1671799664308" duration="13214000" />
       <workItem from="1671948991568" duration="25875000" />
+      <workItem from="1672378563024" duration="4766000" />
     </task>
     <servers />
   </component>
@@ -221,9 +265,12 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ai_testing$graphicsUtils.coverage" NAME="graphicsUtils Coverage Results" MODIFIED="1672055599554" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$run.coverage" NAME="run Coverage Results" MODIFIED="1672308275576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanLeftTurn_.coverage" NAME="pacman AgentPacmanLeftTurn  Coverage Results" MODIFIED="1672228724382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$layout.coverage" NAME="layout Coverage Results" MODIFIED="1670761515758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$pacman.coverage" NAME="pacman Coverage Results" MODIFIED="1672221633845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$pacman__1_.coverage" NAME="pacman Coverage Results" MODIFIED="1670761758642" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$autograder.coverage" NAME="autograder Coverage Results" MODIFIED="1672223345331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$pacman.coverage" NAME="pacman Coverage Results" MODIFIED="1672225412607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$pacman__1_.coverage" NAME="pacman (1) Coverage Results" MODIFIED="1672224454142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanGreedy_.coverage" NAME="pacman AgentPacmanGreedy  Coverage Results" MODIFIED="1672228638979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$autograder.coverage" NAME="autograder Coverage Results" MODIFIED="1672229023292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
   </component>
 </project>

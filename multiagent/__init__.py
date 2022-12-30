@@ -2,7 +2,7 @@
 Created by Joseph Edradan
 Github: https://github.com/josephedradan
 
-Date created: 12/27/2022
+Date created: 12/29/2022
 
 Purpose:
 
@@ -21,6 +21,3 @@ Tags:
 Reference:
 
 """
-
-def scoreEvaluation(state):
-    return state.getScore()

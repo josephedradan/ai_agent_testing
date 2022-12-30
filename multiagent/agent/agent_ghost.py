@@ -13,31 +13,34 @@
 
 from __future__ import annotations
 
+from abc import ABC
 from abc import abstractmethod
+from typing import List
 from typing import TYPE_CHECKING
 
 from multiagent import util
 from multiagent.agent.agent import Agent
+from multiagent.game.directions import Action
 from multiagent.game.directions import Directions
 
 if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
 
 
-class AgentGhost(Agent):
+class AgentGhost(Agent, ABC):
 
     def __init__(self, index: int):
         super().__init__(index)
 
-    def getAction(self, state: GameState):
+    def getAction(self, game_state: GameState) -> Action:
 
-        dist = self.getDistribution(state)
+        dist = self.getDistribution(game_state)
         if len(dist) == 0:
             return Directions.STOP
         else:
             return util.chooseFromDistribution(dist)
 
     @abstractmethod
-    def getDistribution(self, state: GameState):
-        "Returns a Counter encoding a distribution over actions from the provided state."
+    def getDistribution(self, game_state: GameState):
+        "Returns a Counter encoding a distribution over actions from the provided game_state."
         pass

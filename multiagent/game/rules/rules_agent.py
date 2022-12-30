@@ -51,6 +51,6 @@ class RulesAgent(ABC):
     @abstractmethod
     def applyAction(state: GameState, action: Action, index_agent: Union[int, None] = None):
         """
-        Edits the state to reflect the results of the action.
+        Edits the game_state to reflect the results of the action.
         """
         pass

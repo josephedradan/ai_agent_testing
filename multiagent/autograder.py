@@ -159,9 +159,9 @@ ERROR_HINT_MAP = {
         "<type 'exceptions.IndexError'>": """
       We noticed that your project threw an IndexError on q1.
       While many things may cause this, it may have been from
-      assuming a certain number of successors from a state space
+      assuming a certain number of successors from a game_state space
       or assuming a certain number of actions available from a given
-      state. Try making your code more general (no hardcoded indices)
+      game_state. Try making your code more general (no hardcoded indices)
       and submit again!
     """
     },
@@ -169,9 +169,9 @@ ERROR_HINT_MAP = {
         "<type 'exceptions.AttributeError'>": """
         We noticed that your project threw an AttributeError on q3.
         While many things may cause this, it may have been from assuming
-        a certain size or structure to the state space. For example, if you have
-        a line of code assuming that the state is (x, y) and we run your code
-        on a state space with (x, y, z), this error could be thrown. Try
+        a certain size or structure to the game_state space. For example, if you have
+        a line of code assuming that the game_state is (x, y) and we run your code
+        on a game_state space with (x, y, z), this error could be thrown. Try
         making your code more general and submit again!
 
     """

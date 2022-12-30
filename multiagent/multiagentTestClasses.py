@@ -12,12 +12,12 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-# A minimax tree which interfaces like gameState
-#     state.getNumAgents()
-#     state.isWin()
-#     state.isLose()
-#     state.generateSuccessor(agentIndex, action)
-#     state.getScore()
+# A minimax tree which interfaces like game_state
+#     game_state.getNumAgents()
+#     game_state.isWin()
+#     game_state.isLose()
+#     game_state.generateSuccessor(agentIndex, action)
+#     game_state.getScore()
 #           used by multiAgents.scoreEvaluationFunction, which is the default
 #
 from pprint import pprint
@@ -72,15 +72,15 @@ class MultiagentTreeState(object):
                   (self.state, self.problem.evaluation[self.state]))
         if self.state not in self.problem.evaluation:
             raise Exception(
-                'getScore() called on non-terminal state or before maximum depth achieved.')
+                'getScore() called on non-terminal game_state or before maximum depth achieved.')
         return float(self.problem.evaluation[self.state])
 
     def getLegalActions(self, agentIndex=0):
         if VERBOSE:
             print("getLegalActions(%s) -> %s" %
                   (self.state, self.problem.stateToActions[self.state]))
-        # if len(self.problem.stateToActions[self.state]) == 0:
-        #    print "WARNING: getLegalActions called on leaf state %s" % (self.state,)
+        # if len(self.problem.stateToActions[self.game_state]) == 0:
+        #    print "WARNING: getLegalActions called on leaf game_state %s" % (self.game_state,)
         return list(self.problem.stateToActions[self.state])
 
     def isWin(self):
@@ -194,9 +194,9 @@ class GradingAgent(Agent):
             self.studentAgent.registerInitialState(state)
         random.seed(self.seed)
 
-    def getAction(self, state):
+    def getAction(self, game_state):
         GameState.getAndResetExplored()
-        studentAction = (self.studentAgent.getAction(state),
+        studentAction = (self.studentAgent.getAction(game_state),
                          len(GameState.getAndResetExplored()))
         optimalActions = self.optimalActions[self.stepCount]
         altDepthActions = self.altDepthActions[self.stepCount]
@@ -220,7 +220,7 @@ class GradingAgent(Agent):
                 self.actionsConsistentWithPartialPlyBug[i] = False
         if not studentOptimalAction:
             self.suboptimalMoves.append(
-                (state, studentAction[0], optimalActions[0][0][0]))
+                (game_state, studentAction[0], optimalActions[0][0][0]))
         self.stepCount += 1
         random.seed(self.seed + self.stepCount)
         return optimalActions[0][0][0]
@@ -303,17 +303,17 @@ class PolyAgent(Agent):
                 agent.registerInitialState(state)
         random.seed(self.seed)
 
-    def getAction(self, state):
+    def getAction(self, game_state):
         # survey agents
         GameState.getAndResetExplored()
         optimalActionLists = []
         for agent in self.solutionAgents:
             optimalActionLists.append((agent.getBestPacmanActions(
-                state)[0], len(GameState.getAndResetExplored())))
+                game_state)[0], len(GameState.getAndResetExplored())))
         alternativeDepthLists = [agent.getBestPacmanActions(
-            state)[0] for agent in self.alternativeDepthAgents]
+            game_state)[0] for agent in self.alternativeDepthAgents]
         partialPlyBugLists = [agent.getBestPacmanActions(
-            state)[0] for agent in self.partialPlyBugAgents]
+            game_state)[0] for agent in self.partialPlyBugAgents]
         # record responses
         self.optimalActionLists.append(optimalActionLists)
         self.alternativeDepthLists.append(alternativeDepthLists)
@@ -348,7 +348,7 @@ class PacmanGameTreeTest(testClasses.TestCase):
             x) for x in solutionDict['altDepthActions'].split('\n')]
         partialPlyBugActions = [json.loads(
             x) for x in solutionDict['partialPlyBugActions'].split('\n')]
-        # set up game state and play a game
+        # set up game game_state and play a game
         random.seed(self.seed)
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
         pac = GradingAgent(self.seed, studentAgent, allActions,
@@ -399,7 +399,7 @@ class PacmanGameTreeTest(testClasses.TestCase):
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
         if self.alg == 'ExpectimaxAgent':
             ourPacOptions = {'expectimax': 'True'}
-        elif self.alg == 'AlphaBetaAgent':
+        elif self.alg == 'AgentPacmanMinimaxAlphaBeta':
             ourPacOptions = {'alphabeta': 'True'}
         else:
             ourPacOptions = {}

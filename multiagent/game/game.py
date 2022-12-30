@@ -110,7 +110,7 @@ class Game:
         self.display.initialize(self.state.data)
         self.numMoves = 0
 
-        # self.display.initialize(self.state.makeObservation(1).data)
+        # self.display.initialize(self.game_state.makeObservation(1).data)
         # inform learning agents of the game start
         for i in range(len(self.agents)):
             agent = self.agents[i]
@@ -157,7 +157,7 @@ class Game:
             agent = self.agents[agentIndex]
             move_time = 0
             skip_action = False
-            # Generate an observation of the state
+            # Generate an observation of the game_state
             if 'observationFunction' in dir(agent):
                 self.mute(agentIndex)
                 if self.catchExceptions:
@@ -251,7 +251,7 @@ class Game:
             # Change the display
             self.display.update(self.state.data)
             ###idx = agentIndex - agentIndex % 2 + 1
-            ###self.display.update( self.state.makeObservation(idx).data )
+            ###self.display.update( self.game_state.makeObservation(idx).data )
 
             # Allow for game specific conditions (winning, losing, etc.)
             self.rules.process(self.state, self)

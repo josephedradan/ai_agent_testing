@@ -93,7 +93,7 @@ class GameStateData:
                 int(hash(state))
             except TypeError as e:
                 print(e)
-                # hash(state)
+                # hash(game_state)
 
         return int((hash(tuple(self.agentStates)) + 13 * hash(self.food) + 113 * hash(tuple(self.capsules)) + 7 * hash(
             self.score)) % 1048575)
@@ -154,7 +154,7 @@ class GameStateData:
 
     def initialize(self, layout, numGhostAgents):
         """
-        Creates an initial game state from a layout array (see layout.py).
+        Creates an initial game game_state from a layout array (see layout.py).
         """
         self.food = layout.food.copy()
         # self.capsules = []

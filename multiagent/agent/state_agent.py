@@ -24,7 +24,7 @@ Reference:
 
 class AgentState:
     """
-    AgentStates hold the state of an agent (configuration, speed, scared, etc).
+    AgentStates hold the game_state of an agent (configuration, speed, scared, etc).
     """
 
     def __init__(self, startConfiguration, isPacman):
@@ -32,7 +32,7 @@ class AgentState:
         self.configuration = startConfiguration
         self.isPacman = isPacman
         self.scaredTimer = 0
-        # state below potentially used for contest only
+        # game_state below potentially used for contest only
         self.numCarrying = 0
         self.numReturned = 0
 
