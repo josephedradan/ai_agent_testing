@@ -182,8 +182,6 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
 
 
 
-
-
 def evaluation_function_food_and_ghost(game_state_current: GameState, action: Action) -> float:
     """
     Design a better evaluation function here.

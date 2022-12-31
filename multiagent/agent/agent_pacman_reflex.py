@@ -23,7 +23,7 @@ Reference:
 """
 
 from multiagent.agent import AgentPacman
-from multiagent.agent.evaluation_function import TYPE_CALLABLE_EVALUATION_FUNCTION_POSSIBLE
+from multiagent.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
 from multiagent.agent.evaluation_function import evaluation_function_food_and_ghost
 from multiagent.agent.evaluation_function import evaluation_function_food_and_ghost__attempt_1
 
@@ -40,7 +40,7 @@ class AgentPacmanReflex(AgentPacman):
 
     def __init__(self,
                  index: int = 0,
-                 evaluation_function: TYPE_CALLABLE_EVALUATION_FUNCTION_POSSIBLE = (
+                 evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
                          evaluation_function_food_and_ghost)
 
                  ):
@@ -59,7 +59,7 @@ class AgentPacmanReflex_Attempt_1(AgentPacmanReflex):  # NOQA
 
     def __init__(self,
                  index: int = 0,
-                 evaluation_function: TYPE_CALLABLE_EVALUATION_FUNCTION_POSSIBLE = (
+                 evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
                          evaluation_function_food_and_ghost__attempt_1)
 
                  ):

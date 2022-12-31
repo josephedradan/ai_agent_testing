@@ -397,7 +397,7 @@ class PacmanGameTreeTest(testClasses.TestCase):
         multiAgents = moduleDict['multiAgents']
         random.seed(self.seed)
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
-        if self.alg == 'ExpectimaxAgent':
+        if self.alg == 'AgentPacmanExpectimax':
             ourPacOptions = {'expectimax': 'True'}
         elif self.alg == 'AgentPacmanMinimaxAlphaBeta':
             ourPacOptions = {'alphabeta': 'True'}

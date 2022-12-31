@@ -186,7 +186,7 @@ from multiagent.game.grid import Grid
 #     headers.
 #     """
 #
-#     def getAction(self, gameState: GameState) -> str:
+#     def getAction(self, game_state: GameState) -> str:
 #         """
 #         You do not need to change this method, but you're welcome to.
 #
@@ -196,10 +196,10 @@ from multiagent.game.grid import Grid
 #         some Directions.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
 #         """
 #         # Collect legal moves and successor states
-#         legalMoves = gameState.getLegalActions()
+#         legalMoves = game_state.getLegalActions()
 #
 #         # Choose one of the best actions
-#         scores = [self.evaluationFunction(gameState, action) for action in legalMoves]
+#         scores = [self.evaluationFunction(game_state, action) for action in legalMoves]
 #         bestScore = max(scores)
 #         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
 #         chosenIndex = random.choice(bestIndices)  # Pick randomly among the best

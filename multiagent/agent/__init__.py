@@ -28,6 +28,7 @@ from multiagent.agent.agent_ghost_random import AgentGhostRandom
 from multiagent.agent.agent_keyboard import AgentKeyboard
 from multiagent.agent.agent_keyboard import AgentKeyboard2
 from multiagent.agent.agent_pacman import AgentPacman
+from multiagent.agent.agent_pacman_expectimax import AgentPacmanExpectimax
 from multiagent.agent.agent_pacman_greedy import AgentPacmanGreedy
 from multiagent.agent.agent_pacman_left_turn import AgentPacmanLeftTurn
 from multiagent.agent.agent_pacman_minimax import AgentPacmanMinimax
@@ -35,6 +36,7 @@ from multiagent.agent.agent_pacman_minimax_alpha_beta import \
     AgentPacmanMinimaxAlphaBeta
 from multiagent.agent.agent_pacman_reflex import AgentPacmanReflex
 from multiagent.agent.agent_pacman_reflex import AgentPacmanReflex_Attempt_1
+from multiagent.searchAgents import SearchAgent
 
 DICT_K_NAME_V_AGENT = {
     Agent.__name__: Agent,
@@ -50,5 +52,6 @@ DICT_K_NAME_V_AGENT = {
     AgentPacmanReflex_Attempt_1.__name__: AgentPacmanReflex_Attempt_1,
     AgentPacmanMinimax.__name__: AgentPacmanMinimax,
     AgentPacmanMinimaxAlphaBeta.__name__: AgentPacmanMinimaxAlphaBeta,
-
+    AgentPacmanExpectimax.__name__: AgentPacmanExpectimax,
+    SearchAgent.__name__: SearchAgent,
 }

@@ -45,6 +45,10 @@ import sys
 from pprint import pprint
 from typing import List
 
+print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+# pprint(sys.path)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from multiagent.agent import *
 # from multiagent.agent.agent_ghost_random import AgentGhostRandom
 # from multiagent.agent.agent_keyboard import AgentKeyboard

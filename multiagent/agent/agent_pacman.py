@@ -23,17 +23,20 @@ Reference:
 """
 from __future__ import annotations
 
+import os
 import random
+import sys
 from abc import ABC
 from typing import TYPE_CHECKING
 
 from multiagent.agent import Agent
-from multiagent.agent.evaluation_function import TYPE_CALLABLE_EVALUATION_FUNCTION
-from multiagent.agent.evaluation_function import TYPE_CALLABLE_EVALUATION_FUNCTION_POSSIBLE
+from multiagent.agent.evaluation_function import TYPE_EVALUATION_FUNCTION
+from multiagent.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
 from multiagent.agent.evaluation_function import get_evaluation_function
 from multiagent.agent.evaluation_function.evaluation_function_game_state_score import \
     evaluation_function_game_state_score
 from multiagent.game.directions import Action
+
 
 if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
@@ -43,7 +46,7 @@ class AgentPacman(Agent, ABC):
 
     def __init__(self,
                  index: int = 0,
-                 evaluation_function: TYPE_CALLABLE_EVALUATION_FUNCTION_POSSIBLE = (
+                 evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
                          evaluation_function_game_state_score
                  ),
                  depth='2'
@@ -56,9 +59,9 @@ class AgentPacman(Agent, ABC):
         if isinstance(evaluation_function, str):
             evaluation_function = get_evaluation_function(evaluation_function)
 
-        assert self.evaluation_function is not None
+        assert evaluation_function is not None
 
-        self.evaluation_function: TYPE_CALLABLE_EVALUATION_FUNCTION = evaluation_function
+        self.evaluation_function: TYPE_EVALUATION_FUNCTION = evaluation_function
 
     def getAction(self, game_state: GameState) -> Action:
         """

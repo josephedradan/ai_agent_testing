@@ -26,6 +26,9 @@ from typing import Tuple
 from typing import Union
 
 from multiagent.agent import AgentPacman
+from multiagent.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
+from multiagent.agent.evaluation_function import evaluation_function_food_and_ghost
+from multiagent.agent.evaluation_function import evaluation_function_game_state_score
 from multiagent.game.directions import Action
 from multiagent.game.gamestate import GameState
 
@@ -390,7 +393,7 @@ def dfs_recursive_minimax_v2(game_state: GameState,
         #
         #         score_calculated, agent_container_returned = dfs_recursive_minimax_v2(game_state_new,
         #                                                                               depth,
-        #                                                                               function_evaluation,
+        #                                                                               evaluation_function,
         #                                                                               index_agent_new,
         #                                                                               agent_container_current,
         #                                                                               game_state,
@@ -539,7 +542,7 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
                                       depth: int,
                                       alpha: Union[None, float],
                                       beta: Union[None, float],
-                                      function_evaluation: callable,
+                                      evaluation_function: callable,
                                       index_agent: int = 0,
                                       alpha_beta_pruning: bool = False,
                                       # _callgraph_special: Any = None
@@ -559,7 +562,7 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
 
     # Check if game is over via pacman dead or pacman got all food and survived
     if game_state.isWin() or game_state.isLose() or depth <= 0:
-        score = function_evaluation(game_state)
+        score = evaluation_function(game_state, None)
 
         # Return the score
         return score
@@ -585,7 +588,7 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
                                                                  depth,
                                                                  alpha,
                                                                  beta,
-                                                                 function_evaluation,
+                                                                 evaluation_function,
                                                                  index_agent_new,
                                                                  alpha_beta_pruning,
                                                                  # str((depth, index_agent, action))
@@ -649,7 +652,7 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
                                                                  depth_new,
                                                                  alpha,
                                                                  beta,
-                                                                 function_evaluation,
+                                                                 evaluation_function,
                                                                  index_agent_new,
                                                                  alpha_beta_pruning,
                                                                  # str((depth, index_agent, action))
@@ -695,10 +698,10 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
 # @callgraph(use_list_index_args=[1, 3], display_callable_name=False,)
 def dfs_recursive_minimax_v4(game_state: GameState,
                              depth: int,
-                             function_evaluation: callable,
+                             evaluation_function: callable,
                              index_agent: int = 0,
                              alpha_beta_pruning: bool = False,
-                             ) -> Union[str, None]:
+                             ) -> Union[Action, None]:
     """
     DFS Recursive Minimax algorithm correctly implemented (With alpha beta pruning support)
 
@@ -736,7 +739,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
                                                              depth,
                                                              alpha,
                                                              beta,
-                                                             function_evaluation,
+                                                             evaluation_function,
                                                              index_agent_new,
                                                              alpha_beta_pruning,
                                                              # str((depth, index_agent, action))
@@ -767,6 +770,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
 
         list_pair.append((score_calculated, action))
 
+        # print(list_pair)  # FIXME: USE THIS TO DEBUG
         # print("-" * 50)
 
     # If there are pairs, select the action with the max cost and return the action.
@@ -774,15 +778,15 @@ def dfs_recursive_minimax_v4(game_state: GameState,
         result = max(list_pair, key=lambda item: item[0])
 
         score_max = result[0]
-        action_score_max = result[1]
+        action_max = result[1]
 
         # print(list_pair)
-        # print(action_score_max)
+        # print(action_max)
         # print("#" * 100)
 
         # create_callgraph(type_output="png")
 
-        return action_score_max
+        return action_max  # FIXME: THE ACTION BEING RETURNED IS STOP MOST OF THE TIME BECAUSE ITS THE FIRST ITEM IN THE LIST. THIS IS BECAUSE ALL OTHER ACTIONS HAVE THE SAME SCORE
 
     return None
 
@@ -792,7 +796,16 @@ class AgentPacmanMinimax(AgentPacman):
     Your minimax agent (question 2)
     """
 
-    def getAction(self, gameState: GameState) -> Action:
+    def __init__(self,
+                 index: int = 0,
+                 evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
+                         evaluation_function_game_state_score
+                 ),
+                 depth: int = 2
+                 ):
+        super(AgentPacmanMinimax, self).__init__(index, evaluation_function, depth)
+
+    def getAction(self, game_state: GameState) -> Action:
         """
         Returns the minimax action from the current game_state using self.depth
         and self.evaluationFunction.
@@ -1067,7 +1080,9 @@ class AgentPacmanMinimax(AgentPacman):
                 Your grades are NOT yet registered.  To register your grades, make sure
                 to follow your instructor's guidelines to receive credit on your project.
         """
-        action = dfs_recursive_minimax_v4(gameState, self.depth, self.evaluation_function)
+        action = dfs_recursive_minimax_v4(game_state, self.depth, self.evaluation_function)
+
+        # print(action)
 
         # create_callgraph(type_output="png")
 

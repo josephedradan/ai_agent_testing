@@ -165,7 +165,7 @@ def dfs_recursive_expectimax_v1(game_state: GameState,
     return None
 
 
-class ExpectimaxAgent(AgentPacman):
+class AgentPacmanExpectimax(AgentPacman):
     """
       Your expectimax agent (question 4)
     """
@@ -230,13 +230,13 @@ class ExpectimaxAgent(AgentPacman):
                 *** PASS: test_cases\q4\6-2a-check-depth-two-ghosts.test
                 *** PASS: test_cases\q4\6-2b-check-depth-two-ghosts.test
                 *** PASS: test_cases\q4\6-2c-check-depth-two-ghosts.test
-                *** Running ExpectimaxAgent on smallClassic 1 time(s).
+                *** Running AgentPacmanExpectimax on smallClassic 1 time(s).
                 Pacman died! Score: 84
                 Average Score: 84.0
                 Scores:        84.0
                 Win Rate:      0/1 (0.00)
                 Record:        Loss
-                *** Finished running ExpectimaxAgent on smallClassic after 0 seconds.
+                *** Finished running AgentPacmanExpectimax on smallClassic after 0 seconds.
                 *** Won 0 out of 1 games. Average score: 84.000000 ***
                 *** PASS: test_cases\q4\7-pacman-game.test
 

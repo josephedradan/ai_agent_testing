@@ -25,8 +25,9 @@ from typing import Callable
 from typing import Dict
 from typing import Union
 
-from multiagent.agent.evaluation_function.evaluation_function_ import evaluation_function_food_and_ghost
-from multiagent.agent.evaluation_function.evaluation_function_ import evaluation_function_food_and_ghost__attempt_1
+from multiagent.agent.evaluation_function.evaluation_function_food_and_ghost import evaluation_function_food_and_ghost
+from multiagent.agent.evaluation_function.evaluation_function_food_and_ghost import \
+    evaluation_function_food_and_ghost__attempt_1
 from multiagent.agent.evaluation_function.evaluation_function_game_state_score import (
     evaluation_function_game_state_score
 )
@@ -34,10 +35,10 @@ from multiagent.game.directions import Action
 from multiagent.game.gamestate import GameState
 
 """
-TYPE_CALLABLE_EVALUATION_FUNCTION
+TYPE_EVALUATION_FUNCTION
 
 Notes:
-    The real TYPE_CALLABLE_EVALUATION_FUNCTION wanted is something like
+    The real TYPE_EVALUATION_FUNCTION wanted is something like
         Callable[[GameState, Union[Action, None]] 
     Where the None is optional as in the callable can be 
         _callable(GameState)
@@ -58,11 +59,18 @@ Notes:
     should be solved in cPython
         https://mypy.readthedocs.io/en/latest/protocols.html#callback-protocols
 """
-#
-TYPE_CALLABLE_EVALUATION_FUNCTION = Callable[[GameState, Action], float]
-TYPE_CALLABLE_EVALUATION_FUNCTION_POSSIBLE = Union[TYPE_CALLABLE_EVALUATION_FUNCTION, str]
+TYPE_EVALUATION_FUNCTION = Callable[[GameState, Union[Action, None]], float]
 
-DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION: Dict[str, TYPE_CALLABLE_EVALUATION_FUNCTION] = {
+# class EvaluationFunction(Protocol):
+#
+#     def __call__(self, game_state: GameState, action: Union[Action, None]) -> float:
+#         ...
+#
+
+TYPE_EVALUATION_FUNCTION_POSSIBLE = Union[TYPE_EVALUATION_FUNCTION, str]
+
+
+DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION: Dict[str, TYPE_EVALUATION_FUNCTION] = {
     evaluation_function_food_and_ghost.__name__: evaluation_function_food_and_ghost,
     evaluation_function_food_and_ghost__attempt_1.__name__: evaluation_function_food_and_ghost__attempt_1,
     evaluation_function_game_state_score.__name__: evaluation_function_game_state_score,
@@ -70,7 +78,7 @@ DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION: Dict[str, TYPE_CALLABLE_E
 }
 
 
-def get_evaluation_function(evaluation_function_name: str) -> TYPE_CALLABLE_EVALUATION_FUNCTION:
+def get_evaluation_function(evaluation_function_name: str) -> TYPE_EVALUATION_FUNCTION:
     evaluation_function = DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION.get(
         evaluation_function_name
     )
