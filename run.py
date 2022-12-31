@@ -39,8 +39,9 @@ LIST_PATH_RELATIVE_ASSIGNMENT = [
 LiST_ARG = [
     # "-p AgentPacmanGreedy",
     # "-p AgentPacmanLeftTurn",
-    "-p AgentPacmanReflex",
+    # "-p AgentPacmanReflex",
     # "-p AgentPacmanReflex_Attempt_1",
+    "-p AgentPacmanMinimax"
 
 ]
 # NOTES: /k will keep the shell when done.  /c will kill the shell when done
