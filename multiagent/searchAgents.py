@@ -33,24 +33,13 @@ description for details.
 
 Good luck and happy searching!
 """
-import itertools
-import time
-from functools import lru_cache
-from queue import PriorityQueue
-from typing import Tuple, List, Union, Any, Set, Iterable
 
 # import game
 # import pacman
 # import search
 # import util
-from multiagent import search
-from multiagent import util
 from multiagent.agent import Agent
-from multiagent.agent.agent_pacman_search import SearchAgent
-from multiagent.game import game
-from multiagent.game.actions import Actions
 from multiagent.game.directions import Directions
-from multiagent.game.gamestate import GameState
 
 
 class GoWestAgent(Agent):
@@ -62,7 +51,6 @@ class GoWestAgent(Agent):
             return Directions.WEST
         else:
             return Directions.STOP
-
 
 #######################################################
 # This portion is written for you, but will only work #
@@ -147,10 +135,6 @@ class GoWestAgent(Agent):
 #             return self.actions[i]
 #         else:
 #             return Directions.STOP
-
-
-
-
 
 
 # def manhattanHeuristic(position, problem, info={}):
@@ -244,10 +228,3 @@ class GoWestAgent(Agent):
 #     #     if isinstance(self.list_tuple_order_traveled[-1], Tuple):
 #     #         return True
 #     #     return False
-
-
-
-
-
-
-

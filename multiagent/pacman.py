@@ -54,7 +54,7 @@ from multiagent.agent import *
 # from multiagent.agent.agent_keyboard import AgentKeyboard
 from multiagent.game import layout as _layout
 from multiagent.game.rules.game_rules_classic import ClassicGameRules
-from multiagent.graphics.graphicsDisplay import PacmanGraphics
+from multiagent.graphics.graphicsDisplay import PacmanGraphicsReal
 
 
 #############################
@@ -182,7 +182,7 @@ def readCommand(argv):
         args['display'] = textDisplay.PacmanGraphics()
     else:
         from multiagent.graphics import graphicsDisplay
-        args['display'] = graphicsDisplay.PacmanGraphics(
+        args['display'] = graphicsDisplay.PacmanGraphicsReal(
             options.zoom, frameTime=options.frameTime)
     args['numGames'] = options.numGames
     args['record'] = options.record
@@ -279,7 +279,7 @@ def replayGame(layout, actions, display):
 def runGames(layout: _layout.Layout,
              pacman: Agent,
              ghosts: List[Agent],
-             display: PacmanGraphics,
+             display: PacmanGraphicsReal,
              numGames: int,
              record: bool,
              numTraining: int = 0,
@@ -312,8 +312,8 @@ def runGames(layout: _layout.Layout,
 
         #####
         # TODO JOSEPH SPEICAL
-
-        if isinstance(pacman, AgentKeyboard) and isinstance(gameDisplay, PacmanGraphics):
+        # TODO: ALT GRAPHICS: NullGraphics, PacmanGraphicsReal
+        if isinstance(pacman, AgentKeyboard) and isinstance(gameDisplay, PacmanGraphicsReal):
             pacman.set_graphics_actual(gameDisplay.get_graphics_actual())
 
         ####

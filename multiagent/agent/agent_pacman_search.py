@@ -24,11 +24,25 @@ Reference:
 from __future__ import annotations
 
 import time
+from typing import Callable
+from typing import List
 from typing import TYPE_CHECKING
+from typing import Type
+from typing import Union
 
 from multiagent import search
 from multiagent.agent import Agent
 from multiagent.agent.heuristic import get_heuristic_function
+from multiagent.agent.problem import SearchProblem
+from multiagent.agent.problem import get_class_search_problem
+from multiagent.agent.problem.agent_pacman__search_problem import AnyFoodSearchProblem
+from multiagent.agent.problem.agent_pacman__search_problem import CornersProblem
+from multiagent.agent.problem.agent_pacman__search_problem import FoodSearchProblem
+from multiagent.agent.problem.agent_pacman__search_problem import PositionSearchProblem
+from multiagent.agent.problem.agent_pacman__search_problem import cornersHeuristic
+from multiagent.agent.problem.agent_pacman__search_problem import foodHeuristic
+from multiagent.game import game
+from multiagent.game.directions import Action
 from multiagent.game.directions import Directions
 
 if TYPE_CHECKING:
@@ -52,14 +66,18 @@ class SearchAgent(Agent):
     Note: You should NOT change any code in SearchAgent
     """
 
-    def __init__(self, fn='depthFirstSearch', prob='PositionSearchProblem', heuristic='nullHeuristic'):
+    def __init__(self,
+                 fn: Callable = 'depthFirstSearch',
+                 prob: Union[Type[SearchProblem], str] = 'PositionSearchProblem',
+                 heuristic: Callable = 'nullHeuristic'):
         # Warning: some advanced Python magic is employed below to find the right functions and problems
 
         # Get the search function from the name and heuristic
         if fn not in dir(search):
             raise AttributeError(fn + ' is not a search function in search.py.')
-        func = getattr(search, fn)
-        print("func.__name__",func.__name__)  # TODO: PRINT STATEMTNS EHRE
+        func = getattr(search, fn)  # FIXME: CHANGE ME PLS TO THE DICT WAY
+
+        print("func.__name__", func.__name__)  # TODO: PRINT STATEMTNS EHRE
         print("func.__code__.co_varnames", func.__code__.co_varnames)
         if 'heuristic' not in func.__code__.co_varnames:
             print('[SearchAgent] using function ' + fn)
@@ -82,13 +100,18 @@ class SearchAgent(Agent):
 
         print("prob", prob)
         print("globals().keys()", globals().keys())
-        # Get the search problem type from the name
-        if prob not in globals().keys() or not prob.endswith('Problem'):
-            raise AttributeError(prob + ' is not a search problem type in SearchAgents.py.')
-        self.searchType = globals()[prob]
+        # # Get the search problem type from the name
+        # if prob not in globals().keys() or not prob.endswith('Problem'):
+        #     raise AttributeError(prob + ' is not a search problem type in SearchAgents.py.')
+        # self.searchType = globals()[prob]
+
+        # TODO: JOSEPH CUSTOM HERE
+
+        self.searchType: Type[SearchProblem] = get_class_search_problem(prob)
+
         print('[SearchAgent] using problem type ' + prob)
 
-    def registerInitialState(self, state):
+    def registerInitialState(self, state):  # FIXME: THIS IS NEVER CALLED, AND WILL BREAKY WITH THAT __call__
         """
         This is the first time that the agent sees the layout of the game
         board. Here, we choose a path to the goal. In this phase, the agent
@@ -99,8 +122,14 @@ class SearchAgent(Agent):
         """
         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
         starttime = time.time()
-        problem = self.searchType(state)  # Makes a new search problem
-        self.actions = self.searchFunction(problem)  # Find a path
+        problem: object = self.searchType(state)  # Makes a new search problem  # TODO: MAKE OBJECT FROM CLASS
+
+        # TODO: APPRENTLY NOT ALL self.searchType are of type SearchProblem because of poor design of the original
+        if isinstance(problem, SearchProblem):
+            problem.set_graphics(self.get_graphics())
+
+        # TODO: I THINK THIS IS A LIST OF Direction
+        self.actions: List[Action] = self.searchFunction(problem)  # Find a path
         totalCost = problem.getCostOfActions(self.actions)
         print('Path found with total cost of %d in %.1f seconds' % (totalCost, time.time() - starttime))
         if '_expanded' in dir(problem): print('Search nodes expanded: %d' % problem._expanded)
@@ -124,9 +153,6 @@ class SearchAgent(Agent):
             return Directions.STOP
 
 
-
-
-
 class StayEastSearchAgent(SearchAgent):
     """
     An agent for position search with a cost function that penalizes being in
@@ -136,6 +162,7 @@ class StayEastSearchAgent(SearchAgent):
     """
 
     def __init__(self):
+        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
         self.searchFunction = search.uniformCostSearch
         costFn = lambda pos: .5 ** pos[0]
         self.searchType = lambda state: PositionSearchProblem(state, costFn, (1, 1), None, False)
@@ -150,16 +177,18 @@ class StayWestSearchAgent(SearchAgent):
     """
 
     def __init__(self):
+        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
         self.searchFunction = search.uniformCostSearch
         costFn = lambda pos: 2 ** pos[0]
         self.searchType = lambda state: PositionSearchProblem(state, costFn)
-
 
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
 
     def __init__(self):
+        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
+
         self.searchFunction = lambda prob: search.aStarSearch(prob, cornersHeuristic)
         self.searchType = CornersProblem
 
@@ -168,8 +197,11 @@ class AStarFoodSearchAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
 
     def __init__(self):
+        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
+
         self.searchFunction = lambda prob: search.aStarSearch(prob, foodHeuristic)
         self.searchType = FoodSearchProblem
+
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"

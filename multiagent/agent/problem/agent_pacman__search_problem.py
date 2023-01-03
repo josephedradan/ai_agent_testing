@@ -22,7 +22,9 @@ Reference:
 
 """
 import itertools
+from abc import ABC
 from functools import lru_cache
+from queue import PriorityQueue
 from typing import Any
 from typing import Hashable
 from typing import Iterable
@@ -37,16 +39,25 @@ from multiagent.game import game
 from multiagent.game.actions import Actions
 from multiagent.game.directions import Directions
 from multiagent.game.gamestate import GameState
-from multiagent.util import PriorityQueue
+from multiagent.graphics.graphics import Graphics
+from multiagent.graphics.graphicsDisplay import PacmanGraphicsReal
 
 
-class SearchProblem:
+class SearchProblem(ABC):
     """
     This class outlines the structure of a search problem, but doesn't implement
     any of the methods (in object-oriented terminology: an abstract class).
 
     You do not need to change anything in this class, ever.
     """
+
+    def __init__(self):  # FIXME: THIS IS MISSING game_state
+        self.graphics: Union[Graphics, None] = None
+
+        self._expanded = None  # FIXME: NEED THIS
+
+    def set_graphics(self, graphics: Graphics):
+        self.graphics = graphics
 
     def getStartState(self) -> Union[Tuple[int, int], Hashable]:
         """
@@ -102,6 +113,7 @@ class PositionSearchProblem(SearchProblem):
         costFn: A function from a search state (tuple) to a non-negative number
         goal: A position in the gameState
         """
+        super().__init__()
         self.walls = gameState.getWalls()
         self.startState = gameState.getPacmanPosition()
         if start != None: self.startState = start
@@ -117,16 +129,21 @@ class PositionSearchProblem(SearchProblem):
     def getStartState(self):
         return self.startState
 
-    def isGoalState(self, state):
+    def isGoalState(self, state):  # TODO: COLORER
         isGoal = state == self.goal
 
         # For display purposes only
         if isGoal and self.visualize:
-            self._visitedlist.append(state)
-            import __main__
-            if '_display' in dir(__main__):
-                if 'drawExpandedCells' in dir(__main__._display):  # @UndefinedVariable
-                    __main__._display.drawExpandedCells(self._visitedlist)  # @UndefinedVariable
+            self._visitedlist.append(state)  # TODO: THIS SHOULD BE THE FINAL STATE ADDED BASICALLY
+            # import __main__
+            # if '_display' in dir(__main__):
+            #     if 'drawExpandedCells' in dir(__main__._display):  # @UndefinedVariable
+            #         __main__._display.drawExpandedCells(self._visitedlist)  # @UndefinedVariable
+
+            # TODO: JOSEPH CUSTOM HERE
+
+            if isinstance(self.graphics, PacmanGraphicsReal):
+                self.graphics.drawExpandedCells(self._visitedlist)
 
         return isGoal
 
@@ -197,7 +214,6 @@ def _get_path_distance(position_initial: tuple, permutation: Iterable):
     return distance_total_temp
 
 
-
 def _get_shortest_path_from_permutation(position_initial: Tuple, set_position_remaining: set):
     """
     V4 Solution generalized
@@ -210,6 +226,7 @@ def _get_shortest_path_from_permutation(position_initial: Tuple, set_position_re
     list_tuple_path_position_corner = list(itertools.permutations(set_position_remaining))
     distance_path_all_shortest = min([_get_path_distance(position_initial, i) for i in list_tuple_path_position_corner])
     return distance_path_all_shortest
+
 
 class HashableGoal:
     # Use less memory
@@ -285,7 +302,6 @@ class HashableGoal:
     #     return False
 
 
-
 class CornersProblem(SearchProblem):
     """
     This search problem finds paths through all four corners of a layout.
@@ -297,6 +313,7 @@ class CornersProblem(SearchProblem):
         """
         Stores the walls, pacman's starting position and corners.
         """
+        super().__init__()
         self.walls = startingGameState.getWalls()
         self.startingPosition = startingGameState.getPacmanPosition()
 
@@ -489,8 +506,6 @@ def _euclidean_distance(xy1, xy2):
     return ((xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2) ** 0.5
 
 
-
-
 def _get_heuristic_cost_ucs_crude(grid_wall: List[List],
                                   position_start: tuple,
                                   position_goal: tuple,
@@ -676,8 +691,6 @@ def _get_shortest_path_using_immediate(position_initial: Tuple,
             position_current = position_corner_local_shortest
 
     return distance_path_all_shortest if distance_path_all_shortest is not None else 0
-
-
 
 
 def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
@@ -914,9 +927,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     #####
 
 
-
 ############
-
 
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -937,6 +948,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     def __init__(self, gameState: GameState):
         "Stores information from the gameState.  You don't need to change this."
         # Store the food for later reference
+        super().__init__(gameState)
         self.food = gameState.getFood()
 
         # Store info for the PositionSearchProblem (no need to change this)
@@ -989,6 +1001,7 @@ def mazeDistance(point1, point2, gameState):
     assert not walls[x2][y2], 'point2 is a wall: ' + str(point2)
     prob = PositionSearchProblem(gameState, start=point1, goal=point2, warn=False, visualize=False)
     return len(search.bfs(prob))
+
 
 ###############################
 
@@ -1043,12 +1056,6 @@ class FoodSearchProblem:
                 return 999999
             cost += 1
         return cost
-
-
-
-
-
-
 
 
 def foodHeuristic(state: Tuple, problem: FoodSearchProblem):
@@ -1368,5 +1375,3 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem):
     return distance_shortest
 
     #####
-
-

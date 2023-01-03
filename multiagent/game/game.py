@@ -48,7 +48,7 @@ class Game:
 
     def __init__(self,
                  agents: List[Agent],
-                 display: PacmanGraphics,
+                 display: PacmanGraphics,  #FIXME: CAN BE NO GRAPHCIS OR ACUTAL GRAPHICS
                  rules: ClassicGameRules,
                  startingIndex: int = 0,
                  muteAgents: bool = False,
@@ -122,7 +122,8 @@ class Game:
                 self.unmute()
                 self._agentCrash(i, quiet=True)
                 return
-            if ("registerInitialState" in dir(agent)):
+            if ("registerInitialState" in dir(agent)):  # Basically hasattr without the raising exception
+                print("registerInitialState IS HERE YO", dir(agent))
                 self.mute(i)
                 if self.catchExceptions:
                     try:
@@ -152,7 +153,9 @@ class Game:
         agentIndex = self.startingIndex
         numAgents = len(self.agents)
 
-        while not self.gameOver:
+
+
+        while not self.gameOver: # TODO: GAME LOOP IS RIGHT HERE
             # Fetch the next agent
             agent = self.agents[agentIndex]
             move_time = 0
@@ -186,6 +189,7 @@ class Game:
             action = None
             self.mute(agentIndex)
             if self.catchExceptions:
+                raise Exception("ERROR CALLED IN GAME")
                 try:
                     timed_func = TimeoutFunction(agent.getAction, int(
                         self.rules.getMoveTimeout(agentIndex)) - int(move_time))
@@ -231,6 +235,7 @@ class Game:
                     self.unmute()
                     return
             else:
+
                 action = agent.getAction(observation)
             self.unmute()
 

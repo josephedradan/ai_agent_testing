@@ -25,7 +25,7 @@ from typing import Tuple
 from typing import Union
 
 import util
-from multiagent.agent.agent_pacman__search_problem import SearchProblem
+from multiagent.agent.problem.agent_pacman__search_problem import SearchProblem
 from multiagent.agent.heuristic import nullHeuristic
 from multiagent.game.directions import Directions
 

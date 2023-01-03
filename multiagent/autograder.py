@@ -344,7 +344,7 @@ def getDisplay(graphicsByDefault, options=None):
     if graphics:
         try:
             from multiagent.graphics import graphicsDisplay
-            return graphicsDisplay.PacmanGraphics(1, frameTime=.05)
+            return graphicsDisplay.PacmanGraphicsReal(1, frameTime=.05)
         except ImportError:
             pass
     from multiagent.graphics import textDisplay

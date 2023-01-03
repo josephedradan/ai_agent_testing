@@ -42,22 +42,22 @@ def get_heuristic_function(
 
     return heuristic_search_function
 
-
-def nullHeuristic(state, problem=None):
+# FIXME: THIS SHIT DOES NOT TAKE state, IT SHOULD BE GENERAL LIKE A TUPLE OR VECTOR OF DIMENSIONS (x, y, z , ...)
+def nullHeuristic(state, problem: SearchProblem):
     """
     A heuristic function estimates the cost from the current state to the nearest
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
 
-
+# FIXME: GENERALIZE position TO BE MULTI DIMENSIONAL
 def manhattanHeuristic(position: Tuple[int, int], problem: SearchProblem):
     "The Manhattan distance heuristic for a PositionSearchProblem"
     xy1 = position
     xy2 = problem.goal
     return abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
 
-
+# FIXME: GENERALIZE position TO BE MULTI DIMENSIONAL
 def euclideanHeuristic(position: Tuple[int, int], problem: SearchProblem):
     "The Euclidean distance heuristic for a PositionSearchProblem"
     xy1 = position

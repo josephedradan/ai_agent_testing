@@ -36,7 +36,13 @@ from multiagent.agent.agent_pacman_minimax_alpha_beta import \
     AgentPacmanMinimaxAlphaBeta
 from multiagent.agent.agent_pacman_reflex import AgentPacmanReflex
 from multiagent.agent.agent_pacman_reflex import AgentPacmanReflex_Attempt_1
-from multiagent.searchAgents import SearchAgent
+from multiagent.agent.agent_pacman_search import AStarCornersAgent
+from multiagent.agent.agent_pacman_search import AStarFoodSearchAgent
+from multiagent.agent.agent_pacman_search import AnyFoodSearchProblem
+from multiagent.agent.agent_pacman_search import ClosestDotSearchAgent
+from multiagent.agent.agent_pacman_search import SearchAgent
+from multiagent.agent.agent_pacman_search import StayEastSearchAgent
+from multiagent.agent.agent_pacman_search import StayWestSearchAgent
 
 DICT_K_NAME_V_AGENT = {
     Agent.__name__: Agent,
@@ -53,5 +59,11 @@ DICT_K_NAME_V_AGENT = {
     AgentPacmanMinimax.__name__: AgentPacmanMinimax,
     AgentPacmanMinimaxAlphaBeta.__name__: AgentPacmanMinimaxAlphaBeta,
     AgentPacmanExpectimax.__name__: AgentPacmanExpectimax,
+    AStarCornersAgent.__name__: AStarCornersAgent,
+    AStarFoodSearchAgent.__name__: AStarFoodSearchAgent,
     SearchAgent.__name__: SearchAgent,
+    StayEastSearchAgent.__name__: StayEastSearchAgent,
+    StayWestSearchAgent.__name__: StayWestSearchAgent,
+    ClosestDotSearchAgent.__name__: ClosestDotSearchAgent
+
 }

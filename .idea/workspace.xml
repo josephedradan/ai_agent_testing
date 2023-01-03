@@ -2,48 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0cec50b-c8ad-41f3-9f76-402ae0d958a7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman__search_problem.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_search.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/agent/heuristic/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/bigCorners.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/bigMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/bigSafeSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/bigSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/boxSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/contoursMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/greedySearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/mediumCorners.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/mediumDottedMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/mediumMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/mediumSafeSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/mediumScaryMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/mediumSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/oddSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/openMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/openSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/smallMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/smallSafeSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/smallSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/testMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/testSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/tinyCorners.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/tinyMaze.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/tinySafeSearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/tinySearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/layouts/trickySearch.lay" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/search.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiagent/searchAgents.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/agent/problem/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiagent/graphics/graphics.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_expectimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_expectimax.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_minimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_minimax.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_reflex.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_reflex.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/agent/evaluation_function/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/evaluation_function/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/agent/evaluation_function/evaluation_function_.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/evaluation_function/evaluation_function_food_and_ghost.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/multiAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/multiAgents.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/multiagentTestClasses.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/multiagentTestClasses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_keyboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_keyboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman__search_problem.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/problem/agent_pacman__search_problem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/heuristic/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/heuristic/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/autograder.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/autograder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/rules/game_rules_classic.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/rules/game_rules_classic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/graphics/graphicsDisplay.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/graphics/graphicsDisplay.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/graphics/textDisplay.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/graphics/textDisplay.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/pacman.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/pacman.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/searchAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/searchAgents.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,11 +84,11 @@
       <recent name="H:\Programming\Python\projects_github\ai_testing" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent\problem" />
+      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent\heuristic" />
       <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent" />
       <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent\evaluation_function" />
       <recent name="H:\Programming\Python\projects_github\ai_testing" />
-      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\graphics" />
-      <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\game" />
     </key>
   </component>
   <component name="RunManager" selected="Python.run">
@@ -278,7 +252,7 @@
       <workItem from="1670755148338" duration="6605000" />
       <workItem from="1671799664308" duration="13214000" />
       <workItem from="1671948991568" duration="25875000" />
-      <workItem from="1672378563024" duration="19511000" />
+      <workItem from="1672378563024" duration="34293000" />
     </task>
     <servers />
   </component>
@@ -299,7 +273,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ai_testing$graphicsUtils.coverage" NAME="graphicsUtils Coverage Results" MODIFIED="1672055599554" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$run.coverage" NAME="run Coverage Results" MODIFIED="1672391237719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ai_testing$run.coverage" NAME="run Coverage Results" MODIFIED="1672493921048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanMinimax.coverage" NAME="pacman AgentPacmanMinimax Coverage Results" MODIFIED="1672390633401" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanLeftTurn_.coverage" NAME="pacman AgentPacmanLeftTurn  Coverage Results" MODIFIED="1672228724382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$layout.coverage" NAME="layout Coverage Results" MODIFIED="1670761515758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />

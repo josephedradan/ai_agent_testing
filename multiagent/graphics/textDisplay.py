@@ -13,6 +13,9 @@
 
 
 import time
+
+from multiagent.graphics.graphics import Graphics
+
 try:
     import pacman
 except:
@@ -24,7 +27,7 @@ DISPLAY_MOVES = False
 QUIET = False  # Supresses output
 
 
-class NullGraphics:
+class NullGraphics(Graphics):
     def initialize(self, state, isBlue=False):
         pass
 
@@ -47,7 +50,7 @@ class NullGraphics:
         pass
 
 
-class PacmanGraphics:
+class PacmanGraphics(Graphics):
     def __init__(self, speed=None):
         if speed != None:
             global SLEEP_TIME

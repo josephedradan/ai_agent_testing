@@ -23,6 +23,7 @@ import math
 import time
 
 from multiagent.game.directions import Directions
+from multiagent.graphics.graphics import Graphics
 from multiagent.graphics.graphicsUtils import formatColor, colorToVector, GraphicsActual, writePostscript
 
 DEFAULT_GRID_SIZE = 30.0
@@ -169,7 +170,7 @@ class InfoPane:
         pass
 
 
-class PacmanGraphics:
+class PacmanGraphicsReal(Graphics):
     def __init__(self, zoom=1.0, frameTime=0.0, capture=False):
         self.have_window = 0
         self.currentGhostImages = {}
@@ -739,16 +740,16 @@ class PacmanGraphics:
         self._graphics_actual.refresh()
 
 
-class FirstPersonPacmanGraphics(PacmanGraphics):
+class FirstPersonPacmanGraphics(PacmanGraphicsReal):
     def __init__(self, zoom=1.0, showGhosts=True, capture=False, frameTime=0):
-        PacmanGraphics.__init__(self, zoom, frameTime=frameTime)
+        PacmanGraphicsReal.__init__(self, zoom, frameTime=frameTime)
         self.showGhosts = showGhosts
         self.capture = capture
 
     def initialize(self, state, isBlue=False):
 
         self.isBlue = isBlue
-        PacmanGraphics.startGraphics(self, state)
+        PacmanGraphicsReal.startGraphics(self, state)
         # Initialize distribution images
         walls = state.layout.walls
         dist = []
@@ -783,7 +784,7 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
         if not self.showGhosts and not ghostState.isPacman and ghostState.getPosition()[1] > 1:
             return (-1000, -1000)
         else:
-            return PacmanGraphics.getPosition(self, ghostState)
+            return PacmanGraphicsReal.getPosition(self, ghostState)
 
 
 def add(x, y):

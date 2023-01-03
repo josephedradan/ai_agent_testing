@@ -49,6 +49,7 @@ class AgentKeyboard(Agent):
 
         self._graphics_actual: Union[GraphicsActual, None] = None
 
+    # FIXME: GHETTO SOLUTIOn
     def set_graphics_actual(self, graphics_actual: GraphicsActual):
         self._graphics_actual = graphics_actual
 

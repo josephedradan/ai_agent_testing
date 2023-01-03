@@ -33,7 +33,7 @@ from multiagent.game import layout as _layout
 from multiagent.agent.agent import Agent
 from multiagent.game.game import Game
 from multiagent.game.gamestate import GameState
-from multiagent.graphics.graphicsDisplay import PacmanGraphics
+from multiagent.graphics.graphicsDisplay import PacmanGraphicsReal
 
 
 class ClassicGameRules:
@@ -49,12 +49,16 @@ class ClassicGameRules:
                 layout: _layout.Layout,
                 pacmanAgent: Agent,
                 ghostAgents: List[Agent],
-                display: PacmanGraphics,
+                display: PacmanGraphicsReal,
                 quiet: bool = False,
                 catchExceptions: bool = False
                 ) -> Game:
 
         agents: List[Agent] = [pacmanAgent, *ghostAgents[:layout.getNumGhosts()]]
+
+        for agent in agents:
+            agent.set_graphics(display)
+
         initState = GameState()
         initState.initialize(layout, len(ghostAgents))
         game = Game(agents, display, self, catchExceptions=catchExceptions)

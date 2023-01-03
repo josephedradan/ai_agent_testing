@@ -27,8 +27,10 @@ from abc import ABC
 from abc import abstractmethod
 from typing import List
 from typing import TYPE_CHECKING
+from typing import Union
 
 from multiagent.game.directions import Action
+from multiagent.graphics.graphics import Graphics
 
 if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
@@ -45,6 +47,8 @@ class Agent(ABC):
     def __init__(self, index: int):
         self.index = index
 
+        self._graphics: Union[Graphics, None] = None
+
     # TODO IN THE FUTURE USE THIS I THINK
     # def __init__(self, index=0, graphics_actual: Union[GraphicsActual, None] = None):
     #     self.index = index
@@ -57,3 +61,9 @@ class Agent(ABC):
         must return an action from Directions.{North, South, East, West, Stop}
         """
         pass
+
+    def set_graphics(self, graphics: Graphics):
+        self._graphics = graphics
+
+    def get_graphics(self) -> Graphics:
+        return self._graphics
