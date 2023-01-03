@@ -1,6 +1,6 @@
 class: "EvalAgentTest"
 
-agentName: "ReflexAgent"
+agentName: "AgentPacmanReflex"
 layoutName: "openClassic"
 maxTime: "120"
 numGames: "10"

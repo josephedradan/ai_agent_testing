@@ -68,6 +68,7 @@ class ExtraCreditPassAllTestsQuestion(Question):
         self.extraPoints = int(questionDict['extra_points'])
 
     def execute(self, grades):
+        raise Exception("JOSEPH THIS FUNCTION IS CALLED execute")
         # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
         testsFailed = False
         grades.assignZeroCredit()

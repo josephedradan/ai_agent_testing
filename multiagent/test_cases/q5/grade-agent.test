@@ -1,7 +1,7 @@
 class: "EvalAgentTest"
 
-agentName: "ExpectimaxAgent"
-agentArgs: "evaluation_function=better"
+agentName: "AgentPacmanExpectimax"
+agentArgs: "evaluation_function=evaluation_function_better"
 layoutName: "smallClassic"
 maxTime: "120"
 numGames: "10"

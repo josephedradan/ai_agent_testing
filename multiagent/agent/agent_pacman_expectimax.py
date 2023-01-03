@@ -50,7 +50,7 @@ def _dfs_recursive_expectimax_v1_handler(game_state: GameState,
 
     # Check if game is over via pacman dead or pacman got all food and survived
     if game_state.isWin() or game_state.isLose() or depth <= 0:
-        score = function_evaluation(game_state)
+        score = function_evaluation(game_state, None)
 
         # Return the score
         return score

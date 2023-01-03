@@ -188,8 +188,8 @@ class Game:
             # Solicit an action
             action = None
             self.mute(agentIndex)
-            if self.catchExceptions:
-                raise Exception("ERROR CALLED IN GAME")
+            if self.catchExceptions:  # TODO: THIS CODE IS NECESSARY JOSEPH, IT IS FOR THE autograder.py
+                # raise Exception("ERROR CALLED IN GAME")
                 try:
                     timed_func = TimeoutFunction(agent.getAction, int(
                         self.rules.getMoveTimeout(agentIndex)) - int(move_time))

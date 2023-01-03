@@ -1,5 +1,5 @@
 class: "PacmanGameTreeTest"
-alg: "AlphaBetaAgent"
+alg: "AgentPacmanMinimaxAlphaBeta"
 seed: "0"
 depth: "2"
 max_points: "4"

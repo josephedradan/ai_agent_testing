@@ -340,7 +340,7 @@ class PacmanGameTreeTest(testClasses.TestCase):
 
     def execute(self, grades, moduleDict, solutionDict):
         # load student code and staff code solutions
-        multiAgents = moduleDict['multiAgents']
+        multiAgents = moduleDict['projectTestClasses']
         studentAgent = getattr(multiAgents, self.alg)(depth=self.depth)
         allActions = [json.loads(x)
                       for x in solutionDict['optimalActions'].split('\n')]
@@ -394,7 +394,7 @@ class PacmanGameTreeTest(testClasses.TestCase):
 
     def writeSolution(self, moduleDict, filePath):
         # load module, set seed, create ghosts and macman, run game
-        multiAgents = moduleDict['multiAgents']
+        multiAgents = moduleDict['projectTestClasses']
         random.seed(self.seed)
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
         if self.alg == 'AgentPacmanExpectimax':
@@ -438,7 +438,7 @@ class GraphGameTreeTest(testClasses.TestCase):
             self.addMessage(line)
 
     def execute(self, grades, moduleDict, solutionDict):
-        multiAgents = moduleDict['multiAgents']
+        multiAgents = moduleDict['projectTestClasses']
         goldAction = solutionDict['action']
         goldGenerated = solutionDict['generated']
         action, generated = self.solveProblem(multiAgents)
@@ -464,7 +464,7 @@ class GraphGameTreeTest(testClasses.TestCase):
             return self.testPass(grades)
 
     def writeSolution(self, moduleDict, filePath):
-        multiAgents = moduleDict['multiAgents']
+        multiAgents = moduleDict['projectTestClasses']
         action, generated = self.solveProblem(multiAgents)
         with open(filePath, 'w') as handle:
             handle.write('# This is the solution file for %s.\n' % self.path)
@@ -510,7 +510,8 @@ class EvalAgentTest(testClasses.TestCase):
     def execute(self, grades, moduleDict, solutionDict):
         startTime = time.time()
 
-        agentType = getattr(moduleDict['multiAgents'], self.agentName)
+        # TODO: multiAgents TO 'projectTestClasses'
+        agentType = getattr(moduleDict['projectTestClasses'], self.agentName)
         agentOpts = pacman.parseAgentArgs(
             self.agentArgs) if self.agentArgs != '' else {}
         agent = agentType(**agentOpts)

@@ -25,6 +25,7 @@ from typing import Callable
 from typing import Dict
 from typing import Union
 
+from multiagent.agent.evaluation_function.evaluation_function_better import evaluation_function_better
 from multiagent.agent.evaluation_function.evaluation_function_food_and_ghost import evaluation_function_food_and_ghost
 from multiagent.agent.evaluation_function.evaluation_function_food_and_ghost import \
     evaluation_function_food_and_ghost__attempt_1
@@ -74,6 +75,7 @@ DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION: Dict[str, TYPE_EVALUATION
     evaluation_function_food_and_ghost.__name__: evaluation_function_food_and_ghost,
     evaluation_function_food_and_ghost__attempt_1.__name__: evaluation_function_food_and_ghost__attempt_1,
     evaluation_function_game_state_score.__name__: evaluation_function_game_state_score,
+    evaluation_function_better.__name__: evaluation_function_better,
 
 }
 

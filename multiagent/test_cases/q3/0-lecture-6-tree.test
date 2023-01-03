@@ -1,5 +1,5 @@
 class: "GraphGameTreeTest"
-alg: "AlphaBetaAgent"
+alg: "AgentPacmanMinimaxAlphaBeta"
 depth: "2"
 
 #  Tree from lecture 6 slides
