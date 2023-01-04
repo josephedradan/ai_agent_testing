@@ -212,7 +212,7 @@ def loadAgent(agent_: str, nographics: bool):  # RETURNS A CLASS
 
     # FIXME: pacman IS AgentKeyboard <class 'str'> OR AgentGhostRandom <class 'str'>
 
-    return DICT_K_NAME_V_AGENT.get(agent_)
+    return get_agent(agent_)
 
 
     # if agent_ == "AgentKeyboard":

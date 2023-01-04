@@ -44,6 +44,7 @@ from multiagent.agent.problem.agent_pacman__search_problem import foodHeuristic
 from multiagent.game import game
 from multiagent.game.directions import Action
 from multiagent.game.directions import Directions
+from multiagent.game.grid import Grid
 
 if TYPE_CHECKING:
     from multiagent.game.gamestate import GameState
@@ -72,7 +73,7 @@ class SearchAgent(Agent):
                  heuristic: Callable = 'nullHeuristic'):
         # Warning: some advanced Python magic is employed below to find the right functions and problems
 
-        # Get the search function from the name and heuristic
+        # Get the search function from the name_test_case and heuristic
         if fn not in dir(search):
             raise AttributeError(fn + ' is not a search function in search.py.')
         func = getattr(search, fn)  # FIXME: CHANGE ME PLS TO THE DICT WAY
@@ -100,7 +101,7 @@ class SearchAgent(Agent):
 
         print("prob", prob)
         print("globals().keys()", globals().keys())
-        # # Get the search problem type from the name
+        # # Get the search problem type from the name_test_case
         # if prob not in globals().keys() or not prob.endswith('Problem'):
         #     raise AttributeError(prob + ' is not a search problem type in SearchAgents.py.')
         # self.searchType = globals()[prob]
@@ -236,8 +237,8 @@ class ClosestDotSearchAgent(SearchAgent):
         # util.raiseNotDefined()
 
         startPosition: tuple
-        food: game.Grid
-        walls: game.Grid
+        food: Grid
+        walls: Grid
         problem: AnyFoodSearchProblem
 
         # print(type(startPosition))

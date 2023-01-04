@@ -77,7 +77,7 @@ class GoWestAgent(Agent):
 #     def __init__(self, fn='depthFirstSearch', prob='PositionSearchProblem', heuristic='nullHeuristic'):
 #         # Warning: some advanced Python magic is employed below to find the right functions and problems
 #
-#         # Get the search function from the name and heuristic
+#         # Get the search function from the name_test_case and heuristic
 #         if fn not in dir(search):
 #             raise AttributeError(fn + ' is not a search function in search.py.')
 #         func = getattr(search, fn)
@@ -95,7 +95,7 @@ class GoWestAgent(Agent):
 #             # Note: this bit of Python trickery combines the search algorithm and the heuristic
 #             self.searchFunction = lambda x: func(x, heuristic=heur)
 #
-#         # Get the search problem type from the name
+#         # Get the search problem type from the name_test_case
 #         if prob not in globals().keys() or not prob.endswith('Problem'):
 #             raise AttributeError(prob + ' is not a search problem type in SearchAgents.py.')
 #         self.searchType = globals()[prob]

@@ -25,10 +25,13 @@ from __future__ import annotations
 import sys
 import time
 import traceback
-from typing import List, TYPE_CHECKING
+from typing import List
+from typing import TYPE_CHECKING
 
 from multiagent.agent.agent import Agent
-from multiagent.util import TimeoutFunction, TimeoutFunctionException
+from multiagent.graphics.graphics import Graphics
+from multiagent.util import TimeoutFunction
+from multiagent.util import TimeoutFunctionException
 
 if TYPE_CHECKING:
     from multiagent.game.rules.game_rules_classic import ClassicGameRules
@@ -48,28 +51,28 @@ class Game:
 
     def __init__(self,
                  agents: List[Agent],
-                 display: PacmanGraphics,  #FIXME: CAN BE NO GRAPHCIS OR ACUTAL GRAPHICS
+                 display: Graphics,  # FIXME: CAN BE NO GRAPHCIS OR ACUTAL GRAPHICS
                  rules: ClassicGameRules,
                  startingIndex: int = 0,
                  muteAgents: bool = False,
                  catchExceptions: bool = False):
 
-        self.agentCrashed = False
-        self.agents = agents
-        self.display = display
-        self.rules = rules
-        self.startingIndex = startingIndex
-        self.gameOver = False
-        self.muteAgents = muteAgents
+        self.agentCrashed: bool = False
+        self.agents: List[Agent] = agents
+        self.display: Graphics = display
+        self.rules: ClassicGameRules = rules
+        self.startingIndex: int = startingIndex
+        self.gameOver: bool = False
+        self.muteAgents: bool = muteAgents
         self.catchExceptions = catchExceptions
-        self.moveHistory = []
-        self.totalAgentTimes = [0 for agent in agents]
-        self.totalAgentTimeWarnings = [0 for agent in agents]
-        self.agentTimeout = False
+        self.moveHistory: List = []
+        self.totalAgentTimes : List[int] = [0 for agent in agents]
+        self.totalAgentTimeWarnings: List[int] = [0 for agent in agents]
+        self.agentTimeout: bool = False
         import io
         self.agentOutput = [io.StringIO() for agent in agents]
 
-    def getProgress(self):
+    def getProgress(self) -> float:
         if self.gameOver:
             return 1.0
         else:
@@ -153,9 +156,7 @@ class Game:
         agentIndex = self.startingIndex
         numAgents = len(self.agents)
 
-
-
-        while not self.gameOver: # TODO: GAME LOOP IS RIGHT HERE
+        while not self.gameOver:  # TODO: GAME LOOP IS RIGHT HERE
             # Fetch the next agent
             agent = self.agents[agentIndex]
             move_time = 0

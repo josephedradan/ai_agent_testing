@@ -13,38 +13,73 @@
 
 
 # import modules from python standard library
-import inspect
-import re
-import sys
-
-
 # Class which models a question in a project.  Note that questions have a
 # maximum number of points they are worth, and are composed of a series of
 # test cases
-class Question(object):
 
-    def raiseNotDefined(self):
-        print('Method not implemented: %s' % inspect.stack()[1][3])
-        sys.exit(1)
+from __future__ import annotations
 
-    def __init__(self, questionDict, display):
-        self.maxPoints = int(questionDict['max_points'])
+from abc import ABC
+from abc import abstractmethod
+from types import FunctionType
+from typing import Any
+from typing import Dict
+from typing import Type
+from typing import Union
+
+from multiagent.graphics.graphics import Graphics
+
+
+def get_question_subclass(name_question_subclass: Union[str, Type[Question], None]) -> Type[Question]:
+    question_subclass = name_question_subclass
+
+    if isinstance(name_question_subclass, str):
+        question_subclass = Question.DICT_K_NAME_QUESTION_SUBCLASSE_V_QUESTION_SUBCLASS.get(
+            name_question_subclass
+        )
+
+    if question_subclass is None:
+        raise Exception("{} is not a valid Question subclass".format(name_question_subclass))
+
+    return question_subclass
+
+
+class Question(ABC):
+    DICT_K_NAME_QUESTION_SUBCLASSE_V_QUESTION_SUBCLASS = {}
+
+    def __init__(self, dict_question: Dict[str, Any], display: Graphics):
+        self.POINTS_MAX = int(dict_question['max_points'])
         self.testCases = []
-        self.display = display
+        self.display: Graphics = display
 
-    def getDisplay(self):
+    def __init_subclass__(cls, **kwargs):
+        cls.DICT_K_NAME_QUESTION_SUBCLASSE_V_QUESTION_SUBCLASS[cls.__name__] = cls
+
+    # def raiseNotDefined(self):
+    #     print('Method not implemented: %s' % inspect.stack()[1][3])
+    #     sys.exit(1)
+
+    def get_display(self) -> Graphics:
         return self.display
 
-    def getMaxPoints(self):
-        return self.maxPoints
+    def get_max_points(self) -> int:
+        return self.POINTS_MAX
 
-    # Note that 'thunk' must be a function which accepts a single argument,
-    # namely a 'grading' object
-    def addTestCase(self, testCase, thunk):
-        self.testCases.append((testCase, thunk))
+    def add_test_case(self, name_test_case, function: FunctionType):
+        """
+        Note that 'function' must be a function which accepts a single argument,
+        namely a 'grading' object
 
+        :param name_test_case:
+        :param function:
+        :return:
+        """
+        self.testCases.append((name_test_case, function))
+
+    @abstractmethod
     def execute(self, grades):
-        self.raiseNotDefined()
+        pass
+
 
 # Question in which all test cases must be passed in order to receive credit
 class PassAllTestsQuestion(Question):
@@ -63,9 +98,9 @@ class PassAllTestsQuestion(Question):
 
 
 class ExtraCreditPassAllTestsQuestion(Question):
-    def __init__(self, questionDict, display):
-        Question.__init__(self, questionDict, display)
-        self.extraPoints = int(questionDict['extra_points'])
+    def __init__(self, dict_question, display):
+        Question.__init__(self, dict_question, display)
+        self.extraPoints = int(dict_question['extra_points'])
 
     def execute(self, grades):
         raise Exception("JOSEPH THIS FUNCTION IS CALLED execute")
@@ -81,6 +116,7 @@ class ExtraCreditPassAllTestsQuestion(Question):
             grades.assignFullCredit()
             grades.addPoints(self.extraPoints)
 
+
 # Question in which predict credit is given for test cases with a ``points'' property.
 # All other tests are mandatory and must be passed.
 class HackedPartialCreditQuestion(Question):
@@ -93,14 +129,14 @@ class HackedPartialCreditQuestion(Question):
         passed = True
         for testCase, f in self.testCases:
             testResult = f(grades)
-            if "points" in testCase.testDict:
+            if "points" in testCase.dict_test:
                 if testResult:
-                    points += float(testCase.testDict["points"])
+                    points += float(testCase.dict_test["points"])
             else:
                 passed = passed and testResult
 
         # FIXME: Below terrible hack to match q3's logic
-        if int(points) == self.maxPoints and not passed:
+        if int(points) == self.POINTS_MAX and not passed:
             grades.assignZeroCredit()
         else:
             grades.addPoints(int(points))
@@ -139,67 +175,3 @@ class NumberPassedQuestion(Question):
 
     def execute(self, grades):
         grades.addPoints([f(grades) for _, f in self.testCases].count(True))
-
-
-# Template modeling a generic test case
-class TestCase(object):
-
-    def raiseNotDefined(self):
-        print('Method not implemented: %s' % inspect.stack()[1][3])
-        sys.exit(1)
-
-    def getPath(self):
-        return self.path
-
-    def __init__(self, question, testDict):
-        self.question = question
-        self.testDict = testDict
-        self.path = testDict['path']
-        self.messages = []
-
-    def __str__(self):
-        self.raiseNotDefined()
-
-    def execute(self, grades, moduleDict, solutionDict):
-        self.raiseNotDefined()
-
-    def writeSolution(self, moduleDict, filePath):
-        self.raiseNotDefined()
-        return True
-
-    # Tests should call the following messages for grading
-    # to ensure a uniform format for test output.
-    #
-    # TODO: this is hairy, but we need to fix grading.py's interface
-    # to get a nice hierarchical project - question - test structure,
-    # then these should be moved into Question proper.
-    def testPass(self, grades):
-        grades.addMessage('PASS: %s' % (self.path,))
-        for line in self.messages:
-            grades.addMessage('    %s' % (line,))
-        return True
-
-    def testFail(self, grades):
-        grades.addMessage('FAIL: %s' % (self.path,))
-        for line in self.messages:
-            grades.addMessage('    %s' % (line,))
-        return False
-
-    # This should really be question level?
-    def testPartial(self, grades, points, maxPoints):
-        grades.addPoints(points)
-        extraCredit = max(0, points - maxPoints)
-        regularCredit = points - extraCredit
-
-        grades.addMessage('%s: %s (%s of %s points)' % (
-            "PASS" if points >= maxPoints else "FAIL", self.path, regularCredit, maxPoints))
-        if extraCredit > 0:
-            grades.addMessage('EXTRA CREDIT: %s points' % (extraCredit,))
-
-        for line in self.messages:
-            grades.addMessage('    %s' % (line,))
-
-        return True
-
-    def addMessage(self, message):
-        self.messages.extend(message.split('\n'))

@@ -15,24 +15,27 @@
 "Common code for autograders"
 
 import html
-import time
-import sys
 import json
+import time
 import traceback
-import pdb
 from collections import defaultdict
+
 import util
 
 
 class Grades:
     "A data structure for project grades, along with formatting code to display them"
 
-    def __init__(self, projectName, questionsAndMaxesList,
-                 gsOutput=False, edxOutput=False, muteOutput=False):
+    def __init__(self,
+                 projectName,
+                 questionsAndMaxesList,
+                 gsOutput=False,
+                 edxOutput=False,
+                 muteOutput=False):
         """
         Defines the grading scheme for a project
-          projectName: project name
-          questionsAndMaxesDict: a list of (question name, max points per question)
+          projectName: project name_test_case
+          questionsAndMaxesDict: a list of (question name_test_case, max points per question)
         """
         self.questions = [el[0] for el in questionsAndMaxesList]
         self.maxes = dict(questionsAndMaxesList)
@@ -51,6 +54,7 @@ class Grades:
         print('Starting on %d-%d at %d:%02d:%02d' % self.start)
 
     def addPrereq(self, question, prereq):
+        raise Exception("addPrereq IS CALLED????")
         self.prereqs[question].add(prereq)
 
     def grade(self, gradingModule, exceptionMap={}, bonusPic=False):
@@ -69,9 +73,8 @@ class Grades:
             incompleted = self.prereqs[q].difference(completedQuestions)
             if len(incompleted) > 0:
                 prereq = incompleted.pop()
-                print("""*** NOTE: Make sure to complete Question %s before working on Question %s,
-*** because Question %s builds upon your answer for Question %s.
-""" % (prereq, q, q, prereq))
+                print("*** NOTE: Make sure to complete Question {} before working on Question {},\n "
+                      "*** because Question {} builds upon your answer for Question {}.".format(prereq, q, q, prereq))
                 continue
 
             if self.mute:
@@ -136,10 +139,9 @@ class Grades:
                     @@@@@@@@@@@@@@@@@@
 
 """)
-        print("""
-Your grades are NOT yet registered.  To register your grades, make sure
-to follow your instructor's guidelines to receive credit on your project.
-""")
+        print(
+            "Your grades are NOT yet registered. To register your grades, make sure to follow your instructor's guidelines to receive credit on your project."
+        )
 
         if self.edxOutput:
             self.produceOutput()
@@ -193,8 +195,8 @@ to follow your instructor's guidelines to receive credit on your project.
         tests_out = []
         for name in self.questions:
             test_out = {}
-            # test name
-            test_out['name'] = name
+            # test name_test_case
+            test_out['name_test_case'] = name
             # test score
             test_out['score'] = self.points[name]
             test_out['max_score'] = self.maxes[name]
@@ -243,7 +245,7 @@ to follow your instructor's guidelines to receive credit on your project.
             checkOrX = '<span class="incorrect"/>'
             if (self.points[q] >= self.maxes[q]):
                 checkOrX = '<span class="correct"/>'
-            #messages = '\n<br/>\n'.join(self.messages[q])
+            # messages = '\n<br/>\n'.join(self.messages[q])
             messages = "<pre>%s</pre>" % '\n'.join(self.messages[q])
             output = """
         <div class="test">
@@ -293,7 +295,7 @@ to follow your instructor's guidelines to receive credit on your project.
 
     def addMessage(self, message, raw=False):
         if not raw:
-                # We assume raw messages, formatted for HTML, are printed separately
+            # We assume raw messages, formatted for HTML, are printed separately
             if self.mute:
                 util.unmutePrint()
             print('*** ' + message)

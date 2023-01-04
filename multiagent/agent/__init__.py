@@ -21,6 +21,9 @@ Tags:
 Reference:
 
 """
+from typing import Type
+from typing import Union
+
 from multiagent.agent.agent import Agent
 from multiagent.agent.agent_ghost import AgentGhost
 from multiagent.agent.agent_ghost_directional import AgentGhostDirectional
@@ -67,3 +70,15 @@ DICT_K_NAME_V_AGENT = {
     ClosestDotSearchAgent.__name__: ClosestDotSearchAgent
 
 }
+
+
+def get_agent(name_agent: Union[str, Type[Agent], None]) -> Type[Agent]:
+    agent_ = name_agent
+
+    if isinstance(name_agent, str):
+        agent_ = DICT_K_NAME_V_AGENT.get(name_agent)
+
+    if agent_ is None:
+        Exception("{} is not an agent".format(name_agent))
+
+    return agent_

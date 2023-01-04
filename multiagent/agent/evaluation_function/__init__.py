@@ -80,12 +80,16 @@ DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION: Dict[str, TYPE_EVALUATION
 }
 
 
-def get_evaluation_function(evaluation_function_name: str) -> TYPE_EVALUATION_FUNCTION:
-    evaluation_function = DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION.get(
-        evaluation_function_name
-    )
+def get_evaluation_function(name_evaluation_function: Union[str, TYPE_EVALUATION_FUNCTION, None]) -> TYPE_EVALUATION_FUNCTION:
+
+    evaluation_function = name_evaluation_function
+
+    if isinstance(name_evaluation_function, str):
+        evaluation_function = DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION.get(
+            name_evaluation_function
+        )
 
     if evaluation_function is None:
-        raise Exception("{} is not a valid evaluation function".format(evaluation_function_name))
+        raise Exception("{} is not a valid evaluation function".format(name_evaluation_function))
 
     return evaluation_function
