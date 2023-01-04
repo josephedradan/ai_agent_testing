@@ -75,6 +75,7 @@ class PolyAgent(Agent):
         return [list[i] for i in indices]
 
     def construct_our_pacs(self, multiAgents, keyword_dict):
+
         pacs_without_stop = [multiAgents.StaffMultiAgentSearchAgent(
             **keyword_dict) for i in range(3)]
         keyword_dict['keepStop'] = 'True'
@@ -234,7 +235,7 @@ class PacmanGameTreeTest(TestCase):
     def __init__(self, question: Question, testDict: Dict[str, Any]):
         super(PacmanGameTreeTest, self).__init__(question, testDict)
         self.seed: int = int(self.dict_test['seed'])
-        self.class_agent: Type[Agent] = self.dict_test['class_agent']
+        self.class_agent: Type[Agent] = self.dict_test['alg']
         self.layout_text: str = self.dict_test['layout']
         self.layout_name: str = self.dict_test['layoutName']
         self.depth: int = int(self.dict_test['depth'])
@@ -308,6 +309,7 @@ class PacmanGameTreeTest(TestCase):
     def writeSolution(self, moduleDict, filePath):
         # load module, set seed, create ghosts and macman, run game
         multiAgents = moduleDict['projectTestClasses']
+
         random.seed(self.seed)
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
         if self.class_agent == 'AgentPacmanExpectimax':
@@ -316,6 +318,10 @@ class PacmanGameTreeTest(TestCase):
             ourPacOptions = {'alphabeta': 'True'}
         else:
             ourPacOptions = {}
+
+
+        raise Exception("writeSolution CALLED")
+
         pac = PolyAgent(self.seed, multiAgents, ourPacOptions, self.depth)
 
         disp = self.question.get_display()
@@ -437,14 +443,14 @@ class GraphGameTreeTest(TestCase):
     def __init__(self, question: Question, dict_test: Dict[str, Any]):
         super(GraphGameTreeTest, self).__init__(question, dict_test)
         self.problem = parseTreeProblem(dict_test)
-        self.alg = self.dict_test['class_agent']
+        self.class_agent = self.dict_test['alg']
         self.diagram = self.dict_test['diagram'].split('\n')
         self.depth = int(self.dict_test['depth'])
 
     def solveProblem(self, multiAgents):
         self.problem.reset()
         # studentAgent = getattr(multiAgents, self.class_agent)(depth=self.depth)
-        studentAgent = get_agent(self.alg)(depth=self.depth)
+        studentAgent = get_agent(self.class_agent)(depth=self.depth)
 
         action = studentAgent.getAction(self.problem.startState)
         generated = self.problem.generatedStates

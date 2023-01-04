@@ -18,6 +18,12 @@ import os
 import random
 import re
 import sys
+
+print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+# pprint(sys.path)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+
 # imports from python standard library
 from types import ModuleType
 from typing import Any
@@ -69,7 +75,7 @@ def readCommand(argv):
                       default=projectParams.PROJECT_TEST_CLASSES,
                       help='class containing testClass classes for this project')
     parser.add_option('--generate-solutions',
-                      dest='generate_solutions',
+                      dest='generateSolutions',
                       action='store_true',
                       help='Write solutions generated to .solution file')
     parser.add_option('--edx-output',
