@@ -19,6 +19,9 @@ import random
 import re
 import sys
 
+from multiagent import parse_file
+from multiagent.parse_file import ParseFile
+
 print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -36,9 +39,9 @@ from typing import Union
 import grading
 import projectParams
 from multiagent._question import Question
-from multiagent._question import get_question_subclass
+from multiagent._question import get_class_question_subclass
 from multiagent._test_case import TestCase
-from multiagent._test_case import get_test_case_subclass
+from multiagent._test_case import get_class_test_case_subclass
 
 random.seed(0)
 
@@ -74,7 +77,7 @@ def readCommand(argv):
                       dest='testCaseCode',
                       default=projectParams.PROJECT_TEST_CLASSES,
                       help='class containing testClass classes for this project')
-    parser.add_option('--generate-solutions',
+    parser.add_option('--generate-solutions',  # TODO: THIS IS FOR TEACHERS, WILL NOT WORK BECAUSE MISSING CLASS
                       dest='generateSolutions',
                       action='store_true',
                       help='Write solutions generated to .solution file')
@@ -149,16 +152,16 @@ def setModuleName(module, filename):
 
 # from cStringIO import StringIO
 
-def loadModuleString(moduleSource):
-    # Below broken, imp doesn't believe its being passed a file:
-    #    ValueError: load_module arg#2 should be a file or None
-    #
-    # f = StringIO(moduleCodeDict[k])
-    # tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
-    tmp = imp.new_module(k)
-    exec(moduleCodeDict[k], tmp.__dict__)
-    setModuleName(tmp, k)
-    return tmp
+# def loadModuleString(moduleSource):
+#     # Below broken, imp doesn't believe its being passed a file:
+#     #    ValueError: load_module arg#2 should be a file or None
+#     #
+#     # f = StringIO(moduleCodeDict[k])
+#     # tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
+#     tmp = imp.new_module(k)
+#     exec(moduleCodeDict[k], tmp.__dict__)
+#     setModuleName(tmp, k)
+#     return tmp
 
 
 def loadModuleFile(moduleName, filePath):
@@ -225,24 +228,27 @@ def printTest(testDict, solutionDict):
         print("   |", line)
 
 
-def runTest(testName, moduleDict, printTestCase=False, display=None):
+def runTest(testName, moduleDict, printTestCase=False, display=None):  # TODO: RUNS A SPECIFIC TEST GIVEN NAME
     import parse_file
     import _question
     for module in moduleDict:
         setattr(sys.modules[__name__], module, moduleDict[module])
 
-    testDict = parse_file.ParseFile(testName + ".test").get_dict()
+    dict_test = parse_file.ParseFile(testName + ".test").get_dict()
     solutionDict = parse_file.ParseFile(testName + ".solution").get_dict()
     test_out_file = os.path.join('%s.test_output' % testName)
-    testDict['test_out_file'] = test_out_file
-    testClass = getattr(projectTestClasses, testDict['class'])
+    dict_test['test_out_file'] = test_out_file
+    class_test_case = get_class_test_case_subclass(dict_test['class'])
 
-    questionClass = getattr(_question, 'Question')
+    # class_question_subclass: Type[Question] = get_class_question_subclass(dict_question['class'])
+    # question: Question = class_question_subclass(dict_question, display)
+
+    questionClass = get_class_question_subclass("Question")
     question = questionClass({'max_points': 0}, display)
-    testCase = testClass(question, testDict)
+    testCase = class_test_case(question, dict_test)
 
     if printTestCase:
-        printTest(testDict, solutionDict)
+        printTest(dict_test, solutionDict)
 
     # This is a fragile hack to create a stub grades object
     grades = grading.Grades(projectParams.PROJECT_NAME, [(None, 0)])
@@ -293,14 +299,13 @@ def evaluate(generate_solutions: bool,
 
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
-    import parse_file
     for module in moduleDict:
         print(sys.modules[__name__], module, moduleDict[module], sep=" | ")
         setattr(sys.modules[__name__], module, moduleDict[
             module])  # `x.y = v' # TODO: Add attribute 'module' to sys.modules[__name__] with value moduleDict[module]
 
     questions: List[Tuple[str, int]] = []
-    questionDicts: Dict[str, Dict[Any]] = {}
+    dict_k_name_quesiton_v_dict_question_config: Dict[str, Dict[Any]] = {}
 
     # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
     test_subdirs = getTestSubdirs(parse_file, path_abs_test_cases, questionToGrade)
@@ -309,43 +314,40 @@ def evaluate(generate_solutions: bool,
         if not os.path.isdir(subdir_path) or q[0] == '.':
             continue
 
-        # create a question object
-        dict_question: Dict[str, Any] = parse_file.ParseFile(
-            os.path.join(subdir_path, 'CONFIG')).get_dict()
+        dict_question_config, question_object = get_question_stuff(subdir_path, display)
 
-        class_question_subclass: Type[Question] = get_question_subclass(dict_question['class'])
-        question: Question = class_question_subclass(dict_question, display)
-        questionDicts[q] = dict_question
+        dict_k_name_quesiton_v_dict_question_config[q] = dict_question_config
 
         # load test cases into question
-        tests = [t for t in os.listdir(
-            subdir_path) if re.match('[^#~.].*\.test\Z', t)]
+        list_file_test_name = [t for t in os.listdir(subdir_path) if re.match('[^#~.].*\.test\Z', t)]
 
-        tests = [re.match('(.*)\.test\Z', t).group(1) for t in tests]
+        list_file_test_name_no_ext = [re.match('(.*)\.test\Z', t).group(1) for t in list_file_test_name]
 
-        for test_name in sorted(tests):
+        for test_no_ext in sorted(list_file_test_name_no_ext):
 
             # TODO: THIS IS ACTUAL TEST 'test_cases\\q2\\8-pacman-game.test'
-            test_file = os.path.join(subdir_path, '%s.test' % test_name)
+            path_test_test = os.path.join(subdir_path, '%s.test' % test_no_ext)
 
             # TODO: THIS IS  THE ANSWERS FILE 'test_cases\\q2\\8-pacman-game.solution'
-            solution_file = os.path.join(subdir_path, '%s.solution' % test_name)
+            path_test_solution = os.path.join(subdir_path, '%s.solution' % test_no_ext)
 
             # TODO: 'test_cases\\q1\\grade-agent.test_output'  # NOT USED?
-            test_out_file = os.path.join(subdir_path, '%s.test_output' % test_name)
+            path_test_output = os.path.join(subdir_path, '%s.test_output' % test_no_ext)
             ''
             # TODO: A DICT
-            testDict = parse_file.ParseFile(test_file).get_dict()
-            if testDict.get("disabled", "false").lower() == "true":
+            dict_test = parse_file.ParseFile(path_test_test).get_dict()
+
+            if dict_test.get("disabled", "false").lower() == "true":
                 continue
-            testDict['test_out_file'] = test_out_file
+
+            dict_test['path_test_output'] = path_test_output
 
             # TODO: dict_test['class'] will be EvalAgentTest ... SO IT WILL GET projectTestClasses.EvalAgentTest  OR projectTestClasses.GraphGameTreeTest ..... projectTestClasses MIGHT BE multiagentTestClasses
-            class_test_case = get_test_case_subclass(testDict['class'])
+            class_test_case = get_class_test_case_subclass(dict_test['class'])
             print("class_test_case", class_test_case)
 
             # TODO: MIGHT BE EvalAgentTest, GraphGameTreeTest, PacmanGameTreeTest, IT IS A CLASS
-            test_case: TestCase = class_test_case(question, testDict)
+            test_case: TestCase = class_test_case(question_object, dict_test)
 
             def makefun(testCase, solution_file):
                 if generate_solutions:
@@ -353,7 +355,7 @@ def evaluate(generate_solutions: bool,
                     return lambda grades: testCase.writeSolution(moduleDict, solution_file)
                 else:
                     # read in solution dictionary and pass as an argument
-                    testDict = parse_file.ParseFile(test_file).get_dict()
+                    testDict = parse_file.ParseFile(path_test_test).get_dict()
                     solutionDict = parse_file.ParseFile(solution_file).get_dict()  # TODO: READ THE TEST FILE
 
                     if printTestCase:  # PRINT THE TEST CASE AND TEST THE PROBLEM
@@ -363,14 +365,15 @@ def evaluate(generate_solutions: bool,
                     else:
                         return lambda grades: testCase.execute(grades, moduleDict, solutionDict)
 
-            question.add_test_case(test_case, makefun(test_case, solution_file))
+            question_object.add_test_case(test_case, makefun(test_case, path_test_solution))
 
         # Note extra function is necessary for scoping reasons
         def makefun(question):
             return lambda grades: question.execute(grades)
 
-        setattr(sys.modules[__name__], q, makefun(question))
-        questions.append((q, question.get_max_points()))  # TODO: LIST OF TUPLE:  ('Questison Nubmer', Max points int)
+        print("FFASD",sys.modules[__name__], q, makefun(question_object))
+        setattr(sys.modules[__name__], q, makefun(question_object))
+        questions.append((q, question_object.get_max_points()))  # TODO: LIST OF TUPLE:  ('Questison Nubmer', Max points int)
 
     grades = grading.Grades(projectParams.PROJECT_NAME,
                             questions,
@@ -380,10 +383,10 @@ def evaluate(generate_solutions: bool,
 
     # TODO: THIS IF CONDITIONAL DOES NOTHING IMPORTANT
     if questionToGrade == None:
-        for q in questionDicts:
+        for q in dict_k_name_quesiton_v_dict_question_config:
             # print("AAAA1")
-            pprint.pprint(questionDicts)
-            for prereq in questionDicts[q].get('depends', '').split():  # TODO: depends DOES NOT EXIST?
+            pprint.pprint(dict_k_name_quesiton_v_dict_question_config)
+            for prereq in dict_k_name_quesiton_v_dict_question_config[q].get('depends', '').split():  # TODO: depends DOES NOT EXIST? LOOK IS NEVER REACHED
                 # print("AAAA2",(q, prereq))
 
                 grades.addPrereq(q, prereq)
@@ -407,6 +410,17 @@ def getDisplay(graphicsByDefault: Union[bool, None], options=None):
             pass
     from multiagent.graphics import textDisplay
     return textDisplay.NullGraphics()
+
+
+
+def get_question_stuff(path_question: str, display) -> Tuple[Dict[str, Any], Question]:
+
+    dict_question_config: Dict[str, Any] = parse_file.ParseFile(os.path.join(path_question, 'CONFIG')).get_dict()
+
+    class_question_subclass: Type[Question] = get_class_question_subclass(dict_question_config['class'])
+    question_object: Question = class_question_subclass(dict_question_config, display)
+
+    return dict_question_config, question_object
 
 
 if __name__ == '__main__':

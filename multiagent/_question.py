@@ -30,7 +30,7 @@ from typing import Union
 from multiagent.graphics.graphics import Graphics
 
 
-def get_question_subclass(name_question_subclass: Union[str, Type[Question], None]) -> Type[Question]:
+def get_class_question_subclass(name_question_subclass: Union[str, Type[Question], None]) -> Type[Question]:
     question_subclass = name_question_subclass
 
     if isinstance(name_question_subclass, str):

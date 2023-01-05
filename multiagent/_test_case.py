@@ -143,7 +143,7 @@ def run(lay, layName, pac, ghosts, disp, nGames=1, name='games'):
     return stats
 
 
-def get_test_case_subclass(name_test_case_subclass: str) -> Type[TestCase]:
+def get_class_test_case_subclass(name_test_case_subclass: str) -> Type[TestCase]:
     test_case_subclass = name_test_case_subclass
 
     if isinstance(name_test_case_subclass, str):
