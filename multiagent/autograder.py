@@ -55,7 +55,7 @@ random.seed(0)
 def readCommand(argv):
     parser = optparse.OptionParser(
         description='Run public tests on student code')
-    parser.set_defaults(generateSolutions=False,
+    parser.set_defaults(generateSolutions=False,  # TODO: DONT USE BECAUSE ONLY TEACHERS CAN USE THIS BECAUSE I DONT HAVE THE CLASS
                         edxOutput=False,
                         gsOutput=False,
                         muteOutput=False,
@@ -395,6 +395,10 @@ def evaluate(generate_solutions: bool,
     grades.grade(sys.modules[__name__], bonusPic=projectParams.BONUS_PIC)
     return grades.points
 
+
+
+def evaluate_2():
+    pass
 
 def getDisplay(graphicsByDefault: Union[bool, None], options=None):
     # from multiagent.graphics import graphicsDisplay

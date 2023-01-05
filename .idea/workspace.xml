@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0cec50b-c8ad-41f3-9f76-402ae0d958a7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/multiagent/_question.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/_question.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/_test_case.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/_test_case.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/autograder.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/autograder.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
