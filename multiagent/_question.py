@@ -13,7 +13,7 @@
 
 
 # import modules from python standard library
-# Class which models a question in a project.  Note that questions have a
+# Class which models a name_question in a name_project.  Note that questions have a
 # maximum number of points they are worth, and are composed of a series of
 # test cases
 
@@ -21,13 +21,17 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
-from types import FunctionType
 from typing import Any
+from typing import Callable
 from typing import Dict
+from typing import TYPE_CHECKING
 from typing import Type
 from typing import Union
 
-from multiagent.graphics.graphics import Graphics
+if TYPE_CHECKING:
+    from multiagent._test_case import TestCase
+    from multiagent.grader import Grader
+    from multiagent.graphics.graphics import Graphics
 
 
 def get_class_question_subclass(name_question_subclass: Union[str, Type[Question], None]) -> Type[Question]:
@@ -48,7 +52,7 @@ class Question(ABC):
     DICT_K_NAME_QUESTION_SUBCLASSE_V_QUESTION_SUBCLASS = {}
 
     def __init__(self, dict_question: Dict[str, Any], display: Graphics):
-        self.POINTS_MAX = int(dict_question['max_points'])
+        self.POINTS_MAX: int = int(dict_question['max_points'])
         self.testCases = []
         self.display: Graphics = display
 
@@ -62,39 +66,39 @@ class Question(ABC):
     def get_display(self) -> Graphics:
         return self.display
 
-    def get_max_points(self) -> int:
+    def get_points_max(self) -> int:
         return self.POINTS_MAX
 
-    def add_test_case(self, name_test_case, function: FunctionType):
+    def add_test_case(self, test_case_object: TestCase, function: Callable):
         """
         Note that 'function' must be a function which accepts a single argument,
         namely a 'grading' object
 
-        :param name_test_case:
+        :param test_case_object:
         :param function:
         :return:
         """
-        self.testCases.append((name_test_case, function))
+        self.testCases.append((test_case_object, function))
 
     @abstractmethod
-    def execute(self, grades):
+    def execute(self, grader: Grader):
         pass
 
 
 # Question in which all test cases must be passed in order to receive credit
 class PassAllTestsQuestion(Question):
 
-    def execute(self, grades):
-        # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
+    def execute(self, grader: Grader):
+        # TODO: is this the right way to use grader?  The autograder doesn't seem to use it.
         testsFailed = False
-        grades.assignZeroCredit()
+        grader.assignZeroCredit()
         for _, f in self.testCases:
-            if not f(grades):
+            if not f(grader):
                 testsFailed = True
         if testsFailed:
-            grades.fail("Tests failed.")
+            grader.fail("Tests failed.")
         else:
-            grades.assignFullCredit()
+            grader.assignFullCredit()
 
 
 class ExtraCreditPassAllTestsQuestion(Question):
@@ -102,33 +106,33 @@ class ExtraCreditPassAllTestsQuestion(Question):
         Question.__init__(self, dict_question, display)
         self.extraPoints = int(dict_question['extra_points'])
 
-    def execute(self, grades):
-        raise Exception("JOSEPH THIS FUNCTION IS CALLED execute")
-        # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
+    def execute(self, grader: Grader):
+        raise Exception("JOSEPH THIS FUNCTION IS CALLED execute, NO EXMAPLE ")
+        # TODO: is this the right way to use grader?  The autograder doesn't seem to use it.
         testsFailed = False
-        grades.assignZeroCredit()
+        grader.assignZeroCredit()
         for _, f in self.testCases:
-            if not f(grades):
+            if not f(grader):
                 testsFailed = True
         if testsFailed:
-            grades.fail("Tests failed.")
+            grader.fail("Tests failed.")
         else:
-            grades.assignFullCredit()
-            grades.addPoints(self.extraPoints)
+            grader.assignFullCredit()
+            grader.addPoints(self.extraPoints)
 
 
 # Question in which predict credit is given for test cases with a ``points'' property.
 # All other tests are mandatory and must be passed.
 class HackedPartialCreditQuestion(Question):
 
-    def execute(self, grades):
-        # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
-        grades.assignZeroCredit()
+    def execute(self, grader: Grader):
+        # TODO: is this the right way to use grader?  The autograder doesn't seem to use it.
+        grader.assignZeroCredit()
 
         points = 0
         passed = True
         for testCase, f in self.testCases:
-            testResult = f(grades)
+            testResult = f(grader)
             if "points" in testCase.dict_test:
                 if testResult:
                     points += float(testCase.dict_test["points"])
@@ -137,41 +141,41 @@ class HackedPartialCreditQuestion(Question):
 
         # FIXME: Below terrible hack to match q3's logic
         if int(points) == self.POINTS_MAX and not passed:
-            grades.assignZeroCredit()
+            grader.assignZeroCredit()
         else:
-            grades.addPoints(int(points))
+            grader.addPoints(int(points))
 
 
 class Q6PartialCreditQuestion(Question):
-    """Fails any test which returns False, otherwise doesn't effect the grades object.
+    """Fails any test which returns False, otherwise doesn't effect the grader object.
     Partial credit tests will add the required points."""
 
-    def execute(self, grades):
-        grades.assignZeroCredit()
+    def execute(self, grader: Grader):
+        grader.assignZeroCredit()
 
         results = []
         for _, f in self.testCases:
-            results.append(f(grades))
+            results.append(f(grader))
         if False in results:
-            grades.assignZeroCredit()
+            grader.assignZeroCredit()
 
 
 class PartialCreditQuestion(Question):
-    """Fails any test which returns False, otherwise doesn't effect the grades object.
+    """Fails any test which returns False, otherwise doesn't effect the grader object.
     Partial credit tests will add the required points."""
 
-    def execute(self, grades):
-        grades.assignZeroCredit()
+    def execute(self, grader: Grader):
+        grader.assignZeroCredit()
 
         for _, f in self.testCases:
-            if not f(grades):
-                grades.assignZeroCredit()
-                grades.fail("Tests failed.")
+            if not f(grader):
+                grader.assignZeroCredit()
+                grader.fail("Tests failed.")
                 return False
 
 
 class NumberPassedQuestion(Question):
     """Grade is the number of test cases passed."""
 
-    def execute(self, grades):
-        grades.addPoints([f(grades) for _, f in self.testCases].count(True))
+    def execute(self, grader: Grader):
+        grader.addPoints([f(grader) for _, f in self.testCases].count(True))

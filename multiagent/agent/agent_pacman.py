@@ -69,7 +69,7 @@ class AgentPacman(Agent, ABC):
 
         getAction chooses among the best options according to the evaluation function.
 
-        Just like in the previous project, getAction takes a GameState and returns
+        Just like in the previous name_project, getAction takes a GameState and returns
         some Directions.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
         """
         # Collect legal moves and successor states

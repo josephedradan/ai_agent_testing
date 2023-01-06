@@ -34,13 +34,16 @@ from pprint import pprint
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import TYPE_CHECKING
 
 from multiagent import pacman
-from multiagent._question import Question
 from multiagent.agent import *
 from multiagent.game import layout
 from multiagent.game.gamestate import GameState
 from multiagent.multiagentTestClasses import GradingAgent
+
+if TYPE_CHECKING:
+    from multiagent._question import Question
 
 
 class PolyAgent(Agent):
@@ -50,6 +53,7 @@ class PolyAgent(Agent):
             multiAgents,
             ourPacOptions
         )
+
         for p in solutionAgents:
             p.depth = depth
         for p in partialPlyBugAgents:
@@ -196,7 +200,7 @@ class TestCase(ABC):
     # to ensure a uniform format for test output.
     #
     # TODO: this is hairy, but we need to fix grading.py's interface
-    # to get a nice hierarchical project - question - test structure,
+    # to get a nice hierarchical name_project - name_question - test structure,
     # then these should be moved into Question proper.
     def testPass(self, grades):
         grades.addMessage('PASS: %s' % (self.path,))
@@ -210,7 +214,7 @@ class TestCase(ABC):
             grades.addMessage('    %s' % (line,))
         return False
 
-    # This should really be question level?
+    # This should really be name_question level?
     def testPartial(self, grades, points, maxPoints):
         grades.addPoints(points)
         extraCredit = max(0, points - maxPoints)
@@ -266,7 +270,7 @@ class PacmanGameTreeTest(TestCase):
             partialPlyBugActions
         )
 
-        # check return codes and assign grades
+        # check return codes and assign grader
         disp = self.question.get_display()
         stats = run(lay, self.layout_name, pac, [AgentGhostDirectional(i + 1) for i in range(2)], disp,
                     name=self.class_agent)
@@ -318,7 +322,6 @@ class PacmanGameTreeTest(TestCase):
             ourPacOptions = {'alphabeta': 'True'}
         else:
             ourPacOptions = {}
-
 
         raise Exception("writeSolution CALLED")
 
@@ -578,7 +581,7 @@ class EvalAgentTest(TestCase):
             if minimum == None and len(thresholds) == 0:
                 continue
 
-            # print passed, points, value, minimum, thresholds, name_test_case
+            # print passed, points, value, minimum, thresholds, test_case_object
             totalPoints += points
             if not passed:
                 assert points == 0

@@ -29,7 +29,7 @@ from multiagent.game.grid import Grid
 # def evaluation_function_food_and_ghost(successorGameState: GameState,
 #                                        function_get_distance: callable = util.manhattanDistance):
 #     """
-#     Evaluation function used for question 1
+#     Evaluation function used for name_question 1
 #
 #     Notes:
 #         This algorithm involves the influence of closest:
@@ -192,7 +192,7 @@ from multiagent.game.grid import Grid
 #
 #         getAction chooses among the best options according to the evaluation function.
 #
-#         Just like in the previous project, getAction takes a GameState and returns
+#         Just like in the previous name_project, getAction takes a GameState and returns
 #         some Directions.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
 #         """
 #         # Collect legal moves and successor states
@@ -304,14 +304,14 @@ from multiagent.game.grid import Grid
 #         #         Total: 4/4
 #         #
 #         #     score_ghost_closest ** 2, score_food_closest ** 2
-#         #         Provisional grades
+#         #         Provisional grader
 #         #         ==================
 #         #         Question q1: 3/4
 #         #         ------------------
 #         #         Total: 3/4
 #         #
 #         #     score_ghost_closest, score_food_closest ** 2
-#         #         Provisional grades
+#         #         Provisional grader
 #         #         ==================
 #         #         Question q1: 2/4
 #         #         ------------------
@@ -432,14 +432,14 @@ from multiagent.game.grid import Grid
 #
 #                 Finished at 12:29:14
 #
-#                 Provisional grades
+#                 Provisional grader
 #                 ==================
 #                 Question q1: 4/4
 #                 ------------------
 #                 Total: 4/4
 #
-#                 Your grades are NOT yet registered.  To register your grades, make sure
-#                 to follow your instructor's guidelines to receive credit on your project.
+#                 Your grader are NOT yet registered.  To register your grader, make sure
+#                 to follow your instructor's guidelines to receive credit on your name_project.
 #         """
 #
 #         return evaluation_function_food_and_ghost(successorGameState)

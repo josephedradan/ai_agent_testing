@@ -252,7 +252,7 @@ def nearestPoint(pos):
 """
 Data structures and functions useful for various course projects
 
-The search project should not need anything below this line.
+The search name_project should not need anything below this line.
 """
 
 
@@ -610,7 +610,7 @@ def matrixAsList(matrix, value=True):
 
 def lookup(name, namespace):
     """
-    Get a method or class from any imported module from its name_test_case.
+    Get a method or class from any imported module from its test_case_object.
     Usage: lookup(functionName, globals())
     """
     dots = name.count('.')

@@ -19,51 +19,61 @@ import json
 import time
 import traceback
 from collections import defaultdict
+from typing import Callable
+from typing import Dict
+from typing import Hashable
+from typing import List
 
 import util
 
 
-class Grades:
-    "A data structure for project grades, along with formatting code to display them"
+class Grader:
+    "A data structure for name_project grader, along with formatting code to display them"
 
     def __init__(self,
-                 projectName,
-                 questionsAndMaxesList,
-                 gsOutput=False,
-                 edxOutput=False,
-                 muteOutput=False):
+                 name_project: str,
+                 list_str_question,
+                 bool_json_output: bool = False,
+                 bool_html_output: bool = False,
+                 bool_mute_output: bool = False):
         """
-        Defines the grading scheme for a project
-          projectName: project name_test_case
-          questionsAndMaxesDict: a list of (question name_test_case, max points per question)
+        Defines the grading scheme for a name_project
+          name_project: name_project test_case_object
+          questionsAndMaxesDict: a list of (name_question test_case_object, max points per name_question)
         """
-        self.questions = [el[0] for el in questionsAndMaxesList]
-        self.maxes = dict(questionsAndMaxesList)
-        self.points = Counter()
-        self.messages = dict([(q, []) for q in self.questions])
-        self.project = projectName
+        self.questions: List[str] = [el[0] for el in list_str_question]  # TODO: Example: ['q1']
+        self.maxes: Dict = dict(list_str_question)
+        self.points: Counter = Counter()
+        self.messages: Dict = dict([(q, []) for q in self.questions])
+        self.name_project: str = name_project
         self.start = time.localtime()[1:6]
-        self.sane = True  # Sanity checks
-        self.currentQuestion = None  # Which question we're grading
-        self.edxOutput = edxOutput
-        self.gsOutput = gsOutput  # GradeScope output
-        self.mute = muteOutput
-        self.prereqs = defaultdict(set)
+        self.sane: bool = True  # Sanity checks
+        self.currentQuestion = None  # Which name_question we're grading
+        self.bool_html_output: bool = bool_html_output
+        self.bool_json_output: bool = bool_json_output  # GradeScope output
+        self.bool_mute_output: bool = bool_mute_output
+        self.prereqs: Dict[Hashable, set] = defaultdict(set)
 
-        # print 'Autograder transcript for %s' % self.project
+        # print 'Autograder transcript for %s' % self.name_project
         print('Starting on %d-%d at %d:%02d:%02d' % self.start)
 
-    def addPrereq(self, question, prereq):
-        raise Exception("addPrereq IS CALLED????")
-        self.prereqs[question].add(prereq)
+    def addPrereq(self, name_question: str, prereq):
+        raise Exception("addPrereq IS CALLED???? HOW IS THAT POSSIBLE")
+        self.prereqs[name_question].add(prereq)
 
-    def grade(self, gradingModule, exceptionMap={}, bonusPic=False):
+    def grade(self,
+              dict_k_name_question_v_callable: Dict[str, Callable],
+              exceptionMap={},
+              bool_display_picture_bonus: bool = False
+              ):
         """
-        Grades each question
-          gradingModule: the module with all the grading functions (pass in with sys.modules[__name__])
+        Grader each name_question
+          dict_k_name_question_v_callable: the module with all the grading functions (pass in with sys.modules[__name__])
         """
 
-        completedQuestions = set([])
+        completedQuestions = set()
+
+        # print("self.questions", self.questions)  # REMOVE ME PLS
         for q in self.questions:
             print('\nQuestion %s' % q)
             print('=' * (9 + len(q)))
@@ -71,25 +81,29 @@ class Grades:
             self.currentQuestion = q
 
             incompleted = self.prereqs[q].difference(completedQuestions)
+
             if len(incompleted) > 0:
                 prereq = incompleted.pop()
                 print("*** NOTE: Make sure to complete Question {} before working on Question {},\n "
                       "*** because Question {} builds upon your answer for Question {}.".format(prereq, q, q, prereq))
                 continue
 
-            if self.mute:
+            if self.bool_mute_output:
                 util.mutePrint()
             try:
-                util.TimeoutFunction(getattr(gradingModule, q), 1800)(
-                    self)  # Call the question's function
-                # TimeoutFunction(getattr(gradingModule, q),1200)(self) # Call the question's function
+                # Call the name_question's function
+                # TimeoutFunction(getattr(dict_k_name_question_v_callable, q),1200)(self)
+
+                # Call the name_question's function
+                util.TimeoutFunction(dict_k_name_question_v_callable.get(q), 1800)(self)
+
             except Exception as inst:
                 self.addExceptionMessage(q, inst, traceback)
                 self.addErrorHints(exceptionMap, inst, q[1])
             except:
                 self.fail('FAIL: Terminated with a string exception.')
             finally:
-                if self.mute:
+                if self.bool_mute_output:
                     util.unmutePrint()
 
             if self.points[q] >= self.maxes[q]:
@@ -99,14 +113,14 @@ class Grades:
                   (q, self.points[q], self.maxes[q]))
 
         print('\nFinished at %d:%02d:%02d' % time.localtime()[3:6])
-        print("\nProvisional grades\n==================")
+        print("\nProvisional grader\n==================")
 
         for q in self.questions:
             print('Question %s: %d/%d' % (q, self.points[q], self.maxes[q]))
         print('------------------')
         print('Total: %d/%d' %
               (self.points.totalCount(), sum(self.maxes.values())))
-        if bonusPic and self.points.totalCount() == 25:
+        if bool_display_picture_bonus and self.points.totalCount() == 25:
             print("""
 
                      ALL HAIL GRANDPAC.
@@ -140,12 +154,15 @@ class Grades:
 
 """)
         print(
-            "Your grades are NOT yet registered. To register your grades, make sure to follow your instructor's guidelines to receive credit on your project."
+            "Your grader are NOT yet registered. To register your grader, make sure to follow your instructor's guidelines to receive credit on your name_project."
         )
 
-        if self.edxOutput:
+        print("self.prereqs", self.prereqs)
+
+
+        if self.bool_html_output:
             self.produceOutput()
-        if self.gsOutput:
+        if self.bool_json_output:
             self.produceGradeScopeOutput()
 
     def addExceptionMessage(self, q, inst, traceback):
@@ -163,12 +180,12 @@ class Grades:
         questionName = 'q' + questionNum
         errorHint = ''
 
-        # question specific error hints
+        # name_question specific error hints
         if exceptionMap.get(questionName):
             questionMap = exceptionMap.get(questionName)
             if (questionMap.get(typeOf)):
                 errorHint = questionMap.get(typeOf)
-        # fall back to general error messages if a question specific
+        # fall back to general error messages if a name_question specific
         # one does not exist
         if (exceptionMap.get(typeOf)):
             errorHint = exceptionMap.get(typeOf)
@@ -195,8 +212,8 @@ class Grades:
         tests_out = []
         for name in self.questions:
             test_out = {}
-            # test name_test_case
-            test_out['name_test_case'] = name
+            # test test_case_object
+            test_out['test_case_object'] = name
             # test score
             test_out['score'] = self.points[name]
             test_out['max_score'] = self.maxes[name]
@@ -296,10 +313,10 @@ class Grades:
     def addMessage(self, message, raw=False):
         if not raw:
             # We assume raw messages, formatted for HTML, are printed separately
-            if self.mute:
+            if self.bool_mute_output:
                 util.unmutePrint()
             print('*** ' + message)
-            if self.mute:
+            if self.bool_mute_output:
                 util.mutePrint()
             message = html.escape(message)
         self.messages[self.currentQuestion].append(message)

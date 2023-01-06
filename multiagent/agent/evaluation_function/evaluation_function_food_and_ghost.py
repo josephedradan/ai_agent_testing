@@ -34,7 +34,7 @@ from multiagent.game.grid import Grid
 def evaluation_function_food_and_ghost_helper(game_state: GameState,
                                               function_get_distance: callable = util.manhattanDistance) -> float:
     """
-    Evaluation function used for question 1
+    Evaluation function used for name_question 1
 
     Notes:
         This algorithm involves the influence of closest:
@@ -298,14 +298,14 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
 
             Finished at 12:29:14
 
-            Provisional grades
+            Provisional grader
             ==================
             Question q1: 4/4
             ------------------
             Total: 4/4
 
-            Your grades are NOT yet registered.  To register your grades, make sure
-            to follow your instructor's guidelines to receive credit on your project.
+            Your grader are NOT yet registered.  To register your grader, make sure
+            to follow your instructor's guidelines to receive credit on your name_project.
     """
 
     return evaluation_function_food_and_ghost_helper(game_state_successor)
@@ -398,14 +398,14 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
             Total: 4/4
 
         score_ghost_closest ** 2, score_food_closest ** 2
-            Provisional grades
+            Provisional grader
             ==================
             Question q1: 3/4
             ------------------
             Total: 3/4
 
         score_ghost_closest, score_food_closest ** 2
-            Provisional grades
+            Provisional grader
             ==================
             Question q1: 2/4
             ------------------

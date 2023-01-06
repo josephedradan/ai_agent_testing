@@ -167,7 +167,7 @@ def dfs_recursive_expectimax_v1(game_state: GameState,
 
 class AgentPacmanExpectimax(AgentPacman):
     """
-      Your expectimax agent (question 4)
+      Your expectimax agent (name_question 4)
     """
 
     def getAction(self, gameState):
@@ -245,14 +245,14 @@ class AgentPacmanExpectimax(AgentPacman):
 
                 Finished at 12:53:27
 
-                Provisional grades
+                Provisional grader
                 ==================
                 Question q4: 5/5
                 ------------------
                 Total: 5/5
 
-                Your grades are NOT yet registered.  To register your grades, make sure
-                to follow your instructor's guidelines to receive credit on your project.
+                Your grader are NOT yet registered.  To register your grader, make sure
+                to follow your instructor's guidelines to receive credit on your name_project.
         """
         result = dfs_recursive_expectimax_v1(
             gameState,

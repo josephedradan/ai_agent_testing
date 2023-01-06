@@ -21,7 +21,7 @@ code to run a game.  This file is divided into three sections:
           read through all of the code we wrote to make the game runs
           correctly.  This section contains the parts of the code
           that you will need to understand in order to complete the
-          project.  There is also some code in game.py that you should
+          name_project.  There is also some code in game.py that you should
           understand.
 
   (ii)  The hidden secrets of pacman:

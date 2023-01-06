@@ -27,7 +27,7 @@ from multiagent.agent.agent_pacman_minimax import dfs_recursive_minimax_v4
 
 class AgentPacmanMinimaxAlphaBeta(AgentPacman):
     """
-    Your minimax agent with alpha-beta pruning (question 3)
+    Your minimax agent with alpha-beta pruning (name_question 3)
     """
 
     def getAction(self, gameState):
@@ -116,14 +116,14 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
 
                 Finished at 12:54:45
 
-                Provisional grades
+                Provisional grader
                 ==================
                 Question q3: 5/5
                 ------------------
                 Total: 5/5
 
-                Your grades are NOT yet registered.  To register your grades, make sure
-                to follow your instructor's guidelines to receive credit on your project.
+                Your grader are NOT yet registered.  To register your grader, make sure
+                to follow your instructor's guidelines to receive credit on your name_project.
         """
         action = dfs_recursive_minimax_v4(
             gameState,

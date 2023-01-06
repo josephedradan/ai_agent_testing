@@ -25,9 +25,9 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
+from multiagent import util
 from multiagent.agent import AgentPacman
 from multiagent.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
-from multiagent.agent.evaluation_function import evaluation_function_food_and_ghost
 from multiagent.agent.evaluation_function import evaluation_function_game_state_score
 from multiagent.game.directions import Action
 from multiagent.game.gamestate import GameState
@@ -793,7 +793,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
 
 class AgentPacmanMinimax(AgentPacman):
     """
-    Your minimax agent (question 2)
+    Your minimax agent (name_question 2)
     """
 
     def __init__(self,
@@ -1071,14 +1071,14 @@ class AgentPacmanMinimax(AgentPacman):
 
                 Finished at 12:56:39
 
-                Provisional grades
+                Provisional grader
                 ==================
                 Question q2: 5/5
                 ------------------
                 Total: 5/5
 
-                Your grades are NOT yet registered.  To register your grades, make sure
-                to follow your instructor's guidelines to receive credit on your project.
+                Your grader are NOT yet registered.  To register your grader, make sure
+                to follow your instructor's guidelines to receive credit on your name_project.
         """
         action = dfs_recursive_minimax_v4(game_state, self.depth, self.evaluation_function)
 

@@ -114,7 +114,7 @@ def _get_heuristic_cost_ucs_crude(grid_wall: Grid,
 def evaluation_function_better(currentGameState: GameState, action: Action) -> float:
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
-    evaluation function (question 5).
+    evaluation function (name_question 5).
 
     DESCRIPTION: <write something here so we know what you did>
     """
@@ -226,7 +226,7 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
     #
     #         Finished at 11:37:45
     #
-    #         Provisional grades
+    #         Provisional grader
     #         ==================
     #         Question q5: 6/6
     #         ------------------
@@ -288,14 +288,14 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
 
             Finished at 12:21:15
 
-            Provisional grades
+            Provisional grader
             ==================
             Question q5: 6/6
             ------------------
             Total: 6/6
 
-            Your grades are NOT yet registered.  To register your grades, make sure
-            to follow your instructor's guidelines to receive credit on your project.
+            Your grader are NOT yet registered.  To register your grader, make sure
+            to follow your instructor's guidelines to receive credit on your name_project.
 
 
             Process finished with exit code 0
