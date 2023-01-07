@@ -35,9 +35,9 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--test-directory',
-                        dest='path_',
+                        dest='path_dir_containing_question',
                         default='test_cases',  # CHANGE THIS
-                        help='Root test directory which contains subdirectories corresponding to each name_question')
+                        help='Root test directory which contains subdirectories corresponding to each str_question')
     # parser.add_argument('--student-code',
     #                     dest='studentCode',
     #                     default=projectParams.STUDENT_CODE_DEFAULT,
@@ -55,15 +55,15 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     #                     action='store_true',
     #                     help='Write solutions generated to .solution file')
     parser.add_argument('--html-output',
-                        dest='bool_html_output',
+                        dest='bool_output_html',
                         action='store_true',
                         help='Generate edX output files')
     parser.add_argument('--gradescope-output',
-                        dest='bool_json_output',
+                        dest='bool_output_json',
                         action='store_true',
                         help='Generate GradeScope output files')
-    parser.add_argument('--bool_mute_output',
-                        dest='bool_mute_output',
+    parser.add_argument('--bool_output_mute',
+                        dest='bool_output_mute',
                         action='store_true',
                         help='Mute output from executing tests')
     parser.add_argument('--print-tests', '-p',
@@ -74,16 +74,16 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
                         dest='runTest',
                         default=None,
                         help='Run one particular test.  Relative to test root.')
-    parser.add_argument('--name_question', '-q',
+    parser.add_argument('--str_question', '-q',
                         dest='gradeQuestion',
                         default=None,
-                        help='Grade one particular name_question.')
+                        help='Grade one particular str_question.')
     parser.add_argument('--no-graphics',
                         dest='noGraphics',
                         # default=True,
                         # action='store_false',
                         action='store_true',
-                        help='No graphics display for pacman games.')
+                        help='No graphics display for agent_pacman_ games.')
 
     args = parser.parse_args(argv)
 
@@ -91,9 +91,9 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
 
 
 def evaluate_2(path_test_cases: str,
-               bool_mute_output: bool = False,
-               bool_html_output: bool = False,
-               bool_json_output: bool = False,
+               bool_output_mute: bool = False,
+               bool_output_html: bool = False,
+               bool_output_json: bool = False,
                bool_print_test_case: bool = False,
                question_to_grade: Union[str, None] = None,
                display=None,
@@ -102,7 +102,6 @@ def evaluate_2(path_test_cases: str,
     list_dir: List[str]
     list_file_name: List[str]
     for dir_current, list_dir, list_file_name in os.walk(path_test_cases):
-
 
         for file_name in list_file_name:
             if file_name == "CONFIG":
@@ -114,19 +113,19 @@ def evaluate_2(path_test_cases: str,
 
 
 if __name__ == '__main__':
-    # print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
-    # pprint(sys.path)
-    # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+    # print(os.path_file_test.abspath(os.path_file_test.join(os.path_file_test.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+    # pprint(sys.path_file_test)
+    # sys.path_file_test.append(os.path_file_test.abspath(os.path_file_test.join(os.path_file_test.dirname(__file__), "..")))
 
     arg_parser()
 
     #
     #
     # evaluate_2(
-    #     options.path_,
-    #     bool_mute_output=options.bool_mute_output,
-    #     bool_html_output=options.bool_html_output,
-    #     bool_json_output=options.bool_json_output,
+    #     options.path_dir_containing_question,
+    #     bool_output_mute=options.bool_output_mute,
+    #     bool_output_html=options.bool_output_html,
+    #     bool_output_json=options.bool_output_json,
     #     bool_print_test_case=options.printTestCase,
     #     question_to_grade=options.gradeQuestion,
     #     display=getDisplay(options.gradeQuestion != None, options)

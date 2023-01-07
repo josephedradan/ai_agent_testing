@@ -246,7 +246,7 @@ class PacmanGraphicsReal(Graphics):
 
     def swapImages(self, agentIndex, newState):
         """
-          Changes an image from a ghost to a pacman or vis versa (for capture)
+          Changes an image from a ghost to a agent_pacman_ or vis versa (for capture)
         """
         prevState, prevImage = self.agentImages[agentIndex]
         for item in prevImage:
@@ -768,7 +768,7 @@ class FirstPersonPacmanGraphics(PacmanGraphicsReal):
             return
         else:
             pass
-            # Draw relevant ghosts
+            # Draw relevant list_agent_ghost
             allGhosts = state.getGhostStates()
             visibleGhosts = state.getVisibleGhosts()
             for i, ghost in enumerate(allGhosts):

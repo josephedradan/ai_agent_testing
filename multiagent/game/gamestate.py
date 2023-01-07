@@ -116,13 +116,13 @@ class GameState:
 
     def generatePacmanSuccessor(self, action):
         """
-        Generates the successor game_state after the specified pacman move
+        Generates the successor game_state after the specified agent_pacman_ move
         """
         return self.generateSuccessor(0, action)
 
     def getPacmanState(self):
         """
-        Returns an AgentState object for pacman (in game.py)
+        Returns an AgentState object for agent_pacman_ (in game.py)
 
         game_state.pos gives the current position
         game_state.direction gives the travel vector

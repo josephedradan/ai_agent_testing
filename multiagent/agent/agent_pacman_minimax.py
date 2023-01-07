@@ -81,7 +81,7 @@ def dfs_recursive_minimax_v1(game_state: GameState,
     # List of legal movements ("North")
     list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
 
-    # Check if game is over via pacman dead or pacman got all food and survived
+    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
     if game_state.isWin() or game_state.isLose() or depth == 0:
         score = function_evaluation(game_state, None)
         agent_container_previous.score = score
@@ -198,11 +198,11 @@ def get_list_last_ghost_agent_game_state(game_state: GameState,
                                          list_game_state: List[float] = None
                                          ) -> List[AgentGhostContainer]:
     """
-    This gets the game_state based on the last ghost before it becomes pacman's turn to move
+    This gets the game_state based on the last ghost before it becomes agent_pacman_'s turn to move
 
     Notes:
-        Needs the first of the ghosts -> returns list of game_state that are the last game_state
-        before pacman's turn
+        Needs the first of the list_agent_ghost -> returns list of game_state that are the last game_state
+        before agent_pacman_'s turn
 
     """
     if list_game_state is None:
@@ -265,10 +265,10 @@ def dfs_recursive_minimax_v2(game_state: GameState,
                              game_state_previous: GameState = None,
                              ) -> [float, AgentContainer]:
     """
-    This function tries to compress all ghost agents together, the problem is that not all ghosts need to move in order
+    This function tries to compress all ghost agents together, the problem is that not all list_agent_ghost need to move in order
     for the game to end.
 
-    Basically, the game can end when one of the ghosts moves so compressing all ghost agent moves together passes the
+    Basically, the game can end when one of the list_agent_ghost moves so compressing all ghost agent moves together passes the
     point when the game ends, so it's suboptimal to do this.
 
     This means that dfs_recursive_minimax_v1 is more correct than this solution.
@@ -282,7 +282,7 @@ def dfs_recursive_minimax_v2(game_state: GameState,
 
     list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
 
-    # Check if game is over via pacman dead or pacman got all food and survived
+    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
     if game_state.isWin() or game_state.isLose() or depth == 0:
         score = function_evaluation(game_state, None)
         agent_container_previous.score = score
@@ -451,7 +451,7 @@ def dfs_recursive_minimax_v3(game_state: GameState,
     # List of legal movements ("North")
     list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
 
-    # Check if game is over via pacman dead or pacman got all food and survived
+    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
     if game_state.isWin() or game_state.isLose() or depth == 0:
         score = function_evaluation(game_state, None)
         agent_container_previous.score = score
@@ -560,7 +560,7 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
 
-    # Check if game is over via pacman dead or pacman got all food and survived
+    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
     if game_state.isWin() or game_state.isLose() or depth <= 0:
         score = evaluation_function(game_state, None)
 
@@ -591,7 +591,7 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
                                                                  evaluation_function,
                                                                  index_agent_new,
                                                                  alpha_beta_pruning,
-                                                                 # str((depth, index_agent, action))
+                                                                 # string_given((depth, index_agent, action))
                                                                  )
 
             # _LIST_SCORE_DEBUG.append(score_calculated)
@@ -655,7 +655,7 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
                                                                  evaluation_function,
                                                                  index_agent_new,
                                                                  alpha_beta_pruning,
-                                                                 # str((depth, index_agent, action))
+                                                                 # string_given((depth, index_agent, action))
                                                                  )
 
             # _LIST_SCORE_DEBUG.append(score_calculated)
@@ -707,7 +707,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
 
     Notes:
         This is the header for DFS Recursive Minimax algorithm, the reason why it's the header is because
-        the root is pacman and its children should be its actions and you want to select the action based on the
+        the root is agent_pacman_ and its children should be its actions and you want to select the action based on the
         score. If this header was not hear like with the previous versions of this code, then you would need to
         look at children of the root again to know which move was associated with the score returned to the root.
 
@@ -742,7 +742,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
                                                              evaluation_function,
                                                              index_agent_new,
                                                              alpha_beta_pruning,
-                                                             # str((depth, index_agent, action))
+                                                             # string_given((depth, index_agent, action))
                                                              )
 
         if alpha_beta_pruning:
@@ -776,6 +776,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
     # If there are pairs, select the action with the max cost and return the action.
     if list_pair:
         result = max(list_pair, key=lambda item: item[0])
+        print(list_pair)
 
         score_max = result[0]
         action_max = result[1]
@@ -793,7 +794,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
 
 class AgentPacmanMinimax(AgentPacman):
     """
-    Your minimax agent (name_question 2)
+    Your minimax agent (str_question 2)
     """
 
     def __init__(self,
@@ -814,7 +815,7 @@ class AgentPacmanMinimax(AgentPacman):
 
         game_state.getLegalActions(agentIndex):
         Returns a list of legal actions for an agent
-        agentIndex=0 means Pacman, ghosts are >= 1
+        agentIndex=0 means Pacman, list_agent_ghost are >= 1
 
         game_state.generateSuccessor(agentIndex, action):
         Returns the successor game game_state after an agent takes an action
@@ -844,9 +845,9 @@ class AgentPacmanMinimax(AgentPacman):
             Use getAction From PacmanReflex as a reference too
         Run:
             Testing:
-                python pacman.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
-                py -3.6 pacman.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
-                py -3.6 pacman.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3  # Use this one
+                python agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
+                py -3.6 agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
+                py -3.6 agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3  # Use this one
 
             Actual:
                 python autograder.py -q q2
@@ -887,7 +888,7 @@ class AgentPacmanMinimax(AgentPacman):
         #     is because of a mistake I made in the code. Look at V3 for the actual answer.
         #
         # Result:
-        #     py -3.6 pacman.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
+        #     py -3.6 agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
         #         Result:
         #             Pacman died! Score: -501
         #             Average Score: -501.0
@@ -920,9 +921,9 @@ class AgentPacmanMinimax(AgentPacman):
         #
         # Results:
         #     Crashes because dfs_recursive_minimax_v2 runs all ghost agent actions and during that process the game
-        #     may have ended via pacman win or loss (most likely loss because only ghosts move at this time).
+        #     may have ended via agent_pacman_ win or loss (most likely loss because only list_agent_ghost move at this time).
         #     So any further game_state past the winning/losing game_state DOES NOT RETURN A SCORE which is needed
-        #     to determine the action for pacman.
+        #     to determine the action for agent_pacman_.
         #
         #     Basically, it crashes because None is returned when selecting the score and a score needs to be a number
         #
@@ -950,7 +951,7 @@ class AgentPacmanMinimax(AgentPacman):
         #     This is just V1 with a minor code fix that gets the correct answer
         #
         # Result:
-        #     py -3.6 pacman.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
+        #     py -3.6 agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
         #         Result:
         #             Pacman emerges victorious! Score: 532
         #             Average Score: 532.0
@@ -984,15 +985,15 @@ class AgentPacmanMinimax(AgentPacman):
         #             *** FAIL: test_cases\q2\2-4b-vary-depth.test
         #             *** FAIL: test_cases\q2\2-one-ghost-3level.test
         #             *** PASS: test_cases\q2\3-one-ghost-4level.test
-        #             *** PASS: test_cases\q2\4-two-ghosts-3level.test
-        #             *** FAIL: test_cases\q2\5-two-ghosts-4level.test
+        #             *** PASS: test_cases\q2\4-two-list_agent_ghost-3level.test
+        #             *** FAIL: test_cases\q2\5-two-list_agent_ghost-4level.test
         #             *** FAIL: test_cases\q2\6-tied-root.test
         #             *** FAIL: test_cases\q2\7-1a-check-depth-one-ghost.test
         #             *** PASS: test_cases\q2\7-1b-check-depth-one-ghost.test
         #             *** FAIL: test_cases\q2\7-1c-check-depth-one-ghost.test
-        #             *** FAIL: test_cases\q2\7-2a-check-depth-two-ghosts.test
-        #             *** PASS: test_cases\q2\7-2b-check-depth-two-ghosts.test
-        #             *** FAIL: test_cases\q2\7-2c-check-depth-two-ghosts.test
+        #             *** FAIL: test_cases\q2\7-2a-check-depth-two-list_agent_ghost.test
+        #             *** PASS: test_cases\q2\7-2b-check-depth-two-list_agent_ghost.test
+        #             *** FAIL: test_cases\q2\7-2c-check-depth-two-list_agent_ghost.test
         #             ...
         #             RecursionError: maximum recursion depth exceeded in comparison
         # """
@@ -1047,15 +1048,15 @@ class AgentPacmanMinimax(AgentPacman):
                 *** PASS: test_cases\q2\2-4b-vary-depth.test
                 *** PASS: test_cases\q2\2-one-ghost-3level.test
                 *** PASS: test_cases\q2\3-one-ghost-4level.test
-                *** PASS: test_cases\q2\4-two-ghosts-3level.test
-                *** PASS: test_cases\q2\5-two-ghosts-4level.test
+                *** PASS: test_cases\q2\4-two-list_agent_ghost-3level.test
+                *** PASS: test_cases\q2\5-two-list_agent_ghost-4level.test
                 *** PASS: test_cases\q2\6-tied-root.test
                 *** PASS: test_cases\q2\7-1a-check-depth-one-ghost.test
                 *** PASS: test_cases\q2\7-1b-check-depth-one-ghost.test
                 *** PASS: test_cases\q2\7-1c-check-depth-one-ghost.test
-                *** PASS: test_cases\q2\7-2a-check-depth-two-ghosts.test
-                *** PASS: test_cases\q2\7-2b-check-depth-two-ghosts.test
-                *** PASS: test_cases\q2\7-2c-check-depth-two-ghosts.test
+                *** PASS: test_cases\q2\7-2a-check-depth-two-list_agent_ghost.test
+                *** PASS: test_cases\q2\7-2b-check-depth-two-list_agent_ghost.test
+                *** PASS: test_cases\q2\7-2c-check-depth-two-list_agent_ghost.test
                 *** Running AgentPacmanMinimax on smallClassic 1 time(s).
                 Pacman died! Score: 84
                 Average Score: 84.0
@@ -1064,7 +1065,7 @@ class AgentPacmanMinimax(AgentPacman):
                 Record:        Loss
                 *** Finished running AgentPacmanMinimax on smallClassic after 0 seconds.
                 *** Won 0 out of 1 games. Average score: 84.000000 ***
-                *** PASS: test_cases\q2\8-pacman-game.test
+                *** PASS: test_cases\q2\8-agent_pacman_-game.test
 
                 ### Question q2: 5/5 ###
 

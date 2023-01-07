@@ -21,6 +21,6 @@ Tags:
 Reference:
 
 """
-SCARED_TIME = 40  # Moves ghosts are scared
-COLLISION_TOLERANCE = 0.7  # How close ghosts must be to AgentPacman to kill
+SCARED_TIME = 40  # Moves list_agent_ghost are scared
+COLLISION_TOLERANCE = 0.7  # How close list_agent_ghost must be to AgentPacman to kill
 TIME_PENALTY = 1  # Number of points lost each round

@@ -469,7 +469,7 @@ def image(pos, file="../../blueghost.gif"):
 #     while e[0] > e[1]:
 #         e[1] = e[1] + 360
 #
-#     if os.path.isfile('flag'):
+#     if os.path_file_test.isfile('flag'):
 #         edit(id, ('extent', e[1] - e[0]))
 #     else:
 #         edit(id, ('start', e[0]), ('extent', e[1] - e[0]))

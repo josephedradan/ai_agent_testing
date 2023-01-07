@@ -98,9 +98,9 @@ class PositionSearchProblem(SearchProblem):
     """
     A search problem defines the state space, start state, goal test, successor
     function and cost function.  This search problem can be used to find paths
-    to a particular point on the pacman board.
+    to a particular point on the agent_pacman_ board.
 
-    The state space consists of (x,y) positions in a pacman game.
+    The state space consists of (x,y) positions in a agent_pacman_ game.
 
     Note: this search problem is fully specified; you should NOT change it.
     """
@@ -109,7 +109,7 @@ class PositionSearchProblem(SearchProblem):
         """
         Stores the start and goal.
 
-        gameState: A GameState object (pacman.py)
+        gameState: A GameState object (agent_pacman_.py)
         costFn: A function from a search state (tuple) to a non-negative number
         goal: A position in the gameState
         """
@@ -196,7 +196,7 @@ class PositionSearchProblem(SearchProblem):
 
 def _get_path_distance(position_initial: tuple, permutation: Iterable):
     """
-    Given a path (iterable of position), find the distance for those positions starting from the state.position
+    Given a path_file_test (iterable of position), find the distance for those positions starting from the state.position
 
     :param position_initial:
     :param permutation:
@@ -311,7 +311,7 @@ class CornersProblem(SearchProblem):
 
     def __init__(self, startingGameState):
         """
-        Stores the walls, pacman's starting position and corners.
+        Stores the walls, agent_pacman_'s starting position and corners.
         """
         super().__init__()
         self.walls = startingGameState.getWalls()
@@ -576,7 +576,7 @@ def _get_heuristic_cost_ucs_crude(grid_wall: List[List],
             queue.put(position_with_cost_new)
 
     """
-    ** Return None if a path was not possible therefore a heuristic value cannot be calculated  
+    ** Return None if a path_file_test was not possible therefore a heuristic value cannot be calculated  
     If you return 0 then you will be lying, In reality, you need to return infinity
     """
     return None
@@ -703,7 +703,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
       problem: The CornersProblem instance for this layout.
 
     This function should always return a number that is a lower bound on the
-    shortest path from the state to a goal of the problem; i.e.  it should be
+    shortest path_file_test from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
     """
     corners: tuple = problem.corners  # These are the position_corner_local_shortest coordinates
@@ -735,14 +735,14 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     #
     # Points: 0
     # Notes:
-    #     Because of 4 corners, the distance_total will be the same until pacman gets one of the corners
+    #     Because of 4 corners, the distance_total will be the same until agent_pacman_ gets one of the corners
     # Result:
     #     *** FAIL: Inadmissible heuristic
     #     *** FAIL: Inadmissible heuristic
     #     *** FAIL: inconsistent heuristic
     #     *** PASS: Heuristic resulted in expansion of 505 nodes  # 890 nodes for euclidean
     # """
-    # print("{:<10}{}".format(str(distance_total), str(dict_k_corner_v_distance_manhattan)))
+    # print("{:<10}{}".format(string_given(distance_total), string_given(dict_k_corner_v_distance_manhattan)))
     # return distance_total
 
     #####
@@ -774,7 +774,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     #     For all permutations:
     #         Get the manhattan distance starting from state.position traveling in the order of position corners
     #         inside of the the permutation
-    #     Select the path with shortest distance from the loop, but return the permutation of position corners instead.
+    #     Select the path_file_test with shortest distance from the loop, but return the permutation of position corners instead.
     #     Return the distance of the 0th index position corner in the permutation
     #
     #
@@ -794,7 +794,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     #                                         tuple_path_position_corner)
     #                                     )
     #
-    # # print("{:<30}{}".format(str(state.position),str(path_position_corner_shortest)))
+    # # print("{:<30}{}".format(string_given(state.position),string_given(path_position_corner_shortest)))
     # distance_position_corner_must_go_to = util.manhattanDistance(state.position, path_position_corner_shortest[0])
     #
     # return distance_position_corner_must_go_to
@@ -806,11 +806,11 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
         For all permutations:
             Get the manhattan distance starting from state.position traveling in the order of position corners
             inside of the the permutation
-        Select the path with shortest distance from the loop
-        Return path with shortest distance
+        Select the path_file_test with shortest distance from the loop
+        Return path_file_test with shortest distance
     Notes:
         Possibly better than V5 because this will get all paths and then select the shortest one at the cost of
-        memory and time because you need to calculate all permutations and do the path for each one.
+        memory and time because you need to calculate all permutations and do the path_file_test for each one.
 
     IMPORTANT NOTES:
         ONLY USE FOR SMALL GRIDS OR PERMUTATIONS WILL TAKE FOREVER.
@@ -843,7 +843,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     # IMPORTANT NOTES:
     #     YOU ARE GETTING THE IMMEDIATE DISTANCE SHORTEST AND IT'S POSITION CORNER TO EACH POSITION CORNER FROM YOUR
     #     POSITION CURRENT. THIS IS DIFFERENT FROM V4 BECAUSE YOU DON'T KNOW THAT YOUR IMMEDIATE DISTANCE SHORTEST
-    #     ACTUALLY LEADS TO THE DISTANCE SHORTEST FULL (Shortest path distance to all position corners).
+    #     ACTUALLY LEADS TO THE DISTANCE SHORTEST FULL (Shortest path_file_test distance to all position corners).
     #
     #     V4 DOES DISTANCE SHORTEST FULL, V5 IS JUST YOLO SELECT THE DISTANCE SHORTEST TO MAKE THE DISTANCE SHORTEST
     #     FULL VIA CALCULATING ALL POSSIBLE PERMUTATIONS OF PATHS AND THEIR DISTANCE SHORTEST FULL.
@@ -932,7 +932,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
-    A search problem for finding a path to any food.
+    A search problem for finding a path_file_test to any food.
 
     This search problem is just like the PositionSearchProblem, but has a
     different goal test, which you need to fill in below.  The state space and
@@ -1008,7 +1008,7 @@ def mazeDistance(point1, point2, gameState):
 
 class FoodSearchProblem:
     """
-    A search problem associated with finding the a path that collects all of the
+    A search problem associated with finding the a path_file_test that collects all of the
     food (dots) in a Pacman game.
 
     A search state in this problem is a tuple ( pacmanPosition, foodGrid ) where
@@ -1114,7 +1114,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem):
     #
     # IMPORTANT NOTES:
     #     state is not a HashableGoal but a tuple, therefore it is not possible to transfer information about where
-    #     the pacman has legitimately traveled to.
+    #     the agent_pacman_ has legitimately traveled to.
     #
     # """
     # set_position_food_location_remaining = set_position_food_location - set_position_food_location_visited
@@ -1126,7 +1126,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem):
     # r"""
     # V1
     #     Solve problem using V4 or V5 from the previous problem (Problem 6) which were to do the full
-    #     path to each position corner by making your corner
+    #     path_file_test to each position corner by making your corner
     #
     # Notes:
     #     Both V4 and V5 from Problem 6 have problems here...
@@ -1220,7 +1220,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem):
     # IMPORTANT NOTES:
     #     Using the max distance instead of min distance is essentially equivalent to returning the longest distance
     #     for the priority queue algorithm to then select the best of the (Big Heuristic Cost + Node Cost distance).
-    #     Returning the longest distance (Big Heuristic Cost) is like saying that the path you will
+    #     Returning the longest distance (Big Heuristic Cost) is like saying that the path_file_test you will
     #     make to that node is the worst. For the Priority queue, it will select the shortest of the longest
     #     distance sums (Node Cost + Heuristic Cost). The series of big Heuristic Costs in the PQ will give you a
     #     solution that expands the least amount of nodes. Longer distances are more influential than short
@@ -1307,7 +1307,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem):
 
         "Using the max distance instead of min distance is essentially equivalent to returning the longest distance
         for the priority queue algorithm to then select the best of the (Big Heuristic Cost + Node Cost distance). 
-        Returning the longest distance (Big Heuristic Cost) is like saying that the path you will 
+        Returning the longest distance (Big Heuristic Cost) is like saying that the path_file_test you will 
         make to that node is the worst. For the Priority queue, it will select the shortest of the longest 
         distance sums (Node Cost + Heuristic Cost). The series of big Heuristic Costs in the PQ will give you a 
         solution that expands the least amount of nodes. Longer distances are more influential than short 

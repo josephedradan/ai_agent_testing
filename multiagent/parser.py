@@ -17,12 +17,13 @@ import sys
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Union
 
 
 class ParseFile():
 
     def __init__(self, path):
-        # save the path to the test file
+        # save the path_file_test to the test file
         self.path = path
 
     @staticmethod
@@ -53,7 +54,7 @@ class ParseFile():
         str_file = self.get_str_no_comments(list_str)
 
         test['__raw_lines__'] = list_str
-        test['path'] = self.path
+        test['path_file_test'] = self.path
         test['__emit__'] = []
         lines = str_file.split('\n')
 
@@ -86,14 +87,31 @@ class ParseFile():
             raise Exception("Error parsing test file: {}".format(self.path))
         return test
 
+
+def get_dict_kwargs(string_given: Union[str, None]) -> Dict[str, Any]:
+    if string_given is None:
+        return {}
+
+    list_string: List[str] = string_given.split(',')
+    kwargs = {}
+
+    for string in list_string:
+        if '=' in string:
+            key, val = string.split('=')
+        else:
+            key, val = string, 1
+
+        kwargs[key] = val
+    return kwargs
+
 # TODO: JOSEPH NOT USED
-# def emitTestDict(dict_test, handle):
-#     for kind, data in dict_test['__emit__']:
+# def emitTestDict(dict_file_test, handle):
+#     for kind, data in dict_file_test['__emit__']:
 #         if kind == "raw":
 #             handle.write(data + "\n")
 #         elif kind == "oneline":
-#             handle.write('%s: "%s"\n' % (data, dict_test[data]))
+#             handle.write('%s: "%s"\n' % (data, dict_file_test[data]))
 #         elif kind == "multiline":
-#             handle.write('%s: """\n%s\n"""\n' % (data, dict_test[data]))
+#             handle.write('%s: """\n%s\n"""\n' % (data, dict_file_test[data]))
 #         else:
 #             raise Exception("Bad __emit__")

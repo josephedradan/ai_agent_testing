@@ -72,7 +72,7 @@ DICT_K_NAME_V_AGENT = {
 }
 
 
-def get_agent(name_agent: Union[str, Type[Agent], None]) -> Type[Agent]:
+def get_class_agent(name_agent: Union[str, Type[Agent], None]) -> Type[Agent]:
     agent_ = name_agent
 
     if isinstance(name_agent, str):

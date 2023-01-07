@@ -37,7 +37,7 @@ if TYPE_CHECKING:
 
 class PacmanRules(RulesAgent):
     """
-    These functions govern how pacman interacts with his environment under
+    These functions govern how agent_pacman_ interacts with his environment under
     the classic game rules.
     """
     PACMAN_SPEED = 1
@@ -88,6 +88,6 @@ class PacmanRules(RulesAgent):
         if (position in state.getCapsules()):
             state.data.capsules.remove(position)
             state.data._capsuleEaten = position
-            # Reset all ghosts' scared timers
+            # Reset all list_agent_ghost' scared timers
             for index in range(1, len(state.data.agentStates)):
                 state.data.agentStates[index].scaredTimer = SCARED_TIME

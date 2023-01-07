@@ -115,7 +115,7 @@ def dfs_recursive_problem_main(problem: SearchProblem) -> List[str]:
                 if result is True:
                     return result
 
-                # If the added str_direction_current did not lead to the correct path, then pop it
+                # If the added str_direction_current did not lead to the correct path_file_test, then pop it
                 list_str_direction_answer.pop()
 
     # ----- Initialization -----
@@ -298,7 +298,7 @@ class Container:
 
     def get_path(self) -> List[str]:
         """
-        Get path to self.position by repeating the process of getting the container_parent and getting its direction
+        Get path_file_test to self.position by repeating the process of getting the container_parent and getting its direction
         and adding it into a list.
 
         Once all the list has been constructed, reverse that list because the list was constructed by going backwards
@@ -458,10 +458,10 @@ def depthFirstSearch(problem: SearchProblem) -> List[str]:
     # print()
 
     # Version 1 (DFS Recursive)
-    # solution: List[str] = dfs_recursive_problem_main(problem)
+    # solution: List[string_given] = dfs_recursive_problem_main(problem)
 
     # Version 2 (DFS Iterative that mimics DFS Recursive)
-    # solution: List[str] = dfs_iterative_problem_main(problem)
+    # solution: List[string_given] = dfs_iterative_problem_main(problem)
 
     # Version 3 (Generic Iterative)
     solution: List[str] = generic_search_algorithm_base(problem, util.Stack)

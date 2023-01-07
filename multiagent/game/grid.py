@@ -36,7 +36,7 @@ class Grid:
     via grid[x][y] where (x,y) are positions on a Pacman map with x horizontal,
     y vertical and the origin (0,0) in the bottom left corner.
 
-    The __str__ method constructs an output that is oriented like a pacman board.
+    The __str__ method constructs an output that is oriented like a agent_pacman_ board.
     """
 
     def __init__(self, width, height, initialValue=False, bitRepresentation=None):
@@ -69,7 +69,7 @@ class Grid:
         return self.data == other.data
 
     def __hash__(self):
-        # return hash(str(self))
+        # return hash(string_given(self))
         base = 1
         h = 0
         for l in self.data:

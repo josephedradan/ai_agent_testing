@@ -2,208 +2,36 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0cec50b-c8ad-41f3-9f76-402ae0d958a7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/multiagent/auto_grader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/_question.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/_question.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/_test_case.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/_test_case.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_expectimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_expectimax.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_minimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_minimax.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_minimax_alpha_beta.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_minimax_alpha_beta.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/agent_pacman_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/agent_pacman_search.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/evaluation_function/evaluation_function_better.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/evaluation_function/evaluation_function_better.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/agent/evaluation_function/evaluation_function_food_and_ghost.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/evaluation_function/evaluation_function_food_and_ghost.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/agent/problem/agent_pacman__search_problem.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/agent/problem/agent_pacman__search_problem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/auto_grader.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/auto_grader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/autograder.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/autograder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/game/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/grading.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/grader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/gamestate.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/gamestate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/gamestatedate.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/gamestatedate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/grid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/layout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/rules/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/rules/common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/rules/rules_ghost.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/rules/rules_ghost.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/game/rules/rules_pacman.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/game/rules/rules_pacman.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/grader.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/grader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/graphics/graphicsDisplay.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/graphics/graphicsDisplay.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/graphics/graphicsUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/graphics/graphicsUtils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/multiAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/multiAgents.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/multiagentTestClasses.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/multiagentTestClasses.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/pacman.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/pacman.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/parse_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/parse_file.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/parse_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiagent/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/search.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/searchAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/searchAgents.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/CONFIG" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/CONFIG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/extra/CONFIG" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/extra/CONFIG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/extra/grade-agent.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/extra/grade-agent.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q1/CONFIG" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q1/CONFIG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q1/grade-agent.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q1/grade-agent.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q1/grade-agent.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q1/grade-agent.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-eval-function-lose-states-1.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-eval-function-lose-states-1.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-eval-function-lose-states-1.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-eval-function-lose-states-1.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-eval-function-lose-states-2.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-eval-function-lose-states-2.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-eval-function-lose-states-2.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-eval-function-lose-states-2.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-eval-function-win-states-1.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-eval-function-win-states-1.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-eval-function-win-states-1.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-eval-function-win-states-1.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-eval-function-win-states-2.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-eval-function-win-states-2.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-eval-function-win-states-2.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-eval-function-win-states-2.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-lecture-6-tree.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-lecture-6-tree.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-lecture-6-tree.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-lecture-6-tree.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-small-tree.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-small-tree.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/0-small-tree.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/0-small-tree.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-1-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-1-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-1-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-1-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-2-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-2-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-2-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-2-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-3-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-3-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-3-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-3-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-4-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-4-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-4-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-4-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-5-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-5-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-5-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-5-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-6-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-6-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-6-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-6-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-7-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-7-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-7-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-7-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-8-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-8-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/1-8-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/1-8-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-1a-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-1a-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-1a-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-1a-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-1b-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-1b-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-1b-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-1b-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-2a-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-2a-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-2a-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-2a-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-2b-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-2b-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-2b-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-2b-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-3a-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-3a-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-3a-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-3a-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-3b-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-3b-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-3b-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-3b-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-4a-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-4a-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-4a-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-4a-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-4b-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-4b-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-4b-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-4b-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-one-ghost-3level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-one-ghost-3level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/2-one-ghost-3level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/2-one-ghost-3level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/3-one-ghost-4level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/3-one-ghost-4level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/3-one-ghost-4level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/3-one-ghost-4level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/4-two-ghosts-3level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/4-two-ghosts-3level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/4-two-ghosts-3level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/4-two-ghosts-3level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/5-two-ghosts-4level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/5-two-ghosts-4level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/5-two-ghosts-4level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/5-two-ghosts-4level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/6-tied-root.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/6-tied-root.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/6-tied-root.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/6-tied-root.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-1a-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-1a-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-1a-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-1a-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-1b-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-1b-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-1b-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-1b-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-1c-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-1c-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-1c-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-1c-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-2a-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-2a-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-2a-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-2a-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-2b-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-2b-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-2b-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-2b-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-2c-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-2c-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/7-2c-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/7-2c-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/8-pacman-game.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/8-pacman-game.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/8-pacman-game.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/8-pacman-game.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q2/CONFIG" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q2/CONFIG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-eval-function-lose-states-1.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-eval-function-lose-states-1.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-eval-function-lose-states-1.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-eval-function-lose-states-1.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-eval-function-lose-states-2.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-eval-function-lose-states-2.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-eval-function-lose-states-2.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-eval-function-lose-states-2.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-eval-function-win-states-1.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-eval-function-win-states-1.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-eval-function-win-states-1.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-eval-function-win-states-1.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-eval-function-win-states-2.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-eval-function-win-states-2.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-eval-function-win-states-2.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-eval-function-win-states-2.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-lecture-6-tree.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-lecture-6-tree.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-lecture-6-tree.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-lecture-6-tree.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-small-tree.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-small-tree.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/0-small-tree.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/0-small-tree.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-1-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-1-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-1-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-1-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-2-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-2-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-2-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-2-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-3-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-3-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-3-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-3-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-4-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-4-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-4-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-4-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-5-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-5-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-5-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-5-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-6-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-6-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-6-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-6-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-7-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-7-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-7-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-7-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-8-minmax.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-8-minmax.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/1-8-minmax.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/1-8-minmax.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-1a-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-1a-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-1a-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-1a-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-1b-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-1b-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-1b-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-1b-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-2a-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-2a-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-2a-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-2a-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-2b-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-2b-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-2b-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-2b-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-3a-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-3a-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-3a-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-3a-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-3b-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-3b-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-3b-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-3b-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-4a-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-4a-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-4a-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-4a-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-4b-vary-depth.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-4b-vary-depth.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-4b-vary-depth.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-4b-vary-depth.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-one-ghost-3level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-one-ghost-3level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/2-one-ghost-3level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/2-one-ghost-3level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/3-one-ghost-4level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/3-one-ghost-4level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/3-one-ghost-4level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/3-one-ghost-4level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/4-two-ghosts-3level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/4-two-ghosts-3level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/4-two-ghosts-3level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/4-two-ghosts-3level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/5-two-ghosts-4level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/5-two-ghosts-4level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/5-two-ghosts-4level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/5-two-ghosts-4level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/6-tied-root.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/6-tied-root.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/6-tied-root.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/6-tied-root.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-1a-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-1a-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-1a-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-1a-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-1b-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-1b-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-1b-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-1b-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-1c-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-1c-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-1c-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-1c-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-2a-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-2a-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-2a-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-2a-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-2b-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-2b-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-2b-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-2b-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-2c-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-2c-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/7-2c-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/7-2c-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/8-pacman-game.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/8-pacman-game.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/8-pacman-game.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/8-pacman-game.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q3/CONFIG" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q3/CONFIG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-eval-function-lose-states-1.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-eval-function-lose-states-1.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-eval-function-lose-states-1.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-eval-function-lose-states-1.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-eval-function-lose-states-2.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-eval-function-lose-states-2.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-eval-function-lose-states-2.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-eval-function-lose-states-2.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-eval-function-win-states-1.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-eval-function-win-states-1.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-eval-function-win-states-1.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-eval-function-win-states-1.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-eval-function-win-states-2.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-eval-function-win-states-2.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-eval-function-win-states-2.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-eval-function-win-states-2.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-expectimax1.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-expectimax1.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/0-expectimax1.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/0-expectimax1.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/1-expectimax2.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/1-expectimax2.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/1-expectimax2.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/1-expectimax2.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/2-one-ghost-3level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/2-one-ghost-3level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/2-one-ghost-3level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/2-one-ghost-3level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/3-one-ghost-4level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/3-one-ghost-4level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/3-one-ghost-4level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/3-one-ghost-4level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/4-two-ghosts-3level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/4-two-ghosts-3level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/4-two-ghosts-3level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/4-two-ghosts-3level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/5-two-ghosts-4level.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/5-two-ghosts-4level.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/5-two-ghosts-4level.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/5-two-ghosts-4level.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-1a-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-1a-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-1a-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-1a-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-1b-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-1b-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-1b-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-1b-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-1c-check-depth-one-ghost.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-1c-check-depth-one-ghost.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-1c-check-depth-one-ghost.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-1c-check-depth-one-ghost.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-2a-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-2a-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-2a-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-2a-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-2b-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-2b-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-2b-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-2b-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-2c-check-depth-two-ghosts.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-2c-check-depth-two-ghosts.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/6-2c-check-depth-two-ghosts.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/6-2c-check-depth-two-ghosts.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/7-pacman-game.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/7-pacman-game.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/7-pacman-game.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/7-pacman-game.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q4/CONFIG" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q4/CONFIG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q5/CONFIG" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q5/CONFIG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q5/grade-agent.solution" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q5/grade-agent.solution" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/test_cases/q5/grade-agent.test" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/test_cases/multiagent/q5/grade-agent.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiagent/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +105,7 @@
       <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent\evaluation_function" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.autograder 2 test">
+  <component name="RunManager" selected="Python.pacman AgentPacmanMinimax">
     <configuration name="auto_grader" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ai_testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -531,27 +359,27 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/multiagent/autograder.py</url>
-          <line>267</line>
+          <line>271</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/multiagent/autograder.py</url>
-          <line>254</line>
+          <line>258</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/multiagent/autograder.py</url>
-          <line>492</line>
+          <line>531</line>
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/multiagent/autograder.py</url>
-          <line>116</line>
+          <line>115</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/multiagent/autograder.py</url>
-          <line>119</line>
+          <line>118</line>
           <option name="timeStamp" value="79" />
         </line-breakpoint>
       </breakpoints>
@@ -577,15 +405,15 @@
     <SUITE FILE_PATH="coverage/ai_testing$graphicsUtils.coverage" NAME="graphicsUtils Coverage Results" MODIFIED="1672055599554" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$run.coverage" NAME="run Coverage Results" MODIFIED="1672493921048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ai_testing$auto_grader.coverage" NAME="auto_grader Coverage Results" MODIFIED="1672925724863" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$autograder_3.coverage" NAME="autograder 3 Coverage Results" MODIFIED="1672990799805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanMinimax.coverage" NAME="pacman AgentPacmanMinimax Coverage Results" MODIFIED="1672390633401" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$autograder_3.coverage" NAME="autograder 3 Coverage Results" MODIFIED="1673084541711" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanMinimax.coverage" NAME="pacman AgentPacmanMinimax Coverage Results" MODIFIED="1673085162962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$layout.coverage" NAME="layout Coverage Results" MODIFIED="1670761515758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman__1_.coverage" NAME="pacman (1) Coverage Results" MODIFIED="1672224454142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$autograder.coverage" NAME="autograder Coverage Results" MODIFIED="1672990285530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$autograder.coverage" NAME="autograder Coverage Results" MODIFIED="1673084555293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanLeftTurn_.coverage" NAME="pacman AgentPacmanLeftTurn  Coverage Results" MODIFIED="1672228724382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$autograder_2_test.coverage" NAME="autograder 2 test Coverage Results" MODIFIED="1672990792083" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$autograder_2_test.coverage" NAME="autograder 2 test Coverage Results" MODIFIED="1673084547113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman.coverage" NAME="pacman Coverage Results" MODIFIED="1672821148810" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$autograder_ORIGINAL.coverage" NAME="autograder ORIGINAL Coverage Results" MODIFIED="1672925749975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
-    <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanGreedy_.coverage" NAME="pacman AgentPacmanGreedy  Coverage Results" MODIFIED="1672228638979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanGreedy_.coverage" NAME="pacman AgentPacmanGreedy  Coverage Results" MODIFIED="1673084459513" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
   </component>
 </project>

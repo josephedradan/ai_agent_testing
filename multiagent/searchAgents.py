@@ -14,11 +14,11 @@
 
 """
 This file contains all of the agents that can be selected to control Pacman.  To
-select an agent, use the '-p' option when running pacman.py.  Arguments can be
+select an agent, use the '-p' option when running agent_pacman_.py.  Arguments can be
 passed to your agent using '-a'.  For example, to load a SearchAgent that uses
 depth first search (dfs), run the following command:
 
-> python pacman.py -p SearchAgent -a fn=depthFirstSearch
+> python agent_pacman_.py -p SearchAgent -a fn=depthFirstSearch
 
 Commands to invoke other search strategies can be found in the name_project
 description.
@@ -35,7 +35,7 @@ Good luck and happy searching!
 """
 
 # import game
-# import pacman
+# import agent_pacman_
 # import search
 # import util
 from multiagent.agent import Agent
@@ -46,7 +46,7 @@ class GoWestAgent(Agent):
     "An agent that goes West until it can't."
 
     def getAction(self, state):
-        "The agent receives a GameState (defined in pacman.py)."
+        "The agent receives a GameState (defined in agent_pacman_.py)."
         if Directions.WEST in state.getLegalPacmanActions():
             return Directions.WEST
         else:
@@ -59,9 +59,9 @@ class GoWestAgent(Agent):
 
 # class SearchAgent(Agent):
 #     """
-#     This very general search agent finds a path using a supplied search
+#     This very general search agent finds a path_file_test using a supplied search
 #     algorithm for a supplied search problem, then returns actions to follow that
-#     path.
+#     path_file_test.
 #
 #     As a default, this agent runs DFS on a PositionSearchProblem to find
 #     location (1,1)
@@ -104,27 +104,27 @@ class GoWestAgent(Agent):
 #     def registerInitialState(self, state):
 #         """
 #         This is the first time that the agent sees the layout of the game
-#         board. Here, we choose a path to the goal. In this phase, the agent
-#         should compute the path to the goal and store it in a local variable.
+#         board. Here, we choose a path_file_test to the goal. In this phase, the agent
+#         should compute the path_file_test to the goal and store it in a local variable.
 #         All of the work is done in this method!
 #
-#         state: a GameState object (pacman.py)
+#         state: a GameState object (agent_pacman_.py)
 #         """
 #         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
 #         starttime = time.time()
 #         problem = self.searchType(state)  # Makes a new search problem
-#         self.actions = self.searchFunction(problem)  # Find a path
+#         self.actions = self.searchFunction(problem)  # Find a path_file_test
 #         totalCost = problem.getCostOfActions(self.actions)
 #         print('Path found with total cost of %d in %.1f seconds' % (totalCost, time.time() - starttime))
 #         if '_expanded' in dir(problem): print('Search nodes expanded: %d' % problem._expanded)
 #
 #     def getAction(self, state):
 #         """
-#         Returns the next action in the path chosen earlier (in
+#         Returns the next action in the path_file_test chosen earlier (in
 #         registerInitialState).  Return Directions.STOP if there is no further
 #         action to take.
 #
-#         state: a GameState object (pacman.py)
+#         state: a GameState object (agent_pacman_.py)
 #         """
 #         if 'actionIndex' not in dir(self):
 #             self.actionIndex = 0

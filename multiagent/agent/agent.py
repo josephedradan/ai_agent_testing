@@ -44,8 +44,11 @@ class Agent(ABC):
     def registerInitialState(self, game_state): # inspects the starting game_state
     """
 
-    def __init__(self, index: int):
+    def __init__(self, index: int, **kwargs):
         self.index = index
+
+        if kwargs:
+            raise Exception("ADDITIONAL KWARGS FOUND FIX THIS SHIT JOSEPH: {}".format(kwargs.items()))
 
         self._graphics: Union[Graphics, None] = None
 
@@ -57,7 +60,7 @@ class Agent(ABC):
     @abstractmethod
     def getAction(self, game_state: GameState) -> Action:
         """
-        The Agent will receive a GameState (from either {pacman, capture, sonar}.py) and
+        The Agent will receive a GameState (from either {agent_pacman_, capture, sonar}.py) and
         must return an action from Directions.{North, South, East, West, Stop}
         """
         pass

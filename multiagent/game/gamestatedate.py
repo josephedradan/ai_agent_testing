@@ -168,7 +168,7 @@ class GameStateData:
         for isPacman, pos in layout.agentPositions:
             if not isPacman:
                 if numGhosts == numGhostAgents:
-                    continue  # Max ghosts reached already
+                    continue  # Max list_agent_ghost reached already
                 else:
                     numGhosts += 1
             self.agentStates.append(AgentState(

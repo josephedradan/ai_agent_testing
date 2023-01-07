@@ -13,7 +13,7 @@
 
 
 # import modules from python standard library
-# Class which models a name_question in a name_project.  Note that questions have a
+# Class which models a str_question in a name_project.  Note that questions have a
 # maximum number of points they are worth, and are composed of a series of
 # test cases
 
@@ -38,7 +38,7 @@ def get_class_question_subclass(name_question_subclass: Union[str, Type[Question
     question_subclass = name_question_subclass
 
     if isinstance(name_question_subclass, str):
-        question_subclass = Question.DICT_K_NAME_QUESTION_SUBCLASSE_V_QUESTION_SUBCLASS.get(
+        question_subclass = Question.DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS.get(
             name_question_subclass
         )
 
@@ -49,15 +49,15 @@ def get_class_question_subclass(name_question_subclass: Union[str, Type[Question
 
 
 class Question(ABC):
-    DICT_K_NAME_QUESTION_SUBCLASSE_V_QUESTION_SUBCLASS = {}
+    DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS = {}
 
     def __init__(self, dict_question: Dict[str, Any], display: Graphics):
         self.POINTS_MAX: int = int(dict_question['max_points'])
-        self.testCases = []
+        self.list_tuple__test_case__test_case_execute_callable = []
         self.display: Graphics = display
 
     def __init_subclass__(cls, **kwargs):
-        cls.DICT_K_NAME_QUESTION_SUBCLASSE_V_QUESTION_SUBCLASS[cls.__name__] = cls
+        cls.DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS[cls.__name__] = cls
 
     # def raiseNotDefined(self):
     #     print('Method not implemented: %s' % inspect.stack()[1][3])
@@ -78,7 +78,7 @@ class Question(ABC):
         :param function:
         :return:
         """
-        self.testCases.append((test_case_object, function))
+        self.list_tuple__test_case__test_case_execute_callable.append((test_case_object, function))
 
     @abstractmethod
     def execute(self, grader: Grader):
@@ -92,7 +92,7 @@ class PassAllTestsQuestion(Question):
         # TODO: is this the right way to use grader?  The autograder doesn't seem to use it.
         testsFailed = False
         grader.assignZeroCredit()
-        for _, f in self.testCases:
+        for _, f in self.list_tuple__test_case__test_case_execute_callable:
             if not f(grader):
                 testsFailed = True
         if testsFailed:
@@ -111,7 +111,7 @@ class ExtraCreditPassAllTestsQuestion(Question):
         # TODO: is this the right way to use grader?  The autograder doesn't seem to use it.
         testsFailed = False
         grader.assignZeroCredit()
-        for _, f in self.testCases:
+        for _, f in self.list_tuple__test_case__test_case_execute_callable:
             if not f(grader):
                 testsFailed = True
         if testsFailed:
@@ -131,11 +131,11 @@ class HackedPartialCreditQuestion(Question):
 
         points = 0
         passed = True
-        for testCase, f in self.testCases:
+        for testCase, f in self.list_tuple__test_case__test_case_execute_callable:
             testResult = f(grader)
-            if "points" in testCase.dict_test:
+            if "points" in testCase.dict_file_test:
                 if testResult:
-                    points += float(testCase.dict_test["points"])
+                    points += float(testCase.dict_file_test["points"])
             else:
                 passed = passed and testResult
 
@@ -154,7 +154,7 @@ class Q6PartialCreditQuestion(Question):
         grader.assignZeroCredit()
 
         results = []
-        for _, f in self.testCases:
+        for _, f in self.list_tuple__test_case__test_case_execute_callable:
             results.append(f(grader))
         if False in results:
             grader.assignZeroCredit()
@@ -167,8 +167,8 @@ class PartialCreditQuestion(Question):
     def execute(self, grader: Grader):
         grader.assignZeroCredit()
 
-        for _, f in self.testCases:
-            if not f(grader):
+        for test_case_object, test_case_execute_callable in self.list_tuple__test_case__test_case_execute_callable:
+            if not test_case_execute_callable(grader):
                 grader.assignZeroCredit()
                 grader.fail("Tests failed.")
                 return False
@@ -178,4 +178,4 @@ class NumberPassedQuestion(Question):
     """Grade is the number of test cases passed."""
 
     def execute(self, grader: Grader):
-        grader.addPoints([f(grader) for _, f in self.testCases].count(True))
+        grader.addPoints([f(grader) for _, f in self.list_tuple__test_case__test_case_execute_callable].count(True))

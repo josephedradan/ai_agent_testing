@@ -33,13 +33,13 @@ class Grader:
     def __init__(self,
                  name_project: str,
                  list_str_question,
-                 bool_json_output: bool = False,
-                 bool_html_output: bool = False,
-                 bool_mute_output: bool = False):
+                 bool_output_json: bool = False,
+                 bool_output_html: bool = False,
+                 bool_output_mute: bool = False):
         """
         Defines the grading scheme for a name_project
           name_project: name_project test_case_object
-          questionsAndMaxesDict: a list of (name_question test_case_object, max points per name_question)
+          questionsAndMaxesDict: a list of (str_question test_case_object, max points per str_question)
         """
         self.questions: List[str] = [el[0] for el in list_str_question]  # TODO: Example: ['q1']
         self.maxes: Dict = dict(list_str_question)
@@ -48,10 +48,10 @@ class Grader:
         self.name_project: str = name_project
         self.start = time.localtime()[1:6]
         self.sane: bool = True  # Sanity checks
-        self.currentQuestion = None  # Which name_question we're grading
-        self.bool_html_output: bool = bool_html_output
-        self.bool_json_output: bool = bool_json_output  # GradeScope output
-        self.bool_mute_output: bool = bool_mute_output
+        self.currentQuestion = None  # Which str_question we're grading
+        self.bool_output_html: bool = bool_output_html
+        self.bool_output_json: bool = bool_output_json  # GradeScope output
+        self.bool_output_mute: bool = bool_output_mute
         self.prereqs: Dict[Hashable, set] = defaultdict(set)
 
         # print 'Autograder transcript for %s' % self.name_project
@@ -67,7 +67,7 @@ class Grader:
               bool_display_picture_bonus: bool = False
               ):
         """
-        Grader each name_question
+        Grader each str_question
           dict_k_name_question_v_callable: the module with all the grading functions (pass in with sys.modules[__name__])
         """
 
@@ -88,13 +88,13 @@ class Grader:
                       "*** because Question {} builds upon your answer for Question {}.".format(prereq, q, q, prereq))
                 continue
 
-            if self.bool_mute_output:
+            if self.bool_output_mute:
                 util.mutePrint()
             try:
-                # Call the name_question's function
+                # Call the str_question's function
                 # TimeoutFunction(getattr(dict_k_name_question_v_callable, q),1200)(self)
 
-                # Call the name_question's function
+                # Call the str_question's function
                 util.TimeoutFunction(dict_k_name_question_v_callable.get(q), 1800)(self)
 
             except Exception as inst:
@@ -103,7 +103,7 @@ class Grader:
             except:
                 self.fail('FAIL: Terminated with a string exception.')
             finally:
-                if self.bool_mute_output:
+                if self.bool_output_mute:
                     util.unmutePrint()
 
             if self.points[q] >= self.maxes[q]:
@@ -160,9 +160,9 @@ class Grader:
         print("self.prereqs", self.prereqs)
 
 
-        if self.bool_html_output:
+        if self.bool_output_html:
             self.produceOutput()
-        if self.bool_json_output:
+        if self.bool_output_json:
             self.produceGradeScopeOutput()
 
     def addExceptionMessage(self, q, inst, traceback):
@@ -180,12 +180,12 @@ class Grader:
         questionName = 'q' + questionNum
         errorHint = ''
 
-        # name_question specific error hints
+        # str_question specific error hints
         if exceptionMap.get(questionName):
             questionMap = exceptionMap.get(questionName)
             if (questionMap.get(typeOf)):
                 errorHint = questionMap.get(typeOf)
-        # fall back to general error messages if a name_question specific
+        # fall back to general error messages if a str_question specific
         # one does not exist
         if (exceptionMap.get(typeOf)):
             errorHint = exceptionMap.get(typeOf)
@@ -313,10 +313,10 @@ class Grader:
     def addMessage(self, message, raw=False):
         if not raw:
             # We assume raw messages, formatted for HTML, are printed separately
-            if self.bool_mute_output:
+            if self.bool_output_mute:
                 util.unmutePrint()
             print('*** ' + message)
-            if self.bool_mute_output:
+            if self.bool_output_mute:
                 util.mutePrint()
             message = html.escape(message)
         self.messages[self.currentQuestion].append(message)

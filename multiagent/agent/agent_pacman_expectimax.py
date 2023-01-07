@@ -48,7 +48,7 @@ def _dfs_recursive_expectimax_v1_handler(game_state: GameState,
                 https://youtu.be/jaFRyzp7yWw?t=707
     """
 
-    # Check if game is over via pacman dead or pacman got all food and survived
+    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
     if game_state.isWin() or game_state.isLose() or depth <= 0:
         score = function_evaluation(game_state, None)
 
@@ -167,14 +167,14 @@ def dfs_recursive_expectimax_v1(game_state: GameState,
 
 class AgentPacmanExpectimax(AgentPacman):
     """
-      Your expectimax agent (name_question 4)
+      Your expectimax agent (str_question 4)
     """
 
     def getAction(self, gameState):
         """
         Returns the expectimax action using self.depth and self.evaluationFunction
 
-        All ghosts should be modeled as choosing uniformly at random from their
+        All list_agent_ghost should be modeled as choosing uniformly at random from their
         legal moves.
         """
         "*** YOUR CODE HERE ***"
@@ -222,14 +222,14 @@ class AgentPacmanExpectimax(AgentPacman):
                 *** PASS: test_cases\q4\1-expectimax2.test
                 *** PASS: test_cases\q4\2-one-ghost-3level.test
                 *** PASS: test_cases\q4\3-one-ghost-4level.test
-                *** PASS: test_cases\q4\4-two-ghosts-3level.test
-                *** PASS: test_cases\q4\5-two-ghosts-4level.test
+                *** PASS: test_cases\q4\4-two-list_agent_ghost-3level.test
+                *** PASS: test_cases\q4\5-two-list_agent_ghost-4level.test
                 *** PASS: test_cases\q4\6-1a-check-depth-one-ghost.test
                 *** PASS: test_cases\q4\6-1b-check-depth-one-ghost.test
                 *** PASS: test_cases\q4\6-1c-check-depth-one-ghost.test
-                *** PASS: test_cases\q4\6-2a-check-depth-two-ghosts.test
-                *** PASS: test_cases\q4\6-2b-check-depth-two-ghosts.test
-                *** PASS: test_cases\q4\6-2c-check-depth-two-ghosts.test
+                *** PASS: test_cases\q4\6-2a-check-depth-two-list_agent_ghost.test
+                *** PASS: test_cases\q4\6-2b-check-depth-two-list_agent_ghost.test
+                *** PASS: test_cases\q4\6-2c-check-depth-two-list_agent_ghost.test
                 *** Running AgentPacmanExpectimax on smallClassic 1 time(s).
                 Pacman died! Score: 84
                 Average Score: 84.0
@@ -238,7 +238,7 @@ class AgentPacmanExpectimax(AgentPacman):
                 Record:        Loss
                 *** Finished running AgentPacmanExpectimax on smallClassic after 0 seconds.
                 *** Won 0 out of 1 games. Average score: 84.000000 ***
-                *** PASS: test_cases\q4\7-pacman-game.test
+                *** PASS: test_cases\q4\7-agent_pacman_-game.test
 
                 ### Question q4: 5/5 ###
 

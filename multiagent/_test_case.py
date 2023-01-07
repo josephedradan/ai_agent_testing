@@ -39,18 +39,20 @@ from typing import TYPE_CHECKING
 from multiagent import pacman
 from multiagent.agent import *
 from multiagent.game import layout
-from multiagent.game.gamestate import GameState
 from multiagent.multiagentTestClasses import GradingAgent
 
 if TYPE_CHECKING:
+    from multiagent.game.gamestate import GameState
     from multiagent._question import Question
+    from multiagent.grader import Grader
 
 
 class PolyAgent(Agent):
-    def __init__(self, seed, multiAgents, ourPacOptions, depth):
-        # prepare our pacman agents
+    def __init__(self, seed, ourPacOptions, depth):
+
+        # prepare our agent_pacman_ agents
         solutionAgents, alternativeDepthAgents, partialPlyBugAgents = self.construct_our_pacs(
-            multiAgents,
+            # multiAgents,
             ourPacOptions
         )
 
@@ -78,24 +80,33 @@ class PolyAgent(Agent):
         """
         return [list[i] for i in indices]
 
-    def construct_our_pacs(self, multiAgents, keyword_dict):
+    def construct_our_pacs(self, keyword_dict):
 
-        pacs_without_stop = [multiAgents.StaffMultiAgentSearchAgent(
-            **keyword_dict) for i in range(3)]
+        multiAgents = None
+
+        pacs_without_stop = [multiAgents.StaffMultiAgentSearchAgent(**keyword_dict) for i in range(3)]
+
         keyword_dict['keepStop'] = 'True'
-        pacs_with_stop = [multiAgents.StaffMultiAgentSearchAgent(
-            **keyword_dict) for i in range(3)]
+
+        pacs_with_stop = [multiAgents.StaffMultiAgentSearchAgent(**keyword_dict) for i in range(3)]
+
         keyword_dict['usePartialPlyBug'] = 'True'
-        partial_ply_bug_pacs = [
-            multiAgents.StaffMultiAgentSearchAgent(**keyword_dict)]
+
+        partial_ply_bug_pacs = [multiAgents.StaffMultiAgentSearchAgent(**keyword_dict)]
+
         keyword_dict['keepStop'] = 'False'
-        partial_ply_bug_pacs = partial_ply_bug_pacs + \
-                               [multiAgents.StaffMultiAgentSearchAgent(**keyword_dict)]
+
+        partial_ply_bug_pacs = (
+                partial_ply_bug_pacs +
+                [multiAgents.StaffMultiAgentSearchAgent(**keyword_dict)]
+        )
         for pac in pacs_with_stop + pacs_without_stop + partial_ply_bug_pacs:
             pac.verbose = False
+
         ourpac = [pacs_with_stop[0], pacs_without_stop[0]]
-        alternative_depth_pacs = self.select(
-            pacs_with_stop + pacs_without_stop, [1, 4, 2, 5])
+
+        alternative_depth_pacs = self.select(pacs_with_stop + pacs_without_stop, [1, 4, 2, 5])
+
         return (ourpac, alternative_depth_pacs, partial_ply_bug_pacs)
 
     def registerInitialState(self, state):
@@ -134,14 +145,24 @@ def run(lay, layName, pac, ghosts, disp, nGames=1, name='games'):
     """
     starttime = time.time()
     print('*** Running %s on' % name, layName, '%d time(s).' % nGames)
-    games = pacman.runGames(lay, pac, ghosts, disp,
-                            nGames, False, catchExceptions=True, timeout=120)
+    games = pacman.run_games(
+        lay,
+        pac,
+        ghosts,
+        disp,
+        nGames,
+        False,
+        bool_catch_exceptions=True,
+        timeout=120
+    )
     print('*** Finished running %s on' % name, layName,
           'after %d seconds.' % (time.time() - starttime))
+
     stats = {'time': time.time() - starttime, 'wins': [g.state.isWin() for g in games].count(True), 'games': games,
              'scores': [g.state.getScore() for g in games],
              'timeouts': [g.agentTimeout for g in games].count(True),
              'crashes': [g.agentCrashed for g in games].count(True)}
+
     print('*** Won %d out of %d games. Average score: %f ***' %
           (stats['wins'], len(games), sum(stats['scores']) * 1.0 / len(games)))
     return stats
@@ -171,27 +192,29 @@ class TestCase(ABC):
     def __init_subclass__(cls, **kwargs):
         cls.DICT_K_NAME_TEST_CASE_SUBCLASS_V_TEST_CASE_SUBCLASS[cls.__name__] = cls
 
-    def __init__(self, question: Question, testDict: Dict[str, Any]):
+    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
+        print("dict_file_test")
+        pprint(dict_file_test)
         self.question: Question = question
-        self.dict_test: Dict[str, Any] = testDict
-        self.path: str = testDict['path']
+        self.dict_file_test: Dict[str, Any] = dict_file_test
+        self.path_file_test: str = dict_file_test['path_file_test']
         self.messages: List[str] = []
 
     def getPath(self):
-        return self.path
+        return self.path_file_test
 
-    @abstractmethod
+    # @abstractmethod
     # def __str__(self):
     #     pass
     #     # self.raiseNotDefined()
 
     @abstractmethod
-    def execute(self, grades, moduleDict, solutionDict):
+    def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
         pass
         # self.raiseNotDefined()
 
     @abstractmethod
-    def writeSolution(self, moduleDict, filePath):
+    def writeSolution(self, filePath):
         pass
         # self.raiseNotDefined()
         # return True
@@ -200,28 +223,28 @@ class TestCase(ABC):
     # to ensure a uniform format for test output.
     #
     # TODO: this is hairy, but we need to fix grading.py's interface
-    # to get a nice hierarchical name_project - name_question - test structure,
+    # to get a nice hierarchical name_project - str_question - test structure,
     # then these should be moved into Question proper.
     def testPass(self, grades):
-        grades.addMessage('PASS: %s' % (self.path,))
+        grades.addMessage('PASS: %s' % (self.path_file_test,))
         for line in self.messages:
             grades.addMessage('    %s' % (line,))
         return True
 
     def testFail(self, grades):
-        grades.addMessage('FAIL: %s' % (self.path,))
+        grades.addMessage('FAIL: %s' % (self.path_file_test,))
         for line in self.messages:
             grades.addMessage('    %s' % (line,))
         return False
 
-    # This should really be name_question level?
-    def testPartial(self, grades, points, maxPoints):
+    # This should really be str_question level?
+    def testPartial(self, grades, points, maxPoints) -> bool:
         grades.addPoints(points)
         extraCredit = max(0, points - maxPoints)
         regularCredit = points - extraCredit
 
         grades.addMessage('%s: %s (%s of %s points)' % (
-            "PASS" if points >= maxPoints else "FAIL", self.path, regularCredit, maxPoints))
+            "PASS" if points >= maxPoints else "FAIL", self.path_file_test, regularCredit, maxPoints))
         if extraCredit > 0:
             grades.addMessage('EXTRA CREDIT: %s points' % (extraCredit,))
 
@@ -236,35 +259,36 @@ class TestCase(ABC):
 
 class PacmanGameTreeTest(TestCase):
 
-    def __init__(self, question: Question, testDict: Dict[str, Any]):
-        super(PacmanGameTreeTest, self).__init__(question, testDict)
-        self.seed: int = int(self.dict_test['seed'])
-        self.class_agent: Type[Agent] = self.dict_test['alg']
-        self.layout_text: str = self.dict_test['layout']
-        self.layout_name: str = self.dict_test['layoutName']
-        self.depth: int = int(self.dict_test['depth'])
-        self.max_points: int = int(self.dict_test['max_points'])
+    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
+        super(PacmanGameTreeTest, self).__init__(question, dict_file_test)
+        self.seed: int = int(self.dict_file_test['seed'])
+        self.class_agent: Type[Agent] = self.dict_file_test['alg']
+        self.layout_text: str = self.dict_file_test['layout']
+        self.layout_name: str = self.dict_file_test['layoutName']
+        self.depth: int = int(self.dict_file_test['depth'])
+        self.max_points: int = int(self.dict_file_test['max_points'])
 
-    def execute(self, grades, moduleDict, solutionDict):
+    def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
         # load student code and staff code solutions
-        multiAgents = moduleDict['projectTestClasses']
-        # agent = getattr(multiAgents, self.class_agent)(depth=self.depth)
 
-        agent: Agent = get_agent(self.class_agent)(depth=self.depth)
+        # multiAgents = moduleDict['projectTestClasses']
+        # agent_ = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
+
+        agent_: Agent = get_class_agent(self.class_agent)(depth=self.depth)
 
         allActions = [json.loads(x)
-                      for x in solutionDict['optimalActions'].split('\n')]
+                      for x in dict_file_solution['optimalActions'].split('\n')]
         altDepthActions = [json.loads(
-            x) for x in solutionDict['altDepthActions'].split('\n')]
+            x) for x in dict_file_solution['altDepthActions'].split('\n')]
         partialPlyBugActions = [json.loads(
-            x) for x in solutionDict['partialPlyBugActions'].split('\n')]
+            x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
         # set up game game_state and play a game
         random.seed(self.seed)
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
 
         pac = GradingAgent(
             self.seed,
-            agent,
+            agent_,
             allActions,
             altDepthActions,
             partialPlyBugActions
@@ -272,37 +296,43 @@ class PacmanGameTreeTest(TestCase):
 
         # check return codes and assign grader
         disp = self.question.get_display()
-        stats = run(lay, self.layout_name, pac, [AgentGhostDirectional(i + 1) for i in range(2)], disp,
-                    name=self.class_agent)
+        stats = run(
+            lay,
+            self.layout_name,
+            pac,
+            [AgentGhostDirectional(i + 1) for i in range(2)],
+            disp,
+            name=self.class_agent
+        )
 
         if stats['timeouts'] > 0:
             self.addMessage('Agent timed out on smallClassic.  No credit')
-            return self.testFail(grades)
+            return self.testFail(grader)
         if stats['crashes'] > 0:
             self.addMessage('Agent crashed on smallClassic.  No credit')
-            return self.testFail(grades)
+            return self.testFail(grader)
         code = pac.checkFailure()
         if code == 0:
-            return self.testPass(grades)
+            return self.testPass(grader)
         elif code == -3:
             if pac.getWrongStatesExplored() >= 0:
                 self.addMessage('Bug: Wrong number of states expanded.')
-                return self.testFail(grades)
+                return self.testFail(grader)
             else:
-                return self.testPass(grades)
+                return self.testPass(grader)
         elif code == -2:
             self.addMessage('Bug: Partial Ply Bug')
-            return self.testFail(grades)
+            return self.testFail(grader)
         elif code == -1:
             self.addMessage('Bug: Search depth off by 1')
-            return self.testFail(grades)
+            return self.testFail(grader)
         elif code > 0:
             moves = pac.getSuboptimalMoves()
             state, studentMove, optMove = random.choice(moves)
             self.addMessage('Bug: Suboptimal moves')
             self.addMessage('State:%s\nStudent Move:%s\nOptimal Move:%s' % (
                 state, studentMove, optMove))
-            return self.testFail(grades)
+            return self.testFail(grader)
 
     def writeList(self, handle, name, list):
         handle.write('%s: """\n' % name)
@@ -310,9 +340,9 @@ class PacmanGameTreeTest(TestCase):
             handle.write('%s\n' % json.dumps(l))
         handle.write('"""\n')
 
-    def writeSolution(self, moduleDict, filePath):
-        # load module, set seed, create ghosts and macman, run game
-        multiAgents = moduleDict['projectTestClasses']
+    def writeSolution(self, filePath):
+        # load module, set seed, create list_agent_ghost and macman, run game
+        # multiAgents = moduleDict['projectTestClasses']
 
         random.seed(self.seed)
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
@@ -323,9 +353,9 @@ class PacmanGameTreeTest(TestCase):
         else:
             ourPacOptions = {}
 
-        raise Exception("writeSolution CALLED")
+        # raise Exception("writeSolution CALLED")
 
-        pac = PolyAgent(self.seed, multiAgents, ourPacOptions, self.depth)
+        pac = PolyAgent(self.seed, ourPacOptions, self.depth)
 
         disp = self.question.get_display()
         run(lay, self.layout_name, pac, [AgentGhostDirectional(
@@ -446,14 +476,16 @@ class GraphGameTreeTest(TestCase):
     def __init__(self, question: Question, dict_test: Dict[str, Any]):
         super(GraphGameTreeTest, self).__init__(question, dict_test)
         self.problem = parseTreeProblem(dict_test)
-        self.class_agent = self.dict_test['alg']
-        self.diagram = self.dict_test['diagram'].split('\n')
-        self.depth = int(self.dict_test['depth'])
+        self.class_agent = self.dict_file_test['alg']
+        self.diagram = self.dict_file_test['diagram'].split('\n')
+        self.depth = int(self.dict_file_test['depth'])
 
-    def solveProblem(self, multiAgents):
+    def solveProblem(self):
+
         self.problem.reset()
-        # studentAgent = getattr(multiAgents, self.class_agent)(depth=self.depth)
-        studentAgent = get_agent(self.class_agent)(depth=self.depth)
+        # studentAgent = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
+
+        studentAgent = get_class_agent(self.class_agent)(depth=self.depth)
 
         action = studentAgent.getAction(self.problem.startState)
         generated = self.problem.generatedStates
@@ -464,11 +496,12 @@ class GraphGameTreeTest(TestCase):
         for line in self.diagram:
             self.addMessage(line)
 
-    def execute(self, grades, moduleDict, solutionDict):
-        multiAgents = moduleDict['projectTestClasses']
-        goldAction = solutionDict['action']
-        goldGenerated = solutionDict['generated']
-        action, generated = self.solveProblem(multiAgents)
+    def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
+        # multiAgents = moduleDict['projectTestClasses']
+
+        goldAction = dict_file_solution['action']
+        goldGenerated = dict_file_solution['generated']
+        action, generated = self.solveProblem()
 
         fail = False
         if action != goldAction:
@@ -486,15 +519,16 @@ class GraphGameTreeTest(TestCase):
 
         if fail:
             self.addDiagram()
-            return self.testFail(grades)
+            return self.testFail(grader)
         else:
-            return self.testPass(grades)
+            return self.testPass(grader)
 
-    def writeSolution(self, moduleDict, filePath):
-        multiAgents = moduleDict['projectTestClasses']
-        action, generated = self.solveProblem(multiAgents)
+    def writeSolution(self, filePath):
+        # multiAgents = moduleDict['projectTestClasses']
+        action, generated = self.solveProblem()
+
         with open(filePath, 'w') as handle:
-            handle.write('# This is the solution file for %s.\n' % self.path)
+            handle.write('# This is the solution file for %s.\n' % self.path_file_test)
             handle.write('action: "%s"\n' % (action,))
             handle.write('generated: "%s"\n' % (generated,))
         return True
@@ -505,55 +539,66 @@ import time
 
 class EvalAgentTest(TestCase):
 
-    def __init__(self, question: Question, testDict: Dict[str, Any]):
-        super(EvalAgentTest, self).__init__(question, testDict)
-        pprint(testDict)
-        self.layoutName = testDict['layoutName']
-        self.agentName = testDict['agentName']
-        self.ghosts = eval(testDict['ghosts'])
-        self.maxTime = int(testDict['maxTime'])
-        self.seed = int(testDict['randomSeed'])
-        self.numGames = int(testDict['numGames'])
+    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
+        super(EvalAgentTest, self).__init__(question, dict_file_test)
+        pprint(dict_file_test)
+
+        self.str_layout_name: str = dict_file_test['layoutName']
+        self.str_class_agent: str = dict_file_test['agentName']
+        self.list_agent_ghost: List[Agent] = eval(dict_file_test['ghosts'])
+        self.maxTime: int = int(dict_file_test['maxTime'])
+        self.seed: int = int(dict_file_test['randomSeed'])
+        self.numGames: int = int(dict_file_test['numGames'])
 
         self.scoreMinimum = int(
-            testDict['scoreMinimum']) if 'scoreMinimum' in testDict else None
+            dict_file_test['scoreMinimum']) if 'scoreMinimum' in dict_file_test else None
         self.nonTimeoutMinimum = int(
-            testDict['nonTimeoutMinimum']) if 'nonTimeoutMinimum' in testDict else None
+            dict_file_test['nonTimeoutMinimum']) if 'nonTimeoutMinimum' in dict_file_test else None
         self.winsMinimum = int(
-            testDict['winsMinimum']) if 'winsMinimum' in testDict else None
+            dict_file_test['winsMinimum']) if 'winsMinimum' in dict_file_test else None
 
-        self.scoreThresholds = [int(s) for s in testDict.get(
+        self.scoreThresholds = [int(s) for s in dict_file_test.get(
             'scoreThresholds', '').split()]
-        self.nonTimeoutThresholds = [int(s) for s in testDict.get(
+        self.nonTimeoutThresholds = [int(s) for s in dict_file_test.get(
             'nonTimeoutThresholds', '').split()]
-        self.winsThresholds = [int(s) for s in testDict.get(
+        self.winsThresholds = [int(s) for s in dict_file_test.get(
             'winsThresholds', '').split()]
 
         self.maxPoints = sum([len(t) for t in [
             self.scoreThresholds, self.nonTimeoutThresholds, self.winsThresholds]])
-        self.agentArgs = testDict.get('agentArgs', '')
+        self.agentArgs = dict_file_test.get('agentArgs', '')
 
-    def execute(self, grades, moduleDict, solutionDict):
-        startTime = time.time()
+    def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
+        time_start = time.time()
 
         # TODO: multiAgents TO 'projectTestClasses'
-        # agentType = getattr(moduleDict['projectTestClasses'], self.agentName)
-        agentType = get_agent(self.agentName)
+        # class_agent = getattr(moduleDict['projectTestClasses'], self.str_class_agent)
+        class_agent: Type[Agent] = get_class_agent(self.str_class_agent)
 
-        agentOpts = pacman.parseAgentArgs(
-            self.agentArgs) if self.agentArgs != '' else {}
-        agent = agentType(**agentOpts)
+        agentOpts = pacman.get_dict_kwargs(self.agentArgs) if self.agentArgs != '' else {}
 
-        lay = layout.getLayout(self.layoutName, 3)
+        agent = class_agent(**agentOpts)
+
+        lay = layout.getLayout(self.str_layout_name, 3)
 
         disp = self.question.get_display()
 
         random.seed(self.seed)
-        games = pacman.runGames(lay, agent, self.ghosts, disp, self.numGames,
-                                False, catchExceptions=True, timeout=self.maxTime)
-        totalTime = time.time() - startTime
 
-        stats = {'time': totalTime, 'wins': [g.state.isWin() for g in games].count(True),
+        games = pacman.run_games(
+            lay,
+            agent,
+            self.list_agent_ghost,
+            disp,
+            self.numGames,
+            False,
+            bool_catch_exceptions=True,
+            timeout=self.maxTime
+        )
+
+        time_total = time.time() - time_start
+
+        stats = {'time': time_total, 'wins': [g.state.isWin() for g in games].count(True),
                  'games': games, 'scores': [g.state.getScore() for g in games],
                  'timeouts': [g.agentTimeout for g in games].count(True),
                  'crashes': [g.agentCrashed for g in games].count(True)}
@@ -609,11 +654,11 @@ class EvalAgentTest(TestCase):
         if any([not passed for passed, _, _, _, _, _ in results]):
             totalPoints = 0
 
-        return self.testPartial(grades, totalPoints, self.maxPoints)
+        return self.testPartial(grader, totalPoints, self.maxPoints)
 
-    def writeSolution(self, moduleDict, filePath):
+    def writeSolution(self, filePath):
         handle = open(filePath, 'w')
-        handle.write('# This is the solution file for %s.\n' % self.path)
+        handle.write('# This is the solution file for %s.\n' % self.path_file_test)
         handle.write('# File intentionally blank.\n')
         handle.close()
         return True

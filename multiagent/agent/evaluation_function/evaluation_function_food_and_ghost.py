@@ -34,12 +34,12 @@ from multiagent.game.grid import Grid
 def evaluation_function_food_and_ghost_helper(game_state: GameState,
                                               function_get_distance: callable = util.manhattanDistance) -> float:
     """
-    Evaluation function used for name_question 1
+    Evaluation function used for str_question 1
 
     Notes:
         This algorithm involves the influence of closest:
-            active ghosts
-            scared ghosts
+            active list_agent_ghost
+            scared list_agent_ghost
             food
 
         which add onto or subtract from score_new.
@@ -83,7 +83,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
     score_ghost_active_closest = 0
     score_ghost_scared_closest = 0
 
-    # # If capsules exist and ghosts (Using this will result in a lower score)
+    # # If capsules exist and list_agent_ghost (Using this will result in a lower score)
     # if list_position_capsule:
     #     # Get the closest capsule to Pacman
     #     distance_pacman_to_capsule_closest = min(
@@ -105,7 +105,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
     #     # Modify score_new
     #     score_new += score_capsule_closest
 
-    # Check active ghosts exist
+    # Check active list_agent_ghost exist
     if list_agent_state_ghost_active:
         # Get the closest ghost to Pacman
         distance_pacman_to_ghost_closest = min(
@@ -128,7 +128,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
         # Modify score_new
         score_new += score_ghost_active_closest * -1
 
-    # Check scared ghosts exist
+    # Check scared list_agent_ghost exist
     if list_agent_state_ghost_scared:
         # Get the closest scared ghost to Pacman
         distance_pacman_to_ghost_scared_closest = min(
@@ -143,7 +143,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
         )
 
         if function_get_distance is util.manhattanDistance:
-            # Closer a scared ghost is, score_ghost_scared_closest^POWER (because scared ghosts are good money)
+            # Closer a scared ghost is, score_ghost_scared_closest^POWER (because scared list_agent_ghost are good money)
             score_ghost_scared_closest = score_ghost_scared_closest ** 4  # 4 based on trial and error
         else:
             score_ghost_scared_closest = score_ghost_scared_closest ** 6.7  # 6.7 based on trial and error
@@ -187,7 +187,7 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
     Design a better evaluation function here.
 
     The evaluation function takes in the current and proposed successor
-    GameStates (pacman.py) and returns a number, where higher numbers are better.
+    GameStates (agent_pacman_.py) and returns a number, where higher numbers are better.
 
     The code below extracts some useful information from the game_state, like the
     remaining food (newFood) and Pacman position after moving (newPos).
@@ -197,7 +197,7 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
     Print out these variables to see what you're getting, then combine them
     to create a masterful evaluation function.
     """
-    # Useful information you can extract from a GameState (pacman.py)
+    # Useful information you can extract from a GameState (agent_pacman_.py)
     game_state_successor: GameState = game_state_current.generatePacmanSuccessor(action)
     newPos: Tuple[int, int] = game_state_successor.getPacmanPosition()
     newFood: Grid = game_state_successor.getFood()
@@ -211,9 +211,9 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
 
     Run:
         Testing:
-            python pacman.py -f -p AgentPacmanReflex -l testClassic
-            python36 pacman.py -f -p AgentPacmanReflex -l testClassic
-            py -3.6 pacman.py -f -p AgentPacmanReflex -l testClassic  # Use this one
+            python agent_pacman_.py -f -p AgentPacmanReflex -l testClassic
+            python36 agent_pacman_.py -f -p AgentPacmanReflex -l testClassic
+            py -3.6 agent_pacman_.py -f -p AgentPacmanReflex -l testClassic  # Use this one
 
         Actual:
             python autograder.py -q q1 --no-graphics
@@ -250,8 +250,8 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
         Improved version of V1
 
         It involves the influence of closest:
-            active ghost (the ghosts that can kill)
-            scared ghost (the ghosts that give you points)
+            active ghost (the list_agent_ghost that can kill)
+            scared ghost (the list_agent_ghost that give you points)
             food
 
     IMPORTANT NOTES:
@@ -319,7 +319,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
     Design a better evaluation function here.
 
     The evaluation function takes in the current and proposed successor
-    GameStates (pacman.py) and returns a number, where higher numbers are better.
+    GameStates (agent_pacman_.py) and returns a number, where higher numbers are better.
 
     The code below extracts some useful information from the game_state, like the
     remaining food (newFood) and Pacman position after moving (newPos).
@@ -329,7 +329,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
     Print out these variables to see what you're getting, then combine them
     to create a masterful evaluation function.
     """
-    # Useful information you can extract from a GameState (pacman.py)
+    # Useful information you can extract from a GameState (agent_pacman_.py)
     game_state_successor: GameState = currentGameState.generatePacmanSuccessor(action)
     newPos: Tuple[int, int] = game_state_successor.getPacmanPosition()
     newFood: Grid = game_state_successor.getFood()
@@ -343,9 +343,9 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
 
     Run:
         Testing:
-            python pacman.py -f -p AgentPacmanReflex -l testClassic
-            python36 pacman.py -f -p AgentPacmanReflex -l testClassic
-            py -3.6 pacman.py -f -p AgentPacmanReflex -l testClassic  # Use this one
+            python agent_pacman_.py -f -p AgentPacmanReflex -l testClassic
+            python36 agent_pacman_.py -f -p AgentPacmanReflex -l testClassic
+            py -3.6 agent_pacman_.py -f -p AgentPacmanReflex -l testClassic  # Use this one
 
         Actual:
             python autograder.py -q q1 --no-graphics
@@ -379,7 +379,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
 
     """
     V1
-        Involve the influence of closest food position and closest ghost position onto pacman's score
+        Involve the influence of closest food position and closest ghost position onto agent_pacman_'s score
 
     IMPORTANT NOTES:
         VALUE PACMAN'S LIFE (AVOID GHOSTS) OVER FOOD
@@ -420,7 +420,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
     for position_ghost in game_state_successor.getGhostPositions():
         distance_pacman_to_ghost = util.manhattanDistance(pacman.getPosition(), position_ghost)
 
-        # The further away ghosts are, add to score_new
+        # The further away list_agent_ghost are, add to score_new
         # score_new += distance_pacman_to_ghost
 
         if distance_pacman_to_ghost_closest is None:

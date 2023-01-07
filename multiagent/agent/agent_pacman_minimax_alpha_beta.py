@@ -27,7 +27,7 @@ from multiagent.agent.agent_pacman_minimax import dfs_recursive_minimax_v4
 
 class AgentPacmanMinimaxAlphaBeta(AgentPacman):
     """
-    Your minimax agent with alpha-beta pruning (name_question 3)
+    Your minimax agent with alpha-beta pruning (str_question 3)
     """
 
     def getAction(self, gameState):
@@ -40,8 +40,8 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
 
         Run:
             Testing:
-                python pacman.py -p AgentPacmanMinimaxAlphaBeta -a depth=3 -l smallClassic
-                py -3.6 pacman.py -p AgentPacmanMinimaxAlphaBeta -a depth=3 -l smallClassic  # Use this one
+                python agent_pacman_.py -p AgentPacmanMinimaxAlphaBeta -a depth=3 -l smallClassic
+                py -3.6 agent_pacman_.py -p AgentPacmanMinimaxAlphaBeta -a depth=3 -l smallClassic  # Use this one
 
                 py -3.6 autograder.py -q q3 --no-graphics  # Use this one
 
@@ -92,15 +92,15 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
                 *** PASS: test_cases\q3\2-4b-vary-depth.test
                 *** PASS: test_cases\q3\2-one-ghost-3level.test
                 *** PASS: test_cases\q3\3-one-ghost-4level.test
-                *** PASS: test_cases\q3\4-two-ghosts-3level.test
-                *** PASS: test_cases\q3\5-two-ghosts-4level.test
+                *** PASS: test_cases\q3\4-two-list_agent_ghost-3level.test
+                *** PASS: test_cases\q3\5-two-list_agent_ghost-4level.test
                 *** PASS: test_cases\q3\6-tied-root.test
                 *** PASS: test_cases\q3\7-1a-check-depth-one-ghost.test
                 *** PASS: test_cases\q3\7-1b-check-depth-one-ghost.test
                 *** PASS: test_cases\q3\7-1c-check-depth-one-ghost.test
-                *** PASS: test_cases\q3\7-2a-check-depth-two-ghosts.test
-                *** PASS: test_cases\q3\7-2b-check-depth-two-ghosts.test
-                *** PASS: test_cases\q3\7-2c-check-depth-two-ghosts.test
+                *** PASS: test_cases\q3\7-2a-check-depth-two-list_agent_ghost.test
+                *** PASS: test_cases\q3\7-2b-check-depth-two-list_agent_ghost.test
+                *** PASS: test_cases\q3\7-2c-check-depth-two-list_agent_ghost.test
                 *** Running AgentPacmanMinimaxAlphaBeta on smallClassic 1 time(s).
                 Pacman died! Score: 84
                 Average Score: 84.0
@@ -109,7 +109,7 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
                 Record:        Loss
                 *** Finished running AgentPacmanMinimaxAlphaBeta on smallClassic after 0 seconds.
                 *** Won 0 out of 1 games. Average score: 84.000000 ***
-                *** PASS: test_cases\q3\8-pacman-game.test
+                *** PASS: test_cases\q3\8-agent_pacman_-game.test
 
                 ### Question q3: 5/5 ###
 
