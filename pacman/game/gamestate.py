@@ -27,12 +27,15 @@ Reference:
 from __future__ import annotations
 
 from typing import List
+from typing import TYPE_CHECKING
 
-from pacman.game.directions import Action
 from pacman.game.gamestatedate import GameStateData
 from pacman.game.rules.common import TIME_PENALTY
 from pacman.game.rules.rules_ghost import GhostRules
 from pacman.game.rules.rules_pacman import PacmanRules
+
+if TYPE_CHECKING:
+    from pacman.game.directions import Action
 
 
 class GameState:

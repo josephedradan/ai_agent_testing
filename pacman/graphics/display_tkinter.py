@@ -46,7 +46,7 @@ else:
     pass  # XXX need defaults here
 
 
-class GraphicsActual:
+class Display:
 
     def __init__(self):
         self._root_window = None  # The root window for graphics output
@@ -88,7 +88,7 @@ class GraphicsActual:
                 filled=True,
                 smoothed=False)
 
-    def begin_graphics(self, width=640, height=480, color=formatColor(0, 0, 0), title=None):
+    def _begin_graphics(self, width=640, height=480, color=formatColor(0, 0, 0), title=None):
 
         # global _root_window, _canvas, _canvas_x, _canvas_y, _canvas_xs, _canvas_ys, _bg_color
 
@@ -110,7 +110,7 @@ class GraphicsActual:
         # Create the root window
         self._root_window = tkinter.Tk()
         self._root_window.protocol('WM_DELETE_WINDOW', _destroy_window)
-        self._root_window.title(title or 'Graphics Window')
+        self._root_window.title(title or 'GraphicsPacman Window')
         self._root_window.resizable(0, 0)
 
         # Create the canvas object

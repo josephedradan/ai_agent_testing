@@ -11,20 +11,29 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+# Most code by Dan Klein and John Denero written or rewritten for cs188, UC Berkeley.
+# Some code from a Pacman implementation by LiveWires, and used / modified with permission.
+
+from __future__ import annotations
 
 import math
+
+import time
+from typing import TYPE_CHECKING
+
+from pacman.game.directions import Directions
+from pacman.graphics.display_tkinter import Display
+from pacman.graphics.display_tkinter import colorToVector
+from pacman.graphics.display_tkinter import formatColor
+from pacman.graphics.display_tkinter import writePostscript
+from pacman.graphics.graphics_pacman import GraphicsPacman
 
 ###########################
 #  GRAPHICS DISPLAY CODE  #
 ###########################
 
-# Most code by Dan Klein and John Denero written or rewritten for cs188, UC Berkeley.
-# Some code from a Pacman implementation by LiveWires, and used / modified with permission.
-import time
-
-from pacman.game.directions import Directions
-from pacman.graphics.graphics import Graphics
-from pacman.graphics.graphicsUtils import formatColor, colorToVector, GraphicsActual, writePostscript
+if TYPE_CHECKING:
+    from pacman.game.gamestate import GameState
 
 DEFAULT_GRID_SIZE = 30.0
 INFO_PANE_HEIGHT = 35
@@ -84,7 +93,7 @@ WALL_RADIUS = 0.15
 
 
 class InfoPane:
-    def __init__(self, layout, gridSize, _graphics_actual: GraphicsActual):
+    def __init__(self, layout, gridSize, _graphics_actual: Display):
 
         #
         # TODO JOSEPH CUSTOM
@@ -98,9 +107,9 @@ class InfoPane:
         self.height = INFO_PANE_HEIGHT
         self.fontSize = 24
         self.textColor = PACMAN_COLOR
-        self.drawPane()
+        self._draw_pane()
 
-    def toScreen(self, pos, y=None):
+    def _to_screen(self, pos, y=None):
         """
           Translates a point relative from the bottom left of the info pane.
         """
@@ -113,11 +122,16 @@ class InfoPane:
         y = self.base + y
         return x, y
 
-    def drawPane(self):
+    def _draw_pane(self):
         self.scoreText = self._graphics_actual.text(
-            self.toScreen(0, 0), self.textColor, "SCORE:    0", "Times", self.fontSize, "bold")
+            self._to_screen(0, 0),
+            self.textColor,
+            "SCORE:    0",
+            "Times",
+            self.fontSize, "bold"
+        )
 
-    def initializeGhostDistances(self, distances):
+    def _initialize_ghost_distances(self, distances):
         self.ghostDistanceText = []
 
         size = 20
@@ -127,26 +141,26 @@ class InfoPane:
             size = 10
 
         for i, d in enumerate(distances):
-            t = self._graphics_actual.text(self.toScreen(self.width / 2 + self.width / 8 * i, 0),
+            t = self._graphics_actual.text(self._to_screen(self.width / 2 + self.width / 8 * i, 0),
                                            GHOST_COLORS[i + 1], d, "Times", size, "bold")
             self.ghostDistanceText.append(t)
 
     def updateScore(self, score):
         self._graphics_actual.changeText(self.scoreText, "SCORE: % 4d" % score)
 
-    def setTeam(self, isBlue):
+    def setTeam(self, isBlue):  # FIXME: USE ME
         text = "RED TEAM"
         if isBlue:
             text = "BLUE TEAM"
 
-        self.teamText = self._graphics_actual.text(self.toScreen(
+        self.teamText = self._graphics_actual.text(self._to_screen(
             300, 0), self.textColor, text, "Times", self.fontSize, "bold")
 
-    def updateGhostDistances(self, distances):
+    def update_ghost_distances(self, distances):
         if len(distances) == 0:
             return
         if 'ghostDistanceText' not in dir(self):
-            self.initializeGhostDistances(distances)
+            self._initialize_ghost_distances(distances)
         else:
             for i, d in enumerate(distances):
                 self._graphics_actual.changeText(self.ghostDistanceText[i], d)
@@ -170,7 +184,7 @@ class InfoPane:
         pass
 
 
-class PacmanGraphicsReal(Graphics):
+class GraphicsPacmanDisplayTkinter(GraphicsPacman):
     def __init__(self, zoom=1.0, frameTime=0.0, capture=False):
         self.have_window = 0
         self.currentGhostImages = {}
@@ -182,15 +196,15 @@ class PacmanGraphicsReal(Graphics):
 
         #####
         # TODO JOSEPH CUSTOM
-        self._graphics_actual = GraphicsActual()
+        self._graphics_actual = Display()
 
-    def get_graphics_actual(self) -> GraphicsActual:
+    def get_graphics_actual(self) -> Display:
         return self._graphics_actual
 
     def checkNullDisplay(self):
         return False
 
-    def initialize(self, state, isBlue=False):
+    def initialize(self, state: GameState, isBlue=False):
         self.isBlue = isBlue
         self.startGraphics(state)
 
@@ -207,7 +221,7 @@ class PacmanGraphicsReal(Graphics):
         layout = self.layout
         self.width = layout.width
         self.height = layout.height
-        self.make_window(self.width, self.height)
+        self._make_window(self.width, self.height)
         self.infoPane = InfoPane(layout, self.gridSize, self._graphics_actual)
         self.currentState = layout
 
@@ -237,7 +251,7 @@ class PacmanGraphicsReal(Graphics):
         self.agentImages = []  # (agentState, image)
         for index, agent in enumerate(state.agentStates):
             if agent.isPacman:
-                image = self.drawPacman(agent, index)
+                image = self._draw_pacman(agent, index)
                 self.agentImages.append((agent, image))
             else:
                 image = self.drawGhost(agent, index)
@@ -252,7 +266,7 @@ class PacmanGraphicsReal(Graphics):
         for item in prevImage:
             self._graphics_actual.remove_from_screen(item)
         if newState.isPacman:
-            image = self.drawPacman(newState, agentIndex)
+            image = self._draw_pacman(newState, agentIndex)
             self.agentImages[agentIndex] = (newState, image)
         else:
             image = self.drawGhost(newState, agentIndex)
@@ -278,22 +292,22 @@ class PacmanGraphicsReal(Graphics):
             self.removeCapsule(newState._capsuleEaten, self.capsules)
         self.infoPane.updateScore(newState.score)
         if 'ghostDistances' in dir(newState):
-            self.infoPane.updateGhostDistances(newState.ghostDistances)
+            self.infoPane.update_ghost_distances(newState.ghostDistances)
 
-    def make_window(self, width, height):
+    def _make_window(self, width, height):
         grid_width = (width - 1) * self.gridSize
         grid_height = (height - 1) * self.gridSize
         screen_width = 2 * self.gridSize + grid_width
         screen_height = 2 * self.gridSize + grid_height + INFO_PANE_HEIGHT
 
         # TODO: HERE JOSEPH
-        self._graphics_actual.begin_graphics(
+        self._graphics_actual._begin_graphics(
             screen_width,
             screen_height,
             BACKGROUND_COLOR,
             "CS188 Pacman")
 
-    def drawPacman(self, pacman, index):
+    def _draw_pacman(self, pacman, index):
         position = self.getPosition(pacman)
         screen_point = self.to_screen(position)
         endpoints = self.getEndpoints(self.getDirection(pacman))
@@ -740,16 +754,16 @@ class PacmanGraphicsReal(Graphics):
         self._graphics_actual.refresh()
 
 
-class FirstPersonPacmanGraphics(PacmanGraphicsReal):
+class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
     def __init__(self, zoom=1.0, showGhosts=True, capture=False, frameTime=0):
-        PacmanGraphicsReal.__init__(self, zoom, frameTime=frameTime)
+        GraphicsPacmanDisplayTkinter.__init__(self, zoom, frameTime=frameTime)
         self.showGhosts = showGhosts
         self.capture = capture
 
     def initialize(self, state, isBlue=False):
 
         self.isBlue = isBlue
-        PacmanGraphicsReal.startGraphics(self, state)
+        GraphicsPacmanDisplayTkinter.startGraphics(self, state)
         # Initialize distribution images
         walls = state.layout.walls
         dist = []
@@ -784,7 +798,7 @@ class FirstPersonPacmanGraphics(PacmanGraphicsReal):
         if not self.showGhosts and not ghostState.isPacman and ghostState.getPosition()[1] > 1:
             return (-1000, -1000)
         else:
-            return PacmanGraphicsReal.getPosition(self, ghostState)
+            return GraphicsPacmanDisplayTkinter.getPosition(self, ghostState)
 
 
 def add(x, y):

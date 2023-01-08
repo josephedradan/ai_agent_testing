@@ -32,7 +32,7 @@ from pacman.agent.agent import Agent
 from pacman.game import layout as _layout
 from pacman.game.game import Game
 from pacman.game.gamestate import GameState
-from pacman.graphics.graphicsDisplay import PacmanGraphicsReal
+from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
 
 
 class ClassicGameRules:
@@ -48,7 +48,7 @@ class ClassicGameRules:
                 layout: _layout.Layout,
                 agent_pacman: Agent,
                 list_agent_ghost: List[Agent],
-                display: PacmanGraphicsReal,
+                display: GraphicsPacmanDisplayTkinter,
                 bool_quiet: bool = False,
                 bool_catch_exceptions: bool = False
                 ) -> Game:

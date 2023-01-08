@@ -21,9 +21,13 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
 
-from pacman.game.directions import Action
-from pacman.game.gamestate import GameState
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pacman.game.directions import Action
+    from pacman.game.gamestate import GameState
 
 
 def evaluation_function_game_state_score(game_state: GameState, action: Action) -> float:

@@ -39,8 +39,8 @@ from pacman.game import game
 from pacman.game.actions import Actions
 from pacman.game.directions import Directions
 from pacman.game.gamestate import GameState
-from pacman.graphics.graphics import Graphics
-from pacman.graphics.graphicsDisplay import PacmanGraphicsReal
+from pacman.graphics.graphics_pacman import GraphicsPacman
+from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
 
 
 class SearchProblem(ABC):
@@ -52,11 +52,11 @@ class SearchProblem(ABC):
     """
 
     def __init__(self):  # FIXME: THIS IS MISSING game_state
-        self.graphics: Union[Graphics, None] = None
+        self.graphics: Union[GraphicsPacman, None] = None
 
         self._expanded = None  # FIXME: NEED THIS
 
-    def set_graphics(self, graphics: Graphics):
+    def set_graphics(self, graphics: GraphicsPacman):
         self.graphics = graphics
 
     def getStartState(self) -> Union[Tuple[int, int], Hashable]:
@@ -142,7 +142,7 @@ class PositionSearchProblem(SearchProblem):
 
             # TODO: JOSEPH CUSTOM HERE
 
-            if isinstance(self.graphics, PacmanGraphicsReal):
+            if isinstance(self.graphics, GraphicsPacmanDisplayTkinter):
                 self.graphics.drawExpandedCells(self._visitedlist)
 
         return isGoal

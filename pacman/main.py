@@ -43,23 +43,28 @@ import argparse
 import os
 import random
 import sys
-from pprint import pprint
-from typing import List
 
 # print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
+from typing import Sequence
+
+from pacman.graphics.graphics_pacman_terminal import GraphicsPacmanTerminal
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from pprint import pprint
+from typing import List
+
 from pacman.game.game import Game
-from pacman.graphics import graphicsDisplay
-from pacman.graphics import textDisplay
-from pacman.graphics.graphics import Graphics
+from pacman.graphics import graphics_pacman_display_tkiner
+from pacman.graphics import graphics_pacman_null
+from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.parser import get_dict_kwargs
 
 from pacman.agent import *
 from pacman.game import layout as _layout
 from pacman.game.rules.game_rules_classic import ClassicGameRules
-from pacman.graphics.graphicsDisplay import PacmanGraphicsReal
+from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
 
 
 #############################
@@ -71,11 +76,11 @@ def default(str):
     return str + ' [Default: %default]'
 
 
-def readCommand(argv):
+def arg_parser(argv: Union[Sequence[str], None] = None):
     """
     Processes the command used to run pacman from the command line.
     """
-    usageStr = """
+    description = """
     USAGE:      python pacman.py <options>
     EXAMPLES:   (1) python pacman.py
                     - starts an interactive game
@@ -83,7 +88,7 @@ def readCommand(argv):
                 OR  python pacman.py -l smallClassic -z 2
                     - starts an interactive game on a smaller board, zoomed in
     """
-    parser = argparse.ArgumentParser(description=usageStr)
+    parser = argparse.ArgumentParser(description=description)
 
     parser.add_argument('-n', '--numGames',
                         dest='number_of_games',
@@ -109,7 +114,7 @@ def readCommand(argv):
     parser.add_argument('-t', '--textGraphics',
                         action='store_true',
                         dest='textGraphics',
-                        help='Display output as text only',
+                        help='GraphicsPacman output as text only',
                         # default=False
                         )
     parser.add_argument('-q', '--quietTextGraphics',
@@ -231,13 +236,17 @@ def readCommand(argv):
 
     # Choose a display format
     if options.quietGraphics:
-        dict_k_name_arg_v_arg['display'] = textDisplay.NullGraphics()
+        dict_k_name_arg_v_arg['display'] = graphics_pacman_null.GraphicsPacmanNull()
     elif options.textGraphics:
-        textDisplay.SLEEP_TIME = options.frameTime
-        dict_k_name_arg_v_arg['display'] = textDisplay.PacmanGraphics()
+        graphics_pacman_null.SLEEP_TIME = options.frameTime
+        dict_k_name_arg_v_arg['display'] = GraphicsPacmanTerminal()
     else:
-        dict_k_name_arg_v_arg['display'] = graphicsDisplay.PacmanGraphicsReal(
+        dict_k_name_arg_v_arg['display'] = graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(
             options.zoom, frameTime=options.frameTime)
+
+    # dict_k_name_arg_v_arg['display'] = textDisplay.GraphicsPacmanNull()
+    # dict_k_name_arg_v_arg['display'] = GraphicsPacmanTerminal()
+
 
     dict_k_name_arg_v_arg['number_of_games'] = options.number_of_games
     dict_k_name_arg_v_arg['bool_record'] = options.bool_record
@@ -331,7 +340,7 @@ def replay_game(layout, actions, display):
 def run_games(layout: _layout.Layout,
               agent_pacman: Agent,  # FIXME: ADD MULTIPLE PLAYERS
               list_agent_ghost: List[Agent],
-              display: Graphics,
+              display: GraphicsPacman,
               number_of_games: int,
               bool_record: bool,
               numTraining: int = 0,
@@ -373,8 +382,8 @@ def run_games(layout: _layout.Layout,
         bool_quiet = i < numTraining
         if bool_quiet:
             # Suppress output and graphics
-            from pacman.graphics import textDisplay
-            display_game = textDisplay.NullGraphics()
+            from pacman.graphics import graphics_pacman_null
+            display_game = graphics_pacman_null.GraphicsPacmanNull()
             classic_game_rules.bool_quiet = True
         else:
             display_game = display
@@ -382,8 +391,8 @@ def run_games(layout: _layout.Layout,
 
         #####
         # TODO JOSEPH SPEICAL
-        # TODO: ALT GRAPHICS: NullGraphics, PacmanGraphicsReal
-        if isinstance(agent_pacman, AgentKeyboard) and isinstance(display_game, PacmanGraphicsReal):
+        # TODO: ALT GRAPHICS: GraphicsPacmanNull, GraphicsPacmanDisplayTkinter
+        if isinstance(agent_pacman, AgentKeyboard) and isinstance(display_game, GraphicsPacmanDisplayTkinter):
             agent_pacman.set_graphics_actual(display_game.get_graphics_actual())
 
         ####
@@ -436,7 +445,7 @@ if __name__ == '__main__':
 
     > python pacman.py --help
     """
-    args = readCommand(sys.argv[1:])  # Get game components based on input
+    args = arg_parser(sys.argv[1:])  # Get game components based on input
     pprint(args)
     run_games(**args)
 

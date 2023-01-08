@@ -40,7 +40,7 @@ from pacman import main
 from pacman.agent import *
 from pacman.game import layout
 from pacman.game.layout import Layout
-from pacman.graphics.graphics import Graphics
+from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.multiagentTestClasses import GradingAgent
 
 if TYPE_CHECKING:
@@ -145,7 +145,7 @@ def run(layout_: Layout,
         layout_name: str,
         agent_pacman_: Agent,
         list_agent_ghost: List[Agent],
-        display: Graphics,
+        display: GraphicsPacman,
         number_of_games: int = 1,
         name: str = 'games'
         ) -> Dict[str, Any]:

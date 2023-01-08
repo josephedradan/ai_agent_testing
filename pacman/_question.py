@@ -31,7 +31,7 @@ from typing import Union
 if TYPE_CHECKING:
     from pacman._test_case import TestCase
     from pacman.grader import Grader
-    from pacman.graphics.graphics import Graphics
+    from pacman.graphics.graphics_pacman import GraphicsPacman
 
 
 def get_class_question_subclass(name_question_subclass: Union[str, Type[Question], None]) -> Type[Question]:
@@ -51,10 +51,10 @@ def get_class_question_subclass(name_question_subclass: Union[str, Type[Question
 class Question(ABC):
     DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS = {}
 
-    def __init__(self, dict_question: Dict[str, Any], display: Graphics):
+    def __init__(self, dict_question: Dict[str, Any], display: GraphicsPacman):
         self.POINTS_MAX: int = int(dict_question['max_points'])
         self.list_tuple__test_case__test_case_execute_callable = []
-        self.display: Graphics = display
+        self.display: GraphicsPacman = display
 
     def __init_subclass__(cls, **kwargs):
         cls.DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS[cls.__name__] = cls
@@ -63,7 +63,7 @@ class Question(ABC):
     #     print('Method not implemented: %s' % inspect.stack()[1][3])
     #     sys.exit(1)
 
-    def get_display(self) -> Graphics:
+    def get_display(self) -> GraphicsPacman:
         return self.display
 
     def get_points_max(self) -> int:

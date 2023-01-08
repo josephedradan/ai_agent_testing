@@ -21,8 +21,11 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
 from typing import Callable
 from typing import Dict
+from typing import TYPE_CHECKING
 from typing import Union
 
 from pacman.agent.evaluation_function.evaluation_function_better import evaluation_function_better
@@ -32,8 +35,9 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
 from pacman.agent.evaluation_function.evaluation_function_game_state_score import (
     evaluation_function_game_state_score
 )
-from pacman.game.directions import Action
 from pacman.game.gamestate import GameState
+from pacman.game.directions import Action
+
 
 """
 TYPE_EVALUATION_FUNCTION

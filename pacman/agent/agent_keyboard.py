@@ -21,7 +21,7 @@ from typing import Union
 from pacman.agent.agent import Agent
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
-from pacman.graphics.graphicsUtils import GraphicsActual
+from pacman.graphics.display_tkinter import Display
 
 if TYPE_CHECKING:
     from pacman.game.gamestate import GameState
@@ -47,10 +47,10 @@ class AgentKeyboard(Agent):
         ###
         # TODO JOSEPH SPEICAL
 
-        self._graphics_actual: Union[GraphicsActual, None] = None
+        self._graphics_actual: Union[Display, None] = None
 
     # FIXME: GHETTO SOLUTIOn
-    def set_graphics_actual(self, graphics_actual: GraphicsActual):
+    def set_graphics_actual(self, graphics_actual: Display):
         self._graphics_actual = graphics_actual
 
     def getAction(self, game_state: GameState) -> Action:

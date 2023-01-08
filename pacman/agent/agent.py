@@ -30,10 +30,10 @@ from typing import TYPE_CHECKING
 from typing import Union
 
 from pacman.game.directions import Action
-from pacman.graphics.graphics import Graphics
 
 if TYPE_CHECKING:
     from pacman.game.gamestate import GameState
+    from pacman.graphics.graphics_pacman import GraphicsPacman
 
 
 class Agent(ABC):
@@ -50,10 +50,10 @@ class Agent(ABC):
         if kwargs:
             raise Exception("ADDITIONAL KWARGS FOUND FIX THIS SHIT JOSEPH: {}".format(kwargs.items()))
 
-        self._graphics: Union[Graphics, None] = None
+        self._graphics: Union[GraphicsPacman, None] = None
 
     # TODO IN THE FUTURE USE THIS I THINK
-    # def __init__(self, index=0, graphics_actual: Union[GraphicsActual, None] = None):
+    # def __init__(self, index=0, graphics_actual: Union[Display, None] = None):
     #     self.index = index
     #     self._graphics_actual = graphics_actual
 
@@ -65,8 +65,8 @@ class Agent(ABC):
         """
         pass
 
-    def set_graphics(self, graphics: Graphics):
+    def set_graphics(self, graphics: GraphicsPacman):
         self._graphics = graphics
 
-    def get_graphics(self) -> Graphics:
+    def get_graphics(self) -> GraphicsPacman:
         return self._graphics

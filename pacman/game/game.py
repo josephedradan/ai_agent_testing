@@ -29,7 +29,7 @@ from typing import List
 from typing import TYPE_CHECKING
 
 from pacman.agent.agent import Agent
-from pacman.graphics.graphics import Graphics
+from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.util import TimeoutFunction
 from pacman.util import TimeoutFunctionException
 
@@ -51,7 +51,7 @@ class Game:
 
     def __init__(self,
                  agents: List[Agent],
-                 display: Graphics,  # FIXME: CAN BE NO GRAPHCIS OR ACUTAL GRAPHICS
+                 display: GraphicsPacman,  # FIXME: CAN BE NO GRAPHCIS OR ACUTAL GRAPHICS
                  rules: ClassicGameRules,
                  startingIndex: int = 0,
                  muteAgents: bool = False,
@@ -59,7 +59,7 @@ class Game:
 
         self.agentCrashed: bool = False
         self.agents: List[Agent] = agents
-        self.display: Graphics = display
+        self.display: GraphicsPacman = display
         self.rules: ClassicGameRules = rules
         self.startingIndex: int = startingIndex
         self.gameOver: bool = False

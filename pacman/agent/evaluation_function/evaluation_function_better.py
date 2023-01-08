@@ -22,19 +22,23 @@ Reference:
 
 """
 
+from __future__ import annotations
 
 # Cache inputs to prevent repeat calculations
 from functools import lru_cache
 from queue import PriorityQueue
 from typing import Set
+from typing import TYPE_CHECKING
 from typing import Tuple
 from typing import Union
 
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import \
     evaluation_function_food_and_ghost_helper
-from pacman.game.directions import Action
-from pacman.game.gamestate import GameState
-from pacman.game.grid import Grid
+
+if TYPE_CHECKING:
+    from pacman.game.directions import Action
+    from pacman.game.gamestate import GameState
+    from pacman.game.grid import Grid
 
 
 @lru_cache(maxsize=None)
@@ -307,10 +311,9 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
         return _get_heuristic_cost_ucs_crude(grid_wall, position_1, position_2, None)
 
     result = evaluation_function_food_and_ghost_helper(game_state_successor_pacman,
-                                                        evaluation_function_heuristic_cost_ucs_crude)
+                                                       evaluation_function_heuristic_cost_ucs_crude)
 
     return result
-
 
 # Abbreviation
 # better = better_evaluation_function

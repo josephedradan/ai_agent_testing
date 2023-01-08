@@ -25,7 +25,7 @@ print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from pacman.grader import Grader
-from pacman.graphics.graphics import Graphics
+from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.parser import ParseFile
 
 # imports from python standard library
@@ -51,7 +51,7 @@ random.seed(0)
 #     pass
 
 # register arguments and set default values
-def readCommand(argv: Union[Sequence[str], None] = None):
+def arg_parser(argv: Union[Sequence[str], None] = None):
     parser = argparse.ArgumentParser(description='Run public tests on student code')
 
     parser.set_defaults(bool_generate_solutions=False,
@@ -237,7 +237,7 @@ def print_test(dict_file_test: Dict, dict_file_solution: Dict):
 def run_path_test(path_file_test: str,
                   # moduleDict,
                   printTestCase: bool = False,
-                  display: Graphics = None
+                  display: GraphicsPacman = None
                   ):  # TODO: RUNS A SPECIFIC TEST GIVEN NAME
 
     # for module in moduleDict:
@@ -360,8 +360,9 @@ def evaluate(AgentPacmanMinimaxAlphaBeta: bool,
     dict_k_name_question_v_callable: Dict[str, Callable] = {}
 
     # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
-    test_subdirs = get_list_str_question(path_abs_test_cases, question_to_grade)
-    for q in test_subdirs:
+    list_str_question = get_list_str_question(path_abs_test_cases, question_to_grade)
+
+    for q in list_str_question:
         subdir_path = os.path.join(path_abs_test_cases, q)
         if not os.path.isdir(subdir_path) or q[0] == '.':
             continue
@@ -464,21 +465,21 @@ def evaluate(AgentPacmanMinimaxAlphaBeta: bool,
 
 def get_display(graphicsByDefault: Union[bool, None], options=None):
     # from multiagent.graphics import graphicsDisplay
-    # return graphicsDisplay.PacmanGraphicsReal(1, frameTime=.05)
+    # return graphicsDisplay.GraphicsPacmanDisplayTkinter(1, frameTime=.05)
     graphics = graphicsByDefault
     if options is not None and options.noGraphics:
         graphics = False
     if graphics:
         try:
-            from pacman.graphics import graphicsDisplay
-            return graphicsDisplay.PacmanGraphicsReal(1, frameTime=.05)
+            from pacman.graphics import graphics_pacman_display_tkiner
+            return graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(1, frameTime=.05)
         except ImportError:
             pass
-    from pacman.graphics import textDisplay
-    return textDisplay.NullGraphics()
+    from pacman.graphics import graphics_pacman_null
+    return graphics_pacman_null.GraphicsPacmanNull()
 
 
-def get_question_stuff(path_question: str, display: Graphics) -> Tuple[Dict[str, Any], Question]:
+def get_question_stuff(path_question: str, display: GraphicsPacman) -> Tuple[Dict[str, Any], Question]:
     dict_question_config: Dict[str, Any] = ParseFile(os.path.join(path_question, 'CONFIG')).get_dict()
 
     class_question_subclass: Type[Question] = get_class_question_subclass(dict_question_config['class'])
@@ -497,7 +498,7 @@ if __name__ == '__main__':
     ##############################
     ##############################
 
-    options = readCommand(
+    options = arg_parser(
         # sys.argv  # DONT USE THIS UNLESS USING optparse
     )
     if options.bool_generate_solutions:

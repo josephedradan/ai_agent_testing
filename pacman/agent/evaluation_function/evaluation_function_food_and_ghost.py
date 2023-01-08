@@ -21,14 +21,19 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
 from typing import List
+from typing import TYPE_CHECKING
 from typing import Tuple
 
 from pacman import util
-from pacman.agent.state_agent import AgentState
-from pacman.game.directions import Action
-from pacman.game.gamestate import GameState
-from pacman.game.grid import Grid
+
+if TYPE_CHECKING:
+    from pacman.agent.state_agent import AgentState
+    from pacman.game.directions import Action
+    from pacman.game.gamestate import GameState
+    from pacman.game.grid import Grid
 
 
 def evaluation_function_food_and_ghost_helper(game_state: GameState,
@@ -179,7 +184,6 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
     #                                                         score_ghost_scared_closest))
 
     return score_new
-
 
 
 def evaluation_function_food_and_ghost(game_state_current: GameState, action: Action) -> float:
