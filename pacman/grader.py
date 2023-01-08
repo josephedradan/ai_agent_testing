@@ -28,7 +28,7 @@ import util
 
 
 class Grader:
-    "A data structure for name_project grader, along with formatting code to display them"
+    "A data structure for name_project grader, along with formatting code to graphics_pacman them"
 
     def __init__(self,
                  name_project: str,

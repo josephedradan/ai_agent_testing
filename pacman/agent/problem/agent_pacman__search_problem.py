@@ -38,7 +38,7 @@ from pacman import util
 from pacman.game import game
 from pacman.game.actions import Actions
 from pacman.game.directions import Directions
-from pacman.game.gamestate import GameState
+from pacman.game.game_state import GameState
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
 
@@ -123,7 +123,7 @@ class PositionSearchProblem(SearchProblem):
         if warn and (gameState.getNumFood() != 1 or not gameState.hasFood(*goal)):
             print('Warning: this does not look like a regular search maze')
 
-        # For display purposes
+        # For graphics_pacman purposes
         self._visited, self._visitedlist, self._expanded = {}, [], 0  # DO NOT CHANGE
 
     def getStartState(self):
@@ -132,7 +132,7 @@ class PositionSearchProblem(SearchProblem):
     def isGoalState(self, state):  # TODO: COLORER
         isGoal = state == self.goal
 
-        # For display purposes only
+        # For graphics_pacman purposes only
         if isGoal and self.visualize:
             self._visitedlist.append(state)  # TODO: THIS SHOULD BE THE FINAL STATE ADDED BASICALLY
             # import __main__
@@ -169,7 +169,7 @@ class PositionSearchProblem(SearchProblem):
                 cost = self.costFn(nextState)
                 successors.append((nextState, action, cost))
 
-        # Bookkeeping for display purposes
+        # Bookkeeping for graphics_pacman purposes
         self._expanded += 1  # DO NOT CHANGE
         if state not in self._visited:
             self._visited[state] = True
@@ -1075,7 +1075,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem):
     (see game.py) of either True or False. You can call foodGrid.asList() to get
     a list of food coordinates instead.
 
-    If you want access to info like walls, capsules, etc., you can query the
+    If you want access to info like walls, list_capsule, etc., you can query the
     problem.  For example, problem.walls gives you a Grid of where the walls
     are.
 

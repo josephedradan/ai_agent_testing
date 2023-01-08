@@ -21,6 +21,7 @@ Tags:
 Reference:
 
 """
+from enum import Enum
 
 
 class Directions:
@@ -46,3 +47,4 @@ class Directions:
 
 
 Action = Directions
+

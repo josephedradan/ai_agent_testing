@@ -21,8 +21,8 @@ from typing import Union
 
 import util
 from pacman.agent.agent import Agent
-from pacman.agent.state_agent import AgentState
-from pacman.game.gamestate import GameState
+from pacman.agent.state_agent import StateAgent
+from pacman.game.game_state import GameState
 from pacman.game.grid import Grid
 
 
@@ -56,15 +56,15 @@ from pacman.game.grid import Grid
 #
 #     list_position_food: List[Tuple[int, int]] = grid_food.asList()
 #
-#     agent_state_pacman: AgentState = successorGameState.getPacmanState()
+#     agent_state_pacman: StateAgent = successorGameState.getPacmanState()
 #
 #     score_new: float = successorGameState.getScore()
 #
-#     list_agent_state_ghost: List[AgentState] = successorGameState.getGhostStates()
+#     list_agent_state_ghost: List[StateAgent] = successorGameState.getGhostStates()
 #
-#     list_agent_state_ghost_active: List[AgentState] = []
+#     list_agent_state_ghost_active: List[StateAgent] = []
 #
-#     list_agent_state_ghost_scared: List[AgentState] = []
+#     list_agent_state_ghost_scared: List[StateAgent] = []
 #
 #     for agent_state_ghost in list_agent_state_ghost:
 #         if agent_state_ghost.scaredTimer > 0:
@@ -78,7 +78,7 @@ from pacman.game.grid import Grid
 #     score_ghost_active_closest = 0
 #     score_ghost_scared_closest = 0
 #
-#     # # If capsules exist and list_agent_ghost
+#     # # If list_capsule exist and list_agent_ghost
 #     # if list_position_capsule:
 #     #     # Get the closest capsule to Pacman
 #     #     distance_pacman_to_capsule_closest = min(
@@ -239,7 +239,7 @@ from pacman.game.grid import Grid
 #         successorGameState: GameState = game_state_current.generatePacmanSuccessor(action)
 #         newPos: Tuple[int, int] = successorGameState.getPacmanPosition()
 #         newFood: Grid = successorGameState.getFood()
-#         newGhostStates: List[AgentState] = successorGameState.getGhostStates()
+#         newGhostStates: List[StateAgent] = successorGameState.getGhostStates()
 #         newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
 #
 #         "*** YOUR CODE HERE ***"
@@ -263,7 +263,7 @@ from pacman.game.grid import Grid
 #         # print("action", type(action), action)
 #         #
 #         # print("successorGameState", type(successorGameState), successorGameState)
-#         # print("newPos (Pacman new pos after movement)", type(newPos), newPos)
+#         # print("newPos (Pacman new position after movement)", type(newPos), newPos)
 #         # print("newFood", type(newFood), newFood)
 #         # print("newGhostStates", type(newGhostStates), newGhostStates)
 #         # print("newScaredTimes", type(newScaredTimes), newScaredTimes)
@@ -276,7 +276,7 @@ from pacman.game.grid import Grid
 #         # print("#" * 100)
 #
 #         ####################
-#         agent_pacman_: AgentState = successorGameState.getPacmanState()
+#         agent_pacman_: StateAgent = successorGameState.getPacmanState()
 #
 #         score_new: float = successorGameState.getScore()
 #

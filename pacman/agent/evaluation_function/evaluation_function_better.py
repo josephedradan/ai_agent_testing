@@ -37,7 +37,7 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
 
 if TYPE_CHECKING:
     from pacman.game.directions import Action
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
     from pacman.game.grid import Grid
 
 
@@ -143,7 +143,7 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
     # position_pacman_new: Tuple[int, int] = game_state_successor_pacman.getPacmanPosition()
     # position_food_new: Grid = game_state_successor_pacman.getFood()
     #
-    # list_agent_state_ghost_new: List[AgentState] = game_state_successor_pacman.getGhostStates()
+    # list_agent_state_ghost_new: List[StateAgent] = game_state_successor_pacman.getGhostStates()
     # list_agent_state_ghost_scared_time: List[float] = [ghostState.scaredTimer for ghostState in
     #                                                    list_agent_state_ghost_new]
 
@@ -153,7 +153,7 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
     #       type(game_state_successor_pacman),
     #       game_state_successor_pacman)
     #
-    # print("position_pacman_new (Pacman new pos after movement)",
+    # print("position_pacman_new (Pacman new position after movement)",
     #       type(position_pacman_new),
     #       position_pacman_new)
     #

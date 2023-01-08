@@ -24,7 +24,7 @@ from pacman.game.directions import Directions
 from pacman.graphics.display_tkinter import Display
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
 
 
 class AgentKeyboard(Agent):

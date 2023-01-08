@@ -29,7 +29,7 @@ from pacman import util
 from pacman.agent.agent_ghost import AgentGhost
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
 
 
 class AgentGhostRandom(AgentGhost):

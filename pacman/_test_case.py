@@ -44,7 +44,7 @@ from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.multiagentTestClasses import GradingAgent
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
     from pacman._question import Question
     from pacman.grader import Grader
 

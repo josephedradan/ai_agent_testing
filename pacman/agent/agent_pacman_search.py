@@ -47,7 +47,7 @@ from pacman.game.directions import Directions
 from pacman.game.grid import Grid
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
 
 
 class SearchAgent(Agent):
@@ -218,7 +218,7 @@ class ClosestDotSearchAgent(SearchAgent):
                 if action not in legal:
                     t = (str(action), str(currentState))
                     raise Exception('findPathToClosestDot returned an illegal move: %s!\n%s' % t)
-                currentState = currentState.generateSuccessor(0, action)
+                currentState = currentState.get_configuration_successor(0, action)
         self.actionIndex = 0
         print('Path found with cost %d.' % len(self.actions))
 

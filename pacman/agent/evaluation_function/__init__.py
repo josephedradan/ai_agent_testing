@@ -35,7 +35,7 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
 from pacman.agent.evaluation_function.evaluation_function_game_state_score import (
     evaluation_function_game_state_score
 )
-from pacman.game.gamestate import GameState
+from pacman.game.game_state import GameState
 from pacman.game.directions import Action
 
 

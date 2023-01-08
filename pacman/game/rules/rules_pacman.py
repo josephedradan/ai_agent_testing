@@ -32,7 +32,7 @@ from pacman.game.rules.rules_agent import RulesAgent
 from pacman.util import nearestPoint, manhattanDistance
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
 
 
 class PacmanRules(RulesAgent):
@@ -45,7 +45,7 @@ class PacmanRules(RulesAgent):
     @staticmethod
     def getLegalActions(state: GameState, index_agent: Union[int, None] = None) -> List[Directions]:
         return Actions.getPossibleActions(
-            state.getPacmanState().configuration,
+            state.getPacmanState().container_vector,
             state.data.layout.walls
         )
 
@@ -56,15 +56,15 @@ class PacmanRules(RulesAgent):
         if action not in legal:
             raise Exception("Illegal action " + str(action))
 
-        pacmanState = state.data.agentStates[0]
+        pacmanState = state.data.list_state_agent[0]
 
-        # Update Configuration
+        # Update ContainerVector
         vector = Actions.directionToVector(action, PacmanRules.PACMAN_SPEED)
-        pacmanState.configuration = pacmanState.configuration.generateSuccessor(
+        pacmanState.container_vector = pacmanState.container_vector.get_configuration_successor(
             vector)
 
         # Eat
-        next = pacmanState.configuration.getPosition()
+        next = pacmanState.container_vector.get_position()
         nearest = nearestPoint(next)
         if manhattanDistance(nearest, next) <= 0.5:
             # Remove food
@@ -86,8 +86,8 @@ class PacmanRules(RulesAgent):
                 state.data._win = True
         # Eat capsule
         if (position in state.getCapsules()):
-            state.data.capsules.remove(position)
+            state.data.list_capsule.remove(position)
             state.data._capsuleEaten = position
             # Reset all list_agent_ghost' scared timers
-            for index in range(1, len(state.data.agentStates)):
-                state.data.agentStates[index].scaredTimer = SCARED_TIME
+            for index in range(1, len(state.data.list_state_agent)):
+                state.data.list_state_agent[index].scaredTimer = SCARED_TIME

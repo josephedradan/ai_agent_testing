@@ -45,7 +45,7 @@ from pacman.game.directions import Action
 from pacman.game.directions import Directions
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
 
 
 class AgentPacmanLeftTurn(AgentPacman):
@@ -57,7 +57,7 @@ class AgentPacmanLeftTurn(AgentPacman):
     def getAction(self, game_state: GameState) -> Action:
         legal = game_state.getLegalPacmanActions()
 
-        current = game_state.getPacmanState().configuration.direction
+        current = game_state.getPacmanState().container_vector.direction
 
         if current == Directions.STOP:
             current = Directions.NORTH

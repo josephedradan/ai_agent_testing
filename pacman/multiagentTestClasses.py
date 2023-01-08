@@ -21,7 +21,7 @@ from typing import List
 
 from pacman.agent import Agent
 from pacman.game.directions import Action
-from pacman.game.gamestate import GameState
+from pacman.game.game_state import GameState
 
 # A minimax tree which interfaces like game_state
 #     game_state.getNumAgents()

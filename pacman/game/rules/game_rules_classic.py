@@ -31,7 +31,7 @@ from typing import List
 from pacman.agent.agent import Agent
 from pacman.game import layout as _layout
 from pacman.game.game import Game
-from pacman.game.gamestate import GameState
+from pacman.game.game_state import GameState
 from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
 
 

@@ -29,6 +29,7 @@ from typing import List
 from typing import TYPE_CHECKING
 
 from pacman.agent.agent import Agent
+from pacman.game.game_state import GameState
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.util import TimeoutFunction
 from pacman.util import TimeoutFunctionException
@@ -50,27 +51,27 @@ class Game:
     """
 
     def __init__(self,
-                 agents: List[Agent],
-                 display: GraphicsPacman,  # FIXME: CAN BE NO GRAPHCIS OR ACUTAL GRAPHICS
+                 list_agent: List[Agent],
+                 graphics_pacman: GraphicsPacman,  # FIXME: CAN BE NO GRAPHCIS OR ACUTAL GRAPHICS
                  rules: ClassicGameRules,
-                 startingIndex: int = 0,
-                 muteAgents: bool = False,
+                 index_starting: int = 0,
+                 bool_mute_agents: bool = False,
                  bool_catch_exceptions: bool = False):
 
         self.agentCrashed: bool = False
-        self.agents: List[Agent] = agents
-        self.display: GraphicsPacman = display
+        self.list_agent: List[Agent] = list_agent
+        self.graphics_pacman: GraphicsPacman = graphics_pacman
         self.rules: ClassicGameRules = rules
-        self.startingIndex: int = startingIndex
+        self.index_starting: int = index_starting
         self.gameOver: bool = False
-        self.muteAgents: bool = muteAgents
+        self.bool_mute_agents: bool = bool_mute_agents
         self.catchExceptions = bool_catch_exceptions
         self.moveHistory: List = []
-        self.totalAgentTimes : List[int] = [0 for agent in agents]
-        self.totalAgentTimeWarnings: List[int] = [0 for agent in agents]
+        self.totalAgentTimes : List[int] = [0 for agent in list_agent]
+        self.totalAgentTimeWarnings: List[int] = [0 for agent in list_agent]
         self.agentTimeout: bool = False
         import io
-        self.agentOutput = [io.StringIO() for agent in agents]
+        self.agentOutput = [io.StringIO() for agent in list_agent]
 
     def getProgress(self) -> float:
         if self.gameOver:
@@ -90,7 +91,7 @@ class Game:
     OLD_STDERR = None
 
     def mute(self, agentIndex):
-        if not self.muteAgents:
+        if not self.bool_mute_agents:
             return
         global OLD_STDOUT, OLD_STDERR
         OLD_STDOUT = sys.stdout
@@ -99,7 +100,7 @@ class Game:
         sys.stderr = self.agentOutput[agentIndex]
 
     def unmute(self):
-        if not self.muteAgents:
+        if not self.bool_mute_agents:
             return
         global OLD_STDOUT, OLD_STDERR
         # Revert stdout/stderr to originals
@@ -110,13 +111,17 @@ class Game:
         """
         Main control loop for game play.
         """
-        self.display.initialize(self.state.data)
+        self.graphics_pacman.initialize(self.state.data)
+        print(self.state, type(self.state), "self.state", type(self.state.data))
+        print("FFFFF")
         self.numMoves = 0
 
-        # self.display.initialize(self.game_state.makeObservation(1).data)
+        self.state: GameState
+
+        # self.graphics_pacman.initialize(self.game_state.makeObservation(1).data)
         # inform learning agents of the game start
-        for i in range(len(self.agents)):
-            agent = self.agents[i]
+        for i in range(len(self.list_agent)):
+            agent = self.list_agent[i]
             if not agent:
                 self.mute(i)
                 # this is a null agent, meaning it failed to load
@@ -153,12 +158,12 @@ class Game:
                 # TODO: could this exceed the total time
                 self.unmute()
 
-        agentIndex = self.startingIndex
-        numAgents = len(self.agents)
+        agentIndex = self.index_starting
+        numAgents = len(self.list_agent)
 
         while not self.gameOver:  # TODO: GAME LOOP IS RIGHT HERE
             # Fetch the next agent
-            agent = self.agents[agentIndex]
+            agent = self.list_agent[agentIndex]
             move_time = 0
             skip_action = False
             # Generate an observation of the game_state
@@ -170,7 +175,7 @@ class Game:
                             self.rules.getMoveTimeout(agentIndex)))
                         try:
                             start_time = time.time()
-                            observation = timed_func(self.state.deepCopy())
+                            observation = timed_func(self.state.get_deep_copy())
                         except TimeoutFunctionException:
                             skip_action = True
                         move_time += time.time() - start_time
@@ -181,7 +186,7 @@ class Game:
                         return
                 else:
                     observation = agent.observationFunction(
-                        self.state.deepCopy())
+                        self.state.get_deep_copy())
                 self.unmute()
             else:
                 observation = self.state.deepCopy()
@@ -254,10 +259,10 @@ class Game:
             else:
                 self.state = self.state.generateSuccessor(agentIndex, action)
 
-            # Change the display
-            self.display.update(self.state.data)
+            # Change the graphics_pacman
+            self.graphics_pacman.update(self.state.data)
             ###idx = agentIndex - agentIndex % 2 + 1
-            ###self.display.update( self.game_state.makeObservation(idx).data )
+            ###self.graphics_pacman.update( self.game_state.makeObservation(idx).data )
 
             # Allow for game specific conditions (winning, losing, etc.)
             self.rules.process(self.state, self)
@@ -271,7 +276,7 @@ class Game:
                 boinc.set_fraction_done(self.getProgress())
 
         # inform a learning agent of the game result
-        for agentIndex, agent in enumerate(self.agents):
+        for agentIndex, agent in enumerate(self.list_agent):
             if "final" in dir(agent):
                 try:
                     self.mute(agentIndex)
@@ -283,4 +288,4 @@ class Game:
                     self._agentCrash(agentIndex)
                     self.unmute()
                     return
-        self.display.finish()
+        self.graphics_pacman.finish()

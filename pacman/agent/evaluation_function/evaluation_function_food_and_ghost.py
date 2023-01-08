@@ -30,9 +30,9 @@ from typing import Tuple
 from pacman import util
 
 if TYPE_CHECKING:
-    from pacman.agent.state_agent import AgentState
+    from pacman.agent.state_agent import StateAgent
     from pacman.game.directions import Action
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
     from pacman.game.grid import Grid
 
 
@@ -66,15 +66,15 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
 
     list_position_food: List[Tuple[int, int]] = grid_food.asList()
 
-    agent_state_pacman: AgentState = game_state.getPacmanState()
+    agent_state_pacman: StateAgent = game_state.getPacmanState()
 
     score_new: float = game_state.getScore()
 
-    list_agent_state_ghost: List[AgentState] = game_state.getGhostStates()
+    list_agent_state_ghost: List[StateAgent] = game_state.getGhostStates()
 
-    list_agent_state_ghost_active: List[AgentState] = []
+    list_agent_state_ghost_active: List[StateAgent] = []
 
-    list_agent_state_ghost_scared: List[AgentState] = []
+    list_agent_state_ghost_scared: List[StateAgent] = []
 
     for agent_state_ghost in list_agent_state_ghost:
         if agent_state_ghost.scaredTimer > 0:
@@ -88,7 +88,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
     score_ghost_active_closest = 0
     score_ghost_scared_closest = 0
 
-    # # If capsules exist and list_agent_ghost (Using this will result in a lower score)
+    # # If list_capsule exist and list_agent_ghost (Using this will result in a lower score)
     # if list_position_capsule:
     #     # Get the closest capsule to Pacman
     #     distance_pacman_to_capsule_closest = min(
@@ -114,7 +114,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
     if list_agent_state_ghost_active:
         # Get the closest ghost to Pacman
         distance_pacman_to_ghost_closest = min(
-            [function_get_distance(agent_state_pacman.getPosition(), agent_state_ghost_active.getPosition()) for
+            [function_get_distance(agent_state_pacman.get_position(), agent_state_ghost_active.get_position()) for
              agent_state_ghost_active in list_agent_state_ghost_active]
         )
 
@@ -137,7 +137,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
     if list_agent_state_ghost_scared:
         # Get the closest scared ghost to Pacman
         distance_pacman_to_ghost_scared_closest = min(
-            [function_get_distance(agent_state_pacman.getPosition(), agent_state_ghost_scared.getPosition()) for
+            [function_get_distance(agent_state_pacman.get_position(), agent_state_ghost_scared.get_position()) for
              agent_state_ghost_scared in list_agent_state_ghost_scared]
         )
 
@@ -159,7 +159,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
     if list_position_food:
         # Get the closest food to Pacman
         distance_pacman_to_food_closest = min(
-            [function_get_distance(agent_state_pacman.getPosition(), position_food) for position_food in
+            [function_get_distance(agent_state_pacman.get_position(), position_food) for position_food in
              list_position_food]
         )
 
@@ -205,7 +205,7 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
     game_state_successor: GameState = game_state_current.generatePacmanSuccessor(action)
     newPos: Tuple[int, int] = game_state_successor.getPacmanPosition()
     newFood: Grid = game_state_successor.getFood()
-    newGhostStates: List[AgentState] = game_state_successor.getGhostStates()
+    newGhostStates: List[StateAgent] = game_state_successor.getGhostStates()
     newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
 
     "*** YOUR CODE HERE ***"
@@ -229,7 +229,7 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
     # print("action", type(action), action)
     #
     # print("game_state_successor", type(game_state_successor), game_state_successor)
-    # print("newPos (Pacman new pos after movement)", type(newPos), newPos)
+    # print("newPos (Pacman new position after movement)", type(newPos), newPos)
     # print("newFood", type(newFood), newFood)
     # print("newGhostStates", type(newGhostStates), newGhostStates)
     # print("newScaredTimes", type(newScaredTimes), newScaredTimes)
@@ -242,7 +242,7 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
     # print("#" * 100)
 
     ####################
-    pacman: AgentState = game_state_successor.getPacmanState()
+    pacman: StateAgent = game_state_successor.getPacmanState()
 
     score_new: float = game_state_successor.getScore()
 
@@ -337,7 +337,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
     game_state_successor: GameState = currentGameState.generatePacmanSuccessor(action)
     newPos: Tuple[int, int] = game_state_successor.getPacmanPosition()
     newFood: Grid = game_state_successor.getFood()
-    newGhostStates: List[AgentState] = game_state_successor.getGhostStates()
+    newGhostStates: List[StateAgent] = game_state_successor.getGhostStates()
     newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
 
     "*** YOUR CODE HERE ***"
@@ -361,7 +361,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
     # print("action", type(action), action)
     #
     # print("game_state_successor", type(game_state_successor), game_state_successor)
-    # print("newPos (Pacman new pos after movement)", type(newPos), newPos)
+    # print("newPos (Pacman new position after movement)", type(newPos), newPos)
     # print("newFood", type(newFood), newFood)
     # print("newGhostStates", type(newGhostStates), newGhostStates)
     # print("newScaredTimes", type(newScaredTimes), newScaredTimes)
@@ -374,7 +374,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
     # print("#" * 100)
 
     ####################
-    pacman: AgentState = game_state_successor.getPacmanState()
+    pacman: StateAgent = game_state_successor.getPacmanState()
 
     score_new: float = game_state_successor.getScore()
 
@@ -422,7 +422,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
 
     # Handle ghost positions
     for position_ghost in game_state_successor.getGhostPositions():
-        distance_pacman_to_ghost = util.manhattanDistance(pacman.getPosition(), position_ghost)
+        distance_pacman_to_ghost = util.manhattanDistance(pacman.get_position(), position_ghost)
 
         # The further away list_agent_ghost are, add to score_new
         # score_new += distance_pacman_to_ghost
@@ -449,7 +449,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
 
     # Handle food positions
     for position_food in newFood.asList():
-        distance_pacman_to_food = util.manhattanDistance(pacman.getPosition(), position_food)
+        distance_pacman_to_food = util.manhattanDistance(pacman.get_position(), position_food)
 
         # The closer the food is, add to score_new
         # score_new += (1 / distance_pacman_to_food)

@@ -222,7 +222,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     agent_pacman_ = class_agent_pacman(**agent_pacman_kwargs)  # Instantiate Pacman with agent_pacman_kwargs
     dict_k_name_arg_v_arg['agent_pacman'] = agent_pacman_
 
-    # Don't display training games  # FIXME: WTF IS THIS
+    # Don't graphics_pacman training games  # FIXME: WTF IS THIS
     if 'numTrain' in agent_pacman_kwargs:
         options.numQuiet = int(agent_pacman_kwargs['numTrain'])
         options.numIgnore = int(agent_pacman_kwargs['numTrain'])
@@ -234,18 +234,18 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
 
     dict_k_name_arg_v_arg['list_agent_ghost'] = [class_agent_ghost(i + 1) for i in range(options.list_agent_ghost)]
 
-    # Choose a display format
+    # Choose a graphics_pacman format
     if options.quietGraphics:
-        dict_k_name_arg_v_arg['display'] = graphics_pacman_null.GraphicsPacmanNull()
+        dict_k_name_arg_v_arg['graphics_pacman'] = graphics_pacman_null.GraphicsPacmanNull()
     elif options.textGraphics:
         graphics_pacman_null.SLEEP_TIME = options.frameTime
-        dict_k_name_arg_v_arg['display'] = GraphicsPacmanTerminal()
+        dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
     else:
-        dict_k_name_arg_v_arg['display'] = graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(
+        dict_k_name_arg_v_arg['graphics_pacman'] = graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(
             options.zoom, frameTime=options.frameTime)
 
-    # dict_k_name_arg_v_arg['display'] = textDisplay.GraphicsPacmanNull()
-    # dict_k_name_arg_v_arg['display'] = GraphicsPacmanTerminal()
+    # dict_k_name_arg_v_arg['graphics_pacman'] = textDisplay.GraphicsPacmanNull()
+    # dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
 
 
     dict_k_name_arg_v_arg['number_of_games'] = options.number_of_games
@@ -262,7 +262,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
             recorded = pickle.load(f)
         finally:
             f.close()
-        recorded['display'] = dict_k_name_arg_v_arg['display']
+        recorded['graphics'] = dict_k_name_arg_v_arg['graphics_pacman']
         replay_game(**recorded)
         sys.exit(0)
 
@@ -305,7 +305,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
 #     #         if pacman in dir(module):
 #     #             if nographics and modulename == 'keyboardAgents.py':
 #     #                 raise Exception(
-#     #                     'Using the keyboard requires graphics (not text display)')
+#     #                     'Using the keyboard requires graphics (not text graphics_pacman)')
 #     #
 #     #             print("FFFF", getattr(module, pacman))
 #     #
@@ -328,8 +328,8 @@ def replay_game(layout, actions, display):
 
     for action in actions:
         # Execute the action
-        state = state.generateSuccessor(*action)
-        # Change the display
+        state = state.get_configuration_successor(*action)
+        # Change the graphics_pacman
         display.update(state.data)
         # Allow for game specific conditions (winning, losing, etc.)
         rules.process(state, game)
@@ -340,7 +340,7 @@ def replay_game(layout, actions, display):
 def run_games(layout: _layout.Layout,
               agent_pacman: Agent,  # FIXME: ADD MULTIPLE PLAYERS
               list_agent_ghost: List[Agent],
-              display: GraphicsPacman,
+              graphics_pacman: GraphicsPacman,
               number_of_games: int,
               bool_record: bool,
               numTraining: int = 0,
@@ -353,7 +353,7 @@ def run_games(layout: _layout.Layout,
     :param layout:
     :param agent_pacman:
     :param list_agent_ghost:
-    :param display:
+    :param graphics_pacman:
     :param number_of_games:
     :param bool_record:
     :param numTraining:
@@ -363,10 +363,10 @@ def run_games(layout: _layout.Layout,
     """
     # FIXME: IDK WHY THIS HERE
     # import __main__
-    # __main__.__dict__['_display'] = display
+    # __main__.__dict__['_display'] = graphics_pacman
     print("#" * 100)
     __ALL = (
-        layout, agent_pacman, list_agent_ghost, display, number_of_games, bool_record, numTraining,
+        layout, agent_pacman, list_agent_ghost, graphics_pacman, number_of_games, bool_record, numTraining,
         bool_catch_exceptions,
         timeout)
 
@@ -386,7 +386,7 @@ def run_games(layout: _layout.Layout,
             display_game = graphics_pacman_null.GraphicsPacmanNull()
             classic_game_rules.bool_quiet = True
         else:
-            display_game = display
+            display_game = graphics_pacman
             classic_game_rules.bool_quiet = False
 
         #####

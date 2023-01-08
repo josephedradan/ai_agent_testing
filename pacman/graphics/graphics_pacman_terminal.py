@@ -31,7 +31,8 @@ from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.util import nearestPoint
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
+    from pacman.game.game_state_data import GameStateData
 
 DRAW_EVERY = 1
 SLEEP_TIME = 0  # This can be overwritten by __init__
@@ -45,7 +46,7 @@ class GraphicsPacmanTerminal(GraphicsPacman):
             global SLEEP_TIME
             SLEEP_TIME = speed
 
-    def initialize(self, state: GameState, isBlue: bool = False):
+    def initialize(self, state: GameStateData, isBlue: bool = False):
         self.draw(state)
         self.pause()
         self.turn = 0

@@ -32,7 +32,7 @@ from typing import Union
 from pacman.game.directions import Action
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
     from pacman.graphics.graphics_pacman import GraphicsPacman
 
 

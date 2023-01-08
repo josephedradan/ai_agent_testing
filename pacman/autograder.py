@@ -111,7 +111,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
                         # default=True,
                         # action='store_false',
                         action='store_true',
-                        help='No graphics display for agent_pacman_ games.')
+                        help='No graphics graphics_pacman for agent_pacman_ games.')
 
     options = parser.parse_args(argv)
 
@@ -250,14 +250,14 @@ def run_path_test(path_file_test: str,
     class_test_case = get_class_test_case_subclass(dict_file_test['class'])
 
     # class_question_subclass: Type[Question] = get_class_question_subclass(dict_question['class'])
-    # str_question: Question = class_question_subclass(dict_question, display)
+    # str_question: Question = class_question_subclass(dict_question, graphics_pacman)
 
     path_directory_of_path_test = os.path.dirname(path_file_test)
 
     dict_question_config, question_object = get_question_stuff(path_directory_of_path_test, display)
 
     # class_question = get_class_question_subclass("Question")
-    # str_question = class_question({'max_points': 0}, display)
+    # str_question = class_question({'max_points': 0}, graphics_pacman)
     # test_case_object = class_test_case(str_question, dict_file_test)
 
     test_case_object = class_test_case(question_object, dict_file_test)

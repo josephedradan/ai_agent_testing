@@ -29,7 +29,7 @@ from __future__ import annotations
 from typing import List
 from typing import TYPE_CHECKING
 
-from pacman.game.gamestatedate import GameStateData
+from pacman.game.game_state_data import GameStateData
 from pacman.game.rules.common import TIME_PENALTY
 from pacman.game.rules.rules_ghost import GhostRules
 from pacman.game.rules.rules_pacman import PacmanRules
@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 
 class GameState:
     """
-    A GameState specifies the full game game_state, including the food, capsules,
+    A GameState specifies the full game game_state, including the food, list_capsule,
     agent configurations and score changes.
 
     GameStates are used by the Game object to capture the actual game_state of the game and
@@ -52,6 +52,49 @@ class GameState:
 
     Note that in classic Pacman, Pacman is always agent 0.
     """
+
+
+    #############################################
+    #             Helper methods:               #
+    # You shouldn't need to call these directly #
+    #############################################
+
+    def __init__(self, prevState=None):
+        """
+        Generates a new game_state by copying information from its predecessor.
+        """
+        if prevState is not None:  # Initial game_state
+            self.data = GameStateData(prevState.data)
+        else:
+            self.data = GameStateData()
+
+    def deepCopy(self) -> GameState:
+        state = GameState(self)
+        state.data = self.data.get_deep_copy()
+        return state
+
+    def __eq__(self, other):
+        """
+        Allows two states to be compared.
+        """
+        return hasattr(other, 'data') and self.data == other.data
+
+    def __hash__(self):
+        """
+        Allows states to be keys of dictionaries.
+        """
+        return hash(self.data)
+
+    def __str__(self):
+
+        return str(self.data)
+
+    def initialize(self, layout, numGhostAgents=1000):
+        """
+        Creates an initial game game_state from a layout array (see layout.py).
+        """
+        self.data.initialize(layout, numGhostAgents)
+
 
     ####################################################
     # Accessor methods: use these to access game_state data #
@@ -102,7 +145,7 @@ class GameState:
         if agentIndex == 0:
             state.data.scoreChange += -TIME_PENALTY  # Penalty for waiting around
         else:
-            GhostRules.decrementTimer(state.data.agentStates[agentIndex])
+            GhostRules.decrementTimer(state.data.list_state_agent[agentIndex])
 
         # Resolve multi-agent effects
         GhostRules.checkDeath(state, agentIndex)
@@ -125,43 +168,43 @@ class GameState:
 
     def getPacmanState(self):
         """
-        Returns an AgentState object for agent_pacman_ (in game.py)
+        Returns an StateAgent object for agent_pacman_ (in game.py)
 
-        game_state.pos gives the current position
+        game_state.position gives the current position
         game_state.direction gives the travel vector
         """
-        return self.data.agentStates[0].copy()
+        return self.data.list_state_agent[0].copy()
 
     def getPacmanPosition(self):
-        return self.data.agentStates[0].getPosition()
+        return self.data.list_state_agent[0].get_position()
 
     def getGhostStates(self):
-        return self.data.agentStates[1:]
+        return self.data.list_state_agent[1:]
 
     def getGhostState(self, agentIndex):
         if agentIndex == 0 or agentIndex >= self.getNumAgents():
             raise Exception("Invalid index passed to getGhostState")
-        return self.data.agentStates[agentIndex]
+        return self.data.list_state_agent[agentIndex]
 
     def getGhostPosition(self, agentIndex):
         if agentIndex == 0:
             raise Exception("Pacman's index passed to getGhostPosition")
-        return self.data.agentStates[agentIndex].getPosition()
+        return self.data.list_state_agent[agentIndex].get_position()
 
     def getGhostPositions(self):
-        return [s.getPosition() for s in self.getGhostStates()]
+        return [s.get_position() for s in self.getGhostStates()]
 
     def getNumAgents(self):
-        return len(self.data.agentStates)
+        return len(self.data.list_state_agent)
 
     def getScore(self):
         return float(self.data.score)
 
     def getCapsules(self):
         """
-        Returns a list of positions (x,y) of the remaining capsules.
+        Returns a list of positions (x,y) of the remaining list_capsule.
         """
-        return self.data.capsules
+        return self.data.list_capsule
 
     def getNumFood(self):
         return self.data.food.count()
@@ -201,44 +244,3 @@ class GameState:
 
     def isWin(self):
         return self.data._win
-
-    #############################################
-    #             Helper methods:               #
-    # You shouldn't need to call these directly #
-    #############################################
-
-    def __init__(self, prevState=None):
-        """
-        Generates a new game_state by copying information from its predecessor.
-        """
-        if prevState != None:  # Initial game_state
-            self.data = GameStateData(prevState.data)
-        else:
-            self.data = GameStateData()
-
-    def deepCopy(self):
-        state = GameState(self)
-        state.data = self.data.deepCopy()
-        return state
-
-    def __eq__(self, other):
-        """
-        Allows two states to be compared.
-        """
-        return hasattr(other, 'data') and self.data == other.data
-
-    def __hash__(self):
-        """
-        Allows states to be keys of dictionaries.
-        """
-        return hash(self.data)
-
-    def __str__(self):
-
-        return str(self.data)
-
-    def initialize(self, layout, numGhostAgents=1000):
-        """
-        Creates an initial game game_state from a layout array (see layout.py).
-        """
-        self.data.initialize(layout, numGhostAgents)

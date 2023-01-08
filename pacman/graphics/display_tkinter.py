@@ -454,10 +454,10 @@ def image(pos, file="../../blueghost.gif"):
     return _canvas.create_image(x, y, image=tkinter.PhotoImage(file=file), anchor=tkinter.NW)
 
 
-# def moveCircle(id, pos, r, endpoints=None):
+# def moveCircle(id, position, r, endpoints=None):
 #     global _canvas_x, _canvas_y
 #
-#     x, y = pos
+#     x, y = position
 #     #    x0, x1 = x - r, x + r + 1
 #     #    y0, y1 = y - r, y + r + 1
 #     x0, x1 = x - r - 1, x + r

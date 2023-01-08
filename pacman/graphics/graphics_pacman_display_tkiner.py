@@ -33,7 +33,8 @@ from pacman.graphics.graphics_pacman import GraphicsPacman
 ###########################
 
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
+    from pacman.game.game_state_data import GameStateData
 
 DEFAULT_GRID_SIZE = 30.0
 INFO_PANE_HEIGHT = 35
@@ -204,7 +205,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
     def checkNullDisplay(self):
         return False
 
-    def initialize(self, state: GameState, isBlue=False):
+    def initialize(self, state: GameStateData, isBlue=False):
         self.isBlue = isBlue
         self.startGraphics(state)
 
@@ -244,13 +245,13 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         layout = self.layout
         self.drawWalls(layout.walls)
         self.food = self.drawFood(layout.food)
-        self.capsules = self.drawCapsules(layout.capsules)
+        self.capsules = self.drawCapsules(layout.list_capsule)
         self._graphics_actual.refresh()
 
     def drawAgentObjects(self, state):
         self.agentImages = []  # (agentState, image)
-        for index, agent in enumerate(state.agentStates):
-            if agent.isPacman:
+        for index, agent in enumerate(state.list_state_agent):
+            if agent.is_pacman:
                 image = self._draw_pacman(agent, index)
                 self.agentImages.append((agent, image))
             else:
@@ -258,14 +259,14 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                 self.agentImages.append((agent, image))
         self._graphics_actual.refresh()
 
-    def swapImages(self, agentIndex, newState):
+    def _swap_images(self, agentIndex, newState):
         """
           Changes an image from a ghost to a agent_pacman_ or vis versa (for capture)
         """
         prevState, prevImage = self.agentImages[agentIndex]
         for item in prevImage:
             self._graphics_actual.remove_from_screen(item)
-        if newState.isPacman:
+        if newState.is_pacman:
             image = self._draw_pacman(newState, agentIndex)
             self.agentImages[agentIndex] = (newState, image)
         else:
@@ -273,14 +274,15 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             self.agentImages[agentIndex] = (newState, image)
         self._graphics_actual.refresh()
 
-    def update(self, newState):
-        agentIndex = newState._agentMoved
-        agentState = newState.agentStates[agentIndex]
+    def update(self, newState: GameStateData):
 
-        if self.agentImages[agentIndex][0].isPacman != agentState.isPacman:
-            self.swapImages(agentIndex, agentState)
+        agentIndex = newState._agentMoved
+        agentState = newState.list_state_agent[agentIndex]
+
+        if self.agentImages[agentIndex][0].is_pacman != agentState.is_pacman:
+            self._swap_images(agentIndex, agentState)
         prevState, prevImage = self.agentImages[agentIndex]
-        if agentState.isPacman:
+        if agentState.is_pacman:
             self.animatePacman(agentState, prevState, prevImage)
         else:
             self.moveGhost(agentState, agentIndex, prevState, prevImage)
@@ -468,14 +470,14 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         self._graphics_actual.refresh()
 
     def getPosition(self, agentState):
-        if agentState.configuration == None:
+        if agentState.container_vector == None:
             return (-1000, -1000)
-        return agentState.getPosition()
+        return agentState.get_position()
 
     def getDirection(self, agentState):
-        if agentState.configuration == None:
+        if agentState.container_vector == None:
             return Directions.STOP
-        return agentState.configuration.getDirection()
+        return agentState.container_vector.get_direction()
 
     def finish(self):
         self._graphics_actual.end_graphics()
@@ -760,7 +762,7 @@ class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
         self.showGhosts = showGhosts
         self.capture = capture
 
-    def initialize(self, state, isBlue=False):
+    def initialize(self, state: GameStateData, isBlue=False):
 
         self.isBlue = isBlue
         GraphicsPacmanDisplayTkinter.startGraphics(self, state)
@@ -778,7 +780,7 @@ class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
         self.previousState = state
 
     def lookAhead(self, config, state):
-        if config.getDirection() == 'Stop':
+        if config.get_direction() == 'Stop':
             return
         else:
             pass
@@ -795,7 +797,7 @@ class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
         return GHOST_COLORS[ghostIndex]
 
     def getPosition(self, ghostState):
-        if not self.showGhosts and not ghostState.isPacman and ghostState.getPosition()[1] > 1:
+        if not self.showGhosts and not ghostState.is_pacman and ghostState.get_position()[1] > 1:
             return (-1000, -1000)
         else:
             return GraphicsPacmanDisplayTkinter.getPosition(self, ghostState)

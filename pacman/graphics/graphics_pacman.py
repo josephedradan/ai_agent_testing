@@ -27,8 +27,10 @@ from abc import ABC
 from abc import abstractmethod
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
-    from pacman.game.gamestate import GameState
+    from pacman.game.game_state import GameState
+    from pacman.game.game_state_data import GameStateData
 
 
 class GraphicsPacman(ABC):
@@ -38,7 +40,7 @@ class GraphicsPacman(ABC):
     """
 
     @abstractmethod
-    def initialize(self, state: GameState, isBlue: bool = False):
+    def initialize(self, state: GameStateData, isBlue: bool = False):
         pass
 
     @abstractmethod

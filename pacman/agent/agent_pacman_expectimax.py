@@ -26,7 +26,7 @@ from typing import Tuple
 from typing import Union
 
 from pacman.agent import AgentPacman
-from pacman.game.gamestate import GameState
+from pacman.game.game_state import GameState
 
 
 def _dfs_recursive_expectimax_v1_handler(game_state: GameState,

@@ -21,47 +21,57 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
 
-class AgentState:
+from typing import Tuple
+from typing import Union
+
+from pacman.game.container_vector import ContainerVector
+from pacman.game.directions import Directions
+
+
+class StateAgent:
     """
-    AgentStates hold the game_state of an agent (configuration, speed, scared, etc).
+    AgentStates hold the game_state of an agent (container_vector, speed, scared, etc).
     """
 
-    def __init__(self, startConfiguration, isPacman):
-        self.start = startConfiguration
-        self.configuration = startConfiguration
-        self.isPacman = isPacman
-        self.scaredTimer = 0
+    def __init__(self, container_vector: ContainerVector, is_pacman: bool):
+        self.container_vector_start: ContainerVector = container_vector
+        self.container_vector: ContainerVector = container_vector
+
+        self.is_pacman: bool = is_pacman
+        self.scaredTimer: int = 0
+
         # game_state below potentially used for contest only
-        self.numCarrying = 0
-        self.numReturned = 0
+        self.numCarrying: int = 0
+        self.numReturned: int = 0
 
     def __str__(self):
-        if self.isPacman:
-            return "Pacman: " + str(self.configuration)
+        if self.is_pacman:
+            return "Pacman: " + str(self.container_vector)
         else:
-            return "Ghost: " + str(self.configuration)
+            return "Ghost: " + str(self.container_vector)
 
-    def __eq__(self, other):
-        if other == None:
+    def __eq__(self, other: Union[StateAgent, None]):
+        if other is None:
             return False
-        return self.configuration == other.configuration and self.scaredTimer == other.scaredTimer
+        return self.container_vector == other.container_vector and self.scaredTimer == other.scaredTimer
 
     def __hash__(self):
-        return hash(hash(self.configuration) + 13 * hash(self.scaredTimer))
+        return hash(hash(self.container_vector) + 13 * hash(self.scaredTimer))
 
     def copy(self):
-        state = AgentState(self.start, self.isPacman)
-        state.configuration = self.configuration
+        state = StateAgent(self.container_vector_start, self.is_pacman)
+        state.container_vector = self.container_vector
         state.scaredTimer = self.scaredTimer
         state.numCarrying = self.numCarrying
         state.numReturned = self.numReturned
         return state
 
-    def getPosition(self):
-        if self.configuration == None:
+    def get_position(self) -> Union[Tuple[int, ...], None]:
+        if self.container_vector == None:
             return None
-        return self.configuration.getPosition()
+        return self.container_vector.get_position()
 
-    def getDirection(self):
-        return self.configuration.getDirection()
+    def get_direction(self) -> Directions:
+        return self.container_vector.get_direction()

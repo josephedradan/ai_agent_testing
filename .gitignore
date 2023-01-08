@@ -167,7 +167,7 @@ cython_debug/
 .vscode
 
 ### Python Patch ###
-# Poetry local configuration file - https://python-poetry.org/docs/configuration/#local-configuration
+# Poetry local container_vector file - https://python-poetry.org/docs/configuration/#local-configuration
 poetry.toml
 
 

@@ -17,6 +17,7 @@ import random
 from functools import reduce
 from typing import List, Union
 
+from pacman.game.directions import Directions
 from pacman.game.grid import Grid
 
 VISIBILITY_MATRIX_CACHE = {}
@@ -32,7 +33,7 @@ class Layout:
         self.height = len(list_str_layout_line)
         self.walls = Grid(self.width, self.height, False)
         self.food = Grid(self.width, self.height, False)
-        self.capsules = []
+        self.list_capsule = []
         self.agentPositions = []
         self.numGhosts = 0
         self.processLayoutText(list_str_layout_line)
@@ -145,7 +146,7 @@ class Layout:
         elif layoutChar == '.':
             self.food[x][y] = True
         elif layoutChar == 'o':
-            self.capsules.append((x, y))
+            self.list_capsule.append((x, y))
         elif layoutChar == 'P':
             self.agentPositions.append((0, (x, y)))
         elif layoutChar in ['G']:

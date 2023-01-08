@@ -74,12 +74,12 @@ class Actions:
 
     def getPossibleActions(config, walls):
         possible = []
-        x, y = config.pos
+        x, y = config.position
         x_int, y_int = int(x + 0.5), int(y + 0.5)
 
         # In between grid points, all agents must continue straight
         if (abs(x - x_int) + abs(y - y_int) > Actions.TOLERANCE):
-            return [config.getDirection()]
+            return [config.get_direction()]
 
         for dir, vec in Actions._directionsAsList:
             dx, dy = vec
