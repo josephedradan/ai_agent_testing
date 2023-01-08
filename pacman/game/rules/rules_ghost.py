@@ -51,10 +51,10 @@ class GhostRules(RulesAgent):
         Ghosts cannot stop, and cannot turn around unless they
         reach a dead end, but can turn 90 degrees at intersections.
         """
-        conf = state.getGhostState(index_agent).container_vector
+        container_vector = state.getGhostState(index_agent).container_vector
         possibleActions = Actions.getPossibleActions(
-            conf, state.data.layout.walls)
-        reverse = Actions.reverseDirection(conf.direction)
+            container_vector, state.data.layout.walls)
+        reverse = Actions.reverseDirection(container_vector.direction)
         if Directions.STOP in possibleActions:
             possibleActions.remove(Directions.STOP)
         if reverse in possibleActions and len(possibleActions) > 1:
@@ -74,7 +74,7 @@ class GhostRules(RulesAgent):
         if ghostState.scaredTimer > 0:
             speed /= 2.0
         vector = Actions.directionToVector(action, speed)
-        ghostState.container_vector = ghostState.container_vector.get_configuration_successor(
+        ghostState.container_vector = ghostState.container_vector.get_container_vector_successor(
             vector)
 
     @staticmethod

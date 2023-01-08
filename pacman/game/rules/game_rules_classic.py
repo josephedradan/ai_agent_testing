@@ -62,7 +62,7 @@ class ClassicGameRules:
         initState.initialize(layout, len(list_agent_ghost))
         game = Game(agents, display, self, bool_catch_exceptions=bool_catch_exceptions)
         game.state = initState
-        self.initialState = initState.deepCopy()
+        self.initialState = initState.get_deep_copy()
 
         self.bool_quiet: bool = bool_quiet
 

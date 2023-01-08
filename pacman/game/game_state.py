@@ -28,6 +28,7 @@ from __future__ import annotations
 
 from typing import List
 from typing import TYPE_CHECKING
+from typing import Union
 
 from pacman.game.game_state_data import GameStateData
 from pacman.game.rules.common import TIME_PENALTY
@@ -59,16 +60,16 @@ class GameState:
     # You shouldn't need to call these directly #
     #############################################
 
-    def __init__(self, prevState=None):
+    def __init__(self, game_state_previous: Union[GameState, None]=None):
         """
         Generates a new game_state by copying information from its predecessor.
         """
-        if prevState is not None:  # Initial game_state
-            self.data = GameStateData(prevState.data)
+        if game_state_previous is not None:  # Initial game_state
+            self.data: GameStateData = GameStateData(game_state_previous.data)
         else:
-            self.data = GameStateData()
+            self.data: GameStateData = GameStateData()
 
-    def deepCopy(self) -> GameState:
+    def get_deep_copy(self) -> GameState:
         state = GameState(self)
         state.data = self.data.get_deep_copy()
         return state

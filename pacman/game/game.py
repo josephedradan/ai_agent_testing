@@ -73,7 +73,7 @@ class Game:
         import io
         self.agentOutput = [io.StringIO() for agent in list_agent]
 
-    def getProgress(self) -> float:
+    def _get_progress(self) -> float:
         if self.gameOver:
             return 1.0
         else:
@@ -90,7 +90,7 @@ class Game:
     OLD_STDOUT = None
     OLD_STDERR = None
 
-    def mute(self, agentIndex):
+    def _mute(self, agentIndex):
         if not self.bool_mute_agents:
             return
         global OLD_STDOUT, OLD_STDERR
@@ -99,7 +99,7 @@ class Game:
         sys.stdout = self.agentOutput[agentIndex]
         sys.stderr = self.agentOutput[agentIndex]
 
-    def unmute(self):
+    def _unmute(self):
         if not self.bool_mute_agents:
             return
         global OLD_STDOUT, OLD_STDERR
@@ -123,40 +123,40 @@ class Game:
         for i in range(len(self.list_agent)):
             agent = self.list_agent[i]
             if not agent:
-                self.mute(i)
+                self._mute(i)
                 # this is a null agent, meaning it failed to load
                 # the other team wins
                 print("Agent %d failed to load" % i, file=sys.stderr)
-                self.unmute()
+                self._unmute()
                 self._agentCrash(i, quiet=True)
                 return
             if ("registerInitialState" in dir(agent)):  # Basically hasattr without the raising exception
                 print("registerInitialState IS HERE YO", dir(agent))
-                self.mute(i)
+                self._mute(i)
                 if self.catchExceptions:
                     try:
                         timed_func = TimeoutFunction(
                             agent.registerInitialState, int(self.rules.getMaxStartupTime(i)))
                         try:
                             start_time = time.time()
-                            timed_func(self.state.deepCopy())
+                            timed_func(self.state.get_deep_copy())
                             time_taken = time.time() - start_time
                             self.totalAgentTimes[i] += time_taken
                         except TimeoutFunctionException:
                             print("Agent %d ran out of time on startup!" %
                                   i, file=sys.stderr)
-                            self.unmute()
+                            self._unmute()
                             self.agentTimeout = True
                             self._agentCrash(i, quiet=True)
                             return
                     except Exception as data:
                         self._agentCrash(i, quiet=False)
-                        self.unmute()
+                        self._unmute()
                         return
                 else:
-                    agent.registerInitialState(self.state.deepCopy())
+                    agent.registerInitialState(self.state.get_deep_copy())
                 # TODO: could this exceed the total time
-                self.unmute()
+                self._unmute()
 
         agentIndex = self.index_starting
         numAgents = len(self.list_agent)
@@ -168,7 +168,7 @@ class Game:
             skip_action = False
             # Generate an observation of the game_state
             if 'observationFunction' in dir(agent):
-                self.mute(agentIndex)
+                self._mute(agentIndex)
                 if self.catchExceptions:
                     try:
                         timed_func = TimeoutFunction(agent.observationFunction, int(
@@ -179,21 +179,21 @@ class Game:
                         except TimeoutFunctionException:
                             skip_action = True
                         move_time += time.time() - start_time
-                        self.unmute()
+                        self._unmute()
                     except Exception as data:
                         self._agentCrash(agentIndex, quiet=False)
-                        self.unmute()
+                        self._unmute()
                         return
                 else:
                     observation = agent.observationFunction(
                         self.state.get_deep_copy())
-                self.unmute()
+                self._unmute()
             else:
-                observation = self.state.deepCopy()
+                observation = self.state.get_deep_copy()
 
             # Solicit an action
             action = None
-            self.mute(agentIndex)
+            self._mute(agentIndex)
             if self.catchExceptions:  # TODO: THIS CODE IS NECESSARY JOSEPH, IT IS FOR THE autograder.py
                 # raise Exception("ERROR CALLED IN GAME")
                 try:
@@ -209,7 +209,7 @@ class Game:
                               agentIndex, file=sys.stderr)
                         self.agentTimeout = True
                         self._agentCrash(agentIndex, quiet=True)
-                        self.unmute()
+                        self._unmute()
                         return
 
                     move_time += time.time() - start_time
@@ -223,7 +223,7 @@ class Game:
                                 agentIndex, self.totalAgentTimeWarnings[agentIndex]), file=sys.stderr)
                             self.agentTimeout = True
                             self._agentCrash(agentIndex, quiet=True)
-                            self.unmute()
+                            self._unmute()
                             return
 
                     self.totalAgentTimes[agentIndex] += move_time
@@ -233,17 +233,17 @@ class Game:
                             agentIndex, self.totalAgentTimes[agentIndex]), file=sys.stderr)
                         self.agentTimeout = True
                         self._agentCrash(agentIndex, quiet=True)
-                        self.unmute()
+                        self._unmute()
                         return
-                    self.unmute()
+                    self._unmute()
                 except Exception as data:
                     self._agentCrash(agentIndex)
-                    self.unmute()
+                    self._unmute()
                     return
             else:
 
                 action = agent.getAction(observation)
-            self.unmute()
+            self._unmute()
 
             # Execute the action
             self.moveHistory.append((agentIndex, action))
@@ -252,9 +252,9 @@ class Game:
                     self.state = self.state.generateSuccessor(
                         agentIndex, action)
                 except Exception as data:
-                    self.mute(agentIndex)
+                    self._mute(agentIndex)
                     self._agentCrash(agentIndex)
-                    self.unmute()
+                    self._unmute()
                     return
             else:
                 self.state = self.state.generateSuccessor(agentIndex, action)
@@ -273,19 +273,19 @@ class Game:
             agentIndex = (agentIndex + 1) % numAgents
 
             if _BOINC_ENABLED:
-                boinc.set_fraction_done(self.getProgress())
+                boinc.set_fraction_done(self._get_progress())
 
         # inform a learning agent of the game result
         for agentIndex, agent in enumerate(self.list_agent):
             if "final" in dir(agent):
                 try:
-                    self.mute(agentIndex)
+                    self._mute(agentIndex)
                     agent.final(self.state)
-                    self.unmute()
+                    self._unmute()
                 except Exception as data:
                     if not self.catchExceptions:
                         raise
                     self._agentCrash(agentIndex)
-                    self.unmute()
+                    self._unmute()
                     return
         self.graphics_pacman.finish()

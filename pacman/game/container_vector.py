@@ -67,7 +67,7 @@ class ContainerVector:
     def __str__(self):
         return "(x, y)=" + str(self.position) + ", " + str(self.direction)
 
-    def get_configuration_successor(self, vector: Tuple[int, ...]) -> ContainerVector:  # FIXME: NOT GENERALIZED
+    def get_container_vector_successor(self, vector: Tuple[int, ...]) -> ContainerVector:  # FIXME: NOT GENERALIZED
         """
         Generates a new container_vector reached by translating the current
         container_vector by the action vector.  This is a low-level call and does

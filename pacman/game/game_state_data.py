@@ -44,8 +44,10 @@ class GameStateData:
         """
         if game_state_date_previous is not None:
             self.food: Grid = game_state_date_previous.food.shallowCopy()
-            self.list_capsule: List[Tuple[int, ...]] = game_state_date_previous.list_capsule[:]
-            self.list_state_agent: List[StateAgent] = self.get_list_state_agent_copy(game_state_date_previous.list_state_agent)
+            self.list_capsule: List[Tuple[int, ...]] = game_state_date_previous.list_capsule.copy()
+            self.list_state_agent: List[StateAgent] = self.get_list_state_agent_copy(
+                game_state_date_previous.list_state_agent
+            )
             self.layout: Layout = game_state_date_previous.layout
             self._eaten = game_state_date_previous._eaten
             self.score = game_state_date_previous.score
@@ -91,7 +93,7 @@ class GameStateData:
             return False
         return True
 
-    def __hash__(self):
+    def __hash__(self):  # FIXME: FIX THIS UGLY
         """
         Allows states to be keys of dictionaries.
         """
@@ -102,8 +104,12 @@ class GameStateData:
                 print(e)
                 # hash(game_state)
 
-        return int((hash(tuple(self.list_state_agent)) + 13 * hash(self.food) + 113 * hash(tuple(self.list_capsule)) + 7 * hash(
-            self.score)) % 1048575)
+        return int(
+            (hash(tuple(self.list_state_agent)) +
+             13 * hash(self.food) +
+             113 * hash(tuple(self.list_capsule)) +
+             7 * hash(self.score)) % 1048575
+        )
 
     def __str__(self):
         width, height = self.layout.width, self.layout.height
@@ -112,72 +118,76 @@ class GameStateData:
             self.food = reconstituteGrid(self.food)
         for x in range(width):
             for y in range(height):
+                walls: Grid
+                food: Grid
                 food, walls = self.food, self.layout.walls
-                map[x][y] = self._foodWallStr(food[x][y], walls[x][y])
+                map[x][y] = self._get_str_food_or_wall_from_bool_food_or_wall(food[x][y], walls[x][y])
 
-        for agentState in self.list_state_agent:
-            if agentState == None:
+        for staet_agent in self.list_state_agent:
+            if staet_agent is None:
                 continue
-            if agentState.container_vector == None:
+            if staet_agent.container_vector is None:
                 continue
-            x, y = [int(i) for i in nearestPoint(agentState.container_vector.position)]
-            agent_dir = agentState.container_vector.direction
-            if agentState.is_pacman:
-                map[x][y] = self._pacStr(agent_dir)
+            x, y = [int(i) for i in nearestPoint(staet_agent.container_vector.position)]
+            agent_dir = staet_agent.container_vector.direction
+            if staet_agent.is_pacman:
+                map[x][y] = self._get_str_pacman_from_direction(agent_dir)
             else:
-                map[x][y] = self._ghostStr(agent_dir)
+                map[x][y] = self._get_str_ghost_from_direction(agent_dir)
 
         for x, y in self.list_capsule:
             map[x][y] = 'o'
 
         return str(map) + ("\nScore: %d\n" % self.score)
 
-    def _foodWallStr(self, hasFood, hasWall):
-        if hasFood:
+    def _get_str_food_or_wall_from_bool_food_or_wall(self, bool_food: bool, bool_wall: bool):
+        if bool_food:
             return '.'
-        elif hasWall:
+        elif bool_wall:
             return '%'
         else:
             return ' '
 
-    def _pacStr(self, dir):
-        if dir == Directions.NORTH:
+    def _get_str_pacman_from_direction(self, direction: Directions):
+        if direction == Directions.NORTH:
             return 'v'
-        if dir == Directions.SOUTH:
+        if direction == Directions.SOUTH:
             return '^'
-        if dir == Directions.WEST:
+        if direction == Directions.WEST:
             return '>'
         return '<'
 
-    def _ghostStr(self, dir):
+    def _get_str_ghost_from_direction(self, direction: Directions):
         return 'G'
-        if dir == Directions.NORTH:
+        if direction == Directions.NORTH:
             return 'M'
-        if dir == Directions.SOUTH:
+        if direction == Directions.SOUTH:
             return 'W'
-        if dir == Directions.WEST:
+        if direction == Directions.WEST:
             return '3'
         return 'E'
 
-    def initialize(self, layout, numGhostAgents):
+    def initialize(self, layout: Layout, number_of_agent_ghost: int):
         """
         Creates an initial game game_state from a layout array (see layout.py).
         """
-        self.food = layout.food.copy()
+        self.food: Grid = layout.food.copy()
         # self.list_capsule = []
-        self.list_capsule = layout.list_capsule[:]
-        self.layout = layout
-        self.score = 0
-        self.scoreChange = 0
+        self.list_capsule: List[Tuple[int, int]] = layout.list_capsule[:]
+        self.layout: Layout = layout
+        self.score: int = 0
+        self.scoreChange: int = 0
 
-        self.list_state_agent = []
-        numGhosts = 0
+        self.list_state_agent: List[StateAgent] = []
+
+        count_number_of_agent_ghosts = 0
         for isPacman, pos in layout.agentPositions:
             if not isPacman:
-                if numGhosts == numGhostAgents:
+                if count_number_of_agent_ghosts == number_of_agent_ghost:
                     continue  # Max list_agent_ghost reached already
                 else:
-                    numGhosts += 1
-            self.list_state_agent.append(StateAgent(
-                ContainerVector(pos, Directions.STOP), isPacman))
+                    count_number_of_agent_ghosts += 1
+            self.list_state_agent.append(
+                StateAgent(ContainerVector(pos, Directions.STOP), isPacman)
+            )
         self._eaten = [False for a in self.list_state_agent]

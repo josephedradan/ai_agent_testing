@@ -218,7 +218,7 @@ class ClosestDotSearchAgent(SearchAgent):
                 if action not in legal:
                     t = (str(action), str(currentState))
                     raise Exception('findPathToClosestDot returned an illegal move: %s!\n%s' % t)
-                currentState = currentState.get_configuration_successor(0, action)
+                currentState = currentState.get_container_vector_successor(0, action)
         self.actionIndex = 0
         print('Path found with cost %d.' % len(self.actions))
 

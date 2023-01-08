@@ -60,7 +60,7 @@ class PacmanRules(RulesAgent):
 
         # Update ContainerVector
         vector = Actions.directionToVector(action, PacmanRules.PACMAN_SPEED)
-        pacmanState.container_vector = pacmanState.container_vector.get_configuration_successor(
+        pacmanState.container_vector = pacmanState.container_vector.get_container_vector_successor(
             vector)
 
         # Eat

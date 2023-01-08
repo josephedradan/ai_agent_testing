@@ -15,10 +15,13 @@
 import os
 import random
 from functools import reduce
-from typing import List, Union
+from typing import List
+from typing import Tuple
+from typing import Union
 
 from pacman.game.directions import Directions
 from pacman.game.grid import Grid
+from pacman.util import manhattanDistance
 
 VISIBILITY_MATRIX_CACHE = {}
 
@@ -29,10 +32,10 @@ class Layout:
     """
 
     def __init__(self, list_str_layout_line: List[str]):
-        self.width = len(list_str_layout_line[0])
-        self.height = len(list_str_layout_line)
-        self.walls = Grid(self.width, self.height, False)
-        self.food = Grid(self.width, self.height, False)
+        self.width: int = len(list_str_layout_line[0])
+        self.height: int = len(list_str_layout_line)
+        self.walls: Grid = Grid(self.width, self.height, False)
+        self.food: Grid = Grid(self.width, self.height, False)
         self.list_capsule = []
         self.agentPositions = []
         self.numGhosts = 0
@@ -86,27 +89,34 @@ class Layout:
         else:
             self.visibility = VISIBILITY_MATRIX_CACHE[reduce(str.__add__, self.layoutText)]
 
-    def isWall(self, pos):
+    def is_wall(self, pos: Tuple[int, int]) -> bool:
         x, col = pos
         return self.walls[x][col]
 
-    def getRandomLegalPosition(self):
+    def get_position_legal_random(self) -> Tuple[int, int]:
         x = random.choice(list(range(self.width)))
         y = random.choice(list(range(self.height)))
-        while self.isWall((x, y)):
+        while self.is_wall((x, y)):
             x = random.choice(list(range(self.width)))
             y = random.choice(list(range(self.height)))
         return (x, y)
 
-    def getRandomCorner(self):
-        poses = [(1, 1), (1, self.height - 2), (self.width - 2, 1),
-                 (self.width - 2, self.height - 2)]
+    def get_position_corner_random(self) -> Tuple[int, int]:
+        poses = [(1, 1),
+                 (1, self.height - 2),
+                 (self.width - 2, 1),
+                 (self.width - 2, self.height - 2)
+                 ]
         return random.choice(poses)
 
-    def getFurthestCorner(self, pacPos):
-        poses = [(1, 1), (1, self.height - 2), (self.width - 2, 1),
-                 (self.width - 2, self.height - 2)]
+    def get_position_corner_furthest(self, pacPos):
+        poses = [(1, 1),
+                 (1, self.height - 2),
+                 (self.width - 2, 1),
+                 (self.width - 2, self.height - 2)
+                 ]
         dist, pos = max([(manhattanDistance(p, pacPos), p) for p in poses])
+
         return pos
 
     def isVisibleFrom(self, ghostPos, pacPos, pacDirection):

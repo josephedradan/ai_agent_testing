@@ -21,7 +21,16 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+from typing import List
+from typing import TYPE_CHECKING
+from typing import Tuple
+
 from pacman.game.directions import Directions
+
+if TYPE_CHECKING:
+    from pacman.game.container_vector import ContainerVector
+    from pacman.game.grid import Grid
 
 
 class Actions:
@@ -39,6 +48,7 @@ class Actions:
 
     TOLERANCE = .001
 
+    @staticmethod
     def reverseDirection(action):
         if action == Directions.NORTH:
             return Directions.SOUTH
@@ -50,8 +60,8 @@ class Actions:
             return Directions.EAST
         return action
 
-    reverseDirection = staticmethod(reverseDirection)
 
+    @staticmethod
     def vectorToDirection(vector):
         dx, dy = vector
         if dy > 0:
@@ -64,22 +74,22 @@ class Actions:
             return Directions.EAST
         return Directions.STOP
 
-    vectorToDirection = staticmethod(vectorToDirection)
 
+    @staticmethod
     def directionToVector(direction, speed=1.0):
         dx, dy = Actions._directions[direction]
         return (dx * speed, dy * speed)
 
-    directionToVector = staticmethod(directionToVector)
 
-    def getPossibleActions(config, walls):
+    @staticmethod
+    def getPossibleActions(container_vector: ContainerVector, walls: Grid):
         possible = []
-        x, y = config.position
+        x, y = container_vector.position
         x_int, y_int = int(x + 0.5), int(y + 0.5)
 
         # In between grid points, all agents must continue straight
         if (abs(x - x_int) + abs(y - y_int) > Actions.TOLERANCE):
-            return [config.get_direction()]
+            return [container_vector.get_direction()]
 
         for dir, vec in Actions._directionsAsList:
             dx, dy = vec
@@ -90,9 +100,9 @@ class Actions:
 
         return possible
 
-    getPossibleActions = staticmethod(getPossibleActions)
+    @staticmethod
+    def getLegalNeighbors(position: Tuple[int, int], walls: Grid) -> List[Tuple[int, int]]:
 
-    def getLegalNeighbors(position, walls):
         x, y = position
         x_int, y_int = int(x + 0.5), int(y + 0.5)
         neighbors = []
@@ -108,12 +118,10 @@ class Actions:
                 neighbors.append((next_x, next_y))
         return neighbors
 
-    getLegalNeighbors = staticmethod(getLegalNeighbors)
-
+    @staticmethod
     def getSuccessor(position, action):
         dx, dy = Actions.directionToVector(action)
         x, y = position
         return (x + dx, y + dy)
 
-    getSuccessor = staticmethod(getSuccessor)
 

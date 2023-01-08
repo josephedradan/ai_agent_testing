@@ -328,7 +328,7 @@ def replay_game(layout, actions, display):
 
     for action in actions:
         # Execute the action
-        state = state.get_configuration_successor(*action)
+        state = state.get_container_vector_successor(*action)
         # Change the graphics_pacman
         display.update(state.data)
         # Allow for game specific conditions (winning, losing, etc.)
