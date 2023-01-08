@@ -20,13 +20,13 @@ import sys
 from typing import Callable
 from typing import Sequence
 
-from pacman.grader import Grader
-from pacman.graphics.graphics import Graphics
-from pacman.parser import ParseFile
-
 print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from pacman.grader import Grader
+from pacman.graphics.graphics import Graphics
+from pacman.parser import ParseFile
 
 # imports from python standard library
 from typing import Any

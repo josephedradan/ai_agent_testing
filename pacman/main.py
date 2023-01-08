@@ -46,19 +46,17 @@ import sys
 from pprint import pprint
 from typing import List
 
+# print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+# pprint(sys.path_file_test)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from pacman.game.game import Game
 from pacman.graphics import graphicsDisplay
 from pacman.graphics import textDisplay
 from pacman.graphics.graphics import Graphics
 from pacman.parser import get_dict_kwargs
 
-print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
-# pprint(sys.path_file_test)
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 from pacman.agent import *
-# from multiagent.agent.agent_ghost_random import AgentGhostRandom
-# from multiagent.agent.agent_keyboard import AgentKeyboard
 from pacman.game import layout as _layout
 from pacman.game.rules.game_rules_classic import ClassicGameRules
 from pacman.graphics.graphicsDisplay import PacmanGraphicsReal
