@@ -327,7 +327,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/multiagent" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../../projects_school/san_francisco_state_university/csc_0665-01_artificial_intelligence_fall_2021/assignment_2/multiagent/pacman.py" />
@@ -350,7 +350,7 @@
       <recent name="H:\Programming\Python\projects_github\ai_testing\multiagent\agent\evaluation_function" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.autograder">
+  <component name="RunManager" selected="Python.pacman AgentPacmanMinimax">
     <configuration name="auto_grader" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="pacman" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -452,7 +452,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pacmangent/autograder.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pacman/autograder.py" />
       <option name="PARAMETERS" value="-t &quot;test_cases/multiagent/q2/8-pacman-game&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -518,7 +518,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="H:\Programming\Python\projects_github\ai_testing\pacman\main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pacman/main.py" />
       <option name="PARAMETERS" value="-p AgentPacmanGreedy" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -540,7 +540,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="H:\Programming\Python\projects_github\ai_testing\pacman\main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pacman/main.py" />
       <option name="PARAMETERS" value="-p AgentPacmanLeftTurn" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -562,7 +562,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="H:\Programming\Python\projects_github\ai_testing\pacman\main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pacman/main.py" />
       <option name="PARAMETERS" value="-p AgentPacmanMinimax -a evaluation_function=evaluation_function_better" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -653,6 +653,7 @@
       <workItem from="1672378563024" duration="59045000" />
       <workItem from="1673166312154" duration="19000" />
       <workItem from="1673166362838" duration="12000" />
+      <workItem from="1673166430109" duration="343000" />
     </task>
     <servers />
   </component>
@@ -723,9 +724,11 @@
     <SUITE FILE_PATH="coverage/ai_testing$autograder_3.coverage" NAME="autograder 3 Coverage Results" MODIFIED="1673093987903" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanMinimax.coverage" NAME="pacman AgentPacmanMinimax Coverage Results" MODIFIED="1673164438112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$layout.coverage" NAME="layout Coverage Results" MODIFIED="1670761515758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
+    <SUITE FILE_PATH="coverage/pacman$autograder.coverage" NAME="autograder Coverage Results" MODIFIED="1673166720333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pacman" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman__1_.coverage" NAME="pacman (1) Coverage Results" MODIFIED="1672224454142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$autograder__q_q2.coverage" NAME="autograder -q q2 Coverage Results" MODIFIED="1673164678354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$autograder.coverage" NAME="autograder Coverage Results" MODIFIED="1673166210700" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pacman" />
+    <SUITE FILE_PATH="coverage/pacman$pacman_AgentPacmanMinimax.coverage" NAME="pacman AgentPacmanMinimax Coverage Results" MODIFIED="1673166764567" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pacman" />
     <SUITE FILE_PATH="coverage/ai_testing$autograder_2_8_pacman_game_test.coverage" NAME="autograder 2 8-pacman-game.test Coverage Results" MODIFIED="1673164622189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$pacman_AgentPacmanLeftTurn_.coverage" NAME="pacman AgentPacmanLeftTurn  Coverage Results" MODIFIED="1672228724382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
     <SUITE FILE_PATH="coverage/ai_testing$autograder_2_test.coverage" NAME="autograder 2 test Coverage Results" MODIFIED="1673093984830" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
