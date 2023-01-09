@@ -39,6 +39,8 @@ code to run a game.  This file is divided into three sections:
 To play your first game, type 'python pacman.py' from the command line.
 The keys are 'a', 's', 'd', and 'w' to move (or arrow keys).  Have fun!
 """
+from __future__ import annotations
+
 import argparse
 import os
 import random
@@ -47,7 +49,11 @@ import sys
 # print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
 from typing import Sequence
+from typing import Union
 
+from pacman.agent import Agent
+from pacman.agent import AgentKeyboard
+from pacman.agent import get_class_agent
 from pacman.graphics.graphics_pacman_terminal import GraphicsPacmanTerminal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -61,7 +67,6 @@ from pacman.graphics import graphics_pacman_null
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.parser import get_dict_kwargs
 
-from pacman.agent import *
 from pacman.game import layout as _layout
 from pacman.game.rules.game_rules_classic import ClassicGameRules
 from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
@@ -242,11 +247,12 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
         dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
     else:
         dict_k_name_arg_v_arg['graphics_pacman'] = graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(
-            options.zoom, frameTime=options.frameTime)
+            options.zoom,
+            frameTime=options.frameTime
+        )
 
     # dict_k_name_arg_v_arg['graphics_pacman'] = textDisplay.GraphicsPacmanNull()
     # dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
-
 
     dict_k_name_arg_v_arg['number_of_games'] = options.number_of_games
     dict_k_name_arg_v_arg['bool_record'] = options.bool_record
@@ -445,7 +451,17 @@ if __name__ == '__main__':
 
     > python pacman.py --help
     """
+
+    # from code_analyzer import code_analyzer
+
+    # code_analyzer.start()
+
     args = arg_parser(sys.argv[1:])  # Get game components based on input
+
+    # code_analyzer.stop()
+    # code_analyzer.get_code_analyzer_printer().export_rich_to_html()
+
+
     pprint(args)
     run_games(**args)
 

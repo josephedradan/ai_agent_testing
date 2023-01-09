@@ -72,6 +72,7 @@ class Game:
         self.agentTimeout: bool = False
         import io
         self.agentOutput = [io.StringIO() for agent in list_agent]
+        print()
 
     def _get_progress(self) -> float:
         if self.gameOver:
@@ -112,6 +113,7 @@ class Game:
         Main control loop for game play.
         """
         self.graphics_pacman.initialize(self.state.data)
+
         print(self.state, type(self.state), "self.state", type(self.state.data))
         print("FFFFF")
         self.numMoves = 0

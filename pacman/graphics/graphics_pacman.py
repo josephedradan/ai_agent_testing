@@ -39,6 +39,10 @@ class GraphicsPacman(ABC):
 
     """
 
+    # def __init__(self, display):
+
+
+
     @abstractmethod
     def initialize(self, state: GameStateData, isBlue: bool = False):
         pass

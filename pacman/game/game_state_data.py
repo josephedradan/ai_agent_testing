@@ -49,8 +49,8 @@ class GameStateData:
                 game_state_date_previous.list_state_agent
             )
             self.layout: Layout = game_state_date_previous.layout
-            self._eaten = game_state_date_previous._eaten
-            self.score = game_state_date_previous.score
+            self._eaten: List[bool] = game_state_date_previous._eaten
+            self.score: int = game_state_date_previous.score
 
         self._foodEaten = None
         self._foodAdded = None

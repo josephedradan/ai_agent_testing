@@ -19,6 +19,7 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
+from pacman import constants
 from pacman.game.directions import Directions
 from pacman.game.grid import Grid
 from pacman.util import manhattanDistance
@@ -174,7 +175,8 @@ def getLayout(name: str, back=2) -> Union[Layout, None]:
             layout = get_layout_object_helper(name)
 
     else:
-        layout = get_layout_object_helper('layouts/' + name + '.lay')
+        layout = get_layout_object_helper(constants.PATH_LAYOUTS + name + '.lay')
+
         if layout is None:
             layout = get_layout_object_helper(name + '.lay')
 
@@ -187,16 +189,16 @@ def getLayout(name: str, back=2) -> Union[Layout, None]:
     return layout
 
 
-def get_layout_object_helper(fullname: str) -> Union[Layout, None]:
+def get_layout_object_helper(path_layout: str) -> Union[Layout, None]:
     """
     Given string_given of path_file_test of layout file, return Layout object or None
 
-    :param fullname:
+    :param path_layout:
     :return:
     """
 
-    if not os.path.exists(fullname):
+    if not os.path.exists(path_layout):
         return None
 
-    with open(fullname, 'r') as f:
+    with open(path_layout, 'r') as f:
         return Layout([line.strip() for line in f])

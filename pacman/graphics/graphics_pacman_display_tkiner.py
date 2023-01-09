@@ -20,9 +20,11 @@ import math
 
 import time
 from typing import TYPE_CHECKING
+from typing import Union
 
 from pacman.game.directions import Directions
-from pacman.graphics.display_tkinter import Display
+from pacman.game.layout import Layout
+from pacman.graphics.display_tkinter import DisplayTkinter
 from pacman.graphics.display_tkinter import colorToVector
 from pacman.graphics.display_tkinter import formatColor
 from pacman.graphics.display_tkinter import writePostscript
@@ -94,7 +96,7 @@ WALL_RADIUS = 0.15
 
 
 class InfoPane:
-    def __init__(self, layout, gridSize, _graphics_actual: Display):
+    def __init__(self, layout, gridSize, _graphics_actual: DisplayTkinter):
 
         #
         # TODO JOSEPH CUSTOM
@@ -196,34 +198,40 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         self.frameTime = frameTime
 
         #####
-        # TODO JOSEPH CUSTOM
-        self._graphics_actual = Display()
 
-    def get_graphics_actual(self) -> Display:
-        return self._graphics_actual
+        self.layout: Union[Layout, None] = None
+        self.width: Union[int, None] = None
+        self.height: Union[int, None] = None
+        #####
+        # TODO JOSEPH CUSTOM
+        self._display_tkinter = DisplayTkinter()
+
+    def get_graphics_actual(self) -> DisplayTkinter:
+        return self._display_tkinter
 
     def checkNullDisplay(self):
         return False
 
-    def initialize(self, state: GameStateData, isBlue=False):
+    def initialize(self, game_state_data: GameStateData, isBlue=False):
         self.isBlue = isBlue
-        self.startGraphics(state)
+        self._startGraphics(game_state_data)
 
         # self.drawDistributions(game_state)
         self.distributionImages = None  # Initialized lazily
-        self.drawStaticObjects(state)
-        self.drawAgentObjects(state)
+        self.drawStaticObjects(game_state_data)
+        self.drawAgentObjects(game_state_data)
 
         # Information
-        self.previousState = state
+        self.previousState = game_state_data
 
-    def startGraphics(self, state):
+    def _startGraphics(self, state):
         self.layout = state.layout
         layout = self.layout
+
         self.width = layout.width
         self.height = layout.height
         self._make_window(self.width, self.height)
-        self.infoPane = InfoPane(layout, self.gridSize, self._graphics_actual)
+        self.infoPane = InfoPane(layout, self.gridSize, self._display_tkinter)
         self.currentState = layout
 
     def drawDistributions(self, state):
@@ -234,7 +242,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             dist.append(distx)
             for y in range(walls.height):
                 (screen_x, screen_y) = self.to_screen((x, y))
-                block = self._graphics_actual.square((screen_x, screen_y),
+                block = self._display_tkinter.square((screen_x, screen_y),
                                                      0.5 * self.gridSize,
                                                      color=BACKGROUND_COLOR,
                                                      filled=1, behind=2)
@@ -246,7 +254,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         self.drawWalls(layout.walls)
         self.food = self.drawFood(layout.food)
         self.capsules = self.drawCapsules(layout.list_capsule)
-        self._graphics_actual.refresh()
+        self._display_tkinter.refresh()
 
     def drawAgentObjects(self, state):
         self.agentImages = []  # (agentState, image)
@@ -257,7 +265,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             else:
                 image = self.drawGhost(agent, index)
                 self.agentImages.append((agent, image))
-        self._graphics_actual.refresh()
+        self._display_tkinter.refresh()
 
     def _swap_images(self, agentIndex, newState):
         """
@@ -265,14 +273,14 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         """
         prevState, prevImage = self.agentImages[agentIndex]
         for item in prevImage:
-            self._graphics_actual.remove_from_screen(item)
+            self._display_tkinter.remove_from_screen(item)
         if newState.is_pacman:
             image = self._draw_pacman(newState, agentIndex)
             self.agentImages[agentIndex] = (newState, image)
         else:
             image = self.drawGhost(newState, agentIndex)
             self.agentImages[agentIndex] = (newState, image)
-        self._graphics_actual.refresh()
+        self._display_tkinter.refresh()
 
     def update(self, newState: GameStateData):
 
@@ -303,7 +311,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         screen_height = 2 * self.gridSize + grid_height + INFO_PANE_HEIGHT
 
         # TODO: HERE JOSEPH
-        self._graphics_actual._begin_graphics(
+        self._display_tkinter._begin_graphics(
             screen_width,
             screen_height,
             BACKGROUND_COLOR,
@@ -323,7 +331,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             fillColor = GHOST_COLORS[index]
             width = PACMAN_CAPTURE_OUTLINE_WIDTH
 
-        return [self._graphics_actual.circle(screen_point, PACMAN_SCALE * self.gridSize,
+        return [self._display_tkinter.circle(screen_point, PACMAN_SCALE * self.gridSize,
                                              fillColor=fillColor, outlineColor=outlineColor,
                                              endpoints=endpoints,
                                              width=width)]
@@ -348,13 +356,13 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         screenPosition = self.to_screen(position)
         endpoints = self.getEndpoints(direction, position)
         r = PACMAN_SCALE * self.gridSize
-        self._graphics_actual.moveCircle(image[0], screenPosition, r, endpoints)
-        self._graphics_actual.refresh()
+        self._display_tkinter.moveCircle(image[0], screenPosition, r, endpoints)
+        self._display_tkinter.refresh()
 
     def animatePacman(self, pacman, prevPacman, image):
         if self.frameTime < 0:
             print('Press any key to step forward, "q" to play')
-            keys = self._graphics_actual.get_wait_for_keys()
+            keys = self._display_tkinter.get_wait_for_keys()
             if 'q' in keys:
                 self.frameTime = 0.1
         if self.frameTime > 0.01 or self.frameTime < 0:
@@ -366,12 +374,12 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                 pos = px * i / frames + fx * \
                       (frames - i) / frames, py * i / frames + fy * (frames - i) / frames
                 self.movePacman(pos, self.getDirection(pacman), image)
-                self._graphics_actual.refresh()
-                self._graphics_actual.sleep(abs(self.frameTime) / frames)
+                self._display_tkinter.refresh()
+                self._display_tkinter.sleep(abs(self.frameTime) / frames)
         else:
             self.movePacman(self.getPosition(pacman),
                             self.getDirection(pacman), image)
-        self._graphics_actual.refresh()
+        self._display_tkinter.refresh()
 
     def getGhostColor(self, ghost, ghostIndex):
         if ghost.scaredTimer > 0:
@@ -389,7 +397,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                            y * self.gridSize * GHOST_SIZE + screen_y))
 
         colour = self.getGhostColor(ghost, agentIndex)
-        body = self._graphics_actual.polygon(coords, colour, filled=1)
+        body = self._display_tkinter.polygon(coords, colour, filled=1)
         WHITE = formatColor(1.0, 1.0, 1.0)
         BLACK = formatColor(0.0, 0.0, 0.0)
 
@@ -403,18 +411,18 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             dx = 0.2
         if dir == 'West':
             dx = -0.2
-        leftEye = self._graphics_actual.circle((screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx / 1.5), screen_y -
+        leftEye = self._display_tkinter.circle((screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx / 1.5), screen_y -
                                                 self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)),
                                                self.gridSize * GHOST_SIZE * 0.2, WHITE,
                                                WHITE)
-        rightEye = self._graphics_actual.circle((screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx / 1.5), screen_y -
+        rightEye = self._display_tkinter.circle((screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx / 1.5), screen_y -
                                                  self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)),
                                                 self.gridSize * GHOST_SIZE * 0.2, WHITE,
                                                 WHITE)
-        leftPupil = self._graphics_actual.circle((screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx), screen_y -
+        leftPupil = self._display_tkinter.circle((screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx), screen_y -
                                                   self.gridSize * GHOST_SIZE * (0.3 - dy)),
                                                  self.gridSize * GHOST_SIZE * 0.08, BLACK, BLACK)
-        rightPupil = self._graphics_actual.circle((screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx), screen_y -
+        rightPupil = self._display_tkinter.circle((screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx), screen_y -
                                                    self.gridSize * GHOST_SIZE * (0.3 - dy)),
                                                   self.gridSize * GHOST_SIZE * 0.08, BLACK, BLACK)
         ghostImageParts = []
@@ -438,16 +446,16 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             dx = 0.2
         if dir == 'West':
             dx = -0.2
-        self._graphics_actual.moveCircle(eyes[0], (screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx / 1.5), screen_y -
+        self._display_tkinter.moveCircle(eyes[0], (screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx / 1.5), screen_y -
                                                    self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)),
                                          self.gridSize * GHOST_SIZE * 0.2)
-        self._graphics_actual.moveCircle(eyes[1], (screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx / 1.5), screen_y -
+        self._display_tkinter.moveCircle(eyes[1], (screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx / 1.5), screen_y -
                                                    self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)),
                                          self.gridSize * GHOST_SIZE * 0.2)
-        self._graphics_actual.moveCircle(eyes[2], (screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx), screen_y -
+        self._display_tkinter.moveCircle(eyes[2], (screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx), screen_y -
                                                    self.gridSize * GHOST_SIZE * (0.3 - dy)),
                                          self.gridSize * GHOST_SIZE * 0.08)
-        self._graphics_actual.moveCircle(eyes[3], (screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx), screen_y -
+        self._display_tkinter.moveCircle(eyes[3], (screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx), screen_y -
                                                    self.gridSize * GHOST_SIZE * (0.3 - dy)),
                                          self.gridSize * GHOST_SIZE * 0.08)
 
@@ -457,17 +465,17 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         delta = new_x - old_x, new_y - old_y
 
         for ghostImagePart in ghostImageParts:
-            self._graphics_actual.move_by(ghostImagePart, delta)
-        self._graphics_actual.refresh()
+            self._display_tkinter.move_by(ghostImagePart, delta)
+        self._display_tkinter.refresh()
 
         if ghost.scaredTimer > 0:
             color = SCARED_COLOR
         else:
             color = GHOST_COLORS[ghostIndex]
-        self._graphics_actual.edit(ghostImageParts[0], ('fill', color), ('outline', color))
+        self._display_tkinter.edit(ghostImageParts[0], ('fill', color), ('outline', color))
         self.moveEyes(self.getPosition(ghost),
                       self.getDirection(ghost), ghostImageParts[-4:])
-        self._graphics_actual.refresh()
+        self._display_tkinter.refresh()
 
     def getPosition(self, agentState):
         if agentState.container_vector == None:
@@ -480,7 +488,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         return agentState.container_vector.get_direction()
 
     def finish(self):
-        self._graphics_actual.end_graphics()
+        self._display_tkinter.end_graphics()
 
     def to_screen(self, point):
         (x, y) = point
@@ -524,11 +532,11 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                     # NE quadrant
                     if (not nIsWall) and (not eIsWall):
                         # inner circle
-                        self._graphics_actual.circle(screen2, WALL_RADIUS * self.gridSize,
+                        self._display_tkinter.circle(screen2, WALL_RADIUS * self.gridSize,
                                                      wallColor, wallColor, (0, 91), 'arc')
                     if (nIsWall) and (not eIsWall):
                         # vertical line
-                        self._graphics_actual.line(add(screen, (self.gridSize * WALL_RADIUS, 0)), add(screen,
+                        self._display_tkinter.line(add(screen, (self.gridSize * WALL_RADIUS, 0)), add(screen,
                                                                                                       (
                                                                                                           self.gridSize * WALL_RADIUS,
                                                                                                           self.gridSize * (
@@ -536,7 +544,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                                                    wallColor)
                     if (not nIsWall) and (eIsWall):
                         # horizontal line
-                        self._graphics_actual.line(add(screen, (0, self.gridSize * (-1) * WALL_RADIUS)), add(screen,
+                        self._display_tkinter.line(add(screen, (0, self.gridSize * (-1) * WALL_RADIUS)), add(screen,
                                                                                                              (
                                                                                                                  self.gridSize * 0.5 + 1,
                                                                                                                  self.gridSize * (
@@ -544,24 +552,24 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                                                    wallColor)
                     if (nIsWall) and (eIsWall) and (not neIsWall):
                         # outer circle
-                        self._graphics_actual.circle(
+                        self._display_tkinter.circle(
                             add(screen2, (self.gridSize * 2 * WALL_RADIUS, self.gridSize * (-2) * WALL_RADIUS)),
                             WALL_RADIUS * self.gridSize - 1, wallColor, wallColor, (180, 271), 'arc')
-                        self._graphics_actual.line(
+                        self._display_tkinter.line(
                             add(screen, (self.gridSize * 2 * WALL_RADIUS - 1, self.gridSize * (-1) * WALL_RADIUS)),
                             add(screen, (self.gridSize * 0.5 + 1, self.gridSize * (-1) * WALL_RADIUS)), wallColor)
-                        self._graphics_actual.line(
+                        self._display_tkinter.line(
                             add(screen, (self.gridSize * WALL_RADIUS, self.gridSize * (-2) * WALL_RADIUS + 1)),
                             add(screen, (self.gridSize * WALL_RADIUS, self.gridSize * (-0.5))), wallColor)
 
                     # NW quadrant
                     if (not nIsWall) and (not wIsWall):
                         # inner circle
-                        self._graphics_actual.circle(screen2, WALL_RADIUS * self.gridSize,
+                        self._display_tkinter.circle(screen2, WALL_RADIUS * self.gridSize,
                                                      wallColor, wallColor, (90, 181), 'arc')
                     if (nIsWall) and (not wIsWall):
                         # vertical line
-                        self._graphics_actual.line(add(screen, (self.gridSize * (-1) * WALL_RADIUS, 0)), add(screen,
+                        self._display_tkinter.line(add(screen, (self.gridSize * (-1) * WALL_RADIUS, 0)), add(screen,
                                                                                                              (
                                                                                                                  self.gridSize * (
                                                                                                                      -1) * WALL_RADIUS,
@@ -570,7 +578,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                                                    wallColor)
                     if (not nIsWall) and (wIsWall):
                         # horizontal line
-                        self._graphics_actual.line(add(screen, (0, self.gridSize * (-1) * WALL_RADIUS)), add(screen,
+                        self._display_tkinter.line(add(screen, (0, self.gridSize * (-1) * WALL_RADIUS)), add(screen,
                                                                                                              (
                                                                                                                  self.gridSize * (
                                                                                                                      -0.5) - 1,
@@ -579,24 +587,24 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                                                    wallColor)
                     if (nIsWall) and (wIsWall) and (not nwIsWall):
                         # outer circle
-                        self._graphics_actual.circle(
+                        self._display_tkinter.circle(
                             add(screen2, (self.gridSize * (-2) * WALL_RADIUS, self.gridSize * (-2) * WALL_RADIUS)),
                             WALL_RADIUS * self.gridSize - 1, wallColor, wallColor, (270, 361), 'arc')
-                        self._graphics_actual.line(
+                        self._display_tkinter.line(
                             add(screen, (self.gridSize * (-2) * WALL_RADIUS + 1, self.gridSize * (-1) * WALL_RADIUS)),
                             add(screen, (self.gridSize * (-0.5), self.gridSize * (-1) * WALL_RADIUS)), wallColor)
-                        self._graphics_actual.line(
+                        self._display_tkinter.line(
                             add(screen, (self.gridSize * (-1) * WALL_RADIUS, self.gridSize * (-2) * WALL_RADIUS + 1)),
                             add(screen, (self.gridSize * (-1) * WALL_RADIUS, self.gridSize * (-0.5))), wallColor)
 
                     # SE quadrant
                     if (not sIsWall) and (not eIsWall):
                         # inner circle
-                        self._graphics_actual.circle(screen2, WALL_RADIUS * self.gridSize,
+                        self._display_tkinter.circle(screen2, WALL_RADIUS * self.gridSize,
                                                      wallColor, wallColor, (270, 361), 'arc')
                     if (sIsWall) and (not eIsWall):
                         # vertical line
-                        self._graphics_actual.line(add(screen, (self.gridSize * WALL_RADIUS, 0)), add(screen,
+                        self._display_tkinter.line(add(screen, (self.gridSize * WALL_RADIUS, 0)), add(screen,
                                                                                                       (
                                                                                                           self.gridSize * WALL_RADIUS,
                                                                                                           self.gridSize * (
@@ -604,7 +612,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                                                    wallColor)
                     if (not sIsWall) and (eIsWall):
                         # horizontal line
-                        self._graphics_actual.line(add(screen, (0, self.gridSize * (1) * WALL_RADIUS)), add(screen,
+                        self._display_tkinter.line(add(screen, (0, self.gridSize * (1) * WALL_RADIUS)), add(screen,
                                                                                                             (
                                                                                                                 self.gridSize * 0.5 + 1,
                                                                                                                 self.gridSize * (
@@ -612,24 +620,24 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                                                    wallColor)
                     if (sIsWall) and (eIsWall) and (not seIsWall):
                         # outer circle
-                        self._graphics_actual.circle(
+                        self._display_tkinter.circle(
                             add(screen2, (self.gridSize * 2 * WALL_RADIUS, self.gridSize * (2) * WALL_RADIUS)),
                             WALL_RADIUS * self.gridSize - 1, wallColor, wallColor, (90, 181), 'arc')
-                        self._graphics_actual.line(
+                        self._display_tkinter.line(
                             add(screen, (self.gridSize * 2 * WALL_RADIUS - 1, self.gridSize * (1) * WALL_RADIUS)),
                             add(screen, (self.gridSize * 0.5, self.gridSize * (1) * WALL_RADIUS)), wallColor)
-                        self._graphics_actual.line(
+                        self._display_tkinter.line(
                             add(screen, (self.gridSize * WALL_RADIUS, self.gridSize * (2) * WALL_RADIUS - 1)),
                             add(screen, (self.gridSize * WALL_RADIUS, self.gridSize * (0.5))), wallColor)
 
                     # SW quadrant
                     if (not sIsWall) and (not wIsWall):
                         # inner circle
-                        self._graphics_actual.circle(screen2, WALL_RADIUS * self.gridSize,
+                        self._display_tkinter.circle(screen2, WALL_RADIUS * self.gridSize,
                                                      wallColor, wallColor, (180, 271), 'arc')
                     if (sIsWall) and (not wIsWall):
                         # vertical line
-                        self._graphics_actual.line(add(screen, (self.gridSize * (-1) * WALL_RADIUS, 0)), add(screen,
+                        self._display_tkinter.line(add(screen, (self.gridSize * (-1) * WALL_RADIUS, 0)), add(screen,
                                                                                                              (
                                                                                                                  self.gridSize * (
                                                                                                                      -1) * WALL_RADIUS,
@@ -638,7 +646,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                                                    wallColor)
                     if (not sIsWall) and (wIsWall):
                         # horizontal line
-                        self._graphics_actual.line(add(screen, (0, self.gridSize * (1) * WALL_RADIUS)), add(screen,
+                        self._display_tkinter.line(add(screen, (0, self.gridSize * (1) * WALL_RADIUS)), add(screen,
                                                                                                             (
                                                                                                                 self.gridSize * (
                                                                                                                     -0.5) - 1,
@@ -647,13 +655,13 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                                                    wallColor)
                     if (sIsWall) and (wIsWall) and (not swIsWall):
                         # outer circle
-                        self._graphics_actual.circle(
+                        self._display_tkinter.circle(
                             add(screen2, (self.gridSize * (-2) * WALL_RADIUS, self.gridSize * (2) * WALL_RADIUS)),
                             WALL_RADIUS * self.gridSize - 1, wallColor, wallColor, (0, 91), 'arc')
-                        self._graphics_actual.line(
+                        self._display_tkinter.line(
                             add(screen, (self.gridSize * (-2) * WALL_RADIUS + 1, self.gridSize * (1) * WALL_RADIUS)),
                             add(screen, (self.gridSize * (-0.5), self.gridSize * (1) * WALL_RADIUS)), wallColor)
-                        self._graphics_actual.line(
+                        self._display_tkinter.line(
                             add(screen, (self.gridSize * (-1) * WALL_RADIUS, self.gridSize * (2) * WALL_RADIUS - 1)),
                             add(screen, (self.gridSize * (-1) * WALL_RADIUS, self.gridSize * (0.5))), wallColor)
 
@@ -677,7 +685,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             for yNum, cell in enumerate(x):
                 if cell:  # There's food here
                     screen = self.to_screen((xNum, yNum))
-                    dot = self._graphics_actual.circle(screen,
+                    dot = self._display_tkinter.circle(screen,
                                                        FOOD_SIZE * self.gridSize,
                                                        outlineColor=color, fillColor=color,
                                                        width=1)
@@ -690,7 +698,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         capsuleImages = {}
         for capsule in capsules:
             (screen_x, screen_y) = self.to_screen(capsule)
-            dot = self._graphics_actual.circle((screen_x, screen_y),
+            dot = self._display_tkinter.circle((screen_x, screen_y),
                                                CAPSULE_SIZE * self.gridSize,
                                                outlineColor=CAPSULE_COLOR,
                                                fillColor=CAPSULE_COLOR,
@@ -700,11 +708,11 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
 
     def removeFood(self, cell, foodImages):
         x, y = cell
-        self._graphics_actual.remove_from_screen(foodImages[x][y])
+        self._display_tkinter.remove_from_screen(foodImages[x][y])
 
     def removeCapsule(self, cell, capsuleImages):
         x, y = cell
-        self._graphics_actual.remove_from_screen(capsuleImages[(x, y)])
+        self._display_tkinter.remove_from_screen(capsuleImages[(x, y)])
 
     def drawExpandedCells(self, cells):
         """
@@ -718,18 +726,18 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             screenPos = self.to_screen(cell)
             cellColor = formatColor(
                 *[(n - k) * c * .5 / n + .25 for c in baseColor])
-            block = self._graphics_actual.square(screenPos,
+            block = self._display_tkinter.square(screenPos,
                                                  0.5 * self.gridSize,
                                                  color=cellColor,
                                                  filled=1, behind=2)
             self.expandedCells.append(block)
             if self.frameTime < 0:
-                self._graphics_actual.refresh()
+                self._display_tkinter.refresh()
 
     def clearExpandedCells(self):
         if 'expandedCells' in dir(self) and len(self.expandedCells) > 0:
             for cell in self.expandedCells:
-                self._graphics_actual.remove_from_screen(cell)
+                self._display_tkinter.remove_from_screen(cell)
 
     def updateDistributions(self, distributions):
         "Draws an agent's belief distributions"
@@ -752,8 +760,8 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
                 for weight, gcolor in zip(weights, colors):
                     color = [min(1.0, c + 0.95 * g * weight ** .3)
                              for c, g in zip(color, gcolor)]
-                self._graphics_actual.changeColor(image, formatColor(*color))
-        self._graphics_actual.refresh()
+                self._display_tkinter.changeColor(image, formatColor(*color))
+        self._display_tkinter.refresh()
 
 
 class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
@@ -762,22 +770,22 @@ class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
         self.showGhosts = showGhosts
         self.capture = capture
 
-    def initialize(self, state: GameStateData, isBlue=False):
+    def initialize(self, game_state_data: GameStateData, isBlue=False):
 
         self.isBlue = isBlue
-        GraphicsPacmanDisplayTkinter.startGraphics(self, state)
+        GraphicsPacmanDisplayTkinter._startGraphics(self, game_state_data)
         # Initialize distribution images
-        walls = state.layout.walls
+        walls = game_state_data.layout.walls
         dist = []
-        self.layout = state.layout
+        self.layout = game_state_data.layout
 
         # Draw the rest
         self.distributionImages = None  # initialize lazily
-        self.drawStaticObjects(state)
-        self.drawAgentObjects(state)
+        self.drawStaticObjects(game_state_data)
+        self.drawAgentObjects(game_state_data)
 
         # Information
-        self.previousState = state
+        self.previousState = game_state_data
 
     def lookAhead(self, config, state):
         if config.get_direction() == 'Stop':

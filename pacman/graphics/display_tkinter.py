@@ -17,6 +17,8 @@ import sys
 import time
 import tkinter
 
+from pacman.graphics.display import Display
+
 _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
 
@@ -46,7 +48,7 @@ else:
     pass  # XXX need defaults here
 
 
-class Display:
+class DisplayTkinter(Display):
 
     def __init__(self):
         self._root_window = None  # The root window for graphics output

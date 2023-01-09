@@ -21,6 +21,9 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+from typing import List
 
 
 def reconstituteGrid(bitRep):
@@ -39,15 +42,15 @@ class Grid:
     The __str__ method constructs an output that is oriented like a agent_pacman_ board.
     """
 
-    def __init__(self, width, height, initialValue=False, bitRepresentation=None):
+    def __init__(self, width: int, height: int, initialValue=False, bitRepresentation=None):
         if initialValue not in [False, True]:
             raise Exception('Grids can only contain booleans')
         self.CELLS_PER_INT = 30
 
-        self.width = width
-        self.height = height
-        self.data = [[initialValue for y in range(
-            height)] for x in range(width)]
+        self.width: int = width
+        self.height: int = height
+        self.data: List[List[bool]] = [[initialValue for y in range(height)] for x in range(width)]
+
         if bitRepresentation:
             self._unpackBits(bitRepresentation)
 
@@ -63,8 +66,8 @@ class Grid:
         out.reverse()
         return '\n'.join([''.join(x) for x in out])
 
-    def __eq__(self, other):
-        if other == None:
+    def __eq__(self, other: Grid):
+        if other is None:
             return False
         return self.data == other.data
 
