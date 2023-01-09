@@ -23,6 +23,7 @@ Reference:
 """
 from __future__ import annotations
 
+from typing import Tuple
 from typing import Union, TYPE_CHECKING, List
 
 from pacman.game.actions import Actions
@@ -71,23 +72,23 @@ class PacmanRules(RulesAgent):
             PacmanRules.consume(nearest, state)
 
     @staticmethod
-    def consume(position, state):
+    def consume(position:Tuple[int,int], game_state: GameState):
         x, y = position
         # Eat food
-        if state.data.food[x][y]:
-            state.data.scoreChange += 10
-            state.data.food = state.data.food.copy()
-            state.data.food[x][y] = False
-            state.data._foodEaten = position
+        if game_state.data.food[x][y]:
+            game_state.data.scoreChange += 10
+            game_state.data.food = game_state.data.food.copy()
+            game_state.data.food[x][y] = False
+            game_state.data._foodEaten = position
             # TODO: cache numFood?
-            numFood = state.getNumFood()
-            if numFood == 0 and not state.data._lose:
-                state.data.scoreChange += 500
-                state.data._win = True
+            numFood = game_state.getNumFood()
+            if numFood == 0 and not game_state.data._lose:
+                game_state.data.scoreChange += 500
+                game_state.data._win = True
         # Eat capsule
-        if (position in state.getCapsules()):
-            state.data.list_capsule.remove(position)
-            state.data._capsuleEaten = position
+        if (position in game_state.getCapsules()):
+            game_state.data.list_capsule.remove(position)
+            game_state.data._capsuleEaten = position
             # Reset all list_agent_ghost' scared timers
-            for index in range(1, len(state.data.list_state_agent)):
-                state.data.list_state_agent[index].scaredTimer = SCARED_TIME
+            for index in range(1, len(game_state.data.list_state_agent)):
+                game_state.data.list_state_agent[index].scaredTimer = SCARED_TIME

@@ -56,8 +56,8 @@ class GameStateData:
         self._foodAdded = None
         self._capsuleEaten = None
         self._agentMoved = None
-        self._lose = False
-        self._win = False
+        self._lose: bool = False
+        self._win: bool = False
         self.scoreChange = 0
 
     def get_deep_copy(self) -> GameStateData:
@@ -72,7 +72,7 @@ class GameStateData:
 
         return game_state_data
 
-    def get_list_state_agent_copy(self, list_state_agent: List[StateAgent]):
+    def get_list_state_agent_copy(self, list_state_agent: List[StateAgent]) -> List[StateAgent]:
         return [state_agent.copy() for state_agent in list_state_agent]
 
     def __eq__(self, other):
@@ -140,7 +140,7 @@ class GameStateData:
 
         return str(map) + ("\nScore: %d\n" % self.score)
 
-    def _get_str_food_or_wall_from_bool_food_or_wall(self, bool_food: bool, bool_wall: bool):
+    def _get_str_food_or_wall_from_bool_food_or_wall(self, bool_food: bool, bool_wall: bool) -> str:
         if bool_food:
             return '.'
         elif bool_wall:
@@ -148,7 +148,7 @@ class GameStateData:
         else:
             return ' '
 
-    def _get_str_pacman_from_direction(self, direction: Directions):
+    def _get_str_pacman_from_direction(self, direction: Directions)->str:
         if direction == Directions.NORTH:
             return 'v'
         if direction == Directions.SOUTH:
@@ -157,7 +157,7 @@ class GameStateData:
             return '>'
         return '<'
 
-    def _get_str_ghost_from_direction(self, direction: Directions):
+    def _get_str_ghost_from_direction(self, direction: Directions) -> str:
         return 'G'
         if direction == Directions.NORTH:
             return 'M'

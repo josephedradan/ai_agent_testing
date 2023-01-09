@@ -41,10 +41,12 @@ QUIET = False  # Supresses output
 
 
 class GraphicsPacmanTerminal(GraphicsPacman):
-    def __init__(self, speed=None):
-        if speed != None:
-            global SLEEP_TIME
-            SLEEP_TIME = speed
+
+
+    # def __init__(self, speed=None):
+    #     if speed != None:
+    #         global SLEEP_TIME
+    #         SLEEP_TIME = speed
 
     def initialize(self, state: GameStateData, isBlue: bool = False):
         self.draw(state)
@@ -69,7 +71,7 @@ class GraphicsPacmanTerminal(GraphicsPacman):
             self.draw(state)
 
     def pause(self):
-        time.sleep(SLEEP_TIME)
+        time.sleep(self.time_sleep)
 
     def draw(self, state):
         print(state)

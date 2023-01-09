@@ -122,10 +122,11 @@ class Game:
 
         # self.graphics_pacman.initialize(self.game_state.makeObservation(1).data)
         # inform learning agents of the game start
-        for i in range(len(self.list_agent)):
-            agent = self.list_agent[i]
+        for i, agent in enumerate(self.list_agent):
+
             if not agent:
                 self._mute(i)
+                
                 # this is a null agent, meaning it failed to load
                 # the other team wins
                 print("Agent %d failed to load" % i, file=sys.stderr)

@@ -11,6 +11,14 @@
 
 
     python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
+    python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better --graphics GraphicsPacmanNull
+    
+    
+    ??????????
+    python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better --graphics FirstPersonGraphics
+    ??????
+
+
 
     python main.py --quietTextGraphics
     

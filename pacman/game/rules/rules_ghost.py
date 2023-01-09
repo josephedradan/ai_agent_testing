@@ -27,6 +27,7 @@ from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
 
+from pacman.agent.state_agent import StateAgent
 from pacman.game.actions import Actions
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
@@ -101,7 +102,7 @@ class GhostRules(RulesAgent):
                 GhostRules.collide(state, ghostState, agentIndex)
 
     @staticmethod
-    def collide(state, ghostState, agentIndex):
+    def collide(state: GameState, ghostState: StateAgent, agentIndex):
         if ghostState.scaredTimer > 0:
             state.data.scoreChange += 200
             GhostRules.placeGhost(state, ghostState)

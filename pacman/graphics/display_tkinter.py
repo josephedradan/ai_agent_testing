@@ -18,6 +18,7 @@ import time
 import tkinter
 
 from pacman.graphics.display import Display
+from pacman.graphics.display import formatColor
 
 _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
@@ -33,8 +34,6 @@ _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 # _canvas_tserifs = 0
 
 
-def formatColor(r, g, b):
-    return '#%02x%02x%02x' % (int(r * 255), int(g * 255), int(b * 255))
 
 
 def colorToVector(color):
@@ -84,13 +83,13 @@ class DisplayTkinter(Display):
             (self._canvas_xs, 0)
         ]
 
-        self.polygon(corners,
-                self._bg_color,
-                fillColor=self._bg_color,
-                filled=True,
-                smoothed=False)
+        self.draw_polygon(corners,
+                          self._bg_color,
+                          fillColor=self._bg_color,
+                          filled=True,
+                          smoothed=False)
 
-    def _begin_graphics(self, width=640, height=480, color=formatColor(0, 0, 0), title=None):
+    def initialize_graphics(self, width=640, height=480, color=formatColor(0, 0, 0), name=None):
 
         # global _root_window, _canvas, _canvas_x, _canvas_y, _canvas_xs, _canvas_ys, _bg_color
 
@@ -112,7 +111,7 @@ class DisplayTkinter(Display):
         # Create the root window
         self._root_window = tkinter.Tk()
         self._root_window.protocol('WM_DELETE_WINDOW', _destroy_window)
-        self._root_window.title(title or 'GraphicsPacman Window')
+        self._root_window.title(name or 'GraphicsPacman Window')
         self._root_window.resizable(0, 0)
 
         # Create the canvas object
@@ -204,11 +203,7 @@ class DisplayTkinter(Display):
     ##########################################
     ##########################################
 
-    def remove_from_screen(self,
-                           x,
-                           # d_o_e=lambda arg: _root_window.dooneevent(arg),
-                           # d_w=tkinter._tkinter.DONT_WAIT
-                           ):
+    def remove_from_screen(self,x):
 
         self._canvas.delete(x)
         # d_o_e(d_w)
@@ -244,14 +239,7 @@ class DisplayTkinter(Display):
         # d_o_e(d_w)
         self._root_window.dooneevent(tkinter._tkinter.DONT_WAIT)
 
-    def move_by(self,
-                object,
-                x,
-                y=None,
-                # d_o_e=lambda arg: _root_window.dooneevent(arg),
-                # d_w=tkinter._tkinter.DONT_WAIT,
-                lift=False
-                ):
+    def move_by(self, object, x, y=None, lift=False):
         if y is None:
             try:
                 x, y = x
@@ -279,7 +267,7 @@ class DisplayTkinter(Display):
 
     #####
 
-    def moveCircle(self, id, pos, r, endpoints=None):
+    def move_circle(self, id, pos, r, endpoints=None):
         # global _canvas_x, _canvas_y
 
         x, y = pos
@@ -302,7 +290,7 @@ class DisplayTkinter(Display):
 
     #####
 
-    def polygon(self, coords, outlineColor, fillColor=None, filled=1, smoothed=1, behind=0, width=1):
+    def draw_polygon(self, coords, outlineColor, fillColor=None, filled=1, smoothed=1, behind=0, width=1):
         c = []
         for coord in coords:
             c.append(coord[0])
@@ -315,14 +303,15 @@ class DisplayTkinter(Display):
             c, outline=outlineColor, fill=fillColor, smooth=smoothed, width=width)
         if behind > 0:
             self._canvas.tag_lower(poly, behind)  # Higher should be more visible
+
         return poly
 
-    def square(self, pos, r, color, filled=1, behind=0):
+    def draw_square(self, pos, r, color, filled=1, behind=0):
         x, y = pos
         coords = [(x - r, y - r), (x + r, y - r), (x + r, y + r), (x - r, y + r)]
-        return self.polygon(coords, color, color, filled, 0, behind=behind)
+        return self.draw_polygon(coords, color, color, filled, 0, behind=behind)
 
-    def circle(self, pos, r, outlineColor, fillColor, endpoints=None, style='pieslice', width=2):
+    def draw_circle(self, pos, r, outlineColor, fillColor, endpoints=None, style='pieslice', width=2):
         x, y = pos
         x0, x1 = x - r - 1, x + r
         y0, y1 = y - r - 1, y + r
@@ -346,22 +335,22 @@ class DisplayTkinter(Display):
     def edit(self, id, *args):
         self._canvas.itemconfigure(id, **dict(args))
 
-    def text(self, pos, color, contents, font='Helvetica', size=12, style='normal', anchor="nw"):
+    def draw_text(self, pos, color, contents, font='Helvetica', size=12, style='normal', anchor="nw"):
         # global _canvas_x, _canvas_y
 
         x, y = pos
         font = (font, str(size), style)
         return self._canvas.create_text(x, y, fill=color, text=contents, font=font, anchor=anchor)
 
-    def changeText(self, id, newText, font=None, size=12, style='normal'):
+    def change_text(self, id, newText, font=None, size=12, style='normal'):
         self._canvas.itemconfigure(id, text=newText)
         if font is not None:
             self._canvas.itemconfigure(id, font=(font, '-%d' % size, style))
 
-    def changeColor(self, id, newColor):
+    def change_color(self, id, newColor):
         self._canvas.itemconfigure(id, fill=newColor)
 
-    def line(self, here, there, color=formatColor(0, 0, 0), width=2):
+    def draw_line(self, here, there, color=formatColor(0, 0, 0), width=2):
         x0, y0 = here[0], here[1]
         x1, y1 = there[0], there[1]
 

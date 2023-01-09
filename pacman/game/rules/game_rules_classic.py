@@ -29,12 +29,12 @@ from typing import List
 # You shouldn't need to look through the code in this section of the file. #
 ############################################################################
 from pacman.agent.agent import Agent
-from pacman.game import layout as _layout
 from pacman.game.game import Game
 from pacman.game.game_state import GameState
+from pacman.game.layout import Layout
 from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
 
-
+# TODO: YOU GIVE GameState SHIT TO THIS AND IT WILL VALIDATE IF GAME WIN AND STUFF IDK
 class ClassicGameRules:
     """
     These game rules manage the control flow of a game, deciding when
@@ -44,14 +44,14 @@ class ClassicGameRules:
     def __init__(self, timeout=30):
         self.timeout = timeout
 
-    def newGame(self,
-                layout: _layout.Layout,
-                agent_pacman: Agent,
-                list_agent_ghost: List[Agent],
-                display: GraphicsPacmanDisplayTkinter,
-                bool_quiet: bool = False,
-                bool_catch_exceptions: bool = False
-                ) -> Game:
+    def create_and_get_game(self,
+                            layout: Layout,
+                            agent_pacman: Agent,
+                            list_agent_ghost: List[Agent],
+                            display: GraphicsPacmanDisplayTkinter,
+                            bool_quiet: bool = False,
+                            bool_catch_exceptions: bool = False
+                            ) -> Game:
 
         agents: List[Agent] = [agent_pacman, *list_agent_ghost[:layout.getNumGhosts()]]
 
@@ -68,23 +68,23 @@ class ClassicGameRules:
 
         return game
 
-    def process(self, state, game):
+    def process(self, game_state:GameState, game):
         """
         Checks to see whether it is time to end the game.
         """
-        if state.isWin():
-            self.win(state, game)
-        if state.isLose():
-            self.lose(state, game)
+        if game_state.isWin():
+            self.win(game_state, game)
+        if game_state.isLose():
+            self.lose(game_state, game)
 
-    def win(self, state, game):
+    def win(self, game_state:GameState, game):
         if not self.bool_quiet:
-            print("Pacman emerges victorious! Score: %d" % state.data.score)
+            print("Pacman emerges victorious! Score: %d" % game_state.data.score)
         game.gameOver = True
 
-    def lose(self, state, game):
+    def lose(self, game_state:GameState, game):
         if not self.bool_quiet:
-            print("Pacman died! Score: %d" % state.data.score)
+            print("Pacman died! Score: %d" % game_state.data.score)
         game.gameOver = True
 
     def getProgress(self, game):

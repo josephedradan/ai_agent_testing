@@ -26,7 +26,9 @@ from __future__ import annotations
 from abc import ABC
 from abc import abstractmethod
 from typing import TYPE_CHECKING
+from typing import Union
 
+from pacman.graphics.display import Display
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState
@@ -39,9 +41,16 @@ class GraphicsPacman(ABC):
 
     """
 
-    # def __init__(self, display):
-
-
+    def __init__(self,
+                 display: Union[Display, None] = None,
+                 time_frame: float = 0.0,
+                 time_sleep: float = 0.0,
+                 zoom: float = 1.0,
+                 ):
+        self.display: Display = display
+        self.time_frame: float = time_frame
+        self.time_sleep: float = time_sleep
+        self.zoom: float = zoom
 
     @abstractmethod
     def initialize(self, state: GameStateData, isBlue: bool = False):

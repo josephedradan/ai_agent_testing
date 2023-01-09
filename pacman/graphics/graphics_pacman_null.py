@@ -15,27 +15,27 @@ from __future__ import annotations
 
 import time
 from typing import TYPE_CHECKING
+
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState
     from pacman.game.game_state_data import GameStateData
 
-SLEEP_TIME = 0  # This can be overwritten by __init__
-
 
 class GraphicsPacmanNull(GraphicsPacman):
+
     def initialize(self, state: GameStateData, isBlue=False):
         pass
 
-    def update(self, state:GameState):
+    def update(self, state: GameState):
         pass
 
     # def checkNullDisplay(self):
     #     return True
 
     def pause(self):
-        time.sleep(SLEEP_TIME)
+        time.sleep(self.time_sleep)
 
     def draw(self, state):
         print(state)

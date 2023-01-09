@@ -45,6 +45,7 @@ import argparse
 import os
 import random
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
@@ -54,16 +55,15 @@ from typing import Union
 from pacman.agent import Agent
 from pacman.agent import AgentKeyboard
 from pacman.agent import get_class_agent
-from pacman.graphics.graphics_pacman_terminal import GraphicsPacmanTerminal
+from pacman.graphics import LIST_GRAPHICS_PACMAN
+from pacman.graphics import get_class_graphics_pacman
+from pacman.graphics.display_tkinter import DisplayTkinter
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from pprint import pprint
 from typing import List
 
 from pacman.game.game import Game
-from pacman.graphics import graphics_pacman_display_tkiner
-from pacman.graphics import graphics_pacman_null
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.parser import get_dict_kwargs
 
@@ -80,13 +80,12 @@ from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplay
 def default(str):
     return str + ' [Default: %default]'
 
-
 def arg_parser(argv: Union[Sequence[str], None] = None):
     """
     Processes the command used to run pacman from the command line.
     """
     description = """
-    USAGE:      python pacman.py <options>
+    USAGE:      python pacman.py <argparse_args>
     EXAMPLES:   (1) python pacman.py
                     - starts an interactive game
                 (2) python pacman.py --layout smallClassic --zoom 2
@@ -98,52 +97,61 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     parser.add_argument('-n', '--numGames',
                         dest='number_of_games',
                         type=int,
-                        help=default('the number of GAMES to play'),
+                        help='the number of GAMES to play',
                         metavar='GAMES',
                         default=1
                         )
     parser.add_argument('-l', '--layout',
                         dest='layout',
-                        help=default(
-                            'the LAYOUT_FILE from which to load the map layout'),
+                        help= 'the LAYOUT_FILE from which to load the map layout',
                         metavar='LAYOUT_FILE',
                         default='mediumClassic'
                         )
     parser.add_argument('-p', '--pacman',
                         dest='str_class_agent_pacman',
-                        help=default(
-                            'the agent TYPE in the pacmanAgents module to use'),
+                        help='the agent TYPE in the pacmanAgents module to use',
                         metavar='TYPE',
                         default='AgentKeyboard'
                         )
-    parser.add_argument('-t', '--textGraphics',
-                        action='store_true',
-                        dest='textGraphics',
-                        help='GraphicsPacman output as text only',
-                        # default=False
+
+    # GRAPHICS
+
+    parser.add_argument('--graphics',
+                        dest='graphics_pacman',
+                        choices=[graphics_pacman_.__name__ for graphics_pacman_ in LIST_GRAPHICS_PACMAN],
+                        type=str,
+                        default=GraphicsPacmanDisplayTkinter.__name__,
+                        help="What graphics to display the game with (default: %(default)s)"
                         )
-    parser.add_argument('-q', '--quietTextGraphics',
-                        action='store_true',
-                        dest='quietGraphics',
-                        help='Generate minimal output and no graphics',
-                        # default=False
-                        )
+    # parser.add_argument('-t', '--textGraphics',
+    #                     action='store_true',
+    #                     dest='textGraphics',
+    #                     help='GraphicsPacman output as text only',
+    #                     # default=False
+    #                     )
+    # parser.add_argument('-q', '--quietTextGraphics',
+    #                     action='store_true',
+    #                     dest='quietGraphics',
+    #                     help='Generate minimal output and no graphics',
+    #                     # default=False
+    #                     )
+
     parser.add_argument('-g', '--ghost',
                         dest='str_class_agent_ghost',
-                        help=default('the ghost agent TYPE in the list_agent_ghost module to use'),
+                        help='the ghost agent TYPE in the list_agent_ghost module to use',
                         metavar='TYPE',
                         default='AgentGhostRandom'
                         )
     parser.add_argument('-k', '--numGhosts',
                         type=int,
                         dest='list_agent_ghost',
-                        help=default('The maximum number of ghosts to use'),
+                        help='The maximum number of ghosts to use',
                         default=4
                         )
     parser.add_argument('-z', '--zoom',
                         type=float,
                         dest='zoom',
-                        help=default('Zoom the size of the graphics window'),
+                        help='Zoom the size of the graphics window',
                         default=1.0
                         )
     parser.add_argument('-f', '--fixRandomSeed',
@@ -169,12 +177,13 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     parser.add_argument('-x', '--numTraining',
                         dest='numTraining',
                         type=int,
-                        help=default('How many episodes are training (suppresses output)'),
+                        help='How many episodes are training (suppresses output)',
                         default=0
                         )
-    parser.add_argument('--frameTime', dest='frameTime',
+    parser.add_argument('--frameTime',
+                        dest='time_frame',
                         type=float,
-                        help=default('Time to delay between frames; <0 means keyboard'),
+                        help='Time to delay between frames; <0 means keyboard',
                         default=0.1
                         )
     parser.add_argument('-c', '--catchExceptions',
@@ -186,13 +195,13 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     parser.add_argument('--timeout',
                         dest='timeout',
                         type=int,
-                        help=default('Maximum length of time an agent can spend computing in a single game'),
+                        help='Maximum length of time an agent can spend computing in a single game',
                         default=30
                         )
 
-    options = parser.parse_args(argv)
+    argparse_args = parser.parse_args(argv)
 
-    pprint(vars(options))
+    pprint(vars(argparse_args))
 
     # if len(otherjunk) != 0:
     #     raise Exception('Command line input not understood: ' + str(otherjunk))
@@ -200,70 +209,84 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     dict_k_name_arg_v_arg = {}
 
     # Fix the random seed
-    if options.fixRandomSeed:
+    if argparse_args.fixRandomSeed:
         random.seed('cs188')
 
     # Choose a layout
-    dict_k_name_arg_v_arg['layout'] = _layout.getLayout(options.layout)
+    dict_k_name_arg_v_arg['layout'] = _layout.getLayout(argparse_args.layout)
 
     if dict_k_name_arg_v_arg['layout'] == None:
-        raise Exception("The layout " + options.layout + " cannot be found")
+        raise Exception("The layout " + argparse_args.layout + " cannot be found")
 
     # Choose a Pacman agent
-    noKeyboard = options.path_game_to_replay == None and (options.textGraphics or options.quietGraphics)
+    # noKeyboard = argparse_args.path_game_to_replay == None and (argparse_args.textGraphics or argparse_args.quietGraphics)
 
-    class_agent_pacman = get_class_agent(options.str_class_agent_pacman)  # FIXME: PACMAN AGENT HERE
+    class_agent_pacman = get_class_agent(argparse_args.str_class_agent_pacman)  # FIXME: PACMAN AGENT HERE
 
-    # FIXME: options.pacman IS A AgentKeyboard
-    # print("str_class_agent_pacman", options.str_class_agent_pacman, type(options.str_class_agent_pacman))
+    # FIXME: argparse_args.pacman IS A AgentKeyboard
+    # print("str_class_agent_pacman", argparse_args.str_class_agent_pacman, type(argparse_args.str_class_agent_pacman))
 
-    agent_pacman_kwargs = get_dict_kwargs(options.agent_pacman_kwargs)
+    agent_pacman_kwargs = get_dict_kwargs(argparse_args.agent_pacman_kwargs)
 
-    if options.numTraining > 0:
-        dict_k_name_arg_v_arg['numTraining'] = options.numTraining
+    if argparse_args.numTraining > 0:
+        dict_k_name_arg_v_arg['numTraining'] = argparse_args.numTraining
         if 'numTraining' not in agent_pacman_kwargs:
-            agent_pacman_kwargs['numTraining'] = options.numTraining
+            agent_pacman_kwargs['numTraining'] = argparse_args.numTraining
 
     agent_pacman_ = class_agent_pacman(**agent_pacman_kwargs)  # Instantiate Pacman with agent_pacman_kwargs
     dict_k_name_arg_v_arg['agent_pacman'] = agent_pacman_
 
     # Don't graphics_pacman training games  # FIXME: WTF IS THIS
     if 'numTrain' in agent_pacman_kwargs:
-        options.numQuiet = int(agent_pacman_kwargs['numTrain'])
-        options.numIgnore = int(agent_pacman_kwargs['numTrain'])
+        argparse_args.numQuiet = int(agent_pacman_kwargs['numTrain'])
+        argparse_args.numIgnore = int(agent_pacman_kwargs['numTrain'])
 
     # Choose a ghost agent
-    class_agent_ghost = get_class_agent(options.str_class_agent_ghost)  # FIXME: GHOST AGENTS HERE
-    print(options.str_class_agent_ghost,
-          type(options.str_class_agent_ghost))  # FIXME: class_agent_ghost is AgentGhostRandom
+    class_agent_ghost = get_class_agent(argparse_args.str_class_agent_ghost)  # FIXME: GHOST AGENTS HERE
+    print(argparse_args.str_class_agent_ghost,
+          type(argparse_args.str_class_agent_ghost))  # FIXME: class_agent_ghost is AgentGhostRandom
 
-    dict_k_name_arg_v_arg['list_agent_ghost'] = [class_agent_ghost(i + 1) for i in range(options.list_agent_ghost)]
+    dict_k_name_arg_v_arg['list_agent_ghost'] = [class_agent_ghost(i + 1) for i in range(argparse_args.list_agent_ghost)]
 
-    # Choose a graphics_pacman format
-    if options.quietGraphics:
-        dict_k_name_arg_v_arg['graphics_pacman'] = graphics_pacman_null.GraphicsPacmanNull()
-    elif options.textGraphics:
-        graphics_pacman_null.SLEEP_TIME = options.frameTime
-        dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
-    else:
-        dict_k_name_arg_v_arg['graphics_pacman'] = graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(
-            options.zoom,
-            frameTime=options.frameTime
+    class_graphics_pacman = get_class_graphics_pacman(argparse_args.graphics_pacman)
+
+    if class_graphics_pacman == GraphicsPacmanDisplayTkinter:
+        dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanDisplayTkinter(
+            display=DisplayTkinter(),
+            zoom=argparse_args.zoom,
+            time_frame=argparse_args.time_frame
         )
+    else:
+        dict_k_name_arg_v_arg['graphics_pacman'] = class_graphics_pacman(
+            zoom=argparse_args.zoom,
+            time_frame=argparse_args.time_frame
+        )
+
+    # # Choose a graphics_pacman format
+    # if argparse_args.quietGraphics:
+    #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanNull()
+    # elif argparse_args.textGraphics:
+    #     graphics_pacman_null.SLEEP_TIME = argparse_args.time_frame  # TODO: WTF THIS Y
+    #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
+    # else:
+    #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanDisplayTkinter(
+    #         zoom=argparse_args.zoom,
+    #         time_frame=argparse_args.time_frame
+    #     )
 
     # dict_k_name_arg_v_arg['graphics_pacman'] = textDisplay.GraphicsPacmanNull()
     # dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
 
-    dict_k_name_arg_v_arg['number_of_games'] = options.number_of_games
-    dict_k_name_arg_v_arg['bool_record'] = options.bool_record
-    dict_k_name_arg_v_arg['bool_catch_exceptions'] = options.catchExceptions
-    dict_k_name_arg_v_arg['timeout'] = options.timeout
+    dict_k_name_arg_v_arg['number_of_games'] = argparse_args.number_of_games
+    dict_k_name_arg_v_arg['bool_record'] = argparse_args.bool_record
+    dict_k_name_arg_v_arg['bool_catch_exceptions'] = argparse_args.catchExceptions
+    dict_k_name_arg_v_arg['timeout'] = argparse_args.timeout
 
     # Special case: recorded games don't use the runGames method or dict_k_name_arg_v_arg structure
-    if options.path_game_to_replay != None:
-        print('Replaying recorded game %s.' % options.path_game_to_replay)
+    if argparse_args.path_game_to_replay != None:
+        print('Replaying recorded game %s.' % argparse_args.path_game_to_replay)
         import pickle
-        f = open(options.path_game_to_replay)
+        f = open(argparse_args.path_game_to_replay)
         try:
             recorded = pickle.load(f)
         finally:
@@ -328,7 +351,7 @@ def replay_game(layout, actions, display):
     rules = ClassicGameRules()
     agents = [pacmanAgents.AgentPacmanGreedy()] + [ghostAgents.AgentGhostRandom(i + 1)
                                                    for i in range(layout.getNumGhosts())]
-    game = rules.newGame(layout, agents[0], agents[1:], display)
+    game = rules.create_and_get_game(layout, agents[0], agents[1:], display)
     state = game.state
     display.initialize(state.data)
 
@@ -403,7 +426,7 @@ def run_games(layout: _layout.Layout,
 
         ####
 
-        game = classic_game_rules.newGame(
+        game = classic_game_rules.create_and_get_game(
             layout,
             agent_pacman,
             list_agent_ghost,
@@ -451,7 +474,6 @@ if __name__ == '__main__':
 
     > python pacman.py --help
     """
-
     # from code_analyzer import code_analyzer
 
     # code_analyzer.start()
@@ -460,7 +482,6 @@ if __name__ == '__main__':
 
     # code_analyzer.stop()
     # code_analyzer.get_code_analyzer_printer().export_rich_to_html()
-
 
     pprint(args)
     run_games(**args)
