@@ -44,20 +44,20 @@ class PacmanRules(RulesAgent):
     PACMAN_SPEED = 1
 
     @staticmethod
-    def getLegalActions(state: GameState, index_agent: Union[int, None] = None) -> List[Directions]:
+    def getLegalActions(game_state: GameState, index_agent: Union[int, None] = None) -> List[Directions]:
         return Actions.getPossibleActions(
-            state.getPacmanState().container_vector,
-            state.data.layout.walls
+            game_state.getPacmanState().container_vector,
+            game_state.data.layout.walls
         )
 
     @staticmethod
-    def applyAction(state: GameState, action: Action, index_agent: Union[int, None] = None):
+    def applyAction(game_state: GameState, action: Action, index_agent: Union[int, None] = None):
 
-        legal = PacmanRules.getLegalActions(state)
+        legal = PacmanRules.getLegalActions(game_state)
         if action not in legal:
             raise Exception("Illegal action " + str(action))
 
-        pacmanState = state.data.list_state_agent[0]
+        pacmanState = game_state.data.list_state_agent[0]
 
         # Update ContainerVector
         vector = Actions.directionToVector(action, PacmanRules.PACMAN_SPEED)
@@ -69,10 +69,10 @@ class PacmanRules(RulesAgent):
         nearest = nearestPoint(next)
         if manhattanDistance(nearest, next) <= 0.5:
             # Remove food
-            PacmanRules.consume(nearest, state)
+            PacmanRules._consume(nearest, game_state)
 
     @staticmethod
-    def consume(position:Tuple[int,int], game_state: GameState):
+    def _consume(position:Tuple[int, int], game_state: GameState):
         x, y = position
         # Eat food
         if game_state.data.food[x][y]:

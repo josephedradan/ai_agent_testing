@@ -199,12 +199,12 @@ class GradingAgent(Agent):
         self.stepCount = 0
         self.seed: int = seed
 
-    def registerInitialState(self, state):
+    def registerInitialState(self, game_state: GameState):
         if 'registerInitialState' in dir(self.agent):
-            self.agent.registerInitialState(state)
+            self.agent.registerInitialState(game_state)
         random.seed(self.seed)
 
-    def getAction(self, game_state):
+    def getAction(self, game_state: GameState):
         GameState.getAndResetExplored()
         studentAction = (self.agent.getAction(game_state),
                          len(GameState.getAndResetExplored()))

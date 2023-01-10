@@ -18,7 +18,8 @@
     python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better --graphics FirstPersonGraphics
     ??????
 
-
+    autograder -q q4
+    autograder -t "test_cases/multiagent/q4/7-pacman-game"
 
     python main.py --quietTextGraphics
     

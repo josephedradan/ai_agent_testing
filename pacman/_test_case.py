@@ -40,7 +40,9 @@ from pacman import main
 from pacman.agent import *
 from pacman.game import layout
 from pacman.game.layout import Layout
+from pacman.game.layout import get_layout
 from pacman.graphics.graphics_pacman import GraphicsPacman
+from pacman.main import run_games
 from pacman.multiagentTestClasses import GradingAgent
 
 if TYPE_CHECKING:
@@ -112,6 +114,8 @@ class PolyAgent(Agent):
         return (ourpac, alternative_depth_pacs, partial_ply_bug_pacs)
 
     def registerInitialState(self, state):
+
+        raise Exception("registerInitialState _test_case POLY")
         for agent in self.solutionAgents + self.alternativeDepthAgents:
             if 'registerInitialState' in dir(agent):
                 agent.registerInitialState(state)
@@ -145,7 +149,7 @@ def run(layout_: Layout,
         layout_name: str,
         agent_pacman_: Agent,
         list_agent_ghost: List[Agent],
-        display: GraphicsPacman,
+        graphics_pacman: GraphicsPacman,
         number_of_games: int = 1,
         name: str = 'games'
         ) -> Dict[str, Any]:
@@ -155,11 +159,11 @@ def run(layout_: Layout,
     time_start = time.time()
     print('*** Running %s on {} {} time(s).'.format(name, layout_name, number_of_games))
 
-    games = main.run_games(
+    games = run_games(
         layout_,
         agent_pacman_,
         list_agent_ghost,
-        display,
+        graphics_pacman,
         number_of_games,
         False,
         bool_catch_exceptions=True,
@@ -208,8 +212,8 @@ class TestCase(ABC):
         DICT_K_NAME_TEST_CASE_SUBCLASS_V_TEST_CASE_SUBCLASS[cls.__name__] = cls
 
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
-        print("dict_file_test")
-        pprint(dict_file_test)
+        # print("dict_file_test")
+        # pprint(dict_file_test)
         self.question: Question = question
         self.dict_file_test: Dict[str, Any] = dict_file_test
         self.path_file_test: str = dict_file_test['path_file_test']
@@ -324,7 +328,8 @@ class PacmanGameTreeTest(TestCase):
         )
 
         # check return codes and assign grader
-        disp = self.question.get_display()
+        disp = self.question.get_graphics_pacman()
+
         stats = run(
             lay,
             self.layout_name,
@@ -386,7 +391,7 @@ class PacmanGameTreeTest(TestCase):
 
         pac = PolyAgent(self.seed, ourPacOptions, self.depth)
 
-        disp = self.question.get_display()
+        disp = self.question.get_graphics_pacman()
         run(lay, self.layout_name, pac, [AgentGhostDirectional(
             i + 1) for i in range(2)], disp, name=self.class_agent)
         (optimalActions, altDepthActions, partialPlyBugActions) = pac.getTraces()
@@ -577,7 +582,7 @@ class EvalAgentTest(TestCase):
         self.list_agent_ghost: List[Agent] = eval(dict_file_test['ghosts'])
         self.maxTime: int = int(dict_file_test['maxTime'])
         self.seed: int = int(dict_file_test['randomSeed'])
-        self.numGames: int = int(dict_file_test['numGames'])
+        self.number_of_games: int = int(dict_file_test['numGames'])
 
         self.scoreMinimum = int(
             dict_file_test['scoreMinimum']) if 'scoreMinimum' in dict_file_test else None
@@ -606,21 +611,21 @@ class EvalAgentTest(TestCase):
 
         agentOpts = main.get_dict_kwargs(self.agentArgs) if self.agentArgs != '' else {}
 
-        agent = class_agent(**agentOpts)
+        agent_object: Agent = class_agent(**agentOpts)
 
-        lay = layout.getLayout(self.str_layout_name, 3)
+        layout_ = get_layout(self.str_layout_name, 3)
 
-        disp = self.question.get_display()
+        graphics_pacman = self.question.get_graphics_pacman()
 
         random.seed(self.seed)
 
-        games = main.run_games(
-            lay,
-            agent,
+        games = run_games(
+            layout_,
+            agent_object,
             self.list_agent_ghost,
-            disp,
-            self.numGames,
-            False,
+            graphics_pacman,
+            self.number_of_games,
+            bool_record=False,
             bool_catch_exceptions=True,
             timeout=self.maxTime
         )
@@ -633,7 +638,7 @@ class EvalAgentTest(TestCase):
                  'crashes': [g.agentCrashed for g in games].count(True)}
 
         averageScore = sum(stats['scores']) / float(len(stats['scores']))
-        nonTimeouts = self.numGames - stats['timeouts']
+        nonTimeouts = self.number_of_games - stats['timeouts']
         wins = stats['wins']
 
         def gradeThreshold(value, minimum, thresholds, name):

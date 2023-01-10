@@ -213,7 +213,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
         random.seed('cs188')
 
     # Choose a layout
-    dict_k_name_arg_v_arg['layout'] = _layout.getLayout(argparse_args.layout)
+    dict_k_name_arg_v_arg['layout'] = _layout.get_layout(argparse_args.layout)
 
     if dict_k_name_arg_v_arg['layout'] == None:
         raise Exception("The layout " + argparse_args.layout + " cannot be found")
@@ -250,17 +250,17 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
 
     class_graphics_pacman = get_class_graphics_pacman(argparse_args.graphics_pacman)
 
-    if class_graphics_pacman == GraphicsPacmanDisplayTkinter:
-        dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanDisplayTkinter(
-            display=DisplayTkinter(),
-            zoom=argparse_args.zoom,
-            time_frame=argparse_args.time_frame
-        )
-    else:
-        dict_k_name_arg_v_arg['graphics_pacman'] = class_graphics_pacman(
-            zoom=argparse_args.zoom,
-            time_frame=argparse_args.time_frame
-        )
+    # if class_graphics_pacman == GraphicsPacmanDisplayTkinter:
+    #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanDisplayTkinter(
+    #         display=DisplayTkinter(),
+    #         zoom=argparse_args.zoom,
+    #         time_frame=argparse_args.time_frame
+    #     )
+    # else:
+    dict_k_name_arg_v_arg['graphics_pacman'] = class_graphics_pacman(
+        zoom=argparse_args.zoom,
+        time_frame=argparse_args.time_frame
+    )
 
     # # Choose a graphics_pacman format
     # if argparse_args.quietGraphics:
@@ -422,7 +422,7 @@ def run_games(layout: _layout.Layout,
         # TODO JOSEPH SPEICAL
         # TODO: ALT GRAPHICS: GraphicsPacmanNull, GraphicsPacmanDisplayTkinter
         if isinstance(agent_pacman, AgentKeyboard) and isinstance(display_game, GraphicsPacmanDisplayTkinter):
-            agent_pacman.set_graphics_actual(display_game.get_graphics_actual())
+            agent_pacman.set_display(display_game.get_display())
 
         ####
 

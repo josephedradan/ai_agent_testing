@@ -216,7 +216,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         # TODO JOSEPH CUSTOM
         # self.display= None
 
-    def get_graphics_actual(self) -> Display:
+    def get_display(self) -> Display:
         return self.display
 
     def checkNullDisplay(self):
@@ -316,7 +316,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
             print(newState)
             print(type(newState))
 
-            raise Exception("FUCK ME")
+            raise Exception("FUCK ME WTF WE GOT HERE")
             self.infoPane.update_ghost_distances(newState.ghostDistances)
 
     def _make_window(self, width, height):

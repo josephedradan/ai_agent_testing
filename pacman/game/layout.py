@@ -168,7 +168,7 @@ class Layout:
             self.numGhosts += 1
 
 
-def getLayout(name: str, back=2) -> Union[Layout, None]:
+def get_layout(name: str, back=2) -> Union[Layout, None]:
     if name.endswith('.lay'):
         layout = get_layout_object_helper('layouts/' + name)
         if layout is None:
@@ -183,7 +183,7 @@ def getLayout(name: str, back=2) -> Union[Layout, None]:
     if layout is None and back >= 0:
         curdir = os.path.abspath('.')
         os.chdir('..')
-        layout = getLayout(name, back - 1)
+        layout = get_layout(name, back - 1)
         os.chdir(curdir)
 
     return layout

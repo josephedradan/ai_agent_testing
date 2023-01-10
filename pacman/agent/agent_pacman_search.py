@@ -112,7 +112,7 @@ class SearchAgent(Agent):
 
         print('[SearchAgent] using problem type ' + prob)
 
-    def registerInitialState(self, state):  # FIXME: THIS IS NEVER CALLED, AND WILL BREAKY WITH THAT __call__
+    def registerInitialState(self, state):  # FIXME: WRONG ASSUMPTION POSSIBLY-> THIS IS NEVER CALLED, AND WILL BREAKY WITH THAT __call__
         """
         This is the first time that the agent sees the layout of the game
         board. Here, we choose a path_file_test to the goal. In this phase, the agent
@@ -121,13 +121,14 @@ class SearchAgent(Agent):
 
         state: a GameState object (agent_pacman_.py)
         """
+
         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
         starttime = time.time()
         problem: object = self.searchType(state)  # Makes a new search problem  # TODO: MAKE OBJECT FROM CLASS
 
         # TODO: APPRENTLY NOT ALL self.searchType are of type SearchProblem because of poor design of the original
         if isinstance(problem, SearchProblem):
-            problem.set_graphics(self.get_graphics())
+            problem.set_graphics(self.get_graphics_pacman())
 
         # TODO: I THINK THIS IS A LIST OF Direction
         self.actions: List[Action] = self.searchFunction(problem)  # Find a path_file_test

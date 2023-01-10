@@ -21,6 +21,7 @@ from typing import Union
 from pacman.agent.agent import Agent
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
+from pacman.graphics.display import Display
 from pacman.graphics.display_tkinter import DisplayTkinter
 
 if TYPE_CHECKING:
@@ -47,11 +48,11 @@ class AgentKeyboard(Agent):
         ###
         # TODO JOSEPH SPEICAL
 
-        self._graphics_actual: Union[DisplayTkinter, None] = None
+        self.display: Union[DisplayTkinter, None] = None
 
     # FIXME: GHETTO SOLUTIOn
-    def set_graphics_actual(self, graphics_actual: DisplayTkinter):
-        self._graphics_actual = graphics_actual
+    def set_display(self, display: Display):
+        self.display = display
 
     def getAction(self, game_state: GameState) -> Action:
         # from graphicsUtils import get_keys_waiting
@@ -61,7 +62,7 @@ class AgentKeyboard(Agent):
         # print(f"getAction {graphicsUtils._root_window=}")
 
         # TODO: THIS IS CRASHABLE JOSEPH
-        keys = self._graphics_actual.get_keys_waiting() + self._graphics_actual.get_keys_pressed()
+        keys = self.display.get_keys_waiting() + self.display.get_keys_pressed()
 
         if keys != []:
             self.keys = keys

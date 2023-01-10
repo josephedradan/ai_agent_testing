@@ -237,7 +237,7 @@ def print_test(dict_file_test: Dict, dict_file_solution: Dict):
 def run_path_test(path_file_test: str,
                   # moduleDict,
                   printTestCase: bool = False,
-                  display: GraphicsPacman = None
+                  graphics_pacman: GraphicsPacman = None
                   ):  # TODO: RUNS A SPECIFIC TEST GIVEN NAME
 
     # for module in moduleDict:
@@ -254,7 +254,7 @@ def run_path_test(path_file_test: str,
 
     path_directory_of_path_test = os.path.dirname(path_file_test)
 
-    dict_question_config, question_object = get_question_stuff(path_directory_of_path_test, display)
+    dict_question_config, question_object = get_question_stuff(path_directory_of_path_test, graphics_pacman)
 
     # class_question = get_class_question_subclass("Question")
     # str_question = class_question({'max_points': 0}, graphics_pacman)
@@ -262,7 +262,7 @@ def run_path_test(path_file_test: str,
 
     test_case_object = class_test_case(question_object, dict_file_test)
 
-    print(f"DISPLAY FROM {run_path_test.__name__}", display)
+    print(f"DISPLAY FROM {run_path_test.__name__}", graphics_pacman)
 
     if printTestCase:
         print_test(dict_file_test, dict_file_solution)
@@ -463,18 +463,22 @@ def evaluate(AgentPacmanMinimaxAlphaBeta: bool,
     return grader.points
 
 
-def get_display(graphicsByDefault: Union[bool, None], options=None):
+def get_graphics_pacman(graphicsByDefault: Union[bool, None], options=None) -> GraphicsPacman:
     # from multiagent.graphics import graphicsDisplay
     # return graphicsDisplay.GraphicsPacmanDisplayTkinter(1, frameTime=.05)
+
     graphics = graphicsByDefault
     if options is not None and options.noGraphics:
         graphics = False
     if graphics:
         try:
             from pacman.graphics import graphics_pacman_display_tkiner
-            return graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(1, frameTime=.05)
+            return graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(
+                time_frame=0.05
+            )
         except ImportError:
             pass
+
     from pacman.graphics import graphics_pacman_null
     return graphics_pacman_null.GraphicsPacmanNull()
 
@@ -501,16 +505,20 @@ if __name__ == '__main__':
     options = arg_parser(
         # sys.argv  # DONT USE THIS UNLESS USING optparse
     )
+
     if options.bool_generate_solutions:
         confirmGenerate()
-    codePaths = options.studentCode.split(',')
+    codePaths = options.studentCode.split(',')  # TODO: ['multiAgents.py']
+
+    print("codePaths", codePaths)
+
     # moduleCodeDict = {}
     # for cp in codePaths:
     #     moduleName = re.match('.*?([^/]*)\.py', cp).group(1)
     #     moduleCodeDict[moduleName] = readFile(cp, root=options.codeRoot)
     # moduleCodeDict['projectTestClasses'] = readFile(options.testCaseCode, root=options.codeRoot)
     # moduleDict = loadModuleDict(moduleCodeDict)
-
+    #
     # print("codePaths", codePaths)
     # moduleDict = {}
     # for cp in codePaths:
@@ -528,7 +536,7 @@ if __name__ == '__main__':
         run_path_test(options.path_file_test,
                       # moduleDict,
                       printTestCase=options.bool_print_test_case,
-                      display=get_display(True, options))
+                      graphics_pacman=get_graphics_pacman(True, options))
     else:
         evaluate(
             options.bool_generate_solutions,
@@ -540,5 +548,5 @@ if __name__ == '__main__':
             bool_output_mute=options.bool_output_mute,
             bool_print_test_case=options.bool_print_test_case,
             question_to_grade=options.str_question_to_be_graded,
-            display=get_display(options.str_question_to_be_graded != None, options)
+            display=get_graphics_pacman(options.str_question_to_be_graded != None, options)
         )

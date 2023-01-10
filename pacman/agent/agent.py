@@ -50,7 +50,7 @@ class Agent(ABC):
         if kwargs:
             raise Exception("ADDITIONAL KWARGS FOUND FIX THIS SHIT JOSEPH: {}".format(kwargs.items()))
 
-        self._graphics: Union[GraphicsPacman, None] = None
+        self.graphics_pacman: Union[GraphicsPacman, None] = None
 
     # TODO IN THE FUTURE USE THIS I THINK
     # def __init__(self, index=0, graphics_actual: Union[Display, None] = None):
@@ -65,8 +65,16 @@ class Agent(ABC):
         """
         pass
 
-    def set_graphics(self, graphics: GraphicsPacman):
-        self._graphics = graphics
+    def set_graphics_pacman(self, graphics_pacman: GraphicsPacman):
+        self.graphics_pacman = graphics_pacman
 
-    def get_graphics(self) -> GraphicsPacman:
-        return self._graphics
+    def get_graphics_pacman(self) -> GraphicsPacman:
+        return self.graphics_pacman
+
+
+    # def registerInitialState(self):
+    #     """
+    #     Hidden function used by test cases and stuff, use it if you know what you are doing
+    #
+    #     """
+    #     pass

@@ -32,6 +32,7 @@ from pacman.agent.agent import Agent
 from pacman.game.game import Game
 from pacman.game.game_state import GameState
 from pacman.game.layout import Layout
+from pacman.graphics import GraphicsPacman
 from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
 
 # TODO: YOU GIVE GameState SHIT TO THIS AND IT WILL VALIDATE IF GAME WIN AND STUFF IDK
@@ -48,7 +49,7 @@ class ClassicGameRules:
                             layout: Layout,
                             agent_pacman: Agent,
                             list_agent_ghost: List[Agent],
-                            display: GraphicsPacmanDisplayTkinter,
+                            graphics_pacman: GraphicsPacman,
                             bool_quiet: bool = False,
                             bool_catch_exceptions: bool = False
                             ) -> Game:
@@ -56,11 +57,11 @@ class ClassicGameRules:
         agents: List[Agent] = [agent_pacman, *list_agent_ghost[:layout.getNumGhosts()]]
 
         for agent in agents:
-            agent.set_graphics(display)
+            agent.set_graphics_pacman(graphics_pacman)
 
         initState = GameState()
         initState.initialize(layout, len(list_agent_ghost))
-        game = Game(agents, display, self, bool_catch_exceptions=bool_catch_exceptions)
+        game = Game(agents, graphics_pacman, self, bool_catch_exceptions=bool_catch_exceptions)
         game.state = initState
         self.initialState = initState.get_deep_copy()
 
