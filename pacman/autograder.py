@@ -101,22 +101,22 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     parser.add_argument('--test', '-t',  # -t "test_cases/q1/grade-agent"
                         dest='path_file_test',
                         default=None,
-                        help='Run one particular test.  Relative to test root.')
+                        help='Run one particular test. Relative to test root.')
     parser.add_argument('--str_question', '-q',
                         dest='str_question_to_be_graded',
                         default=None,
-                        help='Grade one particular str_question.')
+                        help='Grade one particular question.')
     parser.add_argument('--no-graphics',
                         dest='noGraphics',
                         # default=True,
                         # action='store_false',
                         action='store_true',
-                        help='No graphics graphics_pacman for agent_pacman_ games.')
+                        help='No graphics display for pacman games.')
 
-    options = parser.parse_args(argv)
+    argparse_args = parser.parse_args(argv)
 
-    print(options)
-    return options
+    print(argparse_args)
+    return argparse_args
 
 
 # confirm we should author solution files
@@ -236,7 +236,7 @@ def print_test(dict_file_test: Dict, dict_file_solution: Dict):
 
 def run_path_test(path_file_test: str,
                   # moduleDict,
-                  printTestCase: bool = False,
+                  bool_print_test_cases: bool = False,
                   graphics_pacman: GraphicsPacman = None
                   ):  # TODO: RUNS A SPECIFIC TEST GIVEN NAME
 
@@ -264,7 +264,7 @@ def run_path_test(path_file_test: str,
 
     print(f"DISPLAY FROM {run_path_test.__name__}", graphics_pacman)
 
-    if printTestCase:
+    if bool_print_test_cases:
         print_test(dict_file_test, dict_file_solution)
 
     # This is a fragile hack to create a stub grader__ object
@@ -332,7 +332,7 @@ def get_list_str_question(path_dir: str, str_question: str) -> List[str]:
 
 
 # evaluate student code
-def evaluate(AgentPacmanMinimaxAlphaBeta: bool,
+def evaluate(bool_generate_solutions: bool,
              path_abs_test_cases: str,  # TODO: THIS IS RELATIVE PATH
              # moduleDict: Dict[string_given, ModuleType],
              # TODO: THIS IS THE THING THAT CONTAINS {"multiAgent": ..., multiAgentTestClass: ...}
@@ -362,32 +362,32 @@ def evaluate(AgentPacmanMinimaxAlphaBeta: bool,
     # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
     list_str_question = get_list_str_question(path_abs_test_cases, question_to_grade)
 
-    for q in list_str_question:
-        subdir_path = os.path.join(path_abs_test_cases, q)
-        if not os.path.isdir(subdir_path) or q[0] == '.':
+    for str_question in list_str_question:
+        path_question = os.path.join(path_abs_test_cases, str_question)
+        if not os.path.isdir(path_question) or str_question[0] == '.':
             continue
 
         dict_question_config: Dict[str, Any]
         question_object: Question
-        dict_question_config, question_object = get_question_stuff(subdir_path, display)
+        dict_question_config, question_object = get_question_stuff(path_question, display)
 
-        dict_k_name_question_v_dict_question_config[q] = dict_question_config
+        dict_k_name_question_v_dict_question_config[str_question] = dict_question_config
 
         # load test cases into str_question
-        list_file_test_name = [t for t in os.listdir(subdir_path) if re.match('[^#~.].*\.test\Z', t)]
+        list_file_test_name = [t for t in os.listdir(path_question) if re.match('[^#~.].*\.test\Z', t)]
 
         list_file_test_name_no_ext = [re.match('(.*)\.test\Z', t).group(1) for t in list_file_test_name]
 
         for test_no_ext in sorted(list_file_test_name_no_ext):
 
-            # TODO: THIS IS ACTUAL TEST 'test_cases\\q2\\8-agent_pacman_-game.test'
-            path_test_test = os.path.join(subdir_path, '%s.test' % test_no_ext)
+            # TODO: THIS IS ACTUAL TEST 'test_cases\\q2\\8-pacman-game.test'
+            path_test_test = os.path.join(path_question, '%s.test' % test_no_ext)
 
-            # TODO: THIS IS  THE ANSWERS FILE 'test_cases\\q2\\8-agent_pacman_-game.solution'
-            path_test_solution = os.path.join(subdir_path, '%s.solution' % test_no_ext)
+            # TODO: THIS IS  THE ANSWERS FILE 'test_cases\\q2\\8-pacman-game.solution'
+            path_test_solution = os.path.join(path_question, '%s.solution' % test_no_ext)
 
             # TODO: 'test_cases\\q1\\grade-agent.test_output'  # NOT USED?
-            path_test_output = os.path.join(subdir_path, '%s.test_output' % test_no_ext)
+            path_test_output = os.path.join(path_question, '%s.test_output' % test_no_ext)
             ''
             # TODO: A DICT
             dict_file_test = ParseFile(path_test_test).get_dict()
@@ -407,7 +407,7 @@ def evaluate(AgentPacmanMinimaxAlphaBeta: bool,
             def makefun(test_case_: TestCase, path_test_solution_: str) -> Callable:
                 grader_: Grader
 
-                if AgentPacmanMinimaxAlphaBeta:
+                if bool_generate_solutions:
                     # write solution file to disk
                     return lambda grader__: test_case_.writeSolution(path_test_solution_)
                 else:
@@ -433,13 +433,13 @@ def evaluate(AgentPacmanMinimaxAlphaBeta: bool,
             grader_: Grader
             return lambda grader_: question.execute(grader_)
 
-        # print("makefun thingy", sys.modules[__name__], q, makefun(question_object))
-        # setattr(sys.modules[__name__], q, makefun(question_object))
+        # print("makefun thingy", sys.modules[__name__], str_question, makefun(question_object))
+        # setattr(sys.modules[__name__], str_question, makefun(question_object))
 
-        dict_k_name_question_v_callable[q] = makefun(question_object)
+        dict_k_name_question_v_callable[str_question] = makefun(question_object)
 
         # TODO: LIST OF TUPLE:  ('Questison Nubmer', Max points int)
-        list_tuple__question_name__points_max.append((q, question_object.get_points_max()))
+        list_tuple__question_name__points_max.append((str_question, question_object.get_points_max()))
 
     grader = Grader(
         projectParams.PROJECT_NAME,
@@ -451,12 +451,12 @@ def evaluate(AgentPacmanMinimaxAlphaBeta: bool,
 
     # TODO: THIS IF CONDITIONAL DOES NOTHING IMPORTANT
     if question_to_grade == None:
-        for q in dict_k_name_question_v_dict_question_config:
+        for str_question in dict_k_name_question_v_dict_question_config:
             pprint.pprint(dict_k_name_question_v_dict_question_config)
-            for prereq in dict_k_name_question_v_dict_question_config[q].get('depends',
+            for prereq in dict_k_name_question_v_dict_question_config[str_question].get('depends',
                                                                              '').split():  # TODO: depends DOES NOT EXIST? LOOK IS NEVER REACHED
 
-                grader.addPrereq(q, prereq)
+                grader.addPrereq(str_question, prereq)
 
     # TODO: RUNNING THE TESTS ARE IN THIS CALL
     grader.grade(dict_k_name_question_v_callable, bool_display_picture_bonus=projectParams.BONUS_PIC)
@@ -502,13 +502,13 @@ if __name__ == '__main__':
     ##############################
     ##############################
 
-    options = arg_parser(
+    argparse_args = arg_parser(
         # sys.argv  # DONT USE THIS UNLESS USING optparse
     )
 
-    if options.bool_generate_solutions:
+    if argparse_args.bool_generate_solutions:
         confirmGenerate()
-    codePaths = options.studentCode.split(',')  # TODO: ['multiAgents.py']
+    codePaths = argparse_args.studentCode.split(',')  # TODO: ['multiAgents.py']
 
     print("codePaths", codePaths)
 
@@ -532,21 +532,21 @@ if __name__ == '__main__':
 
     # moduleDict['projectTestClasses'] = loadModuleFile(moduleName, os.path_file_test.join(options.codeRoot, options.testCaseCode))
 
-    if options.path_file_test != None:
-        run_path_test(options.path_file_test,
+    if argparse_args.path_file_test != None:
+        run_path_test(argparse_args.path_file_test,
                       # moduleDict,
-                      printTestCase=options.bool_print_test_case,
-                      graphics_pacman=get_graphics_pacman(True, options))
+                      bool_print_test_cases=argparse_args.bool_print_test_case,
+                      graphics_pacman=get_graphics_pacman(True, argparse_args))
     else:
         evaluate(
-            options.bool_generate_solutions,
+            argparse_args.bool_generate_solutions,
             # options.path_dir_containing_question,
             'test_cases/multiagent',
             # moduleDict,
-            bool_output_json=options.bool_output_json,
-            bool_output_html=options.bool_output_html,
-            bool_output_mute=options.bool_output_mute,
-            bool_print_test_case=options.bool_print_test_case,
-            question_to_grade=options.str_question_to_be_graded,
-            display=get_graphics_pacman(options.str_question_to_be_graded != None, options)
+            bool_output_json=argparse_args.bool_output_json,
+            bool_output_html=argparse_args.bool_output_html,
+            bool_output_mute=argparse_args.bool_output_mute,
+            bool_print_test_case=argparse_args.bool_print_test_case,
+            question_to_grade=argparse_args.str_question_to_be_graded,
+            display=get_graphics_pacman(argparse_args.str_question_to_be_graded != None, argparse_args)
         )

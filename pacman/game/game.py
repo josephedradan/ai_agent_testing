@@ -150,7 +150,9 @@ class Game:
                 if self.bool_catch_exceptions:
                     try:
                         timed_func = TimeoutFunction(
-                            agent.registerInitialState, int(self.rules.getMaxStartupTime(i)))
+                            agent.registerInitialState,
+                            int(self.rules.getMaxStartupTime(i))
+                        )
                         try:
                             time_start = time.time()
                             timed_func(self.state.get_deep_copy())

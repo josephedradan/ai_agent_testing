@@ -18,6 +18,7 @@ from pprint import PrettyPrinter
 # from multiagent._test_case import TestCase
 # from multiagent.agent import *
 from typing import List
+from typing import Tuple
 
 from pacman.agent import Agent
 from pacman.game.directions import Action
@@ -38,7 +39,6 @@ pp = PrettyPrinter()
 # from agent_pacman_ import GameState
 # from list_agent_ghost import AgentGhostRandom, AgentGhostDirectional
 import random
-
 
 # import layout
 
@@ -165,98 +165,147 @@ import random
 #           (stats['wins'], len(games), sum(stats['scores']) * 1.0 / len(games)))
 #     return stats
 
+TUPLE_ACTION_WRONG = Tuple[GameState, Action, Action]
+
 
 class GradingAgent(Agent):
     def __init__(self,
                  seed: int,
-                 agent: Agent,
-                 list_list__list_action__value_optimal: List[List[List[Action], int]],  # Requires __future__.annotations
-                 list_list_action_alt_depth: List[List[Action]],
-                 list_list_action_partial_play_bug: List[List[Action]]
+                 agent_to_be_tested: Agent,
+                 list_list_list_action__value_optimal: List[List[List[List[Action], int]]],
+                 list_list_action_alt_depth: List[List[List[Action]]],
+                 list_list_action_partial_play_bug: List[List[List[Action]]]
                  ):
         # save student agent and actions of reference agents
-        self.agent = agent
-        self.list_list__list_action__value_optimal = list_list__list_action__value_optimal
-        self.list_list_action_alt_depth = list_list_action_alt_depth
-        self.list_list_action_partial_play_bug = list_list_action_partial_play_bug
+        self.agent_to_be_tested: Agent = agent_to_be_tested
+
+        # Notes: Should come from reading a file
+        self.list_list_list_list_action__value_optimal: List[List[List[List[Action], int]]] = (
+            list_list_list_action__value_optimal
+        )
+
+        # Notes: Should come from reading a file
+        self.list_list_list_action_alt_depth: List[List[List[Action]]] = list_list_action_alt_depth
+
+        # Notes: Should come from reading a file
+        self.list_list_list_action_partial_play_bug: List[List[List[Action]]] = list_list_action_partial_play_bug
 
         # create fields for storing specific wrong actions
-        self.suboptimalMoves = []
-        self.wrongStatesExplored = -1
+        self.list_tuple_game_state__action_from_agent_to_be_tested__action_optimal: List[TUPLE_ACTION_WRONG] = []
+
+        self.amount_wrong_states_explored: int = 0
 
         # boolean vectors represent types of implementation the student could have
-        self.actionsConsistentWithOptimal = (
-            [True for i in range(len(list_list__list_action__value_optimal[0]))]
+        self.list_bool_action_consistent_with_optimal: List[bool] = (
+            [True for i in range(len(list_list_list_action__value_optimal[0]))]
         )
-        self.actionsConsistentWithAlternativeDepth =(
+        self.list_bool_action_consistent_with_alternative_depth: List[bool] = (
             [True for i in range(len(list_list_action_alt_depth[0]))]
         )
-        self.actionsConsistentWithPartialPlyBug = (
+        self.list_bool_action_consistent_with_partial_play_bug: List[bool] = (
             [True for i in range(len(list_list_action_partial_play_bug[0]))]
         )
 
         # keep track of elapsed moves
-        self.stepCount = 0
+        self._count_action_called = 0
         self.seed: int = seed
 
     def registerInitialState(self, game_state: GameState):
-        if 'registerInitialState' in dir(self.agent):
-            self.agent.registerInitialState(game_state)
+        if 'registerInitialState' in dir(self.agent_to_be_tested):
+            self.agent_to_be_tested.registerInitialState(game_state)
         random.seed(self.seed)
 
-    def getAction(self, game_state: GameState):
+    def getAction(self, game_state: GameState) -> Action:
         GameState.getAndResetExplored()
-        studentAction = (self.agent.getAction(game_state),
-                         len(GameState.getAndResetExplored()))
-        optimalActions = self.list_list__list_action__value_optimal[self.stepCount]
-        altDepthActions = self.list_list_action_alt_depth[self.stepCount]
-        partialPlyBugActions = self.list_list_action_partial_play_bug[self.stepCount]
-        studentOptimalAction = False
-        curRightStatesExplored = False
-        for i in range(len(optimalActions)):
-            if studentAction[0] in optimalActions[i][0]:
-                studentOptimalAction = True
+
+        # (Action, exploration_depth)
+        tuple__action__len_explored___from_agent_to_be_tested: Tuple[Action, int] = (
+            (self.agent_to_be_tested.getAction(game_state), len(GameState.getAndResetExplored()))
+        )
+
+        # Possible correct solution (Came from a file)
+        list_list_list_action__value_optimal = self.list_list_list_list_action__value_optimal[self._count_action_called]
+
+        # Possible correct solution (Came from a file)
+        list_list_action_alt_depth = self.list_list_list_action_alt_depth[self._count_action_called]
+
+        # Possible correct solution (Came from a file)
+        list_list_action_partial_play_bug = self.list_list_list_action_partial_play_bug[self._count_action_called]
+
+        bool_is_agent_to_be_tested_action_is_optimal: bool = False
+        bool_is_agent_to_be_tested_exploration_depth_correct: bool = False
+
+        # Check if (Action, exploration_depth) from agent_to_be_tested is correct
+        for i, list_action__value_optimal in enumerate(list_list_list_action__value_optimal):
+
+            # Check if Action is correct
+            if tuple__action__len_explored___from_agent_to_be_tested[0] in list_list_list_action__value_optimal[i][0]:
+                bool_is_agent_to_be_tested_action_is_optimal = True
             else:
-                self.actionsConsistentWithOptimal[i] = False
-            if studentAction[1] == int(optimalActions[i][1]):
-                curRightStatesExplored = True
-        if not curRightStatesExplored and self.wrongStatesExplored < 0:
-            self.wrongStatesExplored = 1
-        for i in range(len(altDepthActions)):
-            if studentAction[0] not in altDepthActions[i]:
-                self.actionsConsistentWithAlternativeDepth[i] = False
-        for i in range(len(partialPlyBugActions)):
-            if studentAction[0] not in partialPlyBugActions[i]:
-                self.actionsConsistentWithPartialPlyBug[i] = False
-        if not studentOptimalAction:
-            self.suboptimalMoves.append(
-                (game_state, studentAction[0], optimalActions[0][0][0]))
-        self.stepCount += 1
-        random.seed(self.seed + self.stepCount)
-        return optimalActions[0][0][0]
+                self.list_bool_action_consistent_with_optimal[i] = False
 
-    def getSuboptimalMoves(self):
-        return self.suboptimalMoves
+            # Check if exploration_depth is correct
+            if tuple__action__len_explored___from_agent_to_be_tested[1] == list_list_list_action__value_optimal[i][1]:
+                bool_is_agent_to_be_tested_exploration_depth_correct = True
 
-    def getWrongStatesExplored(self):
-        return self.wrongStatesExplored
+        # bool_is_agent_to_be_tested_exploration_depth_correct is False
+        if not bool_is_agent_to_be_tested_exploration_depth_correct:
+            self.amount_wrong_states_explored += 1
 
-    def checkFailure(self):
+        ##########
+
+        # Check if Action is correct using list_list_action_alt_depth
+        for i, list_action_alt_depth in enumerate(list_list_action_alt_depth):
+            if tuple__action__len_explored___from_agent_to_be_tested[0] not in list_list_action_alt_depth[i]:
+                self.list_bool_action_consistent_with_alternative_depth[i] = False
+
+        ##########
+
+        # Check if Action is correct using list_list_action_partial_play_bug
+        for i, list_action_partial_play_bug in enumerate(list_list_action_partial_play_bug):
+            if tuple__action__len_explored___from_agent_to_be_tested[0] not in list_list_action_partial_play_bug[i]:
+                self.list_bool_action_consistent_with_partial_play_bug[i] = False
+
+        ##########
+
+        action_optimal: Action = list_list_list_action__value_optimal[0][0][0]
+
+        # If agent_to_be_tested is incorrect
+        if not bool_is_agent_to_be_tested_action_is_optimal:
+            self.list_tuple_game_state__action_from_agent_to_be_tested__action_optimal.append(
+                (
+                    game_state,
+                    tuple__action__len_explored___from_agent_to_be_tested[0],
+                    action_optimal
+                )
+            )
+
+        self._count_action_called += 1
+        random.seed(self.seed + self._count_action_called)
+        return action_optimal
+
+    def get_list_tuple_action_wrong(self) -> List[TUPLE_ACTION_WRONG]:
+        return self.list_tuple_game_state__action_from_agent_to_be_tested__action_optimal
+
+    def get_amount_wrong_states_explored(self) -> int:
+        return self.amount_wrong_states_explored
+
+    def get_failure_value(self) -> int:
         """
         Return +n if have n suboptimal moves.
-        Return -1 if have only off by one depth moves.
+        Return -n if have n off by one depth moves.
         Return 0 otherwise.
         """
-        if self.wrongStatesExplored > 0:
+        if self.amount_wrong_states_explored > 0:
             return -3
-        if self.actionsConsistentWithOptimal.count(True) > 0:
+        if self.list_bool_action_consistent_with_optimal.count(True) > 0:
             return 0
-        elif self.actionsConsistentWithPartialPlyBug.count(True) > 0:
+        elif self.list_bool_action_consistent_with_partial_play_bug.count(True) > 0:
             return -2
-        elif self.actionsConsistentWithAlternativeDepth.count(True) > 0:
+        elif self.list_bool_action_consistent_with_alternative_depth.count(True) > 0:
             return -1
         else:
-            return len(self.suboptimalMoves)
+            return len(self.list_tuple_game_state__action_from_agent_to_be_tested__action_optimal)
 
 # class PolyAgent(Agent):
 #     def __init__(self, seed, multiAgents, ourPacOptions, depth):

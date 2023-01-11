@@ -345,11 +345,11 @@ class PacmanGameTreeTest(TestCase):
         if stats['crashes'] > 0:
             self.addMessage('Agent crashed on smallClassic.  No credit')
             return self.testFail(grader)
-        code = pac.checkFailure()
+        code = pac.get_failure_value()
         if code == 0:
             return self.testPass(grader)
         elif code == -3:
-            if pac.getWrongStatesExplored() >= 0:
+            if pac.get_amount_wrong_states_explored() > 0:
                 self.addMessage('Bug: Wrong number of states expanded.')
                 return self.testFail(grader)
             else:
@@ -361,7 +361,7 @@ class PacmanGameTreeTest(TestCase):
             self.addMessage('Bug: Search depth off by 1')
             return self.testFail(grader)
         elif code > 0:
-            moves = pac.getSuboptimalMoves()
+            moves = pac.get_list_tuple_action_wrong()
             state, studentMove, optMove = random.choice(moves)
             self.addMessage('Bug: Suboptimal moves')
             self.addMessage('State:%s\nStudent Move:%s\nOptimal Move:%s' % (
