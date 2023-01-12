@@ -58,7 +58,9 @@ class StateAgent:
         return self.container_vector == other.container_vector and self.scaredTimer == other.scaredTimer
 
     def __hash__(self):
-        return hash(hash(self.container_vector) + 13 * hash(self.scaredTimer))
+        # return hash(hash(self.container_vector) + 13 * hash(self.scaredTimer))
+        return hash((hash(self.container_vector), hash(self.scaredTimer)))
+
 
     def copy(self):
         state = StateAgent(self.container_vector_start, self.is_pacman)

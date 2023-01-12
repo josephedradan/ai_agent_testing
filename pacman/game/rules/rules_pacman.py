@@ -47,7 +47,7 @@ class PacmanRules(RulesAgent):
     def getLegalActions(game_state: GameState, index_agent: Union[int, None] = None) -> List[Directions]:
         return Actions.getPossibleActions(
             game_state.getPacmanState().container_vector,
-            game_state.data.layout.walls
+            game_state.game_state_data.layout.walls
         )
 
     @staticmethod
@@ -57,7 +57,7 @@ class PacmanRules(RulesAgent):
         if action not in legal:
             raise Exception("Illegal action " + str(action))
 
-        pacmanState = game_state.data.list_state_agent[0]
+        pacmanState = game_state.game_state_data.list_state_agent[0]
 
         # Update ContainerVector
         vector = Actions.directionToVector(action, PacmanRules.PACMAN_SPEED)
@@ -75,20 +75,20 @@ class PacmanRules(RulesAgent):
     def _consume(position:Tuple[int, int], game_state: GameState):
         x, y = position
         # Eat food
-        if game_state.data.food[x][y]:
-            game_state.data.scoreChange += 10
-            game_state.data.food = game_state.data.food.copy()
-            game_state.data.food[x][y] = False
-            game_state.data._foodEaten = position
+        if game_state.game_state_data.grid_food[x][y]:
+            game_state.game_state_data.scoreChange += 10
+            game_state.game_state_data.grid_food = game_state.game_state_data.grid_food.copy()
+            game_state.game_state_data.grid_food[x][y] = False
+            game_state.game_state_data._foodEaten = position
             # TODO: cache numFood?
             numFood = game_state.getNumFood()
-            if numFood == 0 and not game_state.data._lose:
-                game_state.data.scoreChange += 500
-                game_state.data._win = True
+            if numFood == 0 and not game_state.game_state_data._lose:
+                game_state.game_state_data.scoreChange += 500
+                game_state.game_state_data._win = True
         # Eat capsule
         if (position in game_state.getCapsules()):
-            game_state.data.list_capsule.remove(position)
-            game_state.data._capsuleEaten = position
+            game_state.game_state_data.list_capsule.remove(position)
+            game_state.game_state_data._capsuleEaten = position
             # Reset all list_agent_ghost' scared timers
-            for index in range(1, len(game_state.data.list_state_agent)):
-                game_state.data.list_state_agent[index].scaredTimer = SCARED_TIME
+            for index in range(1, len(game_state.game_state_data.list_state_agent)):
+                game_state.game_state_data.list_state_agent[index].scaredTimer = SCARED_TIME

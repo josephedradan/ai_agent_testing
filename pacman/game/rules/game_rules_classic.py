@@ -33,7 +33,7 @@ from pacman.game.game import Game
 from pacman.game.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.graphics import GraphicsPacman
-from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
+
 
 # TODO: YOU GIVE GameState SHIT TO THIS AND IT WILL VALIDATE IF GAME WIN AND STUFF IDK
 class ClassicGameRules:
@@ -54,23 +54,33 @@ class ClassicGameRules:
                             bool_catch_exceptions: bool = False
                             ) -> Game:
 
-        agents: List[Agent] = [agent_pacman, *list_agent_ghost[:layout.getNumGhosts()]]
+        list_agent: List[Agent] = [agent_pacman, *list_agent_ghost[:layout.getNumGhosts()]]
 
-        for agent in agents:
+        for agent in list_agent:
             agent.set_graphics_pacman(graphics_pacman)
 
-        initState = GameState()
+        game_state_start = GameState()
+        game_state_start.initialize(layout, len(list_agent_ghost))
 
-        initState.initialize(layout, len(list_agent_ghost))
-        game = Game(agents, graphics_pacman, self, bool_catch_exceptions=bool_catch_exceptions)
-        game.state = initState
-        self.initialState = initState.get_deep_copy()
+        game = Game(
+            list_agent,
+            graphics_pacman,
+            self,
+            bool_catch_exceptions=bool_catch_exceptions
+        )
+
+        game.game_state = game_state_start
+
+        self.initialState = game_state_start.get_deep_copy()
 
         self.bool_quiet: bool = bool_quiet
 
         return game
 
-    def process(self, game_state:GameState, game):
+    def set_quiet(self, bool_quiet: bool):
+        self.bool_quiet = bool_quiet
+
+    def process(self, game_state: GameState, game):
         """
         Checks to see whether it is time to end the game.
         """
@@ -79,18 +89,18 @@ class ClassicGameRules:
         if game_state.isLose():
             self.lose(game_state, game)
 
-    def win(self, game_state:GameState, game):
+    def win(self, game_state: GameState, game):
         if not self.bool_quiet:
-            print("Pacman emerges victorious! Score: %d" % game_state.data.score)
+            print("Pacman emerges victorious! Score: %d" % game_state.game_state_data.score)
         game.gameOver = True
 
-    def lose(self, game_state:GameState, game):
+    def lose(self, game_state: GameState, game):
         if not self.bool_quiet:
-            print("Pacman died! Score: %d" % game_state.data.score)
+            print("Pacman died! Score: %d" % game_state.game_state_data.score)
         game.gameOver = True
 
     def getProgress(self, game):
-        return float(game.state.getNumFood()) / self.initialState.getNumFood()
+        return float(game.game_state.getNumFood()) / self.initialState.getNumFood()
 
     def agentCrash(self, game, agentIndex):
         if agentIndex == 0:

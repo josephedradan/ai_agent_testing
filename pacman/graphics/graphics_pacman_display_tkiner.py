@@ -260,7 +260,7 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
         self.distributionImages = dist
 
     def drawStaticObjects(self, state):
-        layout = self.layout
+        layout: Layout = self.layout
         self.drawWalls(layout.walls)
         self.food = self.drawFood(layout.food)
         self.capsules = self.drawCapsules(layout.list_capsule)

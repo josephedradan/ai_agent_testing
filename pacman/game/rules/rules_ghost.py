@@ -54,7 +54,7 @@ class GhostRules(RulesAgent):
         """
         container_vector = state.getGhostState(index_agent).container_vector
         possibleActions = Actions.getPossibleActions(
-            container_vector, state.data.layout.walls)
+            container_vector, state.game_state_data.layout.walls)
         reverse = Actions.reverseDirection(container_vector.direction)
         if Directions.STOP in possibleActions:
             possibleActions.remove(Directions.STOP)
@@ -70,7 +70,7 @@ class GhostRules(RulesAgent):
         if action not in legal:
             raise Exception("Illegal ghost action " + str(action))
 
-        ghostState = state.data.list_state_agent[index_agent]
+        ghostState = state.game_state_data.list_state_agent[index_agent]
         speed = GhostRules.GHOST_SPEED
         if ghostState.scaredTimer > 0:
             speed /= 2.0
@@ -90,13 +90,13 @@ class GhostRules(RulesAgent):
     def checkDeath(state, agentIndex):
         pacmanPosition = state.getPacmanPosition()
         if agentIndex == 0:  # Pacman just moved; Anyone can kill him
-            for index in range(1, len(state.data.list_state_agent)):
-                ghostState = state.data.list_state_agent[index]
+            for index in range(1, len(state.game_state_data.list_state_agent)):
+                ghostState = state.game_state_data.list_state_agent[index]
                 ghostPosition = ghostState.container_vector.get_position()
                 if GhostRules.canKill(pacmanPosition, ghostPosition):
                     GhostRules.collide(state, ghostState, index)
         else:
-            ghostState = state.data.list_state_agent[agentIndex]
+            ghostState = state.game_state_data.list_state_agent[agentIndex]
             ghostPosition = ghostState.container_vector.get_position()
             if GhostRules.canKill(pacmanPosition, ghostPosition):
                 GhostRules.collide(state, ghostState, agentIndex)
@@ -104,15 +104,15 @@ class GhostRules(RulesAgent):
     @staticmethod
     def collide(state: GameState, ghostState: StateAgent, agentIndex):
         if ghostState.scaredTimer > 0:
-            state.data.scoreChange += 200
+            state.game_state_data.scoreChange += 200
             GhostRules.placeGhost(state, ghostState)
             ghostState.scaredTimer = 0
             # Added for first-person
-            state.data._eaten[agentIndex] = True
+            state.game_state_data._eaten[agentIndex] = True
         else:
-            if not state.data._win:
-                state.data.scoreChange -= 500
-                state.data._lose = True
+            if not state.game_state_data._win:
+                state.game_state_data.scoreChange -= 500
+                state.game_state_data._lose = True
 
     @staticmethod
     def canKill(pacmanPosition, ghostPosition):

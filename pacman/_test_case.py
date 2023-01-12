@@ -172,9 +172,9 @@ def _run(layout_: Layout,
     print('*** Finished running {} on {} after {} seconds.'.format(name, layout_name, time.time() - time_start))
 
     dict_stats = {
-        'time': time.time() - time_start, 'wins': [g.state.isWin() for g in list_game].count(True),
+        'time': time.time() - time_start, 'wins': [g.game_state.isWin() for g in list_game].count(True),
         'list_game': list_game,
-        'scores': [g.state.getScore() for g in list_game],
+        'scores': [g.game_state.getScore() for g in list_game],
         'timeouts': [g.agentTimeout for g in list_game].count(True),
         'crashes': [g.agentCrashed for g in list_game].count(True)
     }
@@ -640,7 +640,7 @@ class EvalAgentTest(TestCase):
 
         random.seed(self.seed)
 
-        games = run_pacman_games(
+        list_game = run_pacman_games(
             layout_,
             agent_object,
             self.list_agent_ghost,
@@ -653,10 +653,10 @@ class EvalAgentTest(TestCase):
 
         time_total = time.time() - time_start
 
-        stats = {'time': time_total, 'wins': [g.state.isWin() for g in games].count(True),
-                 'games': games, 'scores': [g.state.getScore() for g in games],
-                 'timeouts': [g.agentTimeout for g in games].count(True),
-                 'crashes': [g.agentCrashed for g in games].count(True)}
+        stats = {'time': time_total, 'wins': [g.game_state.isWin() for g in list_game].count(True),
+                 'games': list_game, 'scores': [g.game_state.getScore() for g in list_game],
+                 'timeouts': [g.agentTimeout for g in list_game].count(True),
+                 'crashes': [g.agentCrashed for g in list_game].count(True)}
 
         averageScore = sum(stats['scores']) / float(len(stats['scores']))
         nonTimeouts = self.number_of_games - stats['timeouts']
@@ -673,7 +673,7 @@ class EvalAgentTest(TestCase):
 
         results = [gradeThreshold(averageScore, self.scoreMinimum, self.scoreThresholds, "average score"),
                    gradeThreshold(nonTimeouts, self.nonTimeoutMinimum,
-                                  self.nonTimeoutThresholds, "games not timed out"),
+                                  self.nonTimeoutThresholds, "list_game not timed out"),
                    gradeThreshold(wins, self.winsMinimum, self.winsThresholds, "wins")]
 
         totalPoints = 0

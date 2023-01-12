@@ -73,14 +73,18 @@ class Grid:
 
     def __hash__(self):
         # return hash(string_given(self))
-        base = 1
-        h = 0
-        for l in self.data:
-            for i in l:
-                if i:
-                    h += base
-                base *= 2
-        return hash(h)
+
+        # base = 1
+        # h = 0
+        # for l in self.data:
+        #     for i in l:
+        #         if i:
+        #             h += base
+        #         base *= 2
+        # return hash(h)
+
+        return hash(tuple(i for b in self.data for i in b))
+
 
     def copy(self):
         g = Grid(self.width, self.height)
@@ -95,10 +99,10 @@ class Grid:
         g.data = self.data
         return g
 
-    def count(self, item=True):
+    def count(self, item: bool=True):
         return sum([x.count(item) for x in self.data])
 
-    def asList(self, key=True):
+    def asList(self, key: bool=True):
         list = []
         for x in range(self.width):
             for y in range(self.height):
@@ -125,7 +129,7 @@ class Grid:
         bits.append(currentInt)
         return tuple(bits)
 
-    def _cellIndexToPosition(self, index):
+    def _cellIndexToPosition(self, index: int):
         x = index / self.height
         y = index % self.height
         return x, y

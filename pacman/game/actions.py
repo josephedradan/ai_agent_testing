@@ -22,6 +22,7 @@ Reference:
 
 """
 from __future__ import annotations
+
 from typing import List
 from typing import TYPE_CHECKING
 from typing import Tuple
@@ -38,18 +39,18 @@ class Actions:
     A collection of static methods for manipulating move actions.
     """
     # Directions
-    _directions = {Directions.WEST: (-1, 0),
-                   Directions.STOP: (0, 0),
-                   Directions.EAST: (1, 0),
-                   Directions.NORTH: (0, 1),
-                   Directions.SOUTH: (0, -1)}
+    dict_k_direction_v_position = {Directions.WEST: (-1, 0),
+                                   Directions.STOP: (0, 0),
+                                   Directions.EAST: (1, 0),
+                                   Directions.NORTH: (0, 1),
+                                   Directions.SOUTH: (0, -1)}
 
     _directionsAsList = [('West', (-1, 0)), ('Stop', (0, 0)), ('East', (1, 0)), ('North', (0, 1)), ('South', (0, -1))]
 
     TOLERANCE = .001
 
     @staticmethod
-    def reverseDirection(action):
+    def reverseDirection(action: Directions):
         if action == Directions.NORTH:
             return Directions.SOUTH
         if action == Directions.SOUTH:
@@ -60,10 +61,11 @@ class Actions:
             return Directions.EAST
         return action
 
-
     @staticmethod
-    def vectorToDirection(vector):
+    def vectorToDirection(vector: Tuple[int, ...]):
+
         dx, dy = vector
+
         if dy > 0:
             return Directions.NORTH
         if dy < 0:
@@ -74,12 +76,10 @@ class Actions:
             return Directions.EAST
         return Directions.STOP
 
-
     @staticmethod
-    def directionToVector(direction, speed=1.0):
-        dx, dy = Actions._directions[direction]
+    def directionToVector(direction: Directions, speed: float = 1.0):
+        dx, dy = Actions.dict_k_direction_v_position[direction]
         return (dx * speed, dy * speed)
-
 
     @staticmethod
     def getPossibleActions(container_vector: ContainerVector, walls: Grid):
@@ -119,9 +119,7 @@ class Actions:
         return neighbors
 
     @staticmethod
-    def getSuccessor(position, action):
+    def getSuccessor(position: Tuple[int, int], action: Directions):
         dx, dy = Actions.directionToVector(action)
         x, y = position
         return (x + dx, y + dy)
-
-

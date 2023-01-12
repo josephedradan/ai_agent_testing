@@ -37,10 +37,11 @@ class Layout:
         self.height: int = len(list_str_layout_line)
         self.walls: Grid = Grid(self.width, self.height, False)
         self.food: Grid = Grid(self.width, self.height, False)
-        self.list_capsule = []
-        self.agentPositions = []
-        self.numGhosts = 0
-        self.processLayoutText(list_str_layout_line)
+        self.list_capsule: List[Tuple[int, ...]] = []
+        self.agentPositions: List[Tuple[bool, Tuple[int, ...]]] = []
+        self.numGhosts: int = 0
+
+        self._processLayoutText(list_str_layout_line)
         self.layoutText = list_str_layout_line
         self.totalFood = len(self.food.asList())
         # self.initializeVisibilityMatrix()
@@ -130,7 +131,7 @@ class Layout:
     def deepCopy(self):
         return Layout(self.layoutText[:])
 
-    def processLayoutText(self, layoutText):
+    def _processLayoutText(self, layoutText: List[List[str]]):
         """
         Coordinates are flipped from the input format to the (x,y) convention here
 
@@ -143,28 +144,34 @@ class Layout:
          P - Pacman
         Other characters are ignored.
         """
-        maxY = self.height - 1
+        height_layout_max = self.height - 1
+
         for y in range(self.height):
             for x in range(self.width):
-                layoutChar = layoutText[maxY - y][x]
-                self.processLayoutChar(x, y, layoutChar)
+                layoutChar = layoutText[height_layout_max - y][x]
+                self._process_char_from_layout(x, y, layoutChar)
+
         self.agentPositions.sort()
         self.agentPositions = [(i == 0, pos) for i, pos in self.agentPositions]
 
-    def processLayoutChar(self, x, y, layoutChar):
-        if layoutChar == '%':
+    def _process_char_from_layout(self, x: int, y: int, char_from_layout: str):
+        """
+        Makes the actual objects in the layout
+
+        """
+        if char_from_layout == '%':
             self.walls[x][y] = True
-        elif layoutChar == '.':
+        elif char_from_layout == '.':
             self.food[x][y] = True
-        elif layoutChar == 'o':
+        elif char_from_layout == 'o':
             self.list_capsule.append((x, y))
-        elif layoutChar == 'P':
+        elif char_from_layout == 'P':
             self.agentPositions.append((0, (x, y)))
-        elif layoutChar in ['G']:
+        elif char_from_layout in ['G']:
             self.agentPositions.append((1, (x, y)))
             self.numGhosts += 1
-        elif layoutChar in ['1', '2', '3', '4']:
-            self.agentPositions.append((int(layoutChar), (x, y)))
+        elif char_from_layout in ['1', '2', '3', '4']:
+            self.agentPositions.append((int(char_from_layout), (x, y)))
             self.numGhosts += 1
 
 

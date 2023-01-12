@@ -39,8 +39,8 @@ class ContainerVector:
     horizontally and y increases vertically.  Therefore, north is the direction of increasing y, or (0,1).
     """
 
-    def __init__(self, pos: Tuple[int, ...], direction: Directions):
-        self.position: Tuple[int, ...] = pos
+    def __init__(self, position: Tuple[int, ...], direction: Directions):
+        self.position: Tuple[int, ...] = position
         self.direction: Directions = direction
 
     def get_position(self) -> Tuple[int, ...]:

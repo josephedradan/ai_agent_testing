@@ -43,7 +43,7 @@ class GameStateData:
         Generates a new data packet by copying information from its predecessor.
         """
         if game_state_date_previous is not None:
-            self.food: Grid = game_state_date_previous.food.shallowCopy()
+            self.grid_food: Grid = game_state_date_previous.grid_food.shallowCopy()
             self.list_capsule: List[Tuple[int, ...]] = game_state_date_previous.list_capsule.copy()
             self.list_state_agent: List[StateAgent] = self.get_list_state_agent_copy(
                 game_state_date_previous.list_state_agent
@@ -63,7 +63,7 @@ class GameStateData:
     def get_deep_copy(self) -> GameStateData:
         game_state_data = GameStateData(self)
 
-        game_state_data.food = self.food.deepCopy()
+        game_state_data.grid_food = self.grid_food.deepCopy()
         game_state_data.layout = self.layout.deepCopy()
         game_state_data._agentMoved = self._agentMoved
         game_state_data._foodEaten = self._foodEaten
@@ -85,7 +85,7 @@ class GameStateData:
         # TODO Check for type of other
         if not self.list_state_agent == other.list_state_agent:
             return False
-        if not self.food == other.food:
+        if not self.grid_food == other.grid_food:
             return False
         if not self.list_capsule == other.list_capsule:
             return False
@@ -97,30 +97,39 @@ class GameStateData:
         """
         Allows states to be keys of dictionaries.
         """
-        for i, state in enumerate(self.list_state_agent):
-            try:
-                int(hash(state))
-            except TypeError as e:
-                print(e)
-                # hash(game_state)
+        # for i, state in enumerate(self.list_state_agent):
+        #     try:
+        #         int(hash(state))
+        #     except TypeError as e:
+        #         print(e)
+        #         # hash(game_state)
 
-        return int(
-            (hash(tuple(self.list_state_agent)) +
-             13 * hash(self.food) +
-             113 * hash(tuple(self.list_capsule)) +
-             7 * hash(self.score)) % 1048575
+        # return int(
+        #     (hash(tuple(self.list_state_agent)) +
+        #      13 * hash(self.grid_food) +
+        #      113 * hash(tuple(self.list_capsule)) +
+        #      7 * hash(self.score)) % 1048575
+        # )
+
+        hash_ = hash(
+            (hash(tuple(self.list_state_agent)),
+             hash(self.grid_food),
+             hash(tuple(self.list_capsule)),
+             hash(self.score),
+             )
         )
+        return hash_
 
     def __str__(self):
         width, height = self.layout.width, self.layout.height
         map = Grid(width, height)
-        if type(self.food) == type((1, 2)):
-            self.food = reconstituteGrid(self.food)
+        if type(self.grid_food) == type((1, 2)):
+            self.grid_food = reconstituteGrid(self.grid_food)
         for x in range(width):
             for y in range(height):
                 walls: Grid
                 food: Grid
-                food, walls = self.food, self.layout.walls
+                food, walls = self.grid_food, self.layout.walls
                 map[x][y] = self._get_str_food_or_wall_from_bool_food_or_wall(food[x][y], walls[x][y])
 
         for staet_agent in self.list_state_agent:
@@ -148,7 +157,7 @@ class GameStateData:
         else:
             return ' '
 
-    def _get_str_pacman_from_direction(self, direction: Directions)->str:
+    def _get_str_pacman_from_direction(self, direction: Directions) -> str:
         if direction == Directions.NORTH:
             return 'v'
         if direction == Directions.SOUTH:
@@ -171,7 +180,7 @@ class GameStateData:
         """
         Creates an initial game game_state from a layout array (see layout.py).
         """
-        self.food: Grid = layout.food.copy()
+        self.grid_food: Grid = layout.food.copy()
         # self.list_capsule = []
         self.list_capsule: List[Tuple[int, int]] = layout.list_capsule[:]
         self.layout: Layout = layout

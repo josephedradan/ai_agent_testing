@@ -45,6 +45,9 @@ import argparse
 import os
 import random
 import sys
+
+from pacman.graphics import GraphicsPacmanNull
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
@@ -352,14 +355,14 @@ def replay_game(layout, actions, display):
     agents = [pacmanAgents.AgentPacmanGreedy()] + [ghostAgents.AgentGhostRandom(i + 1)
                                                    for i in range(layout.getNumGhosts())]
     game = rules.create_and_get_game(layout, agents[0], agents[1:], display)
-    state = game.state
-    display.initialize(state.data)
+    state = game.game_state
+    display.initialize(state.game_state_data)
 
     for action in actions:
         # Execute the action
         state = state.get_container_vector_successor(*action)
         # Change the graphics_pacman
-        display.update(state.data)
+        display.update(state.game_state_data)
         # Allow for game specific conditions (winning, losing, etc.)
         rules.process(state, game)
 
@@ -409,14 +412,15 @@ def run_pacman_games(layout: _layout.Layout,
 
     for i in range(number_of_games):
         bool_quiet = i < numTraining
+
         if bool_quiet:
             # Suppress output and graphics
             from pacman.graphics import graphics_pacman_null
-            display_game = graphics_pacman_null.GraphicsPacmanNull()
-            classic_game_rules.bool_quiet = True
+            display_game = GraphicsPacmanNull()
+            classic_game_rules.set_quiet(True)
         else:
             display_game = graphics_pacman
-            classic_game_rules.bool_quiet = False
+            classic_game_rules.set_quiet(False)
 
         #####
         # TODO JOSEPH SPEICAL
@@ -451,8 +455,8 @@ def run_pacman_games(layout: _layout.Layout,
                 pickle.dump(components, f)
 
     if (number_of_games - numTraining) > 0:
-        scores = [game.state.getScore() for game in list_game]
-        wins = [game.state.isWin() for game in list_game]
+        scores = [game.game_state.getScore() for game in list_game]
+        wins = [game.game_state.isWin() for game in list_game]
         winRate = wins.count(True) / float(len(wins))
 
         print('Average Score:', sum(scores) / float(len(scores)))
