@@ -22,4 +22,6 @@
     autograder -t "test_cases/multiagent/q4/7-pacman-game"
 
     python main.py --quietTextGraphics
+    python main.py -l mediumScaryMaze -p StayWestSearchAgent
     
+    python main.py -l mediumScaryMaze -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
