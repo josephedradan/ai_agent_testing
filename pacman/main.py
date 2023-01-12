@@ -366,16 +366,16 @@ def replay_game(layout, actions, display):
     display.finish()
 
 
-def run_games(layout: _layout.Layout,
-              agent_pacman: Agent,  # FIXME: ADD MULTIPLE PLAYERS
-              list_agent_ghost: List[Agent],
-              graphics_pacman: GraphicsPacman,
-              number_of_games: int,
-              bool_record: bool,
-              numTraining: int = 0,
-              bool_catch_exceptions: bool = False,
-              timeout: int = 30
-              ):
+def run_pacman_games(layout: _layout.Layout,
+                     agent_pacman: Agent,  # FIXME: ADD MULTIPLE PLAYERS
+                     list_agent_ghost: List[Agent],
+                     graphics_pacman: GraphicsPacman,
+                     number_of_games: int,
+                     bool_record: bool,
+                     numTraining: int = 0,
+                     bool_catch_exceptions: bool = False,
+                     timeout: int = 30
+                     ) -> List[Game]:
     """
     Execute playing Pacman
 
@@ -484,7 +484,7 @@ if __name__ == '__main__':
     # code_analyzer.get_code_analyzer_printer().export_rich_to_html()
 
     pprint(args)
-    run_games(**args)
+    run_pacman_games(**args)
 
     # import cProfile
     # cProfile.run("runGames( **args )")

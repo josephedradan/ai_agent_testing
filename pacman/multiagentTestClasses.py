@@ -12,11 +12,14 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 from __future__ import annotations
 
+import json
 from pprint import PrettyPrinter
 # from multiagent.agent.agent import Agent
 # from multiagent.agent.agent_ghost_directional import AgentGhostDirectional
 # from multiagent._test_case import TestCase
 # from multiagent.agent import *
+from typing import Any
+from typing import Dict
 from typing import List
 from typing import Tuple
 
@@ -165,10 +168,50 @@ import random
 #           (stats['wins'], len(games), sum(stats['scores']) * 1.0 / len(games)))
 #     return stats
 
-TUPLE_ACTION_WRONG = Tuple[GameState, Action, Action]
+TYPE_TUPLE_GAMESTATE__ACTION_WRONG__ACTION_CORRECT = Tuple[GameState, Action, Action]
 
 
 class GradingAgent(Agent):
+    """
+    Takes in an agent,
+        Uses an agent's
+            getAction
+            registerInitialState
+        and
+            uses answers from a .solution file via
+                list_list_list_action__value_optimal
+                list_list_action_alt_depth
+                list_list_action_partial_play_bug
+            to check if agent's
+                getAction
+            is correct
+
+    """
+
+    @classmethod
+    def from_dict(cls,seed,agent_to_be_tested, dict_file_solution: Dict[str, Any]):
+
+        list_list_list_action__value_optimal = (
+            [json.loads(x) for x in dict_file_solution['optimalActions'].split('\n')]
+        )
+
+        list_list_action_alt_depth = (
+            [json.loads(x) for x in dict_file_solution['altDepthActions'].split('\n')]
+        )
+
+        list_list_action_partial_play_bug = (
+            [json.loads(x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
+        )
+
+        return cls(
+            seed,
+            agent_to_be_tested,
+            list_list_list_action__value_optimal,
+            list_list_action_alt_depth,
+            list_list_action_partial_play_bug
+        )
+
+
     def __init__(self,
                  seed: int,
                  agent_to_be_tested: Agent,
@@ -176,8 +219,14 @@ class GradingAgent(Agent):
                  list_list_action_alt_depth: List[List[List[Action]]],
                  list_list_action_partial_play_bug: List[List[List[Action]]]
                  ):
+
         # save student agent and actions of reference agents
         self.agent_to_be_tested: Agent = agent_to_be_tested
+
+        ##########
+
+
+        ##########
 
         # Notes: Should come from reading a file
         self.list_list_list_list_action__value_optimal: List[List[List[List[Action], int]]] = (
@@ -191,7 +240,7 @@ class GradingAgent(Agent):
         self.list_list_list_action_partial_play_bug: List[List[List[Action]]] = list_list_action_partial_play_bug
 
         # create fields for storing specific wrong actions
-        self.list_tuple_game_state__action_from_agent_to_be_tested__action_optimal: List[TUPLE_ACTION_WRONG] = []
+        self.list_tuple_game_state__action_from_agent_to_be_tested__action_optimal: List[TYPE_TUPLE_GAMESTATE__ACTION_WRONG__ACTION_CORRECT] = []
 
         self.amount_wrong_states_explored: int = 0
 
@@ -284,13 +333,13 @@ class GradingAgent(Agent):
         random.seed(self.seed + self._count_action_called)
         return action_optimal
 
-    def get_list_tuple_action_wrong(self) -> List[TUPLE_ACTION_WRONG]:
+    def get_list_tuple__game_state__action_wrong__action_correct(self) -> List[TYPE_TUPLE_GAMESTATE__ACTION_WRONG__ACTION_CORRECT]:
         return self.list_tuple_game_state__action_from_agent_to_be_tested__action_optimal
 
     def get_amount_wrong_states_explored(self) -> int:
         return self.amount_wrong_states_explored
 
-    def get_failure_value(self) -> int:
+    def get_value_failure(self) -> int:
         """
         Return +n if have n suboptimal moves.
         Return -n if have n off by one depth moves.

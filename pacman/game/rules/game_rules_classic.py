@@ -60,6 +60,7 @@ class ClassicGameRules:
             agent.set_graphics_pacman(graphics_pacman)
 
         initState = GameState()
+
         initState.initialize(layout, len(list_agent_ghost))
         game = Game(agents, graphics_pacman, self, bool_catch_exceptions=bool_catch_exceptions)
         game.state = initState

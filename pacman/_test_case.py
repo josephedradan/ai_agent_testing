@@ -42,7 +42,7 @@ from pacman.game import layout
 from pacman.game.layout import Layout
 from pacman.game.layout import get_layout
 from pacman.graphics.graphics_pacman import GraphicsPacman
-from pacman.main import run_games
+from pacman.main import run_pacman_games
 from pacman.multiagentTestClasses import GradingAgent
 
 if TYPE_CHECKING:
@@ -145,21 +145,21 @@ class PolyAgent(Agent):
         return (self.optimalActionLists, self.alternativeDepthLists, self.partialPlyBugLists)
 
 
-def run(layout_: Layout,
-        layout_name: str,
-        agent_pacman_: Agent,
-        list_agent_ghost: List[Agent],
-        graphics_pacman: GraphicsPacman,
-        number_of_games: int = 1,
-        name: str = 'games'
-        ) -> Dict[str, Any]:
+def _run(layout_: Layout,
+         layout_name: str,
+         agent_pacman_: Agent,
+         list_agent_ghost: List[Agent],
+         graphics_pacman: GraphicsPacman,
+         number_of_games: int = 1,
+         name: str = 'games'
+         ) -> Dict[str, Any]:
     """
-    Runs a few games and outputs their statistics.
+    Runs a few pacman games and outputs their statistics.
     """
     time_start = time.time()
     print('*** Running %s on {} {} time(s).'.format(name, layout_name, number_of_games))
 
-    games = run_games(
+    list_game = run_pacman_games(
         layout_,
         agent_pacman_,
         list_agent_ghost,
@@ -172,15 +172,16 @@ def run(layout_: Layout,
     print('*** Finished running {} on {} after {} seconds.'.format(name, layout_name, time.time() - time_start))
 
     dict_stats = {
-        'time': time.time() - time_start, 'wins': [g.state.isWin() for g in games].count(True), 'games': games,
-        'scores': [g.state.getScore() for g in games],
-        'timeouts': [g.agentTimeout for g in games].count(True),
-        'crashes': [g.agentCrashed for g in games].count(True)
+        'time': time.time() - time_start, 'wins': [g.state.isWin() for g in list_game].count(True),
+        'list_game': list_game,
+        'scores': [g.state.getScore() for g in list_game],
+        'timeouts': [g.agentTimeout for g in list_game].count(True),
+        'crashes': [g.agentCrashed for g in list_game].count(True)
     }
 
     print('*** Won {} out of {} games. Average score: {} ***'.format(dict_stats['wins'],
-                                                                     len(games),
-                                                                     sum(dict_stats['scores']) * 1.0 / len(games)
+                                                                     len(list_game),
+                                                                     sum(dict_stats['scores']) * 1.0 / len(list_game)
                                                                      ))
     return dict_stats
 
@@ -251,31 +252,36 @@ class TestCase(ABC):
     # TODO: this is hairy, but we need to fix grading.py's interface
     # to get a nice hierarchical name_project - str_question - test structure,
     # then these should be moved into Question proper.
-    def testPass(self, grades):
+    def _procedure_test_pass(self, grades):
         grades.addMessage('PASS: %s' % (self.path_file_test,))
         for line in self.messages:
             grades.addMessage('    %s' % (line,))
         return True
 
-    def testFail(self, grades):
+    def _procedure_test_fail(self, grades):
         grades.addMessage('FAIL: %s' % (self.path_file_test,))
         for line in self.messages:
             grades.addMessage('    %s' % (line,))
         return False
 
     # This should really be str_question level?
-    def testPartial(self, grades, points, maxPoints) -> bool:
-        grades.addPoints(points)
-        extraCredit = max(0, points - maxPoints)
-        regularCredit = points - extraCredit
+    def _procedure_test_pass_extra_credit(self, grader: Grader, points: int, points_max: int) -> bool:
+        grader.addPoints(points)
+        points_extra_credit = max(0, points - points_max)
+        points_regular = points - points_extra_credit
 
-        grades.addMessage('%s: %s (%s of %s points)' % (
-            "PASS" if points >= maxPoints else "FAIL", self.path_file_test, regularCredit, maxPoints))
-        if extraCredit > 0:
-            grades.addMessage('EXTRA CREDIT: %s points' % (extraCredit,))
+        grader.addMessage('{}: {} ({} of {} points)'.format(
+            "PASS" if points >= points_max else "FAIL",
+            self.path_file_test,
+            points_regular,
+            points_max
+        ))
+
+        if points_extra_credit > 0:
+            grader.addMessage('EXTRA CREDIT: %s points' % (points_extra_credit,))
 
         for line in self.messages:
-            grades.addMessage('    %s' % (line,))
+            grader.addMessage('    %s' % (line,))
 
         return True
 
@@ -295,86 +301,101 @@ class PacmanGameTreeTest(TestCase):
         self.max_points: int = int(self.dict_file_test['max_points'])
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
-        # load student code and staff code solutions
+        # load student value_failure and staff value_failure solutions
 
         # multiAgents = moduleDict['projectTestClasses']
         # agent_ = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
 
         agent_: Agent = get_class_agent(self.class_agent)(depth=self.depth)
 
-        list_list__list_action__value_optimal = (
-            [json.loads(x) for x in dict_file_solution['optimalActions'].split('\n')]
-        )
-
-        list_list_action_alt_depth = (
-            [json.loads(x) for x in dict_file_solution['altDepthActions'].split('\n')]
-        )
-
-        list_list_action_partial_play_bug = (
-            [json.loads(x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
-        )
+        # list_list_list_action__value_optimal = (
+        #     [json.loads(x) for x in dict_file_solution['optimalActions'].split('\n')]
+        # )
+        #
+        # list_list_action_alt_depth = (
+        #     [json.loads(x) for x in dict_file_solution['altDepthActions'].split('\n')]
+        # )
+        #
+        # list_list_action_partial_play_bug = (
+        #     [json.loads(x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
+        # )
 
         # set up game game_state and play a game
         random.seed(self.seed)
 
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
 
-        pac = GradingAgent(
+        agent_grading = GradingAgent.from_dict(
             self.seed,
             agent_,
-            list_list__list_action__value_optimal,
-            list_list_action_alt_depth,
-            list_list_action_partial_play_bug
+            dict_file_solution,
+            # list_list_list_action__value_optimal,
+            # list_list_action_alt_depth,
+            # list_list_action_partial_play_bug
         )
 
         # check return codes and assign grader
         disp = self.question.get_graphics_pacman()
 
-        stats = run(
+        dict_stats = _run(
             lay,
             self.layout_name,
-            pac,
+            agent_grading,
             [AgentGhostDirectional(i + 1) for i in range(2)],
             disp,
             name=self.class_agent
         )
 
-        if stats['timeouts'] > 0:
+        if dict_stats['timeouts'] > 0:
             self.addMessage('Agent timed out on smallClassic.  No credit')
-            return self.testFail(grader)
-        if stats['crashes'] > 0:
-            self.addMessage('Agent crashed on smallClassic.  No credit')
-            return self.testFail(grader)
-        code = pac.get_failure_value()
-        if code == 0:
-            return self.testPass(grader)
-        elif code == -3:
-            if pac.get_amount_wrong_states_explored() > 0:
-                self.addMessage('Bug: Wrong number of states expanded.')
-                return self.testFail(grader)
-            else:
-                return self.testPass(grader)
-        elif code == -2:
-            self.addMessage('Bug: Partial Ply Bug')
-            return self.testFail(grader)
-        elif code == -1:
-            self.addMessage('Bug: Search depth off by 1')
-            return self.testFail(grader)
-        elif code > 0:
-            moves = pac.get_list_tuple_action_wrong()
-            state, studentMove, optMove = random.choice(moves)
-            self.addMessage('Bug: Suboptimal moves')
-            self.addMessage('State:%s\nStudent Move:%s\nOptimal Move:%s' % (
-                state, studentMove, optMove))
-            return self.testFail(grader)
+            return self._procedure_test_fail(grader)
 
-    def writeList(self, handle, name, list):
+        if dict_stats['crashes'] > 0:
+            self.addMessage('Agent crashed on smallClassic.  No credit')
+            return self._procedure_test_fail(grader)
+
+        value_failure = agent_grading.get_value_failure()
+
+        if value_failure == 0:
+            return self._procedure_test_pass(grader)
+
+        elif value_failure == -3:
+            if agent_grading.get_amount_wrong_states_explored() > 0:
+                self.addMessage('Bug: Wrong number of states expanded.')
+                return self._procedure_test_fail(grader)
+            else:
+                return self._procedure_test_pass(grader)
+
+        elif value_failure == -2:
+            self.addMessage('Bug: Partial Play Bug')
+            return self._procedure_test_fail(grader)
+        elif value_failure == -1:
+            self.addMessage('Bug: Search depth off by 1')
+            return self._procedure_test_fail(grader)
+
+        elif value_failure > 0:
+            moves = agent_grading.get_list_tuple__game_state__action_wrong__action_correct()
+            game_state, action_wrong, action_correct = random.choice(moves)
+
+            self.addMessage('Bug: Suboptimal moves')
+            self.addMessage('State:{}\nStudent Move:{}\nOptimal Move:{}'.format(game_state,
+                                                                                action_wrong,
+                                                                                action_correct))
+            return self._procedure_test_fail(grader)
+
+
+    @staticmethod
+    def _write_list_to_file(handle, name, list):
         handle.write('%s: """\n' % name)
         for l in list:
             handle.write('%s\n' % json.dumps(l))
         handle.write('"""\n')
 
-    def writeSolution(self, filePath):
+    def writeSolution(self, path_file: str):
+        """
+        WRite solutions given path_file
+
+        """
         # load module, set seed, create list_agent_ghost and macman, run game
         # multiAgents = moduleDict['projectTestClasses']
 
@@ -392,14 +413,14 @@ class PacmanGameTreeTest(TestCase):
         pac = PolyAgent(self.seed, ourPacOptions, self.depth)
 
         disp = self.question.get_graphics_pacman()
-        run(lay, self.layout_name, pac, [AgentGhostDirectional(
+        _run(lay, self.layout_name, pac, [AgentGhostDirectional(
             i + 1) for i in range(2)], disp, name=self.class_agent)
         (optimalActions, altDepthActions, partialPlyBugActions) = pac.getTraces()
         # recover traces and bool_record to file
-        handle = open(filePath, 'w')
-        self.writeList(handle, 'optimalActions', optimalActions)
-        self.writeList(handle, 'altDepthActions', altDepthActions)
-        self.writeList(handle, 'partialPlyBugActions', partialPlyBugActions)
+        handle = open(path_file, 'w')
+        self._write_list_to_file(handle, 'optimalActions', optimalActions)
+        self._write_list_to_file(handle, 'altDepthActions', altDepthActions)
+        self._write_list_to_file(handle, 'partialPlyBugActions', partialPlyBugActions)
         handle.close()
 
 
@@ -553,9 +574,9 @@ class GraphGameTreeTest(TestCase):
 
         if fail:
             self.addDiagram()
-            return self.testFail(grader)
+            return self._procedure_test_fail(grader)
         else:
-            return self.testPass(grader)
+            return self._procedure_test_pass(grader)
 
     def writeSolution(self, filePath):
         # multiAgents = moduleDict['projectTestClasses']
@@ -619,7 +640,7 @@ class EvalAgentTest(TestCase):
 
         random.seed(self.seed)
 
-        games = run_games(
+        games = run_pacman_games(
             layout_,
             agent_object,
             self.list_agent_ghost,
@@ -688,7 +709,7 @@ class EvalAgentTest(TestCase):
         if any([not passed for passed, _, _, _, _, _ in results]):
             totalPoints = 0
 
-        return self.testPartial(grader, totalPoints, self.maxPoints)
+        return self._procedure_test_pass_extra_credit(grader, totalPoints, self.maxPoints)
 
     def writeSolution(self, filePath):
         handle = open(filePath, 'w')
