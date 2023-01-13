@@ -26,11 +26,11 @@ from __future__ import annotations
 from typing import Type
 from typing import Union
 
-from pacman.agent.problem.agent_pacman__search_problem import AnyFoodSearchProblem
-from pacman.agent.problem.agent_pacman__search_problem import CornersProblem
-from pacman.agent.problem.agent_pacman__search_problem import FoodSearchProblem
-from pacman.agent.problem.agent_pacman__search_problem import PositionSearchProblem
-from pacman.agent.problem.agent_pacman__search_problem import SearchProblem
+from pacman.agent.search_problem.search_problem import SearchProblem
+from pacman.agent.search_problem.search_problem_corners import CornersProblem
+from pacman.agent.search_problem.search_problem_food import FoodSearchProblem
+from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
+from pacman.agent.search_problem.search_problem_position_any_food import AnyFoodSearchProblem
 
 DICT_K_PROBLEM_NAME_V_PROBLEM = {
     PositionSearchProblem.__name__: PositionSearchProblem,

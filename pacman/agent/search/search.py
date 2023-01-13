@@ -24,9 +24,9 @@ from typing import Set
 from typing import Tuple
 from typing import Union
 
-import util
-from pacman.agent.problem.agent_pacman__search_problem import SearchProblem
-from pacman.agent.heuristic import nullHeuristic
+from pacman import util
+from pacman.agent.heuristic_function import nullHeuristic
+from pacman.agent.search_problem import SearchProblem
 from pacman.game.directions import Directions
 
 
@@ -115,7 +115,7 @@ def dfs_recursive_problem_main(problem: SearchProblem) -> List[str]:
                 if result is True:
                     return result
 
-                # If the added str_direction_current did not lead to the correct path_file_test, then pop it
+                # If the added str_direction_current did not lead to the correct path, then pop it
                 list_str_direction_answer.pop()
 
     # ----- Initialization -----
@@ -298,7 +298,7 @@ class Container:
 
     def get_path(self) -> List[str]:
         """
-        Get path_file_test to self.position by repeating the process of getting the container_parent and getting its direction
+        Get path to self.position by repeating the process of getting the container_parent and getting its direction
         and adding it into a list.
 
         Once all the list has been constructed, reverse that list because the list was constructed by going backwards
@@ -433,7 +433,7 @@ def generic_search_algorithm_base(problem: SearchProblem,
     return list_str_direction_answer
 
 
-def depthFirstSearch(problem: SearchProblem) -> List[str]:
+def depthFirstSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
     """
     Search the deepest nodes in the search tree first.
 
@@ -469,7 +469,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[str]:
     return solution
 
 
-def breadthFirstSearch(problem: SearchProblem) -> List[str]:
+def breadthFirstSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     # util.raiseNotDefined()
@@ -480,7 +480,7 @@ def breadthFirstSearch(problem: SearchProblem) -> List[str]:
     return solution
 
 
-def uniformCostSearch(problem: SearchProblem) -> List[str]:
+def uniformCostSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     # util.raiseNotDefined()

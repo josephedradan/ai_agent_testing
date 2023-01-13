@@ -202,7 +202,7 @@ def get_layout(name: str, back=2) -> Union[Layout, None]:
 
 def get_layout_object_helper(path_layout: str) -> Union[Layout, None]:
     """
-    Given string_given of path_file_test of layout file, return Layout object or None
+    Given string_given of path of layout file, return Layout object or None
 
     :param path_layout:
     :return:

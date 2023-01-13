@@ -23,38 +23,39 @@ Reference:
 """
 from __future__ import annotations
 
-import json
-import random
-from abc import ABC
 # Template modeling a generic test case
-from abc import abstractmethod
-from collections import defaultdict
-from pprint import pprint
-from typing import Any
-from typing import Dict
-from typing import List
 from typing import TYPE_CHECKING
+from typing import Type
+from typing import Union
 
-from pacman import main
-
-from pacman.agent import *
-from pacman.game import layout
-from pacman.game.layout import Layout
-from pacman.game.layout import get_layout
-from pacman.graphics.graphics_pacman import GraphicsPacman
-from pacman.main import run_pacman_games
-from pacman.multiagentTestClasses import GradingAgent
 from pacman.test_case.test_case import TestCase
+from pacman.test_case.test_case_closest_dot_test import ClosestDotTest
+from pacman.test_case.test_case_corner_heuristic_pacman import CornerHeuristicPacman
+from pacman.test_case.test_case_corner_heuristic_sanity import CornerHeuristicSanity
+from pacman.test_case.test_case_corner_problem_test import CornerProblemTest
 from pacman.test_case.test_case_eval_agent_test import EvalAgentTest
 from pacman.test_case.test_case_graph_game_tree_test import GraphGameTreeTest
+from pacman.test_case.test_case_graph_game_tree_test import MultiagentTreeState
+from pacman.test_case.test_case_graph_search_tes import GraphSearchTest
+from pacman.test_case.test_case_heuristic_grade import HeuristicGrade
+from pacman.test_case.test_case_heuristic_test import HeuristicTest
 from pacman.test_case.test_case_pacman_game_tree_test import PacmanGameTreeTest
+from pacman.test_case.test_case_pacman_search_test import PacmanSearchTest
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
-    from pacman._question import Question
-    from pacman.grader import Grader
+    pass
 
-LIST_TEST_CASE_SUBCLASS =[
+LIST_TEST_CASE_SUBCLASS = [
+    ClosestDotTest,
+    CornerHeuristicPacman,
+    CornerHeuristicSanity,
+    CornerProblemTest,
+    MultiagentTreeState,
+    GraphSearchTest,
+    HeuristicGrade,
+    HeuristicTest,
+    PacmanSearchTest,
+    #
     PacmanGameTreeTest,
     EvalAgentTest,
     GraphGameTreeTest,
@@ -62,8 +63,9 @@ LIST_TEST_CASE_SUBCLASS =[
 ]
 
 DICT_K_NAME_TEST_CASE_SUBCLASS_V_TEST_CASE_SUBCLASS = {
-    test_case_subclass_.__name__ : test_case_subclass_ for test_case_subclass_ in LIST_TEST_CASE_SUBCLASS
+    test_case_subclass_.__name__: test_case_subclass_ for test_case_subclass_ in LIST_TEST_CASE_SUBCLASS
 }
+
 
 def get_class_test_case_subclass(name_test_case_subclass: str) -> Type[TestCase]:
     test_case_subclass: Union[Type[TestCase], str] = name_test_case_subclass

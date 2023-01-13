@@ -113,9 +113,9 @@ def evaluate_2(path_test_cases: str,
 
 
 if __name__ == '__main__':
-    # print(os.path_file_test.abspath(os.path_file_test.join(os.path_file_test.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
-    # pprint(sys.path_file_test)
-    # sys.path_file_test.append(os.path_file_test.abspath(os.path_file_test.join(os.path_file_test.dirname(__file__), "..")))
+    # print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+    # pprint(sys.path)
+    # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
     arg_parser()
 

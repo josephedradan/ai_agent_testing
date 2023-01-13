@@ -174,9 +174,9 @@ def loadModuleFile(moduleName, filePath):
         return imp.load_module(moduleName, f, "%s.py" % moduleName, (".py", "r", imp.PY_SOURCE))
 
 
-def readFile(path, root=""):
+def readFile(path_file_test, root=""):
     "Read file from disk at specified path_file_test and return as string"
-    with open(os.path.join(root, path), 'r') as handle:
+    with open(os.path.join(root, path_file_test), 'r') as handle:
         return handle.read()
 
 
@@ -280,7 +280,7 @@ def run_path_test(path_file_test: str,
 #
 def get_list_str_question_depends(path_dir_containing_question: str, str_question: str) -> List[str]:
     """
-    Give the path_file_test of the dir containing questions
+    Give the path of the dir containing questions
 
     returns all a lists of the names of questions you need to run in order to run the question str_question
 
@@ -459,7 +459,8 @@ def evaluate(bool_generate_solutions: bool,
 
             # TODO: str_depends DOES NOT EXIST? LOOK IS NEVER REACHED
 
-            str_depends = dict_k_name_question_v_dict_question_config[str_question].get('depends')
+            # TODO:  LOOK AT THIS MESS WITH NONE IN THE CONDITIONAL BELOW
+            str_depends = dict_k_name_question_v_dict_question_config[str_question].get('depends', '')
 
             if str_depends is not None:
 
@@ -503,7 +504,7 @@ def get_question_stuff(path_question: str, display: GraphicsPacman) -> Tuple[Dic
 if __name__ == '__main__':
 
     print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
-    # pprint(sys.path_file_test)
+    # pprint(sys.path)
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
     ##############################
@@ -533,13 +534,13 @@ if __name__ == '__main__':
     # for cp in codePaths:
     #     moduleName = re.match('.*?([^/]*)\.py', cp).group(1)
     #
-    #     moduleDict[moduleName] = loadModuleFile(moduleName, os.path_file_test.join(options.codeRoot, cp))
+    #     moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, cp))
 
     # moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)  # 'multiagentTestClasses'
 
     # print("moduleNameFFFFFFFFFF", moduleName)
 
-    # moduleDict['projectTestClasses'] = loadModuleFile(moduleName, os.path_file_test.join(options.codeRoot, options.testCaseCode))
+    # moduleDict['projectTestClasses'] = loadModuleFile(moduleName, os.path.join(options.codeRoot, options.testCaseCode))
 
     if argparse_args.path_file_test != None:
         run_path_test(argparse_args.path_file_test,
@@ -551,6 +552,7 @@ if __name__ == '__main__':
             argparse_args.bool_generate_solutions,
             # options.path_dir_containing_question,
             'test_cases/search',
+            # 'test_cases/multiagent',
             # moduleDict,
             bool_output_json=argparse_args.bool_output_json,
             bool_output_html=argparse_args.bool_output_html,

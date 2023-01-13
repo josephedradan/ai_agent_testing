@@ -109,10 +109,10 @@ def _get_heuristic_cost_ucs_crude(grid_wall: Grid,
             queue.put(position_with_cost_new)
 
     """
-    ** Return None if a path_file_test was not possible therefore a heuristic value cannot be calculated  
+    ** Return None if a path was not possible therefore a heuristic value cannot be calculated  
     If you return 0 then you will be lying, In reality, you need to return infinity
     """
-    return 0  # Return 0 to imply no path_file_test
+    return 0  # Return 0 to imply no path
 
 
 def evaluation_function_better(currentGameState: GameState, action: Action) -> float:

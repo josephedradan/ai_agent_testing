@@ -41,7 +41,6 @@ from pacman.agent.agent_pacman_reflex import AgentPacmanReflex
 from pacman.agent.agent_pacman_reflex import AgentPacmanReflex_Attempt_1
 from pacman.agent.agent_pacman_search import AStarCornersAgent
 from pacman.agent.agent_pacman_search import AStarFoodSearchAgent
-from pacman.agent.agent_pacman_search import AnyFoodSearchProblem
 from pacman.agent.agent_pacman_search import ClosestDotSearchAgent
 from pacman.agent.agent_pacman_search import SearchAgent
 from pacman.agent.agent_pacman_search import StayEastSearchAgent

@@ -49,6 +49,7 @@ class MultiagentTreeState(object):
             print("generateSuccessor(%s, %s, %s) -> %s" % (self.state, agentIndex,
                                                            action,
                                                            self.problem.stateToSuccessorMap[self.state][action]))
+
         successor = self.problem.stateToSuccessorMap[self.state][action]
         self.problem.generatedStates.add(successor)
         return MultiagentTreeState(self.problem, successor)

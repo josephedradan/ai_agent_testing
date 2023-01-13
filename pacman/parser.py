@@ -22,9 +22,9 @@ from typing import Union
 
 class ParseFile():
 
-    def __init__(self, path):
+    def __init__(self, path_file_test):
         # save the path_file_test to the test file
-        self.path = path
+        self.path_file_test = path_file_test
 
     @staticmethod
     def get_str_no_comments(list_str: List[str]) -> str:
@@ -48,13 +48,13 @@ class ParseFile():
         :return:
         """
         test = {}
-        with open(self.path) as file:
+        with open(self.path_file_test) as file:
             list_str = file.read().split("\n")
 
         str_file = self.get_str_no_comments(list_str)
 
         test['__raw_lines__'] = list_str
-        test['path_file_test'] = self.path
+        test['path_file_test'] = self.path_file_test
         test['__emit__'] = []
         lines = str_file.split('\n')
 
@@ -84,7 +84,7 @@ class ParseFile():
                 i += 1
                 continue
 
-            raise Exception("Error parsing test file: {}".format(self.path))
+            raise Exception("Error parsing test file: {}".format(self.path_file_test))
         return test
 
 

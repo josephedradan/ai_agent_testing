@@ -25,19 +25,18 @@ from __future__ import annotations
 
 from typing import Callable
 from typing import Dict
-from typing import TYPE_CHECKING
 from typing import Union
 
 from pacman.agent.evaluation_function.evaluation_function_better import evaluation_function_better
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import evaluation_function_food_and_ghost
-from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import \
+from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import (
     evaluation_function_food_and_ghost__attempt_1
+)
 from pacman.agent.evaluation_function.evaluation_function_game_state_score import (
     evaluation_function_game_state_score
 )
-from pacman.game.game_state import GameState
 from pacman.game.directions import Action
-
+from pacman.game.game_state import GameState
 
 """
 TYPE_EVALUATION_FUNCTION
@@ -87,7 +86,8 @@ DICT_K_EVALUATION_FUNCTION_NAME_V_EVALUATION_FUNCTION: Dict[str, TYPE_EVALUATION
 
 
 def get_evaluation_function(
-        name_evaluation_function: Union[str, TYPE_EVALUATION_FUNCTION, None]) -> TYPE_EVALUATION_FUNCTION:
+        name_evaluation_function: Union[str, TYPE_EVALUATION_FUNCTION, None]
+) -> TYPE_EVALUATION_FUNCTION:
     evaluation_function = name_evaluation_function
 
     if isinstance(name_evaluation_function, str):

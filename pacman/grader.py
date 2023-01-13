@@ -58,7 +58,7 @@ class Grader:
         print('Starting on %d-%d at %d:%02d:%02d' % self.start)
 
     def addPrereq(self, name_question: str, prereq):
-        raise Exception("addPrereq IS CALLED???? HOW IS THAT POSSIBLE")
+        # raise Exception("addPrereq IS CALLED???? HOW IS THAT POSSIBLE")  # FIXME REMOVE ME LATER JOSEPH
         self.prereqs[name_question].add(prereq)
 
     def grade(self,

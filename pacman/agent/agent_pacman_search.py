@@ -30,18 +30,17 @@ from typing import TYPE_CHECKING
 from typing import Type
 from typing import Union
 
-from pacman import search
 from pacman.agent import Agent
-from pacman.agent.heuristic import get_heuristic_function
-from pacman.agent.problem import SearchProblem
-from pacman.agent.problem import get_class_search_problem
-from pacman.agent.problem.agent_pacman__search_problem import AnyFoodSearchProblem
-from pacman.agent.problem.agent_pacman__search_problem import CornersProblem
-from pacman.agent.problem.agent_pacman__search_problem import FoodSearchProblem
-from pacman.agent.problem.agent_pacman__search_problem import PositionSearchProblem
-from pacman.agent.problem.agent_pacman__search_problem import cornersHeuristic
-from pacman.agent.problem.agent_pacman__search_problem import foodHeuristic
-from pacman.game import game
+from pacman.agent.heuristic_function import foodHeuristic
+from pacman.agent.heuristic_function import get_heuristic_function
+from pacman.agent.search import search
+from pacman.agent.search_problem import AnyFoodSearchProblem
+from pacman.agent.search_problem import CornersProblem
+from pacman.agent.search_problem import FoodSearchProblem
+from pacman.agent.search_problem import SearchProblem
+from pacman.agent.search_problem import get_class_search_problem
+from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
+from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
 from pacman.game.grid import Grid
@@ -52,9 +51,9 @@ if TYPE_CHECKING:
 
 class SearchAgent(Agent):
     """
-    This very general search agent finds a path_file_test using a supplied search
+    This very general search agent finds a path using a supplied search
     algorithm for a supplied search problem, then returns actions to follow that
-    path_file_test.
+    path.
 
     As a default, this agent runs DFS on a PositionSearchProblem to find
     location (1,1)
@@ -112,11 +111,12 @@ class SearchAgent(Agent):
 
         print('[SearchAgent] using problem type ' + prob)
 
-    def registerInitialState(self, state):  # FIXME: WRONG ASSUMPTION POSSIBLY-> THIS IS NEVER CALLED, AND WILL BREAKY WITH THAT __call__
+    def registerInitialState(self,
+                             state):  # FIXME: WRONG ASSUMPTION POSSIBLY-> THIS IS NEVER CALLED, AND WILL BREAKY WITH THAT __call__
         """
         This is the first time that the agent sees the layout of the game
-        board. Here, we choose a path_file_test to the goal. In this phase, the agent
-        should compute the path_file_test to the goal and store it in a local variable.
+        board. Here, we choose a path to the goal. In this phase, the agent
+        should compute the path to the goal and store it in a local variable.
         All of the work is done in this method!
 
         state: a GameState object (agent_pacman_.py)
@@ -131,14 +131,14 @@ class SearchAgent(Agent):
             problem.set_graphics(self.get_graphics_pacman())
 
         # TODO: I THINK THIS IS A LIST OF Direction
-        self.actions: List[Action] = self.searchFunction(problem)  # Find a path_file_test
+        self.actions: List[Action] = self.searchFunction(problem)  # Find a path
         totalCost = problem.getCostOfActions(self.actions)
         print('Path found with total cost of %d in %.1f seconds' % (totalCost, time.time() - starttime))
         if '_expanded' in dir(problem): print('Search nodes expanded: %d' % problem._expanded)
 
     def getAction(self, state):
         """
-        Returns the next action in the path_file_test chosen earlier (in
+        Returns the next action in the path chosen earlier (in
         registerInitialState).  Return Directions.STOP if there is no further
         action to take.
 
@@ -225,7 +225,7 @@ class ClosestDotSearchAgent(SearchAgent):
 
     def findPathToClosestDot(self, gameState: GameState):
         """
-        Returns a path_file_test (a list of actions) to the closest dot, starting from
+        Returns a path (a list of actions) to the closest dot, starting from
         gameState.
         """
         # Here are some useful elements of the startState
@@ -257,7 +257,7 @@ class ClosestDotSearchAgent(SearchAgent):
         ####################
         """
         V1
-            "problem" has everything in it and you need to return a path_file_test which is the result
+            "problem" has everything in it and you need to return a path which is the result
             of what the algorithms in search.py do.
 
         IMPORTANT NOTES:

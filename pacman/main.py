@@ -60,8 +60,6 @@ from pacman.agent import AgentKeyboard
 from pacman.agent import get_class_agent
 from pacman.graphics import LIST_GRAPHICS_PACMAN
 from pacman.graphics import get_class_graphics_pacman
-from pacman.graphics.display_tkinter import DisplayTkinter
-
 
 from pprint import pprint
 from typing import List
@@ -82,6 +80,7 @@ from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplay
 
 def default(str):
     return str + ' [Default: %default]'
+
 
 def arg_parser(argv: Union[Sequence[str], None] = None):
     """
@@ -106,7 +105,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
                         )
     parser.add_argument('-l', '--layout',
                         dest='layout',
-                        help= 'the LAYOUT_FILE from which to load the map layout',
+                        help='the LAYOUT_FILE from which to load the map layout',
                         metavar='LAYOUT_FILE',
                         default='mediumClassic'
                         )
@@ -249,7 +248,8 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     print(argparse_args.str_class_agent_ghost,
           type(argparse_args.str_class_agent_ghost))  # FIXME: class_agent_ghost is AgentGhostRandom
 
-    dict_k_name_arg_v_arg['list_agent_ghost'] = [class_agent_ghost(i + 1) for i in range(argparse_args.list_agent_ghost)]
+    dict_k_name_arg_v_arg['list_agent_ghost'] = [class_agent_ghost(i + 1) for i in
+                                                 range(argparse_args.list_agent_ghost)]
 
     class_graphics_pacman = get_class_graphics_pacman(argparse_args.graphics_pacman)
 
@@ -415,7 +415,6 @@ def run_pacman_games(layout: _layout.Layout,
 
         if bool_quiet:
             # Suppress output and graphics
-            from pacman.graphics import graphics_pacman_null
             display_game = GraphicsPacmanNull()
             classic_game_rules.set_quiet(True)
         else:

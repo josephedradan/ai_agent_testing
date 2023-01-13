@@ -33,7 +33,7 @@ from typing import List
 from typing import TYPE_CHECKING
 
 from pacman import main
-from pacman.agent import *
+from pacman.agent import *  # IMPORTANT: THIS IS NEEDED FOR eval TO WORK CORRECTLY
 from pacman.game.layout import get_layout
 from pacman.main import run_pacman_games
 from pacman.test_case.test_case import TestCase
@@ -45,7 +45,10 @@ if TYPE_CHECKING:
 
 class EvalAgentTest(TestCase):
 
-    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
+    def __init__(self,
+                 question: Question,
+                 dict_file_test: Dict[str, Any]):
+
         super(EvalAgentTest, self).__init__(question, dict_file_test)
         pprint(dict_file_test)
 

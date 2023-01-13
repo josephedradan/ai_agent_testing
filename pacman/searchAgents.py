@@ -59,9 +59,9 @@ class GoWestAgent(Agent):
 
 # class SearchAgent(Agent):
 #     """
-#     This very general search agent finds a path_file_test using a supplied search
+#     This very general search agent finds a path using a supplied search
 #     algorithm for a supplied search problem, then returns actions to follow that
-#     path_file_test.
+#     path.
 #
 #     As a default, this agent runs DFS on a PositionSearchProblem to find
 #     location (1,1)
@@ -104,8 +104,8 @@ class GoWestAgent(Agent):
 #     def registerInitialState(self, state):
 #         """
 #         This is the first time that the agent sees the layout of the game
-#         board. Here, we choose a path_file_test to the goal. In this phase, the agent
-#         should compute the path_file_test to the goal and store it in a local variable.
+#         board. Here, we choose a path to the goal. In this phase, the agent
+#         should compute the path to the goal and store it in a local variable.
 #         All of the work is done in this method!
 #
 #         state: a GameState object (agent_pacman_.py)
@@ -113,14 +113,14 @@ class GoWestAgent(Agent):
 #         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
 #         starttime = time.time()
 #         problem = self.searchType(state)  # Makes a new search problem
-#         self.actions = self.searchFunction(problem)  # Find a path_file_test
+#         self.actions = self.searchFunction(problem)  # Find a path
 #         totalCost = problem.getCostOfActions(self.actions)
 #         print('Path found with total cost of %d in %.1f seconds' % (totalCost, time.time() - starttime))
 #         if '_expanded' in dir(problem): print('Search nodes expanded: %d' % problem._expanded)
 #
 #     def getAction(self, state):
 #         """
-#         Returns the next action in the path_file_test chosen earlier (in
+#         Returns the next action in the path chosen earlier (in
 #         registerInitialState).  Return Directions.STOP if there is no further
 #         action to take.
 #

@@ -60,45 +60,45 @@ import random
 #         if VERBOSE:
 #             print("generateSuccessor(%s, %s, %s) -> %s" % (self.state, agentIndex,
 #                                                            action,
-#                                                            self.problem.stateToSuccessorMap[self.state][action]))
-#         successor = self.problem.stateToSuccessorMap[self.state][action]
-#         self.problem.generatedStates.add(successor)
+#                                                            self.search_problem.stateToSuccessorMap[self.state][action]))
+#         successor = self.search_problem.stateToSuccessorMap[self.state][action]
+#         self.search_problem.generatedStates.add(successor)
 #         return MultiagentTreeState(self.problem, successor)
 #
 #     def getScore(self):
 #         if VERBOSE:
 #             print("getScore(%s) -> %s" %
-#                   (self.state, self.problem.evaluation[self.state]))
-#         if self.state not in self.problem.evaluation:
+#                   (self.state, self.search_problem.evaluation[self.state]))
+#         if self.state not in self.search_problem.evaluation:
 #             raise Exception(
 #                 'getScore() called on non-terminal game_state or before maximum depth achieved.')
-#         return float(self.problem.evaluation[self.state])
+#         return float(self.search_problem.evaluation[self.state])
 #
 #     def getLegalActions(self, agentIndex=0):
 #         if VERBOSE:
 #             print("getLegalActions(%s) -> %s" %
-#                   (self.state, self.problem.stateToActions[self.state]))
-#         # if len(self.problem.stateToActions[self.game_state]) == 0:
+#                   (self.state, self.search_problem.stateToActions[self.state]))
+#         # if len(self.search_problem.stateToActions[self.game_state]) == 0:
 #         #    print "WARNING: getLegalActions called on leaf game_state %s" % (self.game_state,)
-#         return list(self.problem.stateToActions[self.state])
+#         return list(self.search_problem.stateToActions[self.state])
 #
 #     def isWin(self):
 #         if VERBOSE:
 #             print("isWin(%s) -> %s" %
-#                   (self.state, self.state in self.problem.winStates))
-#         return self.state in self.problem.winStates
+#                   (self.state, self.state in self.search_problem.winStates))
+#         return self.state in self.search_problem.winStates
 #
 #     def isLose(self):
 #         if VERBOSE:
 #             print("isLose(%s) -> %s" %
-#                   (self.state, self.state in self.problem.loseStates))
-#         return self.state in self.problem.loseStates
+#                   (self.state, self.state in self.search_problem.loseStates))
+#         return self.state in self.search_problem.loseStates
 #
 #     def getNumAgents(self):
 #         if VERBOSE:
 #             print("getNumAgents(%s) -> %s" %
-#                   (self.state, self.problem.numAgents))
-#         return self.problem.numAgents
+#                   (self.state, self.search_problem.numAgents))
+#         return self.search_problem.numAgents
 
 
 # class MultiagentTreeProblem(object):
@@ -540,10 +540,10 @@ class GradingAgent(Agent):
 #         self.depth = int(self.dict_file_test['depth'])
 #
 #     def solveProblem(self, multiAgents):
-#         self.problem.reset()
+#         self.search_problem.reset()
 #         studentAgent = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
-#         action = studentAgent.getAction(self.problem.startState)
-#         generated = self.problem.generatedStates
+#         action = studentAgent.getAction(self.search_problem.startState)
+#         generated = self.search_problem.generatedStates
 #         return action, " ".join([string_given(s) for s in sorted(generated)])
 #
 #     def addDiagram(self):
