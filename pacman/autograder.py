@@ -20,6 +20,9 @@ import sys
 from typing import Callable
 from typing import Sequence
 
+from pacman.test_case import TestCase
+from pacman.test_case import get_class_test_case_subclass
+
 print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -39,8 +42,6 @@ from typing import Union
 import projectParams
 from pacman._question import Question
 from pacman._question import get_class_question_subclass
-from pacman._test_case import TestCase
-from pacman._test_case import get_class_test_case_subclass
 
 random.seed(0)
 
@@ -341,7 +342,7 @@ def evaluate(bool_generate_solutions: bool,
              bool_output_mute: bool = False,
              bool_output_json: bool = False,
              bool_print_test_case: bool = False,
-             question_to_grade: Union[str, None] = None,
+             str_question_to_grade: Union[str, None] = None,
              display=None
              ):
     # TODO: JOSEPH THIS IS WHERE ALL THE TESTS ARE DONE
@@ -360,9 +361,9 @@ def evaluate(bool_generate_solutions: bool,
     dict_k_name_question_v_callable: Dict[str, Callable] = {}
 
     # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
-    list_str_question = get_list_str_question(path_abs_test_cases, question_to_grade)
+    list_str_question_to_grade = get_list_str_question(path_abs_test_cases, str_question_to_grade)
 
-    for str_question in list_str_question:
+    for str_question in list_str_question_to_grade:
         path_question = os.path.join(path_abs_test_cases, str_question)
         if not os.path.isdir(path_question) or str_question[0] == '.':
             continue
@@ -449,14 +450,21 @@ def evaluate(bool_generate_solutions: bool,
         bool_output_mute=bool_output_mute
     )
 
-    # TODO: THIS IF CONDITIONAL DOES NOTHING IMPORTANT
-    if question_to_grade == None:
+    # TODO: THIS IF CONDITIONAL DOES NOTHING IMPORTANT -- WRONG
+    if str_question_to_grade is None:
         for str_question in dict_k_name_question_v_dict_question_config:
             pprint.pprint(dict_k_name_question_v_dict_question_config)
-            for prereq in dict_k_name_question_v_dict_question_config[str_question].get('depends',
-                                                                             '').split():  # TODO: depends DOES NOT EXIST? LOOK IS NEVER REACHED
 
-                grader.addPrereq(str_question, prereq)
+            print("FAF",str_question_to_grade,  str_question,dict_k_name_question_v_dict_question_config[str_question])
+
+            # TODO: str_depends DOES NOT EXIST? LOOK IS NEVER REACHED
+
+            str_depends = dict_k_name_question_v_dict_question_config[str_question].get('depends')
+
+            if str_depends is not None:
+
+                for prereq in str_depends.split():
+                    grader.addPrereq(str_question, prereq)
 
     # TODO: RUNNING THE TESTS ARE IN THIS CALL
     grader.grade(dict_k_name_question_v_callable, bool_display_picture_bonus=projectParams.BONUS_PIC)
@@ -504,6 +512,7 @@ if __name__ == '__main__':
 
     argparse_args = arg_parser(
         # sys.argv  # DONT USE THIS UNLESS USING optparse
+        None
     )
 
     if argparse_args.bool_generate_solutions:
@@ -541,12 +550,12 @@ if __name__ == '__main__':
         evaluate(
             argparse_args.bool_generate_solutions,
             # options.path_dir_containing_question,
-            'test_cases/multiagent',
+            'test_cases/search',
             # moduleDict,
             bool_output_json=argparse_args.bool_output_json,
             bool_output_html=argparse_args.bool_output_html,
             bool_output_mute=argparse_args.bool_output_mute,
             bool_print_test_case=argparse_args.bool_print_test_case,
-            question_to_grade=argparse_args.str_question_to_be_graded,
+            str_question_to_grade=argparse_args.str_question_to_be_graded,
             display=get_graphics_pacman(argparse_args.str_question_to_be_graded != None, argparse_args)
         )

@@ -80,7 +80,11 @@ class GameState:
         """
         Allows two states to be compared.
         """
-        return hasattr(other, 'game_state_data') and self.game_state_data == other.game_state_data
+        # return hasattr(other, 'game_state_data') and self.game_state_data == other.game_state_data
+
+        if isinstance(other, GameState):
+            return self.game_state_data == other.game_state_data
+        return False
 
     def __hash__(self):
         """

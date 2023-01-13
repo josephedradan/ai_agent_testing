@@ -33,11 +33,14 @@ class Layout:
     """
 
     def __init__(self, list_str_layout_line: List[str]):
+
         self.width: int = len(list_str_layout_line[0])
         self.height: int = len(list_str_layout_line)
+
         self.walls: Grid = Grid(self.width, self.height, False)
         self.food: Grid = Grid(self.width, self.height, False)
         self.list_capsule: List[Tuple[int, ...]] = []
+
         self.agentPositions: List[Tuple[bool, Tuple[int, ...]]] = []
         self.numGhosts: int = 0
 
@@ -152,6 +155,7 @@ class Layout:
                 self._process_char_from_layout(x, y, layoutChar)
 
         self.agentPositions.sort()
+
         self.agentPositions = [(i == 0, pos) for i, pos in self.agentPositions]
 
     def _process_char_from_layout(self, x: int, y: int, char_from_layout: str):
@@ -170,7 +174,7 @@ class Layout:
         elif char_from_layout in ['G']:
             self.agentPositions.append((1, (x, y)))
             self.numGhosts += 1
-        elif char_from_layout in ['1', '2', '3', '4']:
+        elif char_from_layout in ['1', '2', '3', '4']:  # TODO: THIS IS IF THE MAP SPECIFIES GHOSTS EXACTLY
             self.agentPositions.append((int(char_from_layout), (x, y)))
             self.numGhosts += 1
 

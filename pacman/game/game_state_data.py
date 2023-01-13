@@ -181,8 +181,9 @@ class GameStateData:
         Creates an initial game game_state from a layout array (see layout.py).
         """
         self.grid_food: Grid = layout.food.copy()
+
         # self.list_capsule = []
-        self.list_capsule: List[Tuple[int, int]] = layout.list_capsule[:]
+        self.list_capsule: List[Tuple[int, ...]] = layout.list_capsule[:]
         self.layout: Layout = layout
         self.score: int = 0
         self.scoreChange: int = 0
