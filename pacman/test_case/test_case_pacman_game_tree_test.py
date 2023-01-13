@@ -32,11 +32,11 @@ from typing import List
 from typing import TYPE_CHECKING
 
 from pacman.agent import *
+from pacman.agent._agent_grading import GradingAgent
 from pacman.game import layout
 from pacman.game.layout import Layout
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.main import run_pacman_games
-from pacman.multiagentTestClasses import GradingAgent
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:

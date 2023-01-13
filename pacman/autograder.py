@@ -21,7 +21,7 @@ from typing import Callable
 from typing import Sequence
 
 from pacman.test_case import TestCase
-from pacman.test_case import get_class_test_case_subclass
+from pacman.test_case import get_subclass_test_case
 
 print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
@@ -248,7 +248,7 @@ def run_path_test(path_file_test: str,
     dict_file_solution = ParseFile(path_file_test + ".solution").get_dict()
     file_test_output = os.path.join('%s.test_output' % path_file_test)
     dict_file_test['file_test_output'] = file_test_output
-    class_test_case = get_class_test_case_subclass(dict_file_test['class'])
+    class_test_case = get_subclass_test_case(dict_file_test['class'])
 
     # class_question_subclass: Type[Question] = get_class_question_subclass(dict_question['class'])
     # str_question: Question = class_question_subclass(dict_question, graphics_pacman)
@@ -399,11 +399,11 @@ def evaluate(bool_generate_solutions: bool,
             dict_file_test['path_test_output'] = path_test_output
 
             # TODO: dict_file_test['class'] will be EvalAgentTest ... SO IT WILL GET projectTestClasses.EvalAgentTest  OR projectTestClasses.GraphGameTreeTest ..... projectTestClasses MIGHT BE multiagentTestClasses
-            class_test_case = get_class_test_case_subclass(dict_file_test['class'])
-            print("class_test_case", class_test_case)
+            subclass_test_case = get_subclass_test_case(dict_file_test['class'])
+            print("subclass_test_case", subclass_test_case)
 
             # TODO: MIGHT BE EvalAgentTest, GraphGameTreeTest, PacmanGameTreeTest, IT IS A CLASS
-            test_case: TestCase = class_test_case(question_object, dict_file_test)
+            test_case: TestCase = subclass_test_case(question_object, dict_file_test)
 
             def makefun(test_case_: TestCase, path_test_solution_: str) -> Callable:
                 grader_: Grader
@@ -453,9 +453,8 @@ def evaluate(bool_generate_solutions: bool,
     # TODO: THIS IF CONDITIONAL DOES NOTHING IMPORTANT -- WRONG
     if str_question_to_grade is None:
         for str_question in dict_k_name_question_v_dict_question_config:
-            pprint.pprint(dict_k_name_question_v_dict_question_config)
-
-            print("FAF",str_question_to_grade,  str_question,dict_k_name_question_v_dict_question_config[str_question])
+            # pprint.pprint(dict_k_name_question_v_dict_question_config)
+            # print("FAF",str_question_to_grade,  str_question,dict_k_name_question_v_dict_question_config[str_question])
 
             # TODO: str_depends DOES NOT EXIST? LOOK IS NEVER REACHED
 
@@ -551,8 +550,8 @@ if __name__ == '__main__':
         evaluate(
             argparse_args.bool_generate_solutions,
             # options.path_dir_containing_question,
-            'test_cases/search',
-            # 'test_cases/multiagent',
+            # 'test_cases/search',
+            'test_cases/multiagent',
             # moduleDict,
             bool_output_json=argparse_args.bool_output_json,
             bool_output_html=argparse_args.bool_output_html,

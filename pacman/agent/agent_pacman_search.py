@@ -38,7 +38,7 @@ from pacman.agent.search_problem import AnyFoodSearchProblem
 from pacman.agent.search_problem import CornersProblem
 from pacman.agent.search_problem import FoodSearchProblem
 from pacman.agent.search_problem import SearchProblem
-from pacman.agent.search_problem import get_class_search_problem
+from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
 from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
 from pacman.game.directions import Action
@@ -107,7 +107,7 @@ class SearchAgent(Agent):
 
         # TODO: JOSEPH CUSTOM HERE
 
-        self.searchType: Type[SearchProblem] = get_class_search_problem(prob)
+        self.searchType: Type[SearchProblem] = get_subclass_search_problem(prob)
 
         print('[SearchAgent] using problem type ' + prob)
 

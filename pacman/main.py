@@ -46,7 +46,6 @@ import os
 import random
 import sys
 
-from pacman.graphics import GraphicsPacmanNull
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -60,6 +59,7 @@ from pacman.agent import AgentKeyboard
 from pacman.agent import get_class_agent
 from pacman.graphics import LIST_GRAPHICS_PACMAN
 from pacman.graphics import get_class_graphics_pacman
+from pacman.graphics import GraphicsPacmanNull
 
 from pprint import pprint
 from typing import List

@@ -29,7 +29,7 @@ from typing import Dict
 from typing import TYPE_CHECKING
 
 from pacman.agent.heuristic_function import get_heuristic_function
-from pacman.agent.search_problem import get_class_search_problem
+from pacman.agent.search_problem import get_subclass_search_problem
 
 from pacman.game.game_state import GameState
 from pacman.game.layout import Layout
@@ -57,7 +57,7 @@ class HeuristicGrade(TestCase):
         gameState = GameState()
         gameState.initialize(lay, 0)
         # problemClass = getattr(searchAgents, self.searchProblemClassName)
-        problemClass = get_class_search_problem(self.searchProblemClassName)
+        problemClass = get_subclass_search_problem(self.searchProblemClassName)
 
         problem = problemClass(gameState) # FIXME: JOSEPH FIX
 

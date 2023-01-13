@@ -29,7 +29,7 @@ from typing import TYPE_CHECKING
 
 from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search import get_search_function
-from pacman.agent.search_problem import get_class_search_problem
+from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.game.directions import Directions
 from pacman.game.game_state import GameState
 from pacman.game.layout import Layout
@@ -64,7 +64,7 @@ class PacmanSearchTest(TestCase):
         start_state.initialize(lay, 0)
 
         # problemClass = getattr(searchAgents, self.searchProblemClassName)
-        problemClass = get_class_search_problem(self.searchProblemClassName)
+        problemClass = get_subclass_search_problem(self.searchProblemClassName)
 
         problemOptions = {}
         if self.costFn != None:

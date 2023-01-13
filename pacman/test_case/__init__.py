@@ -45,7 +45,7 @@ from pacman.test_case.test_case_pacman_search_test import PacmanSearchTest
 if TYPE_CHECKING:
     pass
 
-LIST_TEST_CASE_SUBCLASS = [
+LIST_SUBCLASS_TEST_CASE = [
     ClosestDotTest,
     CornerHeuristicPacman,
     CornerHeuristicSanity,
@@ -62,20 +62,20 @@ LIST_TEST_CASE_SUBCLASS = [
 
 ]
 
-DICT_K_NAME_TEST_CASE_SUBCLASS_V_TEST_CASE_SUBCLASS = {
-    test_case_subclass_.__name__: test_case_subclass_ for test_case_subclass_ in LIST_TEST_CASE_SUBCLASS
+DICT_K_NAME_SUBCLASS_TEST_V_SUBCLASS_TEST_CASE = {
+    subclass_test_case_.__name__: subclass_test_case_ for subclass_test_case_ in LIST_SUBCLASS_TEST_CASE
 }
 
 
-def get_class_test_case_subclass(name_test_case_subclass: str) -> Type[TestCase]:
-    test_case_subclass: Union[Type[TestCase], str] = name_test_case_subclass
+def get_subclass_test_case(name_subclass_test_case: str) -> Type[TestCase]:
+    test_case_subclass: Union[Type[TestCase], str] = name_subclass_test_case
 
-    if isinstance(name_test_case_subclass, str):
-        test_case_subclass = DICT_K_NAME_TEST_CASE_SUBCLASS_V_TEST_CASE_SUBCLASS.get(
-            name_test_case_subclass
+    if isinstance(name_subclass_test_case, str):
+        test_case_subclass = DICT_K_NAME_SUBCLASS_TEST_V_SUBCLASS_TEST_CASE.get(
+            name_subclass_test_case
         )
 
     if test_case_subclass is None:
-        raise Exception("{} is not a valid TestCase subclass".format(name_test_case_subclass))
+        raise Exception("{} is not a valid TestCase subclass".format(name_subclass_test_case))
 
     return test_case_subclass

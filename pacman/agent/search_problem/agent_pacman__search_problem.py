@@ -31,8 +31,6 @@ from typing import Tuple
 from typing import Union
 
 from pacman import util
-from pacman.game.actions import Actions
-from pacman.game.directions import Directions
 from pacman.agent.search_problem.common import HashableGoal
 from pacman.agent.search_problem.search_problem_corners import CornersProblem
 
@@ -498,10 +496,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
 
     #####
 
-
 ############
 
 
 ###############################
-
-
