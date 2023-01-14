@@ -35,6 +35,7 @@ from typing import TYPE_CHECKING
 from pacman import main
 from pacman.agent import *  # IMPORTANT: THIS IS NEEDED FOR eval TO WORK CORRECTLY
 from pacman.game.layout import get_layout
+from pacman.main import arg_parser_pacman
 from pacman.main import run_pacman_games
 from pacman.test_case.test_case import TestCase
 
@@ -50,14 +51,30 @@ class EvalAgentTest(TestCase):
                  dict_file_test: Dict[str, Any]):
 
         super(EvalAgentTest, self).__init__(question, dict_file_test)
-        pprint(dict_file_test)
 
-        self.str_layout_name: str = dict_file_test['layoutName']
-        self.str_class_agent: str = dict_file_test['agentName']
-        self.list_agent_ghost: List[Agent] = eval(dict_file_test['ghosts'])
-        self.maxTime: int = int(dict_file_test['maxTime'])
-        self.seed: int = int(dict_file_test['randomSeed'])
-        self.number_of_games: int = int(dict_file_test['numGames'])
+        self.__special_condition = False
+
+        self.dict_file_test: Dict[str, Any] = dict_file_test
+
+        pacman_args = dict_file_test.get('pacmanParams')
+        if pacman_args and isinstance(pacman_args, str):
+            self.dict_file_test.update(arg_parser_pacman(pacman_args.split()))
+            pprint("LKL")
+            pprint(arg_parser_pacman(pacman_args.split()))
+            pprint("LKL")
+
+            self.__special_condition = True
+
+        if not self.__special_condition:
+            self.str_layout_name: Union[str] = dict_file_test.get('layoutName')
+            self.str_class_agent: Union[str] = dict_file_test.get('agentName')
+            self.list_agent_ghost: List[Agent] = eval(dict_file_test['ghosts'])
+            self.maxTime: int = int(dict_file_test['maxTime'])
+            self.seed: int = int(dict_file_test['randomSeed'])
+            self.number_of_games: int = int(dict_file_test['numGames'])
+        else:
+            # Note that the only shared variable is number_of_games when self.__special_condition is True
+            self.number_of_games = self.dict_file_test['number_of_games']
 
         self.scoreMinimum = int(
             dict_file_test['scoreMinimum']) if 'scoreMinimum' in dict_file_test else None
@@ -78,32 +95,40 @@ class EvalAgentTest(TestCase):
         self.agentArgs = dict_file_test.get('agentArgs', '')
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
+
         time_start = time.time()
 
-        # TODO: multiAgents TO 'projectTestClasses'
-        # class_agent = getattr(moduleDict['projectTestClasses'], self.str_class_agent)
-        class_agent: Type[Agent] = get_class_agent(self.str_class_agent)
+        if self.__special_condition:
 
-        agentOpts = main.get_dict_kwargs(self.agentArgs) if self.agentArgs != '' else {}
+            list_game = run_pacman_games(**self.dict_file_test)
+        else:
 
-        agent_object: Agent = class_agent(**agentOpts)
+            # TODO: multiAgents TO 'projectTestClasses'
+            # class_agent = getattr(moduleDict['projectTestClasses'], self.str_class_agent)
 
-        layout_ = get_layout(self.str_layout_name, 3)
+            class_agent: Type[Agent] = get_subclass_agent(self.str_class_agent)
 
-        graphics_pacman = self.question.get_graphics_pacman()
+            agentOpts = main.get_dict_kwargs(self.agentArgs) if self.agentArgs != '' else {}
 
-        random.seed(self.seed)
+            agent_object: Agent = class_agent(**agentOpts)
 
-        list_game = run_pacman_games(
-            layout_,
-            agent_object,
-            self.list_agent_ghost,
-            graphics_pacman,
-            self.number_of_games,
-            bool_record=False,
-            bool_catch_exceptions=True,
-            timeout=self.maxTime
-        )
+            layout_ = get_layout(self.str_layout_name, 3)
+
+            graphics_pacman = self.question.get_graphics_pacman()
+
+            random.seed(self.seed)
+
+
+            list_game = run_pacman_games(
+                layout_,
+                agent_object,
+                self.list_agent_ghost,
+                graphics_pacman,
+                self.number_of_games,
+                bool_record=False,
+                bool_catch_exceptions=True,
+                timeout=self.maxTime
+            )
 
         time_total = time.time() - time_start
 

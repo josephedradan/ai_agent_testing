@@ -28,6 +28,9 @@
 
     # Standard map stuff
     python main.py -l originalClassic -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
+    
+# 
+    python pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic 
 
 
 

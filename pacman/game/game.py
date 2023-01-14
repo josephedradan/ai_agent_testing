@@ -73,7 +73,6 @@ class Game:
         self.agentTimeout: bool = False
         import io
         self.agentOutput = [io.StringIO() for agent in list_agent]
-        print()
 
         #####
 
@@ -151,7 +150,7 @@ class Game:
             #     return
 
             if ("registerInitialState" in dir(agent)):  # Basically hasattr without the raising exception
-                print("registerInitialState IS HERE YO", dir(agent))
+                # print("registerInitialState IS HERE YO", dir(agent))
                 self._mute(i)
                 if self.bool_catch_exceptions:
                     try:

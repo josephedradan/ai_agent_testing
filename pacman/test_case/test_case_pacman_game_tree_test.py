@@ -197,7 +197,7 @@ class PacmanGameTreeTest(TestCase):
         # multiAgents = moduleDict['projectTestClasses']
         # agent_ = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
 
-        agent_: Agent = get_class_agent(self.class_agent)(depth=self.depth)
+        agent_: Agent = get_subclass_agent(self.class_agent)(depth=self.depth)
 
         # list_list_list_action__value_optimal = (
         #     [json.loads(x) for x in dict_file_solution['optimalActions'].split('\n')]

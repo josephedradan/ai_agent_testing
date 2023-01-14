@@ -33,14 +33,22 @@ from pacman.test_case.test_case_closest_dot_test import ClosestDotTest
 from pacman.test_case.test_case_corner_heuristic_pacman import CornerHeuristicPacman
 from pacman.test_case.test_case_corner_heuristic_sanity import CornerHeuristicSanity
 from pacman.test_case.test_case_corner_problem_test import CornerProblemTest
+from pacman.test_case.test_case_epsilon_greedy_test import EpsilonGreedyTest
 from pacman.test_case.test_case_eval_agent_test import EvalAgentTest
 from pacman.test_case.test_case_graph_game_tree_test import GraphGameTreeTest
 from pacman.test_case.test_case_graph_game_tree_test import MultiagentTreeState
 from pacman.test_case.test_case_graph_search_tes import GraphSearchTest
+from pacman.test_case.test_case_grid_policy_test import GridPolicyTest
 from pacman.test_case.test_case_heuristic_grade import HeuristicGrade
 from pacman.test_case.test_case_heuristic_test import HeuristicTest
 from pacman.test_case.test_case_pacman_game_tree_test import PacmanGameTreeTest
 from pacman.test_case.test_case_pacman_search_test import PacmanSearchTest
+from pacman.test_case.test_case_q_learning_approximate_test import ApproximateQLearningTest
+from pacman.test_case.test_case_q_learning_test import QLearningTest
+from pacman.test_case.test_case_question_8_test import Question8Test
+from pacman.test_case.test_case_value_iteration_test import ValueIterationTest
+from pacman.test_case.test_case_value_iteration_test_asynchronous import AsynchronousValueIterationTest
+from pacman.test_case.test_case_value_iteration_test_prioritized_sweeping import PrioritizedSweepingValueIterationTest
 
 if TYPE_CHECKING:
     pass
@@ -59,6 +67,15 @@ LIST_SUBCLASS_TEST_CASE = [
     PacmanGameTreeTest,
     EvalAgentTest,
     GraphGameTreeTest,
+    # ,
+    ValueIterationTest,
+    AsynchronousValueIterationTest,
+    PrioritizedSweepingValueIterationTest,
+    ApproximateQLearningTest,
+    QLearningTest,
+    EpsilonGreedyTest,
+    GridPolicyTest,
+    Question8Test,
 
 ]
 
@@ -67,7 +84,7 @@ DICT_K_NAME_SUBCLASS_TEST_V_SUBCLASS_TEST_CASE = {
 }
 
 
-def get_subclass_test_case(name_subclass_test_case: str) -> Type[TestCase]:
+def get_subclass_test_case(name_subclass_test_case: Union[str, Type[TestCase], None]) -> Type[TestCase]:
     test_case_subclass: Union[Type[TestCase], str] = name_subclass_test_case
 
     if isinstance(name_subclass_test_case, str):

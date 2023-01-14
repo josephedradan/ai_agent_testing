@@ -41,7 +41,7 @@ DICT_K_NAME_SUBCLASS_PROBLEM_V_SUBCLASS_PROBLEM = {
 }
 
 
-def get_subclass_search_problem(search_problem: Union[str, Type[SearchProblem]]) -> Type[SearchProblem]:
+def get_subclass_search_problem(search_problem: Union[str, Type[SearchProblem], None]) -> Type[SearchProblem]:
     if isinstance(search_problem, str):
 
         problem = DICT_K_NAME_SUBCLASS_PROBLEM_V_SUBCLASS_PROBLEM.get(search_problem)

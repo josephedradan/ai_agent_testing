@@ -46,7 +46,6 @@ import os
 import random
 import sys
 
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
@@ -56,7 +55,7 @@ from typing import Union
 
 from pacman.agent import Agent
 from pacman.agent import AgentKeyboard
-from pacman.agent import get_class_agent
+from pacman.agent import get_subclass_agent
 from pacman.graphics import LIST_GRAPHICS_PACMAN
 from pacman.graphics import get_class_graphics_pacman
 from pacman.graphics import GraphicsPacmanNull
@@ -82,7 +81,7 @@ def default(str):
     return str + ' [Default: %default]'
 
 
-def arg_parser(argv: Union[Sequence[str], None] = None):
+def arg_parser_pacman(argv: Union[Sequence[str], None] = None):
     """
     Processes the command used to run pacman from the command line.
     """
@@ -131,12 +130,12 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     #                     help='GraphicsPacman output as text only',
     #                     # default=False
     #                     )
-    # parser.add_argument('-q', '--quietTextGraphics',
-    #                     action='store_true',
-    #                     dest='quietGraphics',
-    #                     help='Generate minimal output and no graphics',
-    #                     # default=False
-    #                     )
+    parser.add_argument('-q', '--quietTextGraphics',
+                        action='store_true',
+                        dest='quietGraphics',
+                        help='Generate minimal output and no graphics',
+                        # default=False
+                        )
 
     parser.add_argument('-g', '--ghost',
                         dest='str_class_agent_ghost',
@@ -203,7 +202,9 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
 
     argparse_args = parser.parse_args(argv)
 
+    print("VARS")
     pprint(vars(argparse_args))
+    print("=------=")
 
     # if len(otherjunk) != 0:
     #     raise Exception('Command line input not understood: ' + str(otherjunk))
@@ -223,7 +224,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
     # Choose a Pacman agent
     # noKeyboard = argparse_args.path_game_to_replay == None and (argparse_args.textGraphics or argparse_args.quietGraphics)
 
-    class_agent_pacman = get_class_agent(argparse_args.str_class_agent_pacman)  # FIXME: PACMAN AGENT HERE
+    class_agent_pacman = get_subclass_agent(argparse_args.str_class_agent_pacman)  # FIXME: PACMAN AGENT HERE
 
     # FIXME: argparse_args.pacman IS A AgentKeyboard
     # print("str_class_agent_pacman", argparse_args.str_class_agent_pacman, type(argparse_args.str_class_agent_pacman))
@@ -244,7 +245,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
         argparse_args.numIgnore = int(agent_pacman_kwargs['numTrain'])
 
     # Choose a ghost agent
-    class_agent_ghost = get_class_agent(argparse_args.str_class_agent_ghost)  # FIXME: GHOST AGENTS HERE
+    class_agent_ghost = get_subclass_agent(argparse_args.str_class_agent_ghost)  # FIXME: GHOST AGENTS HERE
     print(argparse_args.str_class_agent_ghost,
           type(argparse_args.str_class_agent_ghost))  # FIXME: class_agent_ghost is AgentGhostRandom
 
@@ -253,17 +254,16 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
 
     class_graphics_pacman = get_class_graphics_pacman(argparse_args.graphics_pacman)
 
-    # if class_graphics_pacman == GraphicsPacmanDisplayTkinter:
-    #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanDisplayTkinter(
-    #         display=DisplayTkinter(),
-    #         zoom=argparse_args.zoom,
-    #         time_frame=argparse_args.time_frame
-    #     )
-    # else:
-    dict_k_name_arg_v_arg['graphics_pacman'] = class_graphics_pacman(
-        zoom=argparse_args.zoom,
-        time_frame=argparse_args.time_frame
-    )
+    if argparse_args.quietGraphics:
+        dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanNull(
+            zoom=argparse_args.zoom,
+            time_frame=argparse_args.time_frame
+        )
+    else:
+        dict_k_name_arg_v_arg['graphics_pacman'] = class_graphics_pacman(
+            zoom=argparse_args.zoom,
+            time_frame=argparse_args.time_frame
+        )
 
     # # Choose a graphics_pacman format
     # if argparse_args.quietGraphics:
@@ -377,7 +377,8 @@ def run_pacman_games(layout: _layout.Layout,
                      bool_record: bool,
                      numTraining: int = 0,
                      bool_catch_exceptions: bool = False,
-                     timeout: int = 30
+                     timeout: int = 30,
+                     **kwargs,
                      ) -> List[Game]:
     """
     Execute playing Pacman
@@ -481,13 +482,13 @@ if __name__ == '__main__':
 
     # code_analyzer.start()
 
-    args = arg_parser(sys.argv[1:])  # Get game components based on input
+    kwargs = arg_parser_pacman(sys.argv[1:])  # Get game components based on input
 
     # code_analyzer.stop()
     # code_analyzer.get_code_analyzer_printer().export_rich_to_html()
 
-    pprint(args)
-    run_pacman_games(**args)
+    pprint(kwargs)
+    run_pacman_games(**kwargs)
 
     # import cProfile
     # cProfile.run("runGames( **args )")

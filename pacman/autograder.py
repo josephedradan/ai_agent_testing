@@ -52,7 +52,7 @@ random.seed(0)
 #     pass
 
 # register arguments and set default values
-def arg_parser(argv: Union[Sequence[str], None] = None):
+def arg_parser_autograder(argv: Union[Sequence[str], None] = None):
     parser = argparse.ArgumentParser(description='Run public tests on student code')
 
     parser.set_defaults(bool_generate_solutions=False,
@@ -415,7 +415,7 @@ def evaluate(bool_generate_solutions: bool,
                     # read in solution dictionary and pass as an argument
                     dict_file_test_ = ParseFile(path_test_test).get_dict()
 
-                    dict_file_solution_ = ParseFile(path_test_solution_).get_dict()  # TODO: READ THE TEST FILE
+                    dict_file_solution_ = ParseFile(path_test_solution_).get_dict()  # TODO: READ THE SOLUTIOn FILE
 
                     if bool_print_test_case:  # PRINT THE TEST CASE AND TEST THE PROBLEM
 
@@ -510,9 +510,9 @@ if __name__ == '__main__':
     ##############################
     ##############################
 
-    argparse_args = arg_parser(
+    argparse_args = arg_parser_autograder(
         # sys.argv  # DONT USE THIS UNLESS USING optparse
-        None
+        sys.argv[1:]
     )
 
     if argparse_args.bool_generate_solutions:
@@ -552,6 +552,7 @@ if __name__ == '__main__':
             # options.path_dir_containing_question,
             # 'test_cases/search',
             'test_cases/multiagent',
+            # 'test_cases/reinforcement',
             # moduleDict,
             bool_output_json=argparse_args.bool_output_json,
             bool_output_html=argparse_args.bool_output_html,

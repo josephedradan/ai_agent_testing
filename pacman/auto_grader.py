@@ -87,8 +87,6 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
 
     args = parser.parse_args(argv)
 
-    pprint(vars(args))
-
 
 def evaluate_2(path_test_cases: str,
                bool_output_mute: bool = False,

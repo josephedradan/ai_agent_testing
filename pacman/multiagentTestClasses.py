@@ -286,32 +286,32 @@ import random
 #             i + 1) for i in range(2)], disp, name=self.str_class_agent)
 #         if stats['timeouts'] > 0:
 #             self.addMessage('Agent timed out on smallClassic.  No credit')
-#             return self.testFail(grader)
+#             return self._procedure_test_fail(grader)
 #         if stats['crashes'] > 0:
 #             self.addMessage('Agent crashed on smallClassic.  No credit')
-#             return self.testFail(grader)
+#             return self._procedure_test_fail(grader)
 #         code = pac.checkFailure()
 #         if code == 0:
-#             return self.testPass(grader)
+#             return self._procedure_test_pass(grader)
 #         elif code == -3:
 #             if pac.getWrongStatesExplored() >= 0:
 #                 self.addMessage('Bug: Wrong number of states expanded.')
-#                 return self.testFail(grader)
+#                 return self._procedure_test_fail(grader)
 #             else:
-#                 return self.testPass(grader)
+#                 return self._procedure_test_pass(grader)
 #         elif code == -2:
 #             self.addMessage('Bug: Partial Ply Bug')
-#             return self.testFail(grader)
+#             return self._procedure_test_fail(grader)
 #         elif code == -1:
 #             self.addMessage('Bug: Search depth off by 1')
-#             return self.testFail(grader)
+#             return self._procedure_test_fail(grader)
 #         elif code > 0:
 #             moves = pac.getSuboptimalMoves()
 #             state, studentMove, optMove = random.choice(moves)
 #             self.addMessage('Bug: Suboptimal moves')
 #             self.addMessage('State:%s\nStudent Move:%s\nOptimal Move:%s' % (
 #                 state, studentMove, optMove))
-#             return self.testFail(grader)
+#             return self._procedure_test_fail(grader)
 #
 #     def writeList(self, handle, name, list):
 #         handle.write('%s: """\n' % name)
@@ -386,9 +386,9 @@ import random
 #
 #         if fail:
 #             self.addDiagram()
-#             return self.testFail(grader)
+#             return self._procedure_test_fail(grader)
 #         else:
-#             return self.testPass(grader)
+#             return self._procedure_test_pass(grader)
 #
 #     def writeSolution(self, moduleDict, filePath):
 #         multiAgents = moduleDict['projectTestClasses']

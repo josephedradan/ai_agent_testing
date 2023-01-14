@@ -153,7 +153,7 @@ class GraphGameTreeTest(TestCase):
         self.problem.reset()
         # studentAgent = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
 
-        studentAgent = get_class_agent(self.class_agent)(depth=self.depth)
+        studentAgent = get_subclass_agent(self.class_agent)(depth=self.depth)
 
         action = studentAgent.getAction(self.problem.startState)
         generated = self.problem.generatedStates

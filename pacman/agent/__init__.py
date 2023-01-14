@@ -45,9 +45,10 @@ from pacman.agent.agent_pacman_search import ClosestDotSearchAgent
 from pacman.agent.agent_pacman_search import SearchAgent
 from pacman.agent.agent_pacman_search import StayEastSearchAgent
 from pacman.agent.agent_pacman_search import StayWestSearchAgent
+from pacman.agent.qlearningAgents import PacmanQAgent
 
-LIST_AGENT = [
-    Agent,
+LIST_SUBCLASS_AGENT = [
+    # Agent,
     AgentGhost,
     AgentGhostDirectional,
     AgentGhostRandom,
@@ -67,20 +68,22 @@ LIST_AGENT = [
     StayEastSearchAgent,
     StayWestSearchAgent,
     ClosestDotSearchAgent,
+    #
+    PacmanQAgent,
 ]
 
-DICT_K_NAME_V_AGENT = {
-    agent_.__name__: agent_ for agent_ in LIST_AGENT
+DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT = {
+    agent_.__name__: agent_ for agent_ in LIST_SUBCLASS_AGENT
 }
 
 
-def get_class_agent(name_agent: Union[str, Type[Agent], None]) -> Type[Agent]:
+def get_subclass_agent(name_agent: Union[str, Type[Agent], None]) -> Type[Agent]:
     agent_ = name_agent
 
     if isinstance(name_agent, str):
-        agent_ = DICT_K_NAME_V_AGENT.get(name_agent)
+        agent_ = DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT.get(name_agent)
 
     if agent_ is None:
-        Exception("{} is not an agent".format(name_agent))
+        raise Exception("{} is not an agent".format(name_agent))
 
     return agent_
