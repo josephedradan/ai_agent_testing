@@ -44,6 +44,9 @@ class Agent(ABC):
     def registerInitialState(self, game_state): # inspects the starting game_state
     """
 
+    def __init_subclass__(cls, **kwargs):
+        print("THINGY", cls)
+
     def __init__(self, index: int, **kwargs):
         self.index = index
 

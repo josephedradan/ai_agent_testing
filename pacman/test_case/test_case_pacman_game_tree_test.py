@@ -41,7 +41,7 @@ from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState
-    from pacman._question import Question
+    from pacman.question.question import Question
     from pacman.grader import Grader
 
 

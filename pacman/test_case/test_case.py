@@ -31,7 +31,7 @@ from typing import List
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pacman._question import Question
+    from pacman.question.question import Question
     from pacman.grader import Grader
 
 

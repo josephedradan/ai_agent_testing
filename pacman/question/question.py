@@ -25,27 +25,12 @@ from typing import Any
 from typing import Callable
 from typing import Dict
 from typing import TYPE_CHECKING
-from typing import Type
-from typing import Union
+
+from pacman.test_case import TestCase
 
 if TYPE_CHECKING:
-    from pacman._test_case import TestCase
     from pacman.grader import Grader
     from pacman.graphics.graphics_pacman import GraphicsPacman
-
-
-def get_class_question_subclass(name_question_subclass: Union[str, Type[Question], None]) -> Type[Question]:
-    question_subclass = name_question_subclass
-
-    if isinstance(name_question_subclass, str):
-        question_subclass = Question.DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS.get(
-            name_question_subclass
-        )
-
-    if question_subclass is None:
-        raise Exception("{} is not a valid Question subclass".format(name_question_subclass))
-
-    return question_subclass
 
 
 class Question(ABC):

@@ -1,14 +1,19 @@
 
+# Mapping correct test cases
+    1 8
+    9 14 (14 is extra)
+    15 24
 
 
 # Examples
         
     python autograder.py -q q1
     python autograder.py -q q2
-    python autograder.py -t "test_cases/multiagent/q2/8-pacman-game"
+    python autograder.py -t "test_cases/q10/8-pacman-game"
     python autograder.py -q q5 --no-graphics
     python autograder.py -q q5
 
+    python autograder.py -t "test_cases/q10/1-1-minmax"
 
     python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
     python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better --graphics GraphicsPacmanNull
@@ -19,7 +24,7 @@
     ??????
 
     autograder -q q4
-    autograder -t "test_cases/multiagent/q4/7-pacman-game"
+    autograder -t "test_cases/multiagent/q12/7-pacman-game"
 
     python main.py --quietTextGraphics
     python main.py -l mediumScaryMaze -p StayWestSearchAgent

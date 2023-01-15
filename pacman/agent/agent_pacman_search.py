@@ -111,8 +111,7 @@ class SearchAgent(Agent):
 
         print('[SearchAgent] using problem type ' + prob)
 
-    def registerInitialState(self,
-                             state):  # FIXME: WRONG ASSUMPTION POSSIBLY-> THIS IS NEVER CALLED, AND WILL BREAKY WITH THAT __call__
+    def registerInitialState(self, state: GameState):
         """
         This is the first time that the agent sees the layout of the game
         board. Here, we choose a path to the goal. In this phase, the agent
@@ -221,7 +220,7 @@ class ClosestDotSearchAgent(SearchAgent):
                     raise Exception('findPathToClosestDot returned an illegal move: %s!\n%s' % t)
                 currentState = currentState.get_container_vector_successor(0, action)
         self.actionIndex = 0
-        print('Path found with cost %d.' % len(self.actions))
+        print('Path found with cost {}.'.format(len(self.actions)))
 
     def findPathToClosestDot(self, gameState: GameState):
         """

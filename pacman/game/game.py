@@ -71,6 +71,7 @@ class Game:
         self.totalAgentTimes: List[int] = [0 for agent in list_agent]
         self.totalAgentTimeWarnings: List[int] = [0 for agent in list_agent]
         self.agentTimeout: bool = False
+
         import io
         self.agentOutput = [io.StringIO() for agent in list_agent]
 
@@ -176,6 +177,7 @@ class Game:
                         return
                 else:
                     agent.registerInitialState(self.game_state.get_deep_copy())
+
                 # TODO: could this exceed the total time
                 self._unmute()
 
@@ -195,7 +197,7 @@ class Game:
             ##################################################
             # Do operation related to Reinforcement learning
             ##################################################
-            # TODO: CODE IS IN ASSIGNMENT 3 WITH LEARNING
+
             # Generate an observation of the game_state
             if 'observationFunction' in dir(agent):
                 self._mute(index_agent)
@@ -206,13 +208,14 @@ class Game:
                             int(self.rules.getMoveTimeout(index_agent))
                         )
 
+                        time_start = time.time()
                         try:
-                            time_start = time.time()
                             observation = timed_func(self.game_state.get_deep_copy())
                         except TimeoutFunctionException:
                             skip_action = True
 
                         move_time += time.time() - time_start
+
                         self._unmute()
                     except Exception as data:
                         self._agentCrash(index_agent, quiet=False)

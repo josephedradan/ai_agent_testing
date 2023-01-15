@@ -37,6 +37,7 @@ from pacman.agent.agent_pacman_left_turn import AgentPacmanLeftTurn
 from pacman.agent.agent_pacman_minimax import AgentPacmanMinimax
 from pacman.agent.agent_pacman_minimax_alpha_beta import \
     AgentPacmanMinimaxAlphaBeta
+from pacman.agent.agent_pacman_minimax_alpha_beta_contest import ContestAgent
 from pacman.agent.agent_pacman_reflex import AgentPacmanReflex
 from pacman.agent.agent_pacman_reflex import AgentPacmanReflex_Attempt_1
 from pacman.agent.agent_pacman_search import AStarCornersAgent
@@ -70,6 +71,7 @@ LIST_SUBCLASS_AGENT = [
     ClosestDotSearchAgent,
     #
     PacmanQAgent,
+    ContestAgent,
 ]
 
 DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT = {

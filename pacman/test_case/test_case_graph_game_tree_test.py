@@ -33,7 +33,7 @@ from pacman.agent import *
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
-    from pacman._question import Question
+    from pacman.question.question import Question
     from pacman.grader import Grader
 
 VERBOSE = False

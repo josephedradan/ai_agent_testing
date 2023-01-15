@@ -25,7 +25,6 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from pacman import util
 from pacman.agent import AgentPacman
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
 from pacman.agent.evaluation_function import evaluation_function_game_state_score

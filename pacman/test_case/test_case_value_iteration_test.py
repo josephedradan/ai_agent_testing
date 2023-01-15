@@ -139,7 +139,6 @@ class ValueIterationTest(TestCase):
         return True
 
     def runAgent(self, numIterations):
-        print("IN", numIterations)
         agent = ValueIterationAgent(self.grid,
                                     discount=self.discount,
                                     iterations=numIterations)

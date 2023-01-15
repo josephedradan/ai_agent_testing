@@ -20,13 +20,12 @@ import sys
 from typing import Callable
 from typing import Sequence
 
-from pacman.test_case import TestCase
-from pacman.test_case import get_subclass_test_case
-
 print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from pacman.test_case import TestCase
+from pacman.test_case import get_subclass_test_case
 from pacman.grader import Grader
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.parser import ParseFile
@@ -40,8 +39,8 @@ from typing import Type
 from typing import Union
 
 import projectParams
-from pacman._question import Question
-from pacman._question import get_class_question_subclass
+from pacman.question.question import Question
+from pacman.question import get_class_question_subclass
 
 random.seed(0)
 
@@ -236,22 +235,15 @@ def print_test(dict_file_test: Dict, dict_file_solution: Dict):
 
 
 def run_path_test(path_file_test: str,
-                  # moduleDict,
                   bool_print_test_cases: bool = False,
                   graphics_pacman: GraphicsPacman = None
-                  ):  # TODO: RUNS A SPECIFIC TEST GIVEN NAME
-
-    # for module in moduleDict:
-    #     setattr(sys.modules[__name__], module, moduleDict[module])
+                  ):
 
     dict_file_test = ParseFile(path_file_test + ".test").get_dict()
     dict_file_solution = ParseFile(path_file_test + ".solution").get_dict()
     file_test_output = os.path.join('%s.test_output' % path_file_test)
     dict_file_test['file_test_output'] = file_test_output
     class_test_case = get_subclass_test_case(dict_file_test['class'])
-
-    # class_question_subclass: Type[Question] = get_class_question_subclass(dict_question['class'])
-    # str_question: Question = class_question_subclass(dict_question, graphics_pacman)
 
     path_directory_of_path_test = os.path.dirname(path_file_test)
 
@@ -319,6 +311,7 @@ def get_list_str_question(path_dir: str, str_question: str) -> List[str]:
     :param str_question:
     :return:
     """
+
     dict_problem = ParseFile(os.path.join(path_dir, 'CONFIG')).get_dict()
 
     if str_question is not None:
@@ -362,7 +355,7 @@ def evaluate(bool_generate_solutions: bool,
 
     # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
     list_str_question_to_grade = get_list_str_question(path_abs_test_cases, str_question_to_grade)
-
+    print("FSDFSDF", list_str_question_to_grade)
     for str_question in list_str_question_to_grade:
         path_question = os.path.join(path_abs_test_cases, str_question)
         if not os.path.isdir(path_question) or str_question[0] == '.':
@@ -400,7 +393,6 @@ def evaluate(bool_generate_solutions: bool,
 
             # TODO: dict_file_test['class'] will be EvalAgentTest ... SO IT WILL GET projectTestClasses.EvalAgentTest  OR projectTestClasses.GraphGameTreeTest ..... projectTestClasses MIGHT BE multiagentTestClasses
             subclass_test_case = get_subclass_test_case(dict_file_test['class'])
-            print("subclass_test_case", subclass_test_case)
 
             # TODO: MIGHT BE EvalAgentTest, GraphGameTreeTest, PacmanGameTreeTest, IT IS A CLASS
             test_case: TestCase = subclass_test_case(question_object, dict_file_test)
@@ -542,17 +534,19 @@ if __name__ == '__main__':
     # moduleDict['projectTestClasses'] = loadModuleFile(moduleName, os.path.join(options.codeRoot, options.testCaseCode))
 
     if argparse_args.path_file_test != None:
-        run_path_test(argparse_args.path_file_test,
-                      # moduleDict,
-                      bool_print_test_cases=argparse_args.bool_print_test_case,
-                      graphics_pacman=get_graphics_pacman(True, argparse_args))
+        run_path_test(
+            argparse_args.path_file_test,
+            bool_print_test_cases=argparse_args.bool_print_test_case,
+            graphics_pacman=get_graphics_pacman(True, argparse_args)
+        )
     else:
         evaluate(
             argparse_args.bool_generate_solutions,
             # options.path_dir_containing_question,
             # 'test_cases/search',
-            'test_cases/multiagent',
+            # 'test_cases/multiagent',
             # 'test_cases/reinforcement',
+            'test_cases',
             # moduleDict,
             bool_output_json=argparse_args.bool_output_json,
             bool_output_html=argparse_args.bool_output_html,
