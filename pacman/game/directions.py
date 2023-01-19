@@ -48,3 +48,14 @@ class Directions():
 
 Action = Directions
 
+
+class Temp(Enum):
+    NORTH = "North"
+
+    def __str__(self):
+        return self.value
+
+print(Directions.NORTH)
+print(Temp.NORTH)
+print(Directions.NORTH == Temp.NORTH)
+
