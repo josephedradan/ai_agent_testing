@@ -20,6 +20,8 @@ import sys
 from typing import Callable
 from typing import Sequence
 
+from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
+
 print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -396,8 +398,7 @@ def evaluate(bool_generate_solutions: bool,
             # TODO: MIGHT BE EvalAgentTest, GraphGameTreeTest, PacmanGameTreeTest, IT IS A CLASS
             test_case: TestCase = subclass_test_case(question_object, dict_file_test)
 
-            def get_callable_that_wraps_test_case(test_case_: TestCase, path_test_solution_: str) -> Callable[
-                [Grader, Dict[str, Any]], bool]:
+            def get_callable_that_wraps_test_case(test_case_: TestCase, path_test_solution_: str) -> TYPE_CALLABLE_THAT_NEEDS_GRADER:
                 grader_: Grader
 
                 if bool_generate_solutions:
@@ -431,7 +432,7 @@ def evaluate(bool_generate_solutions: bool,
             )
 
         # Note extra function is necessary for scoping reasons
-        def get_callable_that_wraps_question(question: Question) -> Callable[[Grader], bool]:
+        def get_callable_that_wraps_question(question: Question) -> TYPE_CALLABLE_THAT_NEEDS_GRADER:
             grader_: Grader
             return lambda grader_: question.execute(grader_)
 

@@ -30,12 +30,12 @@ from typing import Tuple
 
 from pacman.grader import Grader
 from pacman.test_case import TestCase
+from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
 
 if TYPE_CHECKING:
     from pacman.graphics.graphics_pacman import GraphicsPacman
 
-TYPE_LIST_TUPLE__TEST_CASE__CALLABLE_THAT_WRAPS_TEST_CASE = List[Tuple[TestCase,
-                                                                       Callable[[Grader, Dict[str, Any]], bool]]]
+TYPE_LIST_TUPLE__TEST_CASE__TYPE_CALLABLE_THAT_NEEDS_GRADER = List[Tuple[TestCase, TYPE_CALLABLE_THAT_NEEDS_GRADER]]
 
 
 class Question(ABC):
@@ -44,9 +44,9 @@ class Question(ABC):
     def __init__(self, dict_question: Dict[str, Any], graphics_pacman: GraphicsPacman):
         self.POINTS_MAX: int = int(dict_question['max_points'])
 
-        self.list_tuple__test_case__callable_that_wraps_test_case: (
-            TYPE_LIST_TUPLE__TEST_CASE__CALLABLE_THAT_WRAPS_TEST_CASE
-        ) = []
+        self.POINTS_EXTRA = int(dict_question.get('extra_points', 0))
+
+        self.list_tuple__test_case__callable_that_wraps_test_case: TYPE_LIST_TUPLE__TEST_CASE__TYPE_CALLABLE_THAT_NEEDS_GRADER = []
 
         self.graphics_pacman: GraphicsPacman = graphics_pacman
 
@@ -78,5 +78,5 @@ class Question(ABC):
         )
 
     @abstractmethod
-    def execute(self, grader: Grader):
+    def execute(self, grader: Grader) -> bool:
         pass

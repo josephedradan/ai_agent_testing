@@ -29,12 +29,12 @@ from typing import Type
 from typing import Union
 
 from pacman.question.question import Question
-from pacman.question.question_partial_credit import PartialCreditQuestion
-from pacman.question.question_partial_credit_hacked import HackedPartialCreditQuestion
-from pacman.question.question_partial_credit_q6 import Q6PartialCreditQuestion
-from pacman.question.question_pass_all_tests import PassAllTestsQuestion
-from pacman.question.question_pass_all_tests_basic import NumberPassedQuestion
-from pacman.question.question_pass_all_tests_extra_credit import ExtraCreditPassAllTestsQuestion
+from pacman.question.question_partial_credit import QuestionPartialCredit
+from pacman.question.question_partial_credit_hacked import QuestionPartialCreditHacked
+from pacman.question.question_partial_credit_q6 import QuestionPartialCreditQ6
+from pacman.question.question_pass_all_tests import QuestionPassAllTests
+from pacman.question.question_pass_all_tests_basic import QuestionNumberPassed
+from pacman.question.question_pass_all_tests_extra_credit import QuestionPassAllTestsExtraCredit
 
 if TYPE_CHECKING:
     pass

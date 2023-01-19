@@ -57,7 +57,7 @@ class ClosestDotTest(TestCase):
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
 
-        gold_length = int(dict_file_solution['solution_length'])
+        length_solution = int(dict_file_solution['solution_length'])
 
         solution = self._get_solution()
 
@@ -66,12 +66,12 @@ class ClosestDotTest(TestCase):
             grader.addMessage(f'\tThe result must be a list. (Instead, it is {type(solution)})')
             return False
 
-        if len(solution) != gold_length:
+        if len(solution) != length_solution:
             grader.addMessage(f'FAIL: {self.path_file_test}')
             grader.addMessage('Closest dot not found.')
             grader.addMessage(f'\tstudent solution length:\n{len(solution)}')
             grader.addMessage('')
-            grader.addMessage(f'\tcorrect solution length:\n{gold_length}')
+            grader.addMessage(f'\tcorrect solution length:\n{length_solution}')
             return False
 
         grader.addMessage(f'PASS: {self.path_file_test}')

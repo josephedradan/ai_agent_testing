@@ -21,19 +21,29 @@ Tags:
 Reference:
 
 """
+
 from pacman.grader import Grader
 from pacman.question import Question
+from pacman.test_case import TestCase
+from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
 
 
-class PartialCreditQuestion(Question):
-    """Fails any test which returns False, otherwise doesn't effect the grader object.
-    Partial credit tests will add the required points."""
+class QuestionPartialCredit(Question):
+    """
+    Fails any test which returns False, otherwise doesn't effect the grader object.
+    Partial credit tests will add the required points.
+    """
 
-    def execute(self, grader: Grader):
+    def execute(self, grader: Grader) -> bool:
         grader.assignZeroCredit()
 
-        for test_case_object, test_case_execute_callable in self.list_tuple__test_case__callable_that_wraps_test_case:
-            if not test_case_execute_callable(grader):
+        test_case: TestCase
+        callable_that_wraps_test_case: TYPE_CALLABLE_THAT_NEEDS_GRADER
+
+        for test_case, callable_that_wraps_test_case in self.list_tuple__test_case__callable_that_wraps_test_case:
+            if not callable_that_wraps_test_case(grader):
                 grader.assignZeroCredit()
                 grader.fail("Tests failed.")
                 return False
+
+        return True

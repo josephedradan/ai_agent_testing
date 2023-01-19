@@ -2,7 +2,7 @@
 Created by Joseph Edradan
 Github: https://github.com/josephedradan
 
-Date created: 1/8/2023
+Date created: 1/19/2023
 
 Purpose:
 
@@ -21,10 +21,8 @@ Tags:
 Reference:
 
 """
-from typing import Any
 from typing import Callable
-from typing import Dict
 
 from pacman.grader import Grader
 
-PATH_LAYOUTS = 'layouts/'
+TYPE_CALLABLE_THAT_NEEDS_GRADER = Callable[[Grader], bool]
