@@ -433,7 +433,7 @@ def generic_search_algorithm_base(problem: SearchProblem,
     return list_str_direction_answer
 
 
-def depthFirstSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
+def depth_first_search(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
     """
     Search the deepest nodes in the search tree first.
 
@@ -469,10 +469,11 @@ def depthFirstSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic
     return solution
 
 
-def breadthFirstSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    # util.raiseNotDefined()
+def breadth_first_search(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
+    """
+    Search the shallowest nodes in the search tree first.
+
+    """
 
     # Just swap out the util.Stack callable with a util.Queue callable
     solution: List[str] = generic_search_algorithm_base(problem, util.Queue)
@@ -480,10 +481,12 @@ def breadthFirstSearch(problem: SearchProblem, heuristic: Callable = nullHeurist
     return solution
 
 
-def uniformCostSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    # util.raiseNotDefined()
+def uniform_cost_search(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
+    """
+    Search the node of least total cost first.
+
+    """
+
 
     """
     
@@ -503,11 +506,13 @@ def uniformCostSearch(problem: SearchProblem, heuristic: Callable = nullHeuristi
     return solution
 
 
-def aStarSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
-    """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
+def a_star_search(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> List[str]:
+    """
+    Search the node that has the lowest combined cost and heuristic first.
 
-    # util.raiseNotDefined()
+    """
+
+    "*** YOUR CODE HERE ***"
 
     def priority_function(container: Container) -> float:
         """
@@ -540,15 +545,17 @@ def aStarSearch(problem: SearchProblem, heuristic: Callable = nullHeuristic) -> 
     Run the generic search algorithm with a custom priority queue which uses my priority function along with the 
     util.PriorityQueueWithFunction callable because that's the only one that supports a custom priority function
     """
-    solution: List[str] = generic_search_algorithm_base(problem,
-                                                        util.PriorityQueueWithFunction,
-                                                        args_for_data_structure_from_util=(priority_function,))
+    solution: List[str] = generic_search_algorithm_base(
+        problem,
+        util.PriorityQueueWithFunction,
+        args_for_data_structure_from_util=(priority_function,)
+    )
 
     return solution
 
 
 # Abbreviations
-bfs = breadthFirstSearch
-dfs = depthFirstSearch
-astar = aStarSearch
-ucs = uniformCostSearch
+bfs = breadth_first_search
+dfs = depth_first_search
+astar = a_star_search
+ucs = uniform_cost_search

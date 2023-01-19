@@ -24,38 +24,47 @@ Reference:
 import sys
 from typing import Any
 from typing import Dict
+from typing import TYPE_CHECKING
 
 from pacman.agent.qlearningAgents import QLearningAgent
 from pacman.grader import Grader
 from pacman.gridworld import Gridworld
 from pacman.gridworld import GridworldEnvironment
+from pacman.question.question import Question
 from pacman.test_case import TestCase
 from pacman.test_case.test_case_grid_policy_test import parseGrid
 from pacman.util import Experiences
 
+if TYPE_CHECKING:
+    from pacman.grader import Grader
+
 
 class EpsilonGreedyTest(TestCase):
 
-    def __init__(self, question, testDict):
-        super(EpsilonGreedyTest, self).__init__(question, testDict)
-        self.discount = float(testDict['discount'])
-        self.grid = Gridworld(parseGrid(testDict['grid']))
-        if 'noise' in testDict: self.grid.setNoise(float(testDict['noise']))
-        if 'livingReward' in testDict: self.grid.setLivingReward(float(testDict['livingReward']))
+    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
 
-        self.grid = Gridworld(parseGrid(testDict['grid']))
+        super(EpsilonGreedyTest, self).__init__(question, dict_file_test)
+
+        self.discount = float(dict_file_test['discount'])
+        self.grid = Gridworld(parseGrid(dict_file_test['grid']))
+
+        if 'noise' in dict_file_test: self.grid.setNoise(float(dict_file_test['noise']))
+
+        if 'livingReward' in dict_file_test: self.grid.setLivingReward(float(dict_file_test['livingReward']))
+
+        self.grid = Gridworld(parseGrid(dict_file_test['grid']))
         self.env = GridworldEnvironment(self.grid)
-        self.epsilon = float(testDict['epsilon'])
-        self.learningRate = float(testDict['learningRate'])
-        self.numExperiences = int(testDict['numExperiences'])
-        self.numIterations = int(testDict['iterations'])
+        self.epsilon = float(dict_file_test['epsilon'])
+        self.learningRate = float(dict_file_test['learningRate'])
+        self.numExperiences = int(dict_file_test['numExperiences'])
+        self.numIterations = int(dict_file_test['iterations'])
         self.opts = {'actionFn': self.env.getPossibleActions, 'epsilon': self.epsilon, 'gamma': self.discount,
                      'alpha': self.learningRate}
         if sys.platform == 'win32':
-            _, question_name, test_name = testDict['path_test_output'].split('\\')
+            _, name_question, name_test = dict_file_test['path_test_output'].split('\\')
         else:
-            _, question_name, test_name = testDict['path_test_output'].split('/')
-        self.experiences = Experiences(test_name.split('.')[0])
+            _, name_question, name_test = dict_file_test['path_test_output'].split('/')
+        self.experiences = Experiences(name_test.split('.')[0])
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
         if self.testEpsilonGreedy():
@@ -63,8 +72,8 @@ class EpsilonGreedyTest(TestCase):
         else:
             return self._procedure_test_fail(grader)
 
-    def writeSolution(self, filePath):
-        with open(filePath, 'w') as handle:
+    def write_solution(self, path_file_solution: str) -> bool:
+        with open(path_file_solution, 'w') as handle:
             handle.write('# This is the solution file for %s.\n' % self.path_file_test)
             handle.write('# File intentionally blank.\n')
         return True

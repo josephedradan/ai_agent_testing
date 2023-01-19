@@ -30,6 +30,8 @@ from typing import Dict
 from typing import List
 from typing import TYPE_CHECKING
 
+from pacman.test_case.container_test_file import ContainerFileTest
+
 if TYPE_CHECKING:
     from pacman.question.question import Question
     from pacman.grader import Grader
@@ -45,14 +47,18 @@ class TestCase(ABC):
     #     DICT_K_NAME_TEST_CASE_SUBCLASS_V_TEST_CASE_SUBCLASS[cls.__name__] = cls
 
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
-        # print("dict_file_test")
-        # pprint(dict_file_test)
+
         self.question: Question = question
+
         self.dict_file_test: Dict[str, Any] = dict_file_test
-        self.path_file_test: str = dict_file_test['path_file_test']
+
+        self.path_file_test: str = dict_file_test.get('path_file_test')
+
+        # self.container_file_test: ContainerFileTest = ContainerFileTest(dict_file_test)
+
         self.messages: List[str] = []
 
-    def getPath(self):
+    def get_path_file_test(self) -> str:
         return self.path_file_test
 
     # @abstractmethod
@@ -73,7 +79,7 @@ class TestCase(ABC):
         # self.raiseNotDefined()
 
     @abstractmethod
-    def writeSolution(self, filePath):
+    def write_solution(self, path_file_solution: str) -> bool:
         pass
         # self.raiseNotDefined()
         # return True
@@ -84,16 +90,16 @@ class TestCase(ABC):
     # TODO: this is hairy, but we need to fix grading.py's interface
     # to get a nice hierarchical name_project - str_question - test structure,
     # then these should be moved into Question proper.
-    def _procedure_test_pass(self, grades):
-        grades.addMessage('PASS: %s' % (self.path_file_test,))
+    def _procedure_test_pass(self, grader: Grader):
+        grader.addMessage('PASS: %s' % (self.path_file_test,))
         for line in self.messages:
-            grades.addMessage('    %s' % (line,))
+            grader.addMessage('    %s' % (line,))
         return True
 
-    def _procedure_test_fail(self, grades):
-        grades.addMessage('FAIL: %s' % (self.path_file_test,))
+    def _procedure_test_fail(self, grader: Grader):
+        grader.addMessage('FAIL: %s' % (self.path_file_test,))
         for line in self.messages:
-            grades.addMessage('    %s' % (line,))
+            grader.addMessage('    %s' % (line,))
         return False
 
     # This should really be str_question level?

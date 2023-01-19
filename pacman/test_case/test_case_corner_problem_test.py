@@ -27,15 +27,17 @@ from __future__ import annotations
 from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
+from typing import Union
 
+from pacman.agent.search.search import bfs
 from pacman.agent.search_problem import CornersProblem
 from pacman.game.actions import Actions
 from pacman.game.game_state import GameState
 from pacman.game.layout import Layout
-from pacman.agent.search.search import bfs
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
+    from pacman.question.question import Question
     from pacman.grader import Grader
 
 
@@ -44,21 +46,24 @@ def getStatesFromPath(start, path):
     vis = [start]
     curr = start
     for a in path:
-        x,y = curr
+        x, y = curr
         dx, dy = Actions.directionToVector(a)
         curr = (int(x + dx), int(y + dy))
         vis.append(curr)
     return vis
 
+
 class CornerProblemTest(TestCase):
 
-    def __init__(self, question, testDict):
-        super(CornerProblemTest, self).__init__(question, testDict)
-        self.layoutText = testDict['layout']
-        self.layoutName = testDict['layoutName']
+    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
+        super(CornerProblemTest, self).__init__(question, dict_file_test)
+
+        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+
+        self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 
     def solution(self):
-        lay = Layout([l.strip() for l in self.layoutText.split('\n')])
+        lay = Layout([l.strip() for l in self.str_layout.split('\n')])
         gameState = GameState()
         gameState.initialize(lay, 0)
         problem = CornersProblem(gameState)
@@ -67,8 +72,8 @@ class CornerProblemTest(TestCase):
         gameState = GameState()
         gameState.initialize(lay, 0)
         visited = getStatesFromPath(gameState.getPacmanPosition(), path)
-        top, right = gameState.getWalls().height-2, gameState.getWalls().width-2
-        missedCorners = [p for p in ((1,1), (1,top), (right, 1), (right, top)) if p not in visited]
+        top, right = gameState.getWalls().height - 2, gameState.getWalls().width - 2
+        missedCorners = [p for p in ((1, 1), (1, top), (right, 1), (right, top)) if p not in visited]
 
         return path, missedCorners
 
@@ -98,20 +103,20 @@ class CornerProblemTest(TestCase):
             return False
 
         grader.addMessage('PASS: %s' % self.path_file_test)
-        grader.addMessage('\tpacman layout:\t\t%s' % self.layoutName)
+        grader.addMessage('\tpacman layout:\t\t%s' % self.name_layout)
         grader.addMessage('\tsolution length:\t\t%s' % len(solution))
         return True
 
-    def writeSolution(self, filePath):
+    def write_solution(self, path_file_solution: str) -> bool:
         # search = moduleDict['search']
         # searchAgents = moduleDict['searchAgents']
 
         # open file and write comments
-        handle = open(filePath, 'w')
+        handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
 
-        print("Solving problem", self.layoutName)
-        print(self.layoutText)
+        print("Solving problem", self.name_layout)
+        print(self.str_layout)
 
         path, _ = self.solution()
         length = len(path)

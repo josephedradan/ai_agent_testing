@@ -1,5 +1,5 @@
 class: "PacmanSearchTest"
-algorithm: "aStarSearch"
+algorithm: "a_star_search"
 
 # The following specifies the layout to be used 
 layoutName: "mediumMaze"

@@ -44,3 +44,4 @@ class AgentGhost(Agent, ABC):
     def getDistribution(self, game_state: GameState):
         "Returns a Counter encoding a distribution over actions from the provided game_state."
         pass
+

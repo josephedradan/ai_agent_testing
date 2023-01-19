@@ -40,7 +40,7 @@ from typing import Union
 
 import projectParams
 from pacman.question.question import Question
-from pacman.question import get_class_question_subclass
+from pacman.question import get_subclass_question
 
 random.seed(0)
 
@@ -238,7 +238,6 @@ def run_path_test(path_file_test: str,
                   bool_print_test_cases: bool = False,
                   graphics_pacman: GraphicsPacman = None
                   ):
-
     dict_file_test = ParseFile(path_file_test + ".test").get_dict()
     dict_file_solution = ParseFile(path_file_test + ".solution").get_dict()
     file_test_output = os.path.join('%s.test_output' % path_file_test)
@@ -347,11 +346,11 @@ def evaluate(bool_generate_solutions: bool,
     #     setattr(sys.modules[__name__], module, moduleDict[
     #         module])  # `x.y = v' # TODO: Add attribute 'module' to sys.modules[__name__] with value moduleDict[module]
 
-    list_tuple__question_name__points_max: List[Tuple[str, int]] = []
+    list_tuple__name_question__points_max: List[Tuple[str, int]] = []
 
     dict_k_name_question_v_dict_question_config: Dict[str, Dict[Any]] = {}
 
-    dict_k_name_question_v_callable: Dict[str, Callable] = {}
+    dict_k_name_question_v_callable_that_wraps_question: Dict[str, Callable] = {}
 
     # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
     list_str_question_to_grade = get_list_str_question(path_abs_test_cases, str_question_to_grade)
@@ -368,11 +367,11 @@ def evaluate(bool_generate_solutions: bool,
         dict_k_name_question_v_dict_question_config[str_question] = dict_question_config
 
         # load test cases into str_question
-        list_file_test_name = [t for t in os.listdir(path_question) if re.match('[^#~.].*\.test\Z', t)]
+        list_file_name_test = [t for t in os.listdir(path_question) if re.match('[^#~.].*\.test\Z', t)]
 
-        list_file_test_name_no_ext = [re.match('(.*)\.test\Z', t).group(1) for t in list_file_test_name]
+        list_file_name_test_no_ext = [re.match('(.*)\.test\Z', t).group(1) for t in list_file_name_test]
 
-        for test_no_ext in sorted(list_file_test_name_no_ext):
+        for test_no_ext in sorted(list_file_name_test_no_ext):
 
             # TODO: THIS IS ACTUAL TEST 'test_cases\\q2\\8-pacman-game.test'
             path_test_test = os.path.join(path_question, '%s.test' % test_no_ext)
@@ -397,12 +396,13 @@ def evaluate(bool_generate_solutions: bool,
             # TODO: MIGHT BE EvalAgentTest, GraphGameTreeTest, PacmanGameTreeTest, IT IS A CLASS
             test_case: TestCase = subclass_test_case(question_object, dict_file_test)
 
-            def makefun(test_case_: TestCase, path_test_solution_: str) -> Callable:
+            def get_callable_that_wraps_test_case(test_case_: TestCase, path_test_solution_: str) -> Callable[
+                [Grader, Dict[str, Any]], bool]:
                 grader_: Grader
 
                 if bool_generate_solutions:
                     # write solution file to disk
-                    return lambda grader__: test_case_.writeSolution(path_test_solution_)
+                    return lambda grader__: test_case_.write_solution(path_test_solution_)
                 else:
                     # read in solution dictionary and pass as an argument
                     dict_file_test_ = ParseFile(path_test_test).get_dict()
@@ -414,35 +414,46 @@ def evaluate(bool_generate_solutions: bool,
                         def _print_test_and_execute_test(grader__: Grader):
                             print_test(dict_file_test_, dict_file_solution_)
                             test_case_.execute(grader__, dict_file_solution_)
+                            return True
 
                         return _print_test_and_execute_test
                     else:
                         return lambda grader__: test_case_.execute(grader__, dict_file_solution_)
 
-            question_object.add_test_case(test_case, makefun(test_case, path_test_solution))
+            callable_that_wraps_test_case = get_callable_that_wraps_test_case(
+                test_case,
+                path_test_solution
+            )
+
+            question_object.add_test_case_and_callable_that_wraps_test_case(
+                test_case,
+                callable_that_wraps_test_case
+            )
 
         # Note extra function is necessary for scoping reasons
-        def makefun(question):
+        def get_callable_that_wraps_question(question: Question) -> Callable[[Grader], bool]:
             grader_: Grader
             return lambda grader_: question.execute(grader_)
 
-        # print("makefun thingy", sys.modules[__name__], str_question, makefun(question_object))
-        # setattr(sys.modules[__name__], str_question, makefun(question_object))
+        # print("get_callable_that_wraps_question thingy", sys.modules[__name__], str_question, get_callable_that_wraps_question(question_object))
+        # setattr(sys.modules[__name__], str_question, get_callable_that_wraps_question(question_object))
 
-        dict_k_name_question_v_callable[str_question] = makefun(question_object)
+        dict_k_name_question_v_callable_that_wraps_question[str_question] = (
+            get_callable_that_wraps_question(question_object)
+        )
 
         # TODO: LIST OF TUPLE:  ('Questison Nubmer', Max points int)
-        list_tuple__question_name__points_max.append((str_question, question_object.get_points_max()))
+        list_tuple__name_question__points_max.append((str_question, question_object.get_points_max()))
 
     grader = Grader(
         projectParams.PROJECT_NAME,
-        list_tuple__question_name__points_max,
+        list_tuple__name_question__points_max,
         bool_output_json=bool_output_json,
         bool_output_html=bool_output_html,
         bool_output_mute=bool_output_mute
     )
 
-    # TODO: THIS IF CONDITIONAL DOES NOTHING IMPORTANT -- WRONG
+    # TODO: THIS CONDITION CHECKS IF SOME QUESTIONS ARE DONE
     if str_question_to_grade is None:
         for str_question in dict_k_name_question_v_dict_question_config:
             # pprint.pprint(dict_k_name_question_v_dict_question_config)
@@ -459,7 +470,11 @@ def evaluate(bool_generate_solutions: bool,
                     grader.addPrereq(str_question, prereq)
 
     # TODO: RUNNING THE TESTS ARE IN THIS CALL
-    grader.grade(dict_k_name_question_v_callable, bool_display_picture_bonus=projectParams.BONUS_PIC)
+    grader.grade(
+        dict_k_name_question_v_callable_that_wraps_question,
+        bool_display_picture_bonus=projectParams.BONUS_PIC
+    )
+
     return grader.points
 
 
@@ -486,7 +501,7 @@ def get_graphics_pacman(graphicsByDefault: Union[bool, None], options=None) -> G
 def get_question_stuff(path_question: str, display: GraphicsPacman) -> Tuple[Dict[str, Any], Question]:
     dict_question_config: Dict[str, Any] = ParseFile(os.path.join(path_question, 'CONFIG')).get_dict()
 
-    class_question_subclass: Type[Question] = get_class_question_subclass(dict_question_config['class'])
+    class_question_subclass: Type[Question] = get_subclass_question(dict_question_config['class'])
     question_object: Question = class_question_subclass(dict_question_config, display)
 
     return dict_question_config, question_object

@@ -55,10 +55,10 @@ class QLearningTest(TestCase):
         self.numsExperiencesForDisplay = list(range(min(numExperiences, maxPreExperiences)))
         self.testOutFile = testDict['path_test_output']
         if sys.platform == 'win32':
-            _, question_name, test_name = testDict['path_test_output'].split('\\')
+            _, name_question, name_test = testDict['path_test_output'].split('\\')
         else:
-            _, question_name, test_name = testDict['path_test_output'].split('/')
-        self.experiences = Experiences(test_name.split('.')[0])
+            _, name_question, name_test = testDict['path_test_output'].split('/')
+        self.experiences = Experiences(name_test.split('.')[0])
         if maxPreExperiences < numExperiences:
             self.numsExperiencesForDisplay.append(numExperiences)
 
@@ -133,8 +133,8 @@ class QLearningTest(TestCase):
                 fileOutString += outString
         return testPass, stdOutString, fileOutString
 
-    def writeSolution(self, filePath):
-        with open(filePath, 'w') as handle:
+    def write_solution(self, path_file_solution: str) -> bool:
+        with open(path_file_solution, 'w') as handle:
             valuesPretty = ''
             policyPretty = ''
             for n in self.numsExperiencesForDisplay:

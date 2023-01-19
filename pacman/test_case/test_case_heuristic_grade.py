@@ -99,8 +99,8 @@ class HeuristicGrade(TestCase):
         return True
 
 
-    def writeSolution(self, filePath):
-        handle = open(filePath, 'w')
+    def write_solution(self, path_file_solution: str) -> bool:
+        handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
         handle.write('# File intentionally blank.\n')
         handle.close()

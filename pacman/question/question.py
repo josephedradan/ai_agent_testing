@@ -24,25 +24,34 @@ from abc import abstractmethod
 from typing import Any
 from typing import Callable
 from typing import Dict
+from typing import List
 from typing import TYPE_CHECKING
+from typing import Tuple
 
+from pacman.grader import Grader
 from pacman.test_case import TestCase
 
 if TYPE_CHECKING:
-    from pacman.grader import Grader
     from pacman.graphics.graphics_pacman import GraphicsPacman
+
+TYPE_LIST_TUPLE__TEST_CASE__CALLABLE_THAT_WRAPS_TEST_CASE = List[Tuple[TestCase,
+                                                                       Callable[[Grader, Dict[str, Any]], bool]]]
 
 
 class Question(ABC):
-    DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS = {}
+    DICT_K_NAME_SUBCLASS_QUESTION_V_SUBCLASS_QUESTION = {}
 
     def __init__(self, dict_question: Dict[str, Any], graphics_pacman: GraphicsPacman):
         self.POINTS_MAX: int = int(dict_question['max_points'])
-        self.list_tuple__test_case__test_case_execute_callable = []
+
+        self.list_tuple__test_case__callable_that_wraps_test_case: (
+            TYPE_LIST_TUPLE__TEST_CASE__CALLABLE_THAT_WRAPS_TEST_CASE
+        ) = []
+
         self.graphics_pacman: GraphicsPacman = graphics_pacman
 
     def __init_subclass__(cls, **kwargs):
-        cls.DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS[cls.__name__] = cls
+        cls.DICT_K_NAME_SUBCLASS_QUESTION_V_SUBCLASS_QUESTION[cls.__name__] = cls
 
     # def raiseNotDefined(self):
     #     print('Method not implemented: %s' % inspect.stack()[1][3])
@@ -54,113 +63,20 @@ class Question(ABC):
     def get_points_max(self) -> int:
         return self.POINTS_MAX
 
-    def add_test_case(self, test_case_object: TestCase, function: Callable):
+    def add_test_case_and_callable_that_wraps_test_case(self, test_case_object: TestCase,
+                                                        callable_that_wraps_test_case: Callable):
         """
         Note that 'function' must be a function which accepts a single argument,
         namely a 'grading' object
 
         :param test_case_object:
-        :param function:
+        :param callable_that_wraps_test_case:
         :return:
         """
-        self.list_tuple__test_case__test_case_execute_callable.append((test_case_object, function))
+        self.list_tuple__test_case__callable_that_wraps_test_case.append(
+            (test_case_object, callable_that_wraps_test_case)
+        )
 
     @abstractmethod
     def execute(self, grader: Grader):
         pass
-
-
-# Question in which all test cases must be passed in order to receive credit
-class PassAllTestsQuestion(Question):
-
-    def execute(self, grader: Grader):
-        # TODO: is this the right way to use grader?  The autograder doesn't seem to use it.
-        testsFailed = False
-        grader.assignZeroCredit()
-        for _, f in self.list_tuple__test_case__test_case_execute_callable:
-            if not f(grader):
-                testsFailed = True
-        if testsFailed:
-            grader.fail("Tests failed.")
-        else:
-            grader.assignFullCredit()
-
-
-class ExtraCreditPassAllTestsQuestion(Question):
-    def __init__(self, dict_question, graphics_pacman):
-        Question.__init__(self, dict_question, graphics_pacman)
-        self.extraPoints = int(dict_question['extra_points'])
-
-    def execute(self, grader: Grader):
-        raise Exception("JOSEPH THIS FUNCTION IS CALLED execute, NO EXMAPLE ")
-        # TODO: is this the right way to use grader?  The autograder doesn't seem to use it.
-        testsFailed = False
-        grader.assignZeroCredit()
-        for _, f in self.list_tuple__test_case__test_case_execute_callable:
-            if not f(grader):
-                testsFailed = True
-        if testsFailed:
-            grader.fail("Tests failed.")
-        else:
-            grader.assignFullCredit()
-            grader.addPoints(self.extraPoints)
-
-
-# Question in which predict credit is given for test cases with a ``points'' property.
-# All other tests are mandatory and must be passed.
-class HackedPartialCreditQuestion(Question):
-
-    def execute(self, grader: Grader):
-        # TODO: is this the right way to use grader?  The autograder doesn't seem to use it.
-        grader.assignZeroCredit()
-
-        points = 0
-        passed = True
-        for testCase, f in self.list_tuple__test_case__test_case_execute_callable:
-            testResult = f(grader)
-            if "points" in testCase.dict_file_test:
-                if testResult:
-                    points += float(testCase.dict_file_test["points"])
-            else:
-                passed = passed and testResult
-
-        # FIXME: Below terrible hack to match q3's logic
-        if int(points) == self.POINTS_MAX and not passed:
-            grader.assignZeroCredit()
-        else:
-            grader.addPoints(int(points))
-
-
-class Q6PartialCreditQuestion(Question):
-    """Fails any test which returns False, otherwise doesn't effect the grader object.
-    Partial credit tests will add the required points."""
-
-    def execute(self, grader: Grader):
-        grader.assignZeroCredit()
-
-        results = []
-        for _, f in self.list_tuple__test_case__test_case_execute_callable:
-            results.append(f(grader))
-        if False in results:
-            grader.assignZeroCredit()
-
-
-class PartialCreditQuestion(Question):
-    """Fails any test which returns False, otherwise doesn't effect the grader object.
-    Partial credit tests will add the required points."""
-
-    def execute(self, grader: Grader):
-        grader.assignZeroCredit()
-
-        for test_case_object, test_case_execute_callable in self.list_tuple__test_case__test_case_execute_callable:
-            if not test_case_execute_callable(grader):
-                grader.assignZeroCredit()
-                grader.fail("Tests failed.")
-                return False
-
-
-class NumberPassedQuestion(Question):
-    """Grade is the number of test cases passed."""
-
-    def execute(self, grader: Grader):
-        grader.addPoints([f(grader) for _, f in self.list_tuple__test_case__test_case_execute_callable].count(True))

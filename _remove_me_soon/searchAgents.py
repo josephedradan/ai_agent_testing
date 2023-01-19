@@ -42,15 +42,15 @@ from pacman.agent import Agent
 from pacman.game.directions import Directions
 
 
-class GoWestAgent(Agent):
-    "An agent that goes West until it can't."
-
-    def getAction(self, state):
-        "The agent receives a GameState (defined in agent_pacman_.py)."
-        if Directions.WEST in state.getLegalPacmanActions():
-            return Directions.WEST
-        else:
-            return Directions.STOP
+# class GoWestAgent(Agent):
+#     "An agent that goes West until it can't."
+#
+#     def getAction(self, state):
+#         "The agent receives a GameState (defined in agent_pacman_.py)."
+#         if Directions.WEST in state.getLegalPacmanActions():
+#             return Directions.WEST
+#         else:
+#             return Directions.STOP
 
 #######################################################
 # This portion is written for you, but will only work #

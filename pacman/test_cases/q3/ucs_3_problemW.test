@@ -1,5 +1,5 @@
 class: "PacmanSearchTest"
-algorithm: "uniformCostSearch"
+algorithm: "uniform_cost_search"
 points: "0.5"
 
 # The following specifies the layout to be used 

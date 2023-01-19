@@ -32,16 +32,16 @@ from pacman.game.directions import Action
 TYPE_SEARCH_FUNCTION = Callable[[SearchProblem, Union[TYPE_HEURISTIC_FUNCTION, None]],
                                 List[Action]]
 
-from pacman.agent.search.search import aStarSearch
-from pacman.agent.search.search import breadthFirstSearch
-from pacman.agent.search.search import depthFirstSearch
-from pacman.agent.search.search import uniformCostSearch
+from pacman.agent.search.search import a_star_search
+from pacman.agent.search.search import breadth_first_search
+from pacman.agent.search.search import depth_first_search
+from pacman.agent.search.search import uniform_cost_search
 
 LIST_SEARCH_FUNCTION = [
-    breadthFirstSearch,
-    depthFirstSearch,
-    aStarSearch,
-    uniformCostSearch,
+    breadth_first_search,
+    depth_first_search,
+    a_star_search,
+    uniform_cost_search,
 ]
 
 DICT_K_NAME_SEARCH_FUNCTION_V_SEARCH_FUNCTION = {

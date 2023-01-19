@@ -101,11 +101,11 @@ class HeuristicTest(TestCase):
             grader.addMessage('PASS: %s' % self.path_file_test)
             return True
 
-    def writeSolution(self, filePath):
+    def write_solution(self, path_file_solution: str) -> bool:
         # search = moduleDict['search']
         # searchAgents = moduleDict['searchAgents']
         # open file and write comments
-        handle = open(filePath, 'w')
+        handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
 
         print("Solving problem", self.layoutName, self.heuristicName)

@@ -191,11 +191,11 @@ class GraphGameTreeTest(TestCase):
         else:
             return self._procedure_test_pass(grader)
 
-    def writeSolution(self, filePath):
+    def write_solution(self, path_file_solution: str) -> bool:
         # multiAgents = moduleDict['projectTestClasses']
         action, generated = self.solveProblem()
 
-        with open(filePath, 'w') as handle:
+        with open(path_file_solution, 'w') as handle:
             handle.write('# This is the solution file for %s.\n' % self.path_file_test)
             handle.write('action: "%s"\n' % (action,))
             handle.write('generated: "%s"\n' % (generated,))

@@ -29,20 +29,26 @@ from typing import Type
 from typing import Union
 
 from pacman.question.question import Question
+from pacman.question.question_partial_credit import PartialCreditQuestion
+from pacman.question.question_partial_credit_hacked import HackedPartialCreditQuestion
+from pacman.question.question_partial_credit_q6 import Q6PartialCreditQuestion
+from pacman.question.question_pass_all_tests import PassAllTestsQuestion
+from pacman.question.question_pass_all_tests_basic import NumberPassedQuestion
+from pacman.question.question_pass_all_tests_extra_credit import ExtraCreditPassAllTestsQuestion
 
 if TYPE_CHECKING:
     pass
 
 
-def get_class_question_subclass(name_question_subclass: Union[str, Type[Question], None]) -> Type[Question]:
-    question_subclass = name_question_subclass
+def get_subclass_question(name_subclass_question: Union[str, Type[Question], None]) -> Type[Question]:
+    question_subclass = name_subclass_question
 
-    if isinstance(name_question_subclass, str):
-        question_subclass = Question.DICT_K_NAME_QUESTION_SUBCLASS_V_QUESTION_SUBCLASS.get(
-            name_question_subclass
+    if isinstance(name_subclass_question, str):
+        question_subclass = Question.DICT_K_NAME_SUBCLASS_QUESTION_V_SUBCLASS_QUESTION.get(
+            name_subclass_question
         )
 
     if question_subclass is None:
-        raise Exception("{} is not a valid Question subclass".format(name_question_subclass))
+        raise Exception("{} is not a valid Question subclass".format(name_subclass_question))
 
     return question_subclass

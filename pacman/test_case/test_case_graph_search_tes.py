@@ -98,11 +98,11 @@ class GraphSearchTest(TestCase):
             grader.addMessage('\tcorrect rev_expanded_states:\t%s' % gold_expanded_states[1])
             return False
 
-    def writeSolution(self, filePath):
+    def write_solution(self, path_file_solution: str) -> bool:
         # search = moduleDict['search']
         # searchAgents = moduleDict['searchAgents']
         # open file and write comments
-        handle = open(filePath, 'w')
+        handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
         handle.write('# This solution is designed to support both right-to-left\n')
         handle.write('# and left-to-right implementations.\n')

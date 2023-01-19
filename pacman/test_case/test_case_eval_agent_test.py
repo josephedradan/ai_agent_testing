@@ -54,8 +54,6 @@ class EvalAgentTest(TestCase):
 
         self.__special_condition = False
 
-        self.dict_file_test: Dict[str, Any] = dict_file_test
-
         pacman_args = dict_file_test.get('pacmanParams')
         if pacman_args and isinstance(pacman_args, str):
             self.dict_file_test.update(arg_parser_pacman(pacman_args.split()))
@@ -66,8 +64,8 @@ class EvalAgentTest(TestCase):
             self.__special_condition = True
 
         if not self.__special_condition:
-            self.str_layout_name: Union[str] = dict_file_test.get('layoutName')
-            self.str_class_agent: Union[str] = dict_file_test.get('agentName')
+            self.name_layout: Union[str] = dict_file_test.get('layoutName')
+            self.name_class_agent: Union[str] = dict_file_test.get('agentName')
             self.list_agent_ghost: List[Agent] = eval(dict_file_test['ghosts'])
             self.maxTime: int = int(dict_file_test['maxTime'])
             self.seed: int = int(dict_file_test['randomSeed'])
@@ -76,8 +74,7 @@ class EvalAgentTest(TestCase):
             # Note that the only shared variable is number_of_games when self.__special_condition is True
             self.number_of_games = self.dict_file_test['number_of_games']
 
-        self.scoreMinimum = int(
-            dict_file_test['scoreMinimum']) if 'scoreMinimum' in dict_file_test else None
+        self.scoreMinimum = int(dict_file_test['scoreMinimum']) if 'scoreMinimum' in dict_file_test else None
         self.nonTimeoutMinimum = int(
             dict_file_test['nonTimeoutMinimum']) if 'nonTimeoutMinimum' in dict_file_test else None
         self.winsMinimum = int(
@@ -101,18 +98,19 @@ class EvalAgentTest(TestCase):
         if self.__special_condition:
 
             list_game = run_pacman_games(**self.dict_file_test)
+
         else:
 
             # TODO: multiAgents TO 'projectTestClasses'
             # class_agent = getattr(moduleDict['projectTestClasses'], self.str_class_agent)
 
-            class_agent: Type[Agent] = get_subclass_agent(self.str_class_agent)
+            class_agent: Type[Agent] = get_subclass_agent(self.name_class_agent)
 
             agentOpts = main.get_dict_kwargs(self.agentArgs) if self.agentArgs != '' else {}
 
             agent_object: Agent = class_agent(**agentOpts)
 
-            layout_ = get_layout(self.str_layout_name, 3)
+            layout_ = get_layout(self.name_layout, 3)
 
             graphics_pacman = self.question.get_graphics_pacman()
 
@@ -190,8 +188,8 @@ class EvalAgentTest(TestCase):
 
         return self._procedure_test_pass_extra_credit(grader, totalPoints, self.maxPoints)
 
-    def writeSolution(self, filePath):
-        handle = open(filePath, 'w')
+    def write_solution(self, path_file_solution: str) -> bool:
+        handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
         handle.write('# File intentionally blank.\n')
         handle.close()

@@ -34,61 +34,64 @@ from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
     from pacman.grader import Grader
+    from pacman.question import Question
 
 
 class ClosestDotTest(TestCase):
 
-    def __init__(self, question, testDict):
-        super(ClosestDotTest, self).__init__(question, testDict)
-        self.layoutText = testDict['layout']
-        self.layoutName = testDict['layoutName']
+    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
+        super(ClosestDotTest, self).__init__(question, dict_file_test)
 
-    def _solution(self):
-        lay = Layout([l.strip() for l in self.layoutText.split('\n')])
-        gameState = GameState()
-        gameState.initialize(lay, 0)
-        path = ClosestDotSearchAgent().findPathToClosestDot(gameState)
+        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+
+        self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
+
+    def _get_solution(self) -> Any:
+        layout = Layout([l.strip() for l in self.str_layout.split('\n')])
+
+        game_state_initial = GameState()
+        game_state_initial.initialize(layout, 0)
+
+        path = ClosestDotSearchAgent().findPathToClosestDot(game_state_initial)
         return path
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
-        # search = moduleDict['search']
-        # searchAgents = moduleDict['searchAgents']
+
         gold_length = int(dict_file_solution['solution_length'])
 
-        solution = self._solution()
+        solution = self._get_solution()
 
-        if type(solution) != type([]):
-            grader.addMessage('FAIL: %s' % self.path_file_test)
-            grader.addMessage('\tThe result must be a list. (Instead, it is %s)' % type(solution))
+        if not isinstance(solution, list):
+            grader.addMessage(f'FAIL: {self.path_file_test}')
+            grader.addMessage(f'\tThe result must be a list. (Instead, it is {type(solution)})')
             return False
 
         if len(solution) != gold_length:
-            grader.addMessage('FAIL: %s' % self.path_file_test)
+            grader.addMessage(f'FAIL: {self.path_file_test}')
             grader.addMessage('Closest dot not found.')
-            grader.addMessage('\tstudent solution length:\n%s' % len(solution))
+            grader.addMessage(f'\tstudent solution length:\n{len(solution)}')
             grader.addMessage('')
-            grader.addMessage('\tcorrect solution length:\n%s' % gold_length)
+            grader.addMessage(f'\tcorrect solution length:\n{gold_length}')
             return False
 
-        grader.addMessage('PASS: %s' % self.path_file_test)
-        grader.addMessage('\tpacman layout:\t\t%s' % self.layoutName)
-        grader.addMessage('\tsolution length:\t\t%s' % len(solution))
+        grader.addMessage(f'PASS: {self.path_file_test}')
+        grader.addMessage(f'\tpacman layout:\t\t{self.name_layout}')
+        grader.addMessage(f'\tsolution length:\t\t{len(solution)}')
         return True
 
-    def writeSolution(self, filePath):
-        # search = moduleDict['search']
-        # searchAgents = moduleDict['searchAgents']
+    def write_solution(self, path_file_solution: str) -> bool:
 
         # open file and write comments
-        handle = open(filePath, 'w')
-        handle.write('# This is the solution file for %s.\n' % self.path_file_test)
+        with open(path_file_solution, 'w') as file_obj:
+            file_obj.write(f'# This is the solution file for {self.path_file_test}.\n')
 
-        print("Solving problem", self.layoutName)
-        print(self.layoutText)
+            print("Solving problem", self.name_layout)
+            print(self.str_layout)
 
-        length = len(self._solution())
-        print("Problem solved")
+            length = len(self._get_solution())
+            print("Problem solved")
 
-        handle.write('solution_length: "%s"\n' % length)
-        handle.close()
+            file_obj.write('solution_length: "%s"\n' % length)
+            file_obj.close()
+
         return True

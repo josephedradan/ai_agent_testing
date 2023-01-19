@@ -233,8 +233,8 @@ class GridPolicyTest(TestCase):
         #     if state != 'TERMINAL_STATE':
         #         self.addMessage('      (%s,%s) %s' % (state[0], state[1], policy[state]))
 
-    def writeSolution(self, filePath):
-        with open(filePath, 'w') as handle:
+    def write_solution(self, path_file_solution: str) -> bool:
+        with open(path_file_solution, 'w') as handle:
             handle.write('# This is the solution file for %s.\n' % self.path)
             handle.write('# File intentionally blank.\n')
         return True

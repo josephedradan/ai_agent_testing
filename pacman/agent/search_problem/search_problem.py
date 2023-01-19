@@ -22,12 +22,12 @@ Reference:
 
 """
 from abc import ABC
+from abc import abstractmethod
 from typing import Hashable
 from typing import List
 from typing import Tuple
 from typing import Union
 
-from pacman import util
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 
@@ -47,20 +47,23 @@ class SearchProblem(ABC):
     def set_graphics(self, graphics: GraphicsPacman):
         self.graphics = graphics
 
+    @abstractmethod
     def getStartState(self) -> Union[Tuple[int, int], Hashable]:
         """
         Returns the start state for the search problem.
         """
-        util.raiseNotDefined()
+        pass
 
+    @abstractmethod
     def isGoalState(self, state) -> bool:
         """
           state: Search state
 
         Returns True if and only if the state is a valid goal state.
         """
-        util.raiseNotDefined()
+        pass
 
+    @abstractmethod
     def getSuccessors(self, state) -> List[Union[tuple, str, int]]:
         """
           state: Search state
@@ -70,8 +73,9 @@ class SearchProblem(ABC):
         state, 'action' is the action required to get there, and 'stepCost' is
         the incremental cost of expanding to that successor.
         """
-        util.raiseNotDefined()
+        pass
 
+    @abstractmethod
     def getCostOfActions(self, actions) -> int:
         """
          actions: A list of actions to take
@@ -79,4 +83,4 @@ class SearchProblem(ABC):
         This method returns the total cost of a particular sequence of actions.
         The sequence must be composed of legal moves.
         """
-        util.raiseNotDefined()
+        pass

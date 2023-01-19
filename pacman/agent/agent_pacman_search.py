@@ -67,7 +67,7 @@ class SearchAgent(Agent):
     """
 
     def __init__(self,
-                 fn: Callable = 'depthFirstSearch',
+                 fn: Callable = 'depth_first_search',
                  prob: Union[Type[SearchProblem], str] = 'PositionSearchProblem',
                  heuristic: Callable = 'nullHeuristic'):
         # Warning: some advanced Python magic is employed below to find the right functions and problems
@@ -164,7 +164,7 @@ class StayEastSearchAgent(SearchAgent):
 
     def __init__(self):
         # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
-        self.searchFunction = search.uniformCostSearch
+        self.searchFunction = search.uniform_cost_search
         costFn = lambda pos: .5 ** pos[0]
         self.searchType = lambda state: PositionSearchProblem(state, costFn, (1, 1), None, False)
 
@@ -179,7 +179,7 @@ class StayWestSearchAgent(SearchAgent):
 
     def __init__(self):
         # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
-        self.searchFunction = search.uniformCostSearch
+        self.searchFunction = search.uniform_cost_search
         costFn = lambda pos: 2 ** pos[0]
         self.searchType = lambda state: PositionSearchProblem(state, costFn)
 
@@ -190,7 +190,7 @@ class AStarCornersAgent(SearchAgent):
     def __init__(self):
         # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
 
-        self.searchFunction = lambda prob: search.aStarSearch(prob, cornersHeuristic)
+        self.searchFunction = lambda prob: search.a_star_search(prob, cornersHeuristic)
         self.searchType = CornersProblem
 
 
@@ -200,7 +200,7 @@ class AStarFoodSearchAgent(SearchAgent):
     def __init__(self):
         # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
 
-        self.searchFunction = lambda prob: search.aStarSearch(prob, foodHeuristic)
+        self.searchFunction = lambda prob: search.a_star_search(prob, foodHeuristic)
         self.searchType = FoodSearchProblem
 
 
@@ -222,27 +222,27 @@ class ClosestDotSearchAgent(SearchAgent):
         self.actionIndex = 0
         print('Path found with cost {}.'.format(len(self.actions)))
 
-    def findPathToClosestDot(self, gameState: GameState):
+    def findPathToClosestDot(self, game_state: GameState) -> List[Action]:
         """
         Returns a path (a list of actions) to the closest dot, starting from
         gameState.
         """
         # Here are some useful elements of the startState
-        startPosition = gameState.getPacmanPosition()
-        food = gameState.getFood()
-        walls = gameState.getWalls()
-        problem = AnyFoodSearchProblem(gameState)
+
+        # position_start: tuple = game_state.getPacmanPosition()
+        # food: Grid = game_state.getFood()
+        # walls: Grid = game_state.getWalls()
+        problem: AnyFoodSearchProblem = AnyFoodSearchProblem(game_state)
 
         "*** YOUR CODE HERE ***"
-        # util.raiseNotDefined()
 
-        startPosition: tuple
+        position_start: tuple
         food: Grid
         walls: Grid
         problem: AnyFoodSearchProblem
 
-        # print(type(startPosition))
-        # print(startPosition)
+        # print(type(position_start))
+        # print(position_start)
         # print(type(food))
         # print(food)
         # print(type(walls))
@@ -251,7 +251,7 @@ class ClosestDotSearchAgent(SearchAgent):
         # print()
 
         # Note that food is the same a foodGrid from problem 7 and foodGrid CHANGES OVER (foodHeuristic)
-        list_position_food_remaining = food.asList()
+        # list_position_food_remaining = food.asList()
 
         ####################
         """
@@ -278,4 +278,4 @@ class ClosestDotSearchAgent(SearchAgent):
             Using search.aStarSearch defaults to UCS
 
         """
-        return search.aStarSearch(problem)
+        return search.a_star_search(problem)

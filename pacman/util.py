@@ -720,16 +720,16 @@ def unmutePrint():
 
 
 class Experiences(object):
-    def __init__(self, test_name):
+    def __init__(self, name_test):
         self._idx = -1
-        self._experiences = self._get_experiences(test_name)
+        self._experiences = self._get_experiences(name_test)
 
     def get_experience(self):
         self._idx += 1
         return self._experiences[self._idx]
 
-    def _get_experiences(self, test_name):
-        if test_name == '1-tinygrid':
+    def _get_experiences(self, name_test):
+        if name_test == '1-tinygrid':
             list_experiences = [((0, 0), 'exit', 'TERMINAL_STATE', 10), ((0, 0), 'exit', 'TERMINAL_STATE', 10),
                                 ((0, 1), 'south', (0, 1), 0.0), ((0, 0), 'exit', 'TERMINAL_STATE', 10),
                                 ((0, 1), 'south', (0, 1), 0.0), ((0, 0), 'exit', 'TERMINAL_STATE', 10),
@@ -803,7 +803,7 @@ class Experiences(object):
                                 ((0, 2), 'exit', 'TERMINAL_STATE', -10), ((0, 2), 'exit', 'TERMINAL_STATE', -10),
                                 ((0, 1), 'north', (0, 2), 0.0), ((0, 1), 'east', (0, 1), 0.0),
                                 ((0, 2), 'exit', 'TERMINAL_STATE', -10)]
-        elif test_name == '2-tinygrid-noisy':
+        elif name_test == '2-tinygrid-noisy':
             list_experiences = [((0, 0), 'exit', 'TERMINAL_STATE', 10), ((0, 0), 'exit', 'TERMINAL_STATE', 10),
                                 ((0, 1), 'south', (0, 1), 0.0), ((0, 0), 'exit', 'TERMINAL_STATE', 10),
                                 ((0, 1), 'south', (0, 1), 0.0), ((0, 0), 'exit', 'TERMINAL_STATE', 10),
@@ -877,7 +877,7 @@ class Experiences(object):
                                 ((0, 2), 'exit', 'TERMINAL_STATE', -10), ((0, 2), 'exit', 'TERMINAL_STATE', -10),
                                 ((0, 1), 'north', (0, 2), 0.0), ((0, 1), 'east', (0, 1), 0.0),
                                 ((0, 2), 'exit', 'TERMINAL_STATE', -10)]
-        elif test_name == '3-bridge':
+        elif name_test == '3-bridge':
             list_experiences = [((0, 5), 'exit', 'TERMINAL_STATE', -100), ((0, 5), 'exit', 'TERMINAL_STATE', -100),
                                 ((1, 5), 'south', (2, 5), 0.0), ((0, 5), 'exit', 'TERMINAL_STATE', -100),
                                 ((1, 5), 'south', (2, 5), 0.0), ((0, 1), 'exit', 'TERMINAL_STATE', -100),
@@ -1151,7 +1151,7 @@ class Experiences(object):
                                 ((2, 1), 'exit', 'TERMINAL_STATE', -100), ((1, 3), 'west', (0, 3), 0.0),
                                 ((1, 2), 'north', (1, 3), 0.0), ((1, 5), 'south', (1, 4), 0.0),
                                 ((0, 4), 'exit', 'TERMINAL_STATE', -100)]
-        elif test_name == '4-discountgrid':
+        elif name_test == '4-discountgrid':
             list_experiences = [((1, 0), 'south', (1, 0), 0.0), ((1, 0), 'south', (1, 0), 0.0),
                                 ((3, 0), 'south', (3, 0), 0.0), ((1, 0), 'south', (1, 0), 0.0),
                                 ((3, 0), 'south', (3, 0), 0.0), ((0, 0), 'exit', 'TERMINAL_STATE', -10),
@@ -2675,7 +2675,7 @@ class Experiences(object):
                                 ((0, 0), 'exit', 'TERMINAL_STATE', -10), ((3, 0), 'west', (2, 0), 0.0),
                                 ((4, 2), 'east', (4, 2), 0.0), ((0, 2), 'exit', 'TERMINAL_STATE', -10),
                                 ((2, 4), 'exit', 'TERMINAL_STATE', 10)]
-        elif test_name == '5-coord-extractor':
+        elif name_test == '5-coord-extractor':
             list_experiences = [((1, 0), 'south', (1, 0), 0.0), ((1, 0), 'south', (1, 0), 0.0),
                                 ((3, 0), 'south', (3, 0), 0.0), ((1, 0), 'south', (1, 0), 0.0),
                                 ((3, 0), 'south', (3, 0), 0.0), ((0, 0), 'exit', 'TERMINAL_STATE', -10),

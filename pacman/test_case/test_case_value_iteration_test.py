@@ -124,8 +124,8 @@ class ValueIterationTest(TestCase):
                 fileOutString += outString
         return testPass, stdOutString, fileOutString
 
-    def writeSolution(self, filePath):
-        with open(filePath, 'w') as handle:
+    def write_solution(self, path_file_solution: str) -> bool:
+        with open(path_file_solution, 'w') as handle:
             policyPretty = ''
             actions = []
             for n in self.numsIterationsForDisplay:

@@ -26,6 +26,7 @@ from __future__ import annotations
 import json
 import random
 import time
+from io import TextIOWrapper
 from typing import Any
 from typing import Dict
 from typing import List
@@ -45,9 +46,9 @@ if TYPE_CHECKING:
     from pacman.grader import Grader
 
 
+# FIXME: THIS HAPPENS TO BE NOT USED
 class PolyAgent(Agent):
     def __init__(self, seed, ourPacOptions, depth):
-
         # prepare our agent_pacman_ agents
         solutionAgents, alternativeDepthAgents, partialPlyBugAgents = self.construct_our_pacs(
             # multiAgents,
@@ -184,6 +185,7 @@ class PacmanGameTreeTest(TestCase):
 
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(PacmanGameTreeTest, self).__init__(question, dict_file_test)
+
         self.seed: int = int(self.dict_file_test['seed'])
         self.class_agent: Type[Agent] = self.dict_file_test['alg']
         self.layout_text: str = self.dict_file_test['layout']
@@ -275,13 +277,13 @@ class PacmanGameTreeTest(TestCase):
             return self._procedure_test_fail(grader)
 
     @staticmethod
-    def _write_list_to_file(handle, name, list):
+    def _write_list_to_file(handle: TextIOWrapper, name: str, list_: List):
         handle.write('%s: """\n' % name)
-        for l in list:
+        for l in list_:
             handle.write('%s\n' % json.dumps(l))
         handle.write('"""\n')
 
-    def writeSolution(self, path_file: str):
+    def write_solution(self, path_file: str):
         """
         WRite solutions given path_file
 
@@ -303,12 +305,20 @@ class PacmanGameTreeTest(TestCase):
         pac = PolyAgent(self.seed, ourPacOptions, self.depth)
 
         disp = self.question.get_graphics_pacman()
-        _run(lay, self.layout_name, pac, [AgentGhostDirectional(
-            i + 1) for i in range(2)], disp, name=self.class_agent)
+
+        _run(
+            lay,
+            self.layout_name,
+            pac,
+            [AgentGhostDirectional(i + 1) for i in range(2)],
+            disp,
+            name=self.class_agent
+        )
+
         (optimalActions, altDepthActions, partialPlyBugActions) = pac.getTraces()
+
         # recover traces and bool_record to file
-        handle = open(path_file, 'w')
-        self._write_list_to_file(handle, 'optimalActions', optimalActions)
-        self._write_list_to_file(handle, 'altDepthActions', altDepthActions)
-        self._write_list_to_file(handle, 'partialPlyBugActions', partialPlyBugActions)
-        handle.close()
+        with open(path_file, 'w') as file_object:
+            self._write_list_to_file(file_object, 'optimalActions', optimalActions)
+            self._write_list_to_file(file_object, 'altDepthActions', altDepthActions)
+            self._write_list_to_file(file_object, 'partialPlyBugActions', partialPlyBugActions)
