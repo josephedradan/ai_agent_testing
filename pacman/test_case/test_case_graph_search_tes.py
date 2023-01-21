@@ -26,7 +26,7 @@ from typing import Dict
 
 from pacman.agent.search import get_search_function
 from pacman.agent.search_problem.search_problem_graph_search import GraphSearch
-from pacman.grader import Grader
+from common.grader import Grader
 from pacman.test_case import TestCase
 
 

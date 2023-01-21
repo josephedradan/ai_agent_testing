@@ -11,20 +11,6 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-import random
-from functools import lru_cache
-from queue import PriorityQueue
-from typing import List
-from typing import Set
-from typing import Tuple
-from typing import Union
-
-import util
-from pacman.agent.agent import Agent
-from pacman.agent.state_agent import StateAgent
-from pacman.game.game_state import GameState
-from pacman.game.grid_pacman import GridPacman
-
 
 # def evaluation_function_food_and_ghost(successorGameState: GameState,
 #                                        function_get_distance: callable = util.manhattanDistance):

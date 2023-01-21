@@ -21,7 +21,7 @@ Tags:
 Reference:
 
 """
-from gridworld_rename.main_grid_world import Gridworld
+from gridworld.main_grid_world import Gridworld
 
 
 def getMazeGrid():

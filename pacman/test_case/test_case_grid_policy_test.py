@@ -24,11 +24,11 @@ Reference:
 from typing import Any
 from typing import Dict
 
-from gridworld_rename.main_grid_world import Gridworld
-from gridworld_rename.main_grid_world import makeGrid
+from gridworld.main_grid_world import Gridworld
+from gridworld.main_grid_world import makeGrid
 from pacman import analysis
 from pacman.agent.valueIterationAgents import ValueIterationAgent
-from pacman.grader import Grader
+from common.grader import Grader
 from pacman.test_case import TestCase
 
 ### q2/q3

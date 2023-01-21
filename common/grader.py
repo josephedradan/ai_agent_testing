@@ -24,7 +24,7 @@ from typing import Dict
 from typing import Hashable
 from typing import List
 
-from pacman import util
+from common import util
 
 
 class Grader:

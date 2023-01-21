@@ -37,7 +37,7 @@ from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
-    from pacman.grader import Grader
+    from common.grader import Grader
 
 
 class PacmanSearchTest(TestCase):

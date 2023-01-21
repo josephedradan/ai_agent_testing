@@ -28,7 +28,7 @@ import time
 from typing import TYPE_CHECKING
 
 from pacman.graphics.graphics_pacman import GraphicsPacman
-from pacman.util import nearestPoint
+from common.util import nearestPoint
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState

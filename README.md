@@ -34,11 +34,26 @@
     # Standard map stuff
     python main.py -l originalClassic -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
     
-# 
-    python pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic 
+
+    
+# Q LEARNING PACMAN
+    
+    # 
+    python main.py -p PacmanQAgent -x 2000 -n 2010 -l smallGrid 
+
+    # 
+    python main.py -p ApproximateQAgent -x 2000 -n 2010 -l smallGrid 
+
+    # ApproximateQAgent
+    python main.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic 
 
 
+# ON THE SUBJECT OF GRIDWORLD (CD TO gridworld directory)
 
+    python main.py -a value -i 100 -g BridgeGrid --discount 0.9 --noise 0.2
+
+    python main.py -a q -k 5 -m
+    
 
 
 

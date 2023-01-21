@@ -22,7 +22,7 @@ from typing import Union
 from pacman import constants
 from pacman.game.directions import Directions
 from pacman.game.grid_pacman import GridPacman
-from pacman.util import manhattanDistance
+from common.util import manhattanDistance
 
 VISIBILITY_MATRIX_CACHE = {}
 

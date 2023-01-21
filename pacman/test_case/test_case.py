@@ -30,11 +30,9 @@ from typing import Dict
 from typing import List
 from typing import TYPE_CHECKING
 
-from pacman.test_case.container_test_file import ContainerFileTest
-
 if TYPE_CHECKING:
     from pacman.question.question import Question
-    from pacman.grader import Grader
+    from common.grader import Grader
 
 
 class TestCase(ABC):

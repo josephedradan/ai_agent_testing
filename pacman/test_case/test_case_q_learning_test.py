@@ -27,13 +27,13 @@ from functools import reduce
 from typing import Any
 from typing import Dict
 
-from gridworld_rename.main_grid_world import Gridworld
+from gridworld.main_grid_world import Gridworld
 from pacman.agent.qlearningAgents import QLearningAgent
-from pacman.grader import Grader
-from gridworld_rename.gridworld import GridworldEnvironment
+from common.grader import Grader
+from gridworld.main import EnvironmentGridworld
 from pacman.test_case import TestCase
 from pacman.test_case.test_case_grid_policy_test import parseGrid
-from pacman.util import Experiences
+from common.util import Experiences
 
 
 class QLearningTest(TestCase):
@@ -45,7 +45,7 @@ class QLearningTest(TestCase):
         if 'noise' in testDict: self.grid.setNoise(float(testDict['noise']))
         if 'livingReward' in testDict: self.grid.setLivingReward(float(testDict['livingReward']))
         self.grid = Gridworld(parseGrid(testDict['grid']))
-        self.env = GridworldEnvironment(self.grid)
+        self.env = EnvironmentGridworld(self.grid)
         self.epsilon = float(testDict['epsilon'])
         self.learningRate = float(testDict['learningRate'])
         self.opts = {'actionFn': self.env.getPossibleActions, 'epsilon': self.epsilon, 'gamma': self.discount,

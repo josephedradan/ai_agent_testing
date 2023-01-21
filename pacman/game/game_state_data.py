@@ -33,7 +33,7 @@ from pacman.game.container_vector import ContainerVector
 from pacman.game.directions import Directions
 from pacman.game.grid_pacman import GridPacman
 from pacman.game.layout import Layout
-from pacman.util import nearestPoint
+from common.util import nearestPoint
 
 
 class GameStateData:

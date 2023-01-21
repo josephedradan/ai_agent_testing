@@ -33,8 +33,8 @@ from pacman.game.directions import Action
 from pacman.game.directions import Directions
 from pacman.game.rules.common import COLLISION_TOLERANCE
 from pacman.game.rules.rules_agent import RulesAgent
-from pacman.util import manhattanDistance
-from pacman.util import nearestPoint
+from common.util import manhattanDistance
+from common.util import nearestPoint
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState

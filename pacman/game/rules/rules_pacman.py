@@ -30,7 +30,7 @@ from pacman.game.actions import Actions
 from pacman.game.directions import Action, Directions
 from pacman.game.rules.common import SCARED_TIME
 from pacman.game.rules.rules_agent import RulesAgent
-from pacman.util import nearestPoint, manhattanDistance
+from common.util import nearestPoint, manhattanDistance
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState

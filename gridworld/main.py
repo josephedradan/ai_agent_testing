@@ -14,32 +14,34 @@ import argparse
 import os
 import random
 import sys
-import time
+from typing import Callable
 from typing import Sequence
+from typing import Tuple
 from typing import Union
 
 from common.display_tkinter import DisplayTkinter
+from pacman.agent.agent_value_estimation import ValueEstimationAgent
+from pacman.agent.valueIterationAgents import ValueIterationAgent
 
 print("OS PATH APPENDED", os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "FROM",
       __file__)  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 from pprint import pprint
+
 pprint(sys.path)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-
-from gridworld_rename.grid import get_callable_get_grid_world
-from gridworld_rename.gridworld_environment import GridworldEnvironment
-from gridworld_rename.main_grid_world import Gridworld
+from gridworld.grid import get_callable_get_grid_world
+from gridworld.gridworld_environment import EnvironmentGridworld
+from gridworld.main_grid_world import Gridworld
 from pacman.agent import qlearningAgents
 from pacman.agent import valueIterationAgents
-from gridworld_rename.graphics_gridworld_display import GraphicsGridworldDisplay
-from gridworld_rename.textGridworldDisplay import TextGridworldDisplay
-
+from gridworld.graphics_gridworld_display import GraphicsGridworldDisplay
+from gridworld.textGridworldDisplay import TextGridworldDisplay
 
 from common import mdp
 
 
-def getUserAction(state, actionFunction):
+def getUserAction(state: Tuple[int, int], actionFunction: Callable, display: GraphicsGridworldDisplay):
     """
     Get an action from the user (rather than the agent).
 
@@ -48,7 +50,7 @@ def getUserAction(state, actionFunction):
 
     action = None
     while True:
-        keys = graphicsUtils.wait_for_keys()
+        keys = display.display.get_wait_for_keys()
         if 'Up' in keys: action = 'north'
         if 'Down' in keys: action = 'south'
         if 'Left' in keys: action = 'west'
@@ -62,46 +64,68 @@ def getUserAction(state, actionFunction):
     return action
 
 
-def printString(x): print(x)
+def printString(x):
+    print(x)
+
 
 # TODO: Main loop
-def runEpisode(agent, environment, discount, decision, display, message, pause, episode, display_):
+def runEpisode(agent: ValueEstimationAgent,
+               environment_gridworld: EnvironmentGridworld,
+               discount: float,
+               callback_decision: Callable[[Tuple[int, int]], None],
+               callback_display: Callable[[Tuple[int, int]], None],
+               callback_message: Callable[[str], None],
+               callback_pause: Callable[[], None],
+               episode: int
+               ) -> int:
+
+    # print("agent", agent, type(agent))
+    # print("environment", environment_gridworld, type(environment_gridworld))
+    # print("discount", discount, type(discount))
+    # print("decision", callback_decision, type(callback_decision))
+    # print("display", callback_display, type(callback_display))
+    # print("message", callback_message, type(callback_message))
+    # print("pause", callback_pause, type(callback_pause))
+    # print("episode", episode, type(episode))
+
     returns = 0
     totalDiscount = 1.0
-    environment.reset()
-    if 'startEpisode' in dir(agent): agent.startEpisode()
-    message("BEGINNING EPISODE: " + str(episode) + "\n")
+    environment_gridworld.reset()
+
+    if 'startEpisode' in dir(agent):
+        agent.startEpisode()
+
+    callback_message("BEGINNING EPISODE: " + str(episode) + "\n")
+
     while True:
 
         # DISPLAY CURRENT STATE
-        state = environment.getCurrentState()
-        display(state)  # TODO: HERERERSR
-        pause()
+        state = environment_gridworld.getCurrentState()
+        callback_display(state)  # TODO: HERERERSR
+        callback_pause()
 
         print("state", state)
 
-        display_.drawsss()
         # display_.pause()
-
+        actions = environment_gridworld.getPossibleActions(state)
 
         # END IF IN A TERMINAL STATE
-        actions = environment.getPossibleActions(state)
         if len(actions) == 0:
-            message("EPISODE " + str(episode) + " COMPLETE: RETURN WAS " + str(returns) + "\n")
+            callback_message("EPISODE " + str(episode) + " COMPLETE: RETURN WAS " + str(returns) + "\n")
             return returns
 
-
         # GET ACTION (USUALLY FROM AGENT)
-        action = decision(state)
-        if action == None:
-            raise 'Error: Agent returned None action'
+        action = callback_decision(state)
+        if action is None:
+            raise Exception('Error: Agent returned None action')
 
         # EXECUTE ACTION
-        nextState, reward = environment.doAction(action)
-        message("Started in state: " + str(state) +
-                "\nTook action: " + str(action) +
-                "\nEnded in state: " + str(nextState) +
-                "\nGot reward: " + str(reward) + "\n")
+        nextState, reward = environment_gridworld.doAction(action)
+
+        callback_message("Started in state: " + str(state) +
+                         "\nTook action: " + str(action) +
+                         "\nEnded in state: " + str(nextState) +
+                         "\nGot reward: " + str(reward) + "\n")
         # UPDATE LEARNER
         if 'observeTransition' in dir(agent):
             agent.observeTransition(state, action, nextState, reward)
@@ -269,7 +293,7 @@ if __name__ == '__main__':
     mdp: Gridworld = mdpFunction()
     mdp.setLivingReward(argparse_args.livingReward)
     mdp.setNoise(argparse_args.noise)
-    env = GridworldEnvironment(mdp)
+    env = EnvironmentGridworld(mdp)
 
     ###########################
     # GET THE DISPLAY ADAPTER
@@ -277,11 +301,10 @@ if __name__ == '__main__':
 
     display = TextGridworldDisplay(mdp)
     if not argparse_args.textDisplay:
-
         tkinter_display = DisplayTkinter()  # TODO: JOSEPH CUSTOM
 
-        display: GraphicsGridworldDisplay= GraphicsGridworldDisplay(mdp, argparse_args.gridSize, argparse_args.speed,tkinter_display)
-
+        display: GraphicsGridworldDisplay = GraphicsGridworldDisplay(mdp, argparse_args.gridSize, argparse_args.speed,
+                                                                     tkinter_display)
 
     try:
         display.start()
@@ -292,19 +315,19 @@ if __name__ == '__main__':
     # GET THE AGENT
     ###########################
 
-    a = None
+    agent = None
     if argparse_args.agent == 'value':
-        a = valueIterationAgents.ValueIterationAgent(mdp, argparse_args.discount, argparse_args.iters)
+        agent = ValueIterationAgent(mdp, argparse_args.discount, argparse_args.iters)
     elif argparse_args.agent == 'q':
         # env.getPossibleActions, argparse_args.discount, argparse_args.learningRate, argparse_args.epsilon
         # simulationFn = lambda agent, state: simulation.GridworldSimulation(agent,state,mdp)
-        gridWorldEnv = GridworldEnvironment(mdp)
+        gridWorldEnv = EnvironmentGridworld(mdp)
         actionFn = lambda state: mdp.getPossibleActions(state)
         qLearnOpts = {'gamma': argparse_args.discount,
                       'alpha': argparse_args.learningRate,
                       'epsilon': argparse_args.epsilon,
                       'actionFn': actionFn}
-        a = qlearningAgents.QLearningAgent(**qLearnOpts)
+        agent = qlearningAgents.QLearningAgent(**qLearnOpts)
     elif argparse_args.agent == 'random':
         # # No reason to use the random agent without episodes
         if argparse_args.episodes == 0:
@@ -329,12 +352,12 @@ if __name__ == '__main__':
                 pass
 
 
-        a = RandomAgent()
+        agent = RandomAgent()
     elif argparse_args.agent == 'asynchvalue':
-        a = valueIterationAgents.AsynchronousValueIterationAgent(mdp, argparse_args.discount, argparse_args.iters)
+        agent = valueIterationAgents.AsynchronousValueIterationAgent(mdp, argparse_args.discount, argparse_args.iters)
     elif argparse_args.agent == 'priosweepvalue':
-        a = valueIterationAgents.PrioritizedSweepingValueIterationAgent(mdp, argparse_args.discount,
-                                                                        argparse_args.iters)
+        agent = valueIterationAgents.PrioritizedSweepingValueIterationAgent(mdp, argparse_args.discount,
+                                                                            argparse_args.iters)
     else:
         if not argparse_args.manual: raise Exception('Unknown agent type: ' + argparse_args.agent)
 
@@ -350,45 +373,42 @@ if __name__ == '__main__':
                     display.displayValues(tempAgent, message="VALUES AFTER " + str(i) + " ITERATIONS")
                     display.pause()
 
-            display.displayValues(a, message="VALUES AFTER " + str(argparse_args.iters) + " ITERATIONS")
+            display.displayValues(agent, message="VALUES AFTER " + str(argparse_args.iters) + " ITERATIONS")
             display.pause()
-            print("PAUSE DONE 1")
-            display.displayValues(a, message="FFFFFFFFFFFF " + str(argparse_args.iters) + " ITERATIONS")
-            display.pause()
-            print("PAUSE DONE 2")
 
-            display.displayQValues(a, message="Q-VALUES AFTER " + str(argparse_args.iters) + " ITERATIONS")
+            display.displayQValues(agent, message="Q-VALUES AFTER " + str(argparse_args.iters) + " ITERATIONS")
             display.pause()
-            print("PAUSE DONE 3")
 
     except KeyboardInterrupt:
         sys.exit(0)
 
     # FIGURE OUT WHAT TO DISPLAY EACH TIME STEP (IF ANYTHING)
-    displayCallback = lambda x: None
+    callback_display = lambda x: None
     if not argparse_args.quiet:
         if argparse_args.manual and argparse_args.agent == None:
-            displayCallback = lambda state: display.displayNullValues(state)
+            callback_display = lambda state: display.displayNullValues(state)
         else:
             if argparse_args.agent in ('random', 'value', 'asynchvalue', 'priosweepvalue'):
-                displayCallback = lambda state: display.displayValues(a, state, "CURRENT VALUES")  # TODO: THE CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
-            if argparse_args.agent == 'q': displayCallback = lambda state: display.displayQValues(a, state,
-                                                                                                  "CURRENT Q-VALUES")
+                callback_display = lambda state: display.displayValues(agent, state,
+                                                                       "CURRENT VALUES")  # TODO: THE CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+            if argparse_args.agent == 'q':
+                callback_display = lambda state: display.displayQValues(agent, state,
+                                                                        "CURRENT Q-VALUES")
 
-    messageCallback = lambda x: printString(x)
+    callback_message = lambda x: printString(x)
     if argparse_args.quiet:
-        messageCallback = lambda x: None
+        callback_message = lambda x: None
 
     # FIGURE OUT WHETHER TO WAIT FOR A KEY PRESS AFTER EACH TIME STEP
-    pauseCallback = lambda: None
+    callback_pause = lambda: None
     if argparse_args.pause:
-        pauseCallback = lambda: display.pause()
+        callback_pause = lambda: display.pause()
 
     # FIGURE OUT WHETHER THE USER WANTS MANUAL CONTROL (FOR DEBUGGING AND DEMOS)
-    if argparse_args.manual:
-        decisionCallback = lambda state: getUserAction(state, mdp.getPossibleActions)
+    if argparse_args.manual and isinstance(display, GraphicsGridworldDisplay):
+        callback_decision = lambda state: getUserAction(state, mdp.getPossibleActions, display)
     else:
-        decisionCallback = a.getAction
+        callback_decision = agent.getAction
 
     # RUN EPISODES
     if argparse_args.episodes > 0:
@@ -397,11 +417,16 @@ if __name__ == '__main__':
         print()
     returns = 0
     for episode in range(1, argparse_args.episodes + 1):
-        returns += runEpisode(a, env, argparse_args.discount, decisionCallback, displayCallback, messageCallback,
-                              pauseCallback,
-                              episode,
-                              display
-                              )
+        returns += runEpisode(
+            agent,
+            env,
+            argparse_args.discount,
+            callback_decision,
+            callback_display,
+            callback_message,
+            callback_pause,
+            episode,
+        )
     if argparse_args.episodes > 0:
         print()
         print("AVERAGE RETURNS FROM START STATE: " + str((returns + 0.0) / argparse_args.episodes))
@@ -411,9 +436,9 @@ if __name__ == '__main__':
     # DISPLAY POST-LEARNING VALUES / Q-VALUES
     if argparse_args.agent == 'q' and not argparse_args.manual:
         try:
-            display.displayQValues(a, message="Q-VALUES AFTER " + str(argparse_args.episodes) + " EPISODES")
+            display.displayQValues(agent, message="Q-VALUES AFTER " + str(argparse_args.episodes) + " EPISODES")
             display.pause()
-            display.displayValues(a, message="VALUES AFTER " + str(argparse_args.episodes) + " EPISODES")
+            display.displayValues(agent, message="VALUES AFTER " + str(argparse_args.episodes) + " EPISODES")
             display.pause()
         except KeyboardInterrupt:
             sys.exit(0)

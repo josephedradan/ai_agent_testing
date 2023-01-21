@@ -24,7 +24,7 @@ from typing import Set
 from typing import Tuple
 from typing import Union
 
-from pacman import util
+from common import util
 from pacman.agent.heuristic_function import nullHeuristic
 from pacman.agent.search_problem import SearchProblem
 from pacman.game.directions import Directions

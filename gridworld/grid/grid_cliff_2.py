@@ -21,11 +21,11 @@ Tags:
 Reference:
 
 """
-from gridworld_rename.main_grid_world import Gridworld
+from gridworld.main_grid_world import Gridworld
 
 
-def getCliffGrid():
+def getCliffGrid2():
     grid = [[' ', ' ', ' ', ' ', ' '],
-            ['S', ' ', ' ', ' ', 10],
+            [8, 'S', ' ', ' ', 10],
             [-100, -100, -100, -100, -100]]
     return Gridworld(grid)

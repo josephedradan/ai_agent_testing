@@ -26,7 +26,7 @@ import random
 from common.environment import Environment
 
 
-class GridworldEnvironment(Environment):
+class EnvironmentGridworld(Environment):
 
     def __init__(self, gridWorld):
         self.gridWorld = gridWorld

@@ -36,7 +36,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from pacman.test_case import TestCase
 from pacman.test_case import get_subclass_test_case
-from pacman.grader import Grader
+from common.grader import Grader
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.parser import ParseFile
 from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER

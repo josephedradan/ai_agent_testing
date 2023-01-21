@@ -28,7 +28,7 @@ from typing import List
 from typing import TYPE_CHECKING
 from typing import Tuple
 
-from pacman.grader import Grader
+from common.grader import Grader
 from pacman.test_case import TestCase
 from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
 

@@ -23,7 +23,6 @@
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/pacman/pacman.html
 
 import tkinter
-import qlearningAgents
 import time
 import threading
 import sys
@@ -31,6 +30,8 @@ import crawler
 #import pendulum
 import math
 from math import pi as PI
+
+from pacman.agent.qlearningAgents import QLearningAgent
 
 robotType = 'crawler'
 
@@ -149,10 +150,6 @@ class Application:
 
 
 
-
-
-
-
     def skip5kSteps(self):
         self.stepsToSkip = 5000
 
@@ -182,7 +179,7 @@ class Application:
           simulation.SimulationEnvironment(self.robotEnvironment,agent)
         actionFn = lambda state: \
           self.robotEnvironment.getPossibleActions(state)
-        self.learner = qlearningAgents.QLearningAgent(actionFn=actionFn)
+        self.learner = QLearningAgent(actionFn=actionFn)
 
         self.learner.setEpsilon(self.epsilon)
         self.learner.setLearningRate(self.alpha)

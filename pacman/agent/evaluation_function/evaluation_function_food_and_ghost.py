@@ -27,7 +27,7 @@ from typing import List
 from typing import TYPE_CHECKING
 from typing import Tuple
 
-from pacman import util
+from common import util
 
 if TYPE_CHECKING:
     from pacman.agent.state_agent import StateAgent

@@ -22,7 +22,7 @@ Reference:
 
 """
 
-from pacman.grader import Grader
+from common.grader import Grader
 from pacman.question import Question
 from pacman.test_case import TestCase
 from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER

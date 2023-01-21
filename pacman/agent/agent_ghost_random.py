@@ -25,7 +25,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pacman import util
+from common import util
 from pacman.agent.agent_ghost import AgentGhost
 
 if TYPE_CHECKING:

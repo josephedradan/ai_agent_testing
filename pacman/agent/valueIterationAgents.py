@@ -33,8 +33,8 @@ from typing import Union, Tuple
 
 
 # import collections
-from gridworld_rename.main_grid_world import Gridworld
-from pacman import util
+from gridworld.main_grid_world import Gridworld
+from common import util
 from pacman.agent.agent_value_estimation import ValueEstimationAgent
 
 

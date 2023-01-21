@@ -30,7 +30,7 @@ from typing import TYPE_CHECKING
 from typing import Tuple
 from typing import Union
 
-from pacman import util
+from common import util
 from pacman.agent.search_problem.common import HashableGoal
 from pacman.agent.search_problem.search_problem_corners import CornersProblem
 

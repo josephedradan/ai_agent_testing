@@ -21,7 +21,7 @@ Tags:
 Reference:
 
 """
-from pacman import util
+from common import util
 from pacman.feature_extractor_coordiate.feature_extrator import FeatureExtractor
 
 

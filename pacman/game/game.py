@@ -32,8 +32,8 @@ from typing import Union
 from pacman.agent.agent import Agent
 from pacman.game.game_state import GameState
 from pacman.graphics.graphics_pacman import GraphicsPacman
-from pacman.util import TimeoutFunction
-from pacman.util import TimeoutFunctionException
+from common.util import TimeoutFunction
+from common.util import TimeoutFunctionException
 
 if TYPE_CHECKING:
     from pacman.game.rules.game_rules_classic import ClassicGameRules

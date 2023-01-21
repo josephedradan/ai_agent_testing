@@ -15,10 +15,9 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
-from typing import List
 from typing import TYPE_CHECKING
 
-from pacman import util
+from common import util
 from pacman.agent.agent import Agent
 from pacman.game.directions import Action
 from pacman.game.directions import Directions

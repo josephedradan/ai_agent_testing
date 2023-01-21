@@ -38,7 +38,7 @@ from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
     from pacman.question.question import Question
-    from pacman.grader import Grader
+    from common.grader import Grader
 
 
 def getStatesFromPath(start, path):

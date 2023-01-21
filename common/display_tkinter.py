@@ -403,13 +403,13 @@ class DisplayTkinter(Display):
         if self._root_window == None:
             time.sleep(secs)
         else:
-            self._root_window.update_idletasks()
-            self._root_window.update()
+            # self._root_window.update_idletasks()
+            # self._root_window.update()
 
             self._root_window.after(int(1000 * secs), self._root_window.quit)
 
             # .mainloop() calls .update_idletasks() and .update() while looping
-            # self._root_window.mainloop()  # FIXME: STRANGE CALL, ALSO REMOVING IT WILL MAKE THE CODE GO FAST
+            self._root_window.mainloop()  # FIXME: STRANGE CALL, ALSO REMOVING IT WILL MAKE THE CODE GO FAST
 
     def end_graphics(self):
         # global _root_window, _canvas, _mouse_enabled

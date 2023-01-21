@@ -38,7 +38,7 @@ from pacman.test_case.common import checkSolution
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
-    from pacman.grader import Grader
+    from common.grader import Grader
 
 
 class HeuristicGrade(TestCase):

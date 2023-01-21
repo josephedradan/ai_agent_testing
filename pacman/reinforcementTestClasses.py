@@ -11,15 +11,15 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-
-from pprint import PrettyPrinter
-
-pp = PrettyPrinter()
-VERBOSE = False
-
-LIVINGREWARD = -0.1
-NOISE = 0.2
-
+#
+# from pprint import PrettyPrinter
+#
+# pp = PrettyPrinter()
+# VERBOSE = False
+#
+# LIVINGREWARD = -0.1
+# NOISE = 0.2
+#
 
 
 

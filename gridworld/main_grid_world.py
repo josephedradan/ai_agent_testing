@@ -22,8 +22,8 @@ Reference:
 
 """
 from common import mdp
-from gridworld_rename.grid_grid_world import GridGridworld
-from pacman import util
+from gridworld.grid_grid_world import GridGridworld
+from common import util
 
 
 class Gridworld(mdp.MarkovDecisionProcess):

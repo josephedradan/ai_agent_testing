@@ -27,7 +27,7 @@ from typing import Any
 from typing import Dict
 
 from pacman.analysis import question8
-from pacman.grader import Grader
+from common.grader import Grader
 from pacman.test_case import TestCase
 
 

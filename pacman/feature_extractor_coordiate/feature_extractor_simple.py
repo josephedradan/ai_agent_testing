@@ -21,7 +21,9 @@ Tags:
 Reference:
 
 """
+from common import util
 from pacman.feature_extractor_coordiate.feature_extrator import FeatureExtractor
+from pacman.game.actions import Actions
 
 
 def closestFood(pos, food, walls):

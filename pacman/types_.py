@@ -23,6 +23,6 @@ Reference:
 """
 from typing import Callable
 
-from pacman.grader import Grader
+from common.grader import Grader
 
 TYPE_CALLABLE_THAT_NEEDS_GRADER = Callable[[Grader], bool]

@@ -26,9 +26,9 @@ from functools import reduce
 from typing import Any
 from typing import Dict
 
-from gridworld_rename.main_grid_world import Gridworld
+from gridworld.main_grid_world import Gridworld
 from pacman.agent.valueIterationAgents import ValueIterationAgent
-from pacman.grader import Grader
+from common.grader import Grader
 from pacman.test_case import TestCase
 from pacman.test_case.test_case_grid_policy_test import parseGrid
 

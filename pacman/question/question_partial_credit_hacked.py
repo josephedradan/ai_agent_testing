@@ -23,7 +23,7 @@ Reference:
 """
 # Question in which predict credit is given for test cases with a ``points'' property.
 # All other tests are mandatory and must be passed.
-from pacman.grader import Grader
+from common.grader import Grader
 from pacman.question import Question
 from pacman.test_case import TestCase
 from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER

@@ -21,11 +21,13 @@ Tags:
 Reference:
 
 """
-from gridworld_rename.main_grid_world import Gridworld
+from gridworld.main_grid_world import Gridworld
 
 
-def getCliffGrid2():
+def getDiscountGrid():
     grid = [[' ', ' ', ' ', ' ', ' '],
-            [8, 'S', ' ', ' ', 10],
-            [-100, -100, -100, -100, -100]]
+            [' ', '#', ' ', ' ', ' '],
+            [' ', '#', 1, '#', 10],
+            ['S', ' ', ' ', ' ', ' '],
+            [-10, -10, -10, -10, -10]]
     return Gridworld(grid)

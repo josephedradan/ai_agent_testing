@@ -35,7 +35,7 @@ from pacman.game.layout import Layout
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
-    from pacman.grader import Grader
+    from common.grader import Grader
 
 
 class HeuristicTest(TestCase):

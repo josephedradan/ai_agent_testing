@@ -25,10 +25,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pacman import util
+from common import util
 from pacman.agent.agent_ghost import AgentGhost
 from pacman.game.actions import Actions
-from pacman.util import manhattanDistance
+from common.util import manhattanDistance
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState
