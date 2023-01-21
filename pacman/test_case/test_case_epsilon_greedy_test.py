@@ -21,15 +21,22 @@ Tags:
 Reference:
 
 """
+import os
 import sys
 from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
 
+from gridworld_rename.main_grid_world import Gridworld
+
+print("OS PATH APPENDED",os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "FROM", __file__)  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+from pprint import pprint
+pprint(sys.path)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from pacman.agent.qlearningAgents import QLearningAgent
 from pacman.grader import Grader
-from pacman.gridworld import Gridworld
-from pacman.gridworld import GridworldEnvironment
+from gridworld_rename.gridworld import GridworldEnvironment
 from pacman.question.question import Question
 from pacman.test_case import TestCase
 from pacman.test_case.test_case_grid_policy_test import parseGrid

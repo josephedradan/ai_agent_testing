@@ -25,7 +25,7 @@ Reference:
 from pacman.agent.search_problem import SearchProblem
 from pacman.game.actions import Actions
 from pacman.game.directions import Directions
-from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
+from pacman.graphics.graphics_pacman_display import GraphicsPacmanDisplay
 
 
 class PositionSearchProblem(SearchProblem):
@@ -76,7 +76,7 @@ class PositionSearchProblem(SearchProblem):
 
             # TODO: JOSEPH CUSTOM HERE
 
-            if isinstance(self.graphics, GraphicsPacmanDisplayTkinter):
+            if isinstance(self.graphics, GraphicsPacmanDisplay):
                 self.graphics.drawExpandedCells(self._visitedlist)
 
         return isGoal

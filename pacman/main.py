@@ -69,7 +69,7 @@ from pacman.parser import get_dict_kwargs
 
 from pacman.game import layout as _layout
 from pacman.game.rules.game_rules_classic import ClassicGameRules
-from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
+from pacman.graphics.graphics_pacman_display import GraphicsPacmanDisplay
 
 
 #############################
@@ -81,7 +81,7 @@ def default(str):
     return str + ' [Default: %default]'
 
 
-def arg_parser_pacman(argv: Union[Sequence[str], None] = None):
+def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Namespace:
     """
     Processes the command used to run pacman from the command line.
     """
@@ -121,7 +121,7 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None):
                         dest='graphics_pacman',
                         choices=[graphics_pacman_.__name__ for graphics_pacman_ in LIST_GRAPHICS_PACMAN],
                         type=str,
-                        default=GraphicsPacmanDisplayTkinter.__name__,
+                        default=GraphicsPacmanDisplay.__name__,
                         help="What graphics to display the game with (default: %(default)s)"
                         )
     # parser.add_argument('-t', '--textGraphics',
@@ -272,7 +272,7 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None):
     #     graphics_pacman_null.SLEEP_TIME = argparse_args.time_frame  # TODO: WTF THIS Y
     #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
     # else:
-    #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanDisplayTkinter(
+    #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanDisplay(
     #         zoom=argparse_args.zoom,
     #         time_frame=argparse_args.time_frame
     #     )
@@ -424,8 +424,8 @@ def run_pacman_games(layout: _layout.Layout,
 
         #####
         # TODO JOSEPH SPEICAL
-        # TODO: ALT GRAPHICS: GraphicsPacmanNull, GraphicsPacmanDisplayTkinter
-        if isinstance(agent_pacman, AgentKeyboard) and isinstance(display_game, GraphicsPacmanDisplayTkinter):
+        # TODO: ALT GRAPHICS: GraphicsPacmanNull, GraphicsPacmanDisplay
+        if isinstance(agent_pacman, AgentKeyboard) and isinstance(display_game, GraphicsPacmanDisplay):
             agent_pacman.set_display(display_game.get_display())
 
         ####

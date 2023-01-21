@@ -26,7 +26,7 @@ from functools import reduce
 from typing import Any
 from typing import Dict
 
-from pacman import gridworld
+from gridworld_rename.main_grid_world import Gridworld
 from pacman.agent.valueIterationAgents import ValueIterationAgent
 from pacman.grader import Grader
 from pacman.test_case import TestCase
@@ -38,7 +38,7 @@ class ValueIterationTest(TestCase):
     def __init__(self, question, testDict):
         super(ValueIterationTest, self).__init__(question, testDict)
         self.discount = float(testDict['discount'])
-        self.grid = gridworld.Gridworld(parseGrid(testDict['grid']))
+        self.grid = Gridworld(parseGrid(testDict['grid']))
         iterations = int(testDict['valueIterations'])
         if 'noise' in testDict: self.grid.setNoise(float(testDict['noise']))
         if 'livingReward' in testDict: self.grid.setLivingReward(float(testDict['livingReward']))

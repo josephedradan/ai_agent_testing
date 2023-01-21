@@ -21,10 +21,11 @@ Tags:
 Reference:
 
 """
-from enum import Enum
+
+from common.action import Action
 
 
-class Directions():
+class Directions(Action):
     NORTH = 'North'
     SOUTH = 'South'
     EAST = 'East'
@@ -44,18 +45,4 @@ class Directions():
                EAST: WEST,
                WEST: EAST,
                STOP: STOP}
-
-
-Action = Directions
-
-
-class Temp(Enum):
-    NORTH = "North"
-
-    def __str__(self):
-        return self.value
-
-print(Directions.NORTH)
-print(Temp.NORTH)
-print(Directions.NORTH == Temp.NORTH)
 

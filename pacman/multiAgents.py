@@ -23,7 +23,7 @@ import util
 from pacman.agent.agent import Agent
 from pacman.agent.state_agent import StateAgent
 from pacman.game.game_state import GameState
-from pacman.game.grid import Grid
+from pacman.game.grid_pacman import GridPacman
 
 
 # def evaluation_function_food_and_ghost(successorGameState: GameState,
@@ -52,7 +52,7 @@ from pacman.game.grid import Grid
 #
 #     list_position_capsule: List[Tuple[int, int]] = successorGameState.getCapsules()
 #
-#     grid_food: Grid = successorGameState.getFood()
+#     grid_food: GridPacman = successorGameState.getFood()
 #
 #     list_position_food: List[Tuple[int, int]] = grid_food.asList()
 #
@@ -238,7 +238,7 @@ from pacman.game.grid import Grid
 #         # Useful information you can extract from a GameState (agent_pacman_.py)
 #         successorGameState: GameState = game_state_current.generatePacmanSuccessor(action)
 #         newPos: Tuple[int, int] = successorGameState.getPacmanPosition()
-#         newFood: Grid = successorGameState.getFood()
+#         newFood: GridPacman = successorGameState.getFood()
 #         newGhostStates: List[StateAgent] = successorGameState.getGhostStates()
 #         newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
 #

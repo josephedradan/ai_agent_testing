@@ -42,9 +42,9 @@ class Question(ABC):
     DICT_K_NAME_SUBCLASS_QUESTION_V_SUBCLASS_QUESTION = {}
 
     def __init__(self, dict_question: Dict[str, Any], graphics_pacman: GraphicsPacman):
-        self.POINTS_MAX: int = int(dict_question['max_points'])
+        self.INT_POINTS_MAX: int = int(dict_question['max_points'])
 
-        self.POINTS_EXTRA = int(dict_question.get('extra_points', 0))
+        self.INT_POINTS_EXTRA = int(dict_question.get('extra_points', 0))
 
         self.list_tuple__test_case__callable_that_wraps_test_case: TYPE_LIST_TUPLE__TEST_CASE__TYPE_CALLABLE_THAT_NEEDS_GRADER = []
 
@@ -61,7 +61,7 @@ class Question(ABC):
         return self.graphics_pacman
 
     def get_points_max(self) -> int:
-        return self.POINTS_MAX
+        return self.INT_POINTS_MAX
 
     def add_test_case_and_callable_that_wraps_test_case(self, test_case_object: TestCase,
                                                         callable_that_wraps_test_case: Callable):

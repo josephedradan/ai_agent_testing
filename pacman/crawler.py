@@ -15,9 +15,8 @@
 #!/usr/bin/python
 import math
 from math import pi as PI
-import time
-import environment
-import random
+from common import environment
+
 
 class CrawlingRobotEnvironment(environment.Environment):
 

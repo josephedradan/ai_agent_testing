@@ -34,6 +34,7 @@ from typing import TYPE_CHECKING
 
 from pacman import main
 from pacman.agent import *  # IMPORTANT: THIS IS NEEDED FOR eval TO WORK CORRECTLY
+from pacman.game.game import Game
 from pacman.game.layout import get_layout
 from pacman.main import arg_parser_pacman
 from pacman.main import run_pacman_games
@@ -116,8 +117,7 @@ class EvalAgentTest(TestCase):
 
             random.seed(self.seed)
 
-
-            list_game = run_pacman_games(
+            list_game: List[Game] = run_pacman_games(
                 layout_,
                 agent_object,
                 self.list_agent_ghost,
@@ -130,8 +130,10 @@ class EvalAgentTest(TestCase):
 
         time_total = time.time() - time_start
 
-        stats = {'time': time_total, 'wins': [g.game_state.isWin() for g in list_game].count(True),
-                 'games': list_game, 'scores': [g.game_state.getScore() for g in list_game],
+        stats = {'time': time_total,
+                 'wins': [g.game_state.isWin() for g in list_game].count(True),
+                 'games': list_game,
+                 'scores': [g.game_state.getScore() for g in list_game],
                  'timeouts': [g.agentTimeout for g in list_game].count(True),
                  'crashes': [g.agentCrashed for g in list_game].count(True)}
 
@@ -148,10 +150,26 @@ class EvalAgentTest(TestCase):
                         points += 1
             return (passed, points, value, minimum, thresholds, name)
 
-        results = [gradeThreshold(averageScore, self.scoreMinimum, self.scoreThresholds, "average score"),
-                   gradeThreshold(nonTimeouts, self.nonTimeoutMinimum,
-                                  self.nonTimeoutThresholds, "list_game not timed out"),
-                   gradeThreshold(wins, self.winsMinimum, self.winsThresholds, "wins")]
+        results = [
+            gradeThreshold(
+                averageScore,
+                self.scoreMinimum,
+                self.scoreThresholds,
+                "average score"
+            ),
+            gradeThreshold(
+                nonTimeouts,
+                self.nonTimeoutMinimum,
+                self.nonTimeoutThresholds,
+                "Games not timed out"
+            ),
+            gradeThreshold(
+                wins,
+                self.winsMinimum,
+                self.winsThresholds,
+                "wins"
+            )
+        ]
 
         totalPoints = 0
         for passed, points, value, minimum, thresholds, name in results:

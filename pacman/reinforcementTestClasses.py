@@ -12,21 +12,10 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-import os
-import sys
-import time
-from functools import reduce
-from hashlib import sha1
 from pprint import PrettyPrinter
-
-
-import pacman
-from util import Experiences
 
 pp = PrettyPrinter()
 VERBOSE = False
-
-import gridworld
 
 LIVINGREWARD = -0.1
 NOISE = 0.2

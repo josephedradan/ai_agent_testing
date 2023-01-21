@@ -30,7 +30,7 @@ from pacman.agent.search_problem import FoodSearchProblem
 from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
 
 if TYPE_CHECKING:
-    from pacman.game.grid import Grid
+    from pacman.game.grid_pacman import GridPacman
 
 
 @lru_cache(maxsize=None)  # Cache repeated inputs
@@ -66,12 +66,12 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     other hand, inadmissible or inconsistent heuristics may find optimal
     solutions, so be careful.
 
-    The state is a tuple ( pacmanPosition, foodGrid ) where foodGrid is a Grid
+    The state is a tuple ( pacmanPosition, foodGrid ) where foodGrid is a GridPacman
     (see game.py) of either True or False. You can call foodGrid.asList() to get
     a list of food coordinates instead.
 
     If you want access to info like walls, list_capsule, etc., you can query the
-    problem.  For example, problem.walls gives you a Grid of where the walls
+    problem.  For example, problem.walls gives you a GridPacman of where the walls
     are.
 
     If you want to *store* information to be reused in other calls to the
@@ -81,7 +81,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    foodGrid: Grid
+    foodGrid: GridPacman
     position: tuple
 
     position, foodGrid = state

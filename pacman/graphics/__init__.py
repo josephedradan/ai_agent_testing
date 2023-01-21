@@ -25,8 +25,8 @@ from typing import Type
 from typing import Union
 
 from pacman.graphics.graphics_pacman import GraphicsPacman
-from pacman.graphics.graphics_pacman_display_tkiner import FirstPersonGraphics
-from pacman.graphics.graphics_pacman_display_tkiner import GraphicsPacmanDisplayTkinter
+from pacman.graphics.graphics_pacman_display import FirstPersonGraphics
+from pacman.graphics.graphics_pacman_display import GraphicsPacmanDisplay
 from pacman.graphics.graphics_pacman_null import GraphicsPacmanNull
 from pacman.graphics.graphics_pacman_terminal import GraphicsPacmanTerminal
 
@@ -34,7 +34,7 @@ LIST_GRAPHICS_PACMAN = [
     # GraphicsPacman,  # This is abstract
     GraphicsPacmanNull,
     GraphicsPacmanTerminal,
-    GraphicsPacmanDisplayTkinter,
+    GraphicsPacmanDisplay,
     FirstPersonGraphics,
 ]
 

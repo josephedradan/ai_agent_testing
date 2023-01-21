@@ -17,13 +17,21 @@ import os
 import random
 import re
 import sys
+# imports from python standard library
+
+from typing import Any
 from typing import Callable
+from typing import Dict
+from typing import List
 from typing import Sequence
+from typing import TYPE_CHECKING
+from typing import Tuple
+from typing import Type
+from typing import Union
 
-from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
-
-print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
-# pprint(sys.path_file_test)
+print("OS PATH APPENDED",os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "FROM",__file__)  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+# from pprint import pprint
+# pprint(sys.path)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from pacman.test_case import TestCase
@@ -31,18 +39,14 @@ from pacman.test_case import get_subclass_test_case
 from pacman.grader import Grader
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.parser import ParseFile
-
-# imports from python standard library
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
-from typing import Type
-from typing import Union
+from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
 
 import projectParams
 from pacman.question.question import Question
 from pacman.question import get_subclass_question
+
+if TYPE_CHECKING:
+    pass
 
 random.seed(0)
 
@@ -53,7 +57,7 @@ random.seed(0)
 #     pass
 
 # register arguments and set default values
-def arg_parser_autograder(argv: Union[Sequence[str], None] = None):
+def arg_parser_autograder(argv: Union[Sequence[str], None] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Run public tests on student code')
 
     parser.set_defaults(bool_generate_solutions=False,
@@ -398,7 +402,8 @@ def evaluate(bool_generate_solutions: bool,
             # TODO: MIGHT BE EvalAgentTest, GraphGameTreeTest, PacmanGameTreeTest, IT IS A CLASS
             test_case: TestCase = subclass_test_case(question_object, dict_file_test)
 
-            def get_callable_that_wraps_test_case(test_case_: TestCase, path_test_solution_: str) -> TYPE_CALLABLE_THAT_NEEDS_GRADER:
+            def get_callable_that_wraps_test_case(test_case_: TestCase,
+                                                  path_test_solution_: str) -> TYPE_CALLABLE_THAT_NEEDS_GRADER:
                 grader_: Grader
 
                 if bool_generate_solutions:
@@ -481,15 +486,15 @@ def evaluate(bool_generate_solutions: bool,
 
 def get_graphics_pacman(graphicsByDefault: Union[bool, None], options=None) -> GraphicsPacman:
     # from multiagent.graphics import graphicsDisplay
-    # return graphicsDisplay.GraphicsPacmanDisplayTkinter(1, frameTime=.05)
+    # return graphicsDisplay.GraphicsPacmanDisplay(1, frameTime=.05)
 
     graphics = graphicsByDefault
     if options is not None and options.noGraphics:
         graphics = False
     if graphics:
         try:
-            from pacman.graphics import graphics_pacman_display_tkiner
-            return graphics_pacman_display_tkiner.GraphicsPacmanDisplayTkinter(
+            from pacman.graphics import graphics_pacman_display
+            return graphics_pacman_display.GraphicsPacmanDisplay(
                 time_frame=0.05
             )
         except ImportError:
@@ -559,7 +564,7 @@ if __name__ == '__main__':
         evaluate(
             argparse_args.bool_generate_solutions,
             # options.path_dir_containing_question,
-            # 'test_cases/search',
+            # 'test_cases/seardwch',
             # 'test_cases/multiagent',
             # 'test_cases/reinforcement',
             'test_cases',

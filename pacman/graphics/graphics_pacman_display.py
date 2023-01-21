@@ -23,11 +23,11 @@ from typing import Union
 
 from pacman.game.directions import Directions
 from pacman.game.layout import Layout
-from pacman.graphics.display import Display
-from pacman.graphics.display_tkinter import DisplayTkinter
-from pacman.graphics.display_tkinter import colorToVector
-from pacman.graphics.display_tkinter import formatColor
-from pacman.graphics.display_tkinter import writePostscript
+from common.display import Display
+from common.display_tkinter import DisplayTkinter
+from common.display_tkinter import colorToVector
+from common.display_tkinter import formatColor
+from common.display_tkinter import writePostscript
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 ###########################
@@ -192,7 +192,7 @@ class InfoPane:
         pass
 
 
-class GraphicsPacmanDisplayTkinter(GraphicsPacman):
+class GraphicsPacmanDisplay(GraphicsPacman):
     def __init__(self,
                  display: Union[Display, None] = DisplayTkinter(),
                  time_frame: float = 0.0,
@@ -780,9 +780,9 @@ class GraphicsPacmanDisplayTkinter(GraphicsPacman):
 
 
 # TODO: WTF IS THIS SHIT
-class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
+class FirstPersonGraphics(GraphicsPacmanDisplay):
     # def __init__(self, zoom=1.0, showGhosts=True, capture=False, frameTime=0):
-    #     GraphicsPacmanDisplayTkinter.__init__(self, zoom, time_frame=frameTime)
+    #     GraphicsPacmanDisplay.__init__(self, zoom, time_frame=frameTime)
     #     self.showGhosts = showGhosts
     #     self.capture = capture
 
@@ -794,7 +794,7 @@ class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
         ####
 
         self.isBlue = isBlue
-        GraphicsPacmanDisplayTkinter._startGraphics(self, game_state_data)
+        GraphicsPacmanDisplay._startGraphics(self, game_state_data)
         # Initialize distribution images
         walls = game_state_data.layout.walls
         dist = []
@@ -829,7 +829,7 @@ class FirstPersonGraphics(GraphicsPacmanDisplayTkinter):
         if not self.showGhosts and not ghostState.is_pacman and ghostState.get_position()[1] > 1:
             return (-1000, -1000)
         else:
-            return GraphicsPacmanDisplayTkinter.getPosition(self, ghostState)
+            return GraphicsPacmanDisplay.getPosition(self, ghostState)
 
 
 def add(x, y):

@@ -28,10 +28,10 @@ from pprint import PrettyPrinter
 from typing import Any
 from typing import Dict
 
+from gridworld_rename.main_grid_world import Gridworld
 from pacman.agent.qlearningAgents import ApproximateQAgent
 from pacman.grader import Grader
-from pacman.gridworld import Gridworld
-from pacman.gridworld import GridworldEnvironment
+from gridworld_rename.gridworld import GridworldEnvironment
 from pacman.test_case import TestCase
 from pacman.test_case.test_case_grid_policy_test import parseGrid
 from pacman.util import Experiences

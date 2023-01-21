@@ -38,11 +38,11 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
 if TYPE_CHECKING:
     from pacman.game.directions import Action
     from pacman.game.game_state import GameState
-    from pacman.game.grid import Grid
+    from pacman.game.grid_pacman import GridPacman
 
 
 @lru_cache(maxsize=None)
-def _get_heuristic_cost_ucs_crude(grid_wall: Grid,
+def _get_heuristic_cost_ucs_crude(grid_wall: GridPacman,
                                   position_start: tuple,
                                   position_goal: tuple,
                                   cost_min_current: Union[int, None]) -> Union[int, None]:
@@ -141,7 +141,7 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
     game_state_successor_pacman: GameState = currentGameState
 
     # position_pacman_new: Tuple[int, int] = game_state_successor_pacman.getPacmanPosition()
-    # position_food_new: Grid = game_state_successor_pacman.getFood()
+    # position_food_new: GridPacman = game_state_successor_pacman.getFood()
     #
     # list_agent_state_ghost_new: List[StateAgent] = game_state_successor_pacman.getGhostStates()
     # list_agent_state_ghost_scared_time: List[float] = [ghostState.scaredTimer for ghostState in
@@ -305,7 +305,7 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
             Process finished with exit code 0
 
     """
-    grid_wall: Grid = game_state_successor_pacman.getWalls()
+    grid_wall: GridPacman = game_state_successor_pacman.getWalls()
 
     def evaluation_function_heuristic_cost_ucs_crude(position_1, position_2):
         return _get_heuristic_cost_ucs_crude(grid_wall, position_1, position_2, None)

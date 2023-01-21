@@ -29,12 +29,20 @@ from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
 
 
 class QuestionPartialCredit(Question):
-    """
-    Fails any test which returns False, otherwise doesn't effect the grader object.
-    Partial credit tests will add the required points.
-    """
 
     def execute(self, grader: Grader) -> bool:
+        """
+        Fails any test which returns False, otherwise doesn't effect the grader object.
+        Partial credit tests will add the required points.
+
+        Notes:
+            Loop over all callable_that_wraps_test_case
+                If a callable_that_wraps_test_case fails:
+                    Get no credit
+                    return False
+            return True
+
+        """
         grader.assignZeroCredit()
 
         test_case: TestCase

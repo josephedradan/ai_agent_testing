@@ -32,10 +32,20 @@ from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
 class QuestionPartialCreditHacked(Question):
 
     def execute(self, grader: Grader) -> bool:
+        """
+        Notes:
+            bool_a_test_has_failed = False
+
+            Loop over all callable_that_wraps_test_case
+                Get points if test succeeded
+                If callable_that_wraps_test_case failed
+                    bool_a_test_has_failed = True
+            return bool_a_test_has_failed
+        """
         grader.assignZeroCredit()
 
-        points_earned = 0
-        passed = True
+        points_earned: int = 0
+        bool_a_test_has_failed: bool = False
 
         test_case: TestCase
         callable_that_wraps_test_case: TYPE_CALLABLE_THAT_NEEDS_GRADER
@@ -44,17 +54,16 @@ class QuestionPartialCreditHacked(Question):
 
             bool_test_passed: bool = callable_that_wraps_test_case(grader)
 
-            if "points" in test_case.dict_file_test:
-                if bool_test_passed:
-                    points_earned += float(test_case.dict_file_test["points"])
-            else:
-                passed = passed and bool_test_passed
+            if bool_test_passed:
+                if "points" in test_case.dict_file_test:
+                    points_earned += int(test_case.dict_file_test["points"])
 
-        # FIXME: Below terrible hack to match q3's logic
-        if int(points_earned) == self.POINTS_MAX and not passed:
+                if not bool_a_test_has_failed:
+                    bool_a_test_has_failed = True
+
+        if points_earned == self.INT_POINTS_MAX and not bool_a_test_has_failed:
             grader.assignZeroCredit()
-            return passed
         else:
-            grader.addPoints(int(points_earned))
+            grader.addPoints(points_earned)
 
-        return passed
+        return bool_a_test_has_failed

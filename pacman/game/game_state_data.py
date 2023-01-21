@@ -27,11 +27,11 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
+from common.grid import reconstituteGrid
 from pacman.agent.state_agent import StateAgent
 from pacman.game.container_vector import ContainerVector
 from pacman.game.directions import Directions
-from pacman.game.grid import Grid
-from pacman.game.grid import reconstituteGrid
+from pacman.game.grid_pacman import GridPacman
 from pacman.game.layout import Layout
 from pacman.util import nearestPoint
 
@@ -43,7 +43,7 @@ class GameStateData:
         Generates a new data packet by copying information from its predecessor.
         """
         if game_state_date_previous is not None:
-            self.grid_food: Grid = game_state_date_previous.grid_food.shallowCopy()
+            self.grid_food: GridPacman = game_state_date_previous.grid_food.shallowCopy()
             self.list_capsule: List[Tuple[int, ...]] = game_state_date_previous.list_capsule.copy()
             self.list_state_agent: List[StateAgent] = self.get_list_state_agent_copy(
                 game_state_date_previous.list_state_agent
@@ -122,13 +122,13 @@ class GameStateData:
 
     def __str__(self):
         width, height = self.layout.width, self.layout.height
-        map = Grid(width, height)
+        map = GridPacman(width, height)
         if type(self.grid_food) == type((1, 2)):
             self.grid_food = reconstituteGrid(self.grid_food)
         for x in range(width):
             for y in range(height):
-                walls: Grid
-                food: Grid
+                walls: GridPacman
+                food: GridPacman
                 food, walls = self.grid_food, self.layout.walls
                 map[x][y] = self._get_str_food_or_wall_from_bool_food_or_wall(food[x][y], walls[x][y])
 
@@ -180,7 +180,7 @@ class GameStateData:
         """
         Creates an initial game game_state from a layout array (see layout.py).
         """
-        self.grid_food: Grid = layout.food.copy()
+        self.grid_food: GridPacman = layout.food.copy()
 
         # self.list_capsule = []
         self.list_capsule: List[Tuple[int, ...]] = layout.list_capsule[:]

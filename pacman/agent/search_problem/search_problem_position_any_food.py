@@ -27,7 +27,7 @@ from pacman.agent.search_problem.search_problem_position import PositionSearchPr
 from pacman.game.game_state import GameState
 
 if TYPE_CHECKING:
-    from pacman.game.grid import Grid
+    from pacman.game.grid_pacman import GridPacman
 
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -67,8 +67,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
 
-        self.food: Grid
-        self.walls: Grid
+        self.food: GridPacman
+        self.walls: GridPacman
 
         # Note that self.food is the same a foodGrid from problem 7 and foodGrid CHANGES OVER (foodHeuristic)
         list_position_food_remaining = self.food.asList()

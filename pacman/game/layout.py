@@ -21,7 +21,7 @@ from typing import Union
 
 from pacman import constants
 from pacman.game.directions import Directions
-from pacman.game.grid import Grid
+from pacman.game.grid_pacman import GridPacman
 from pacman.util import manhattanDistance
 
 VISIBILITY_MATRIX_CACHE = {}
@@ -37,8 +37,8 @@ class Layout:
         self.width: int = len(list_str_layout_line[0])
         self.height: int = len(list_str_layout_line)
 
-        self.walls: Grid = Grid(self.width, self.height, False)
-        self.food: Grid = Grid(self.width, self.height, False)
+        self.walls: GridPacman = GridPacman(self.width, self.height, False)
+        self.food: GridPacman = GridPacman(self.width, self.height, False)
         self.list_capsule: List[Tuple[int, ...]] = []
 
         self.agentPositions: List[Tuple[bool, Tuple[int, ...]]] = []
@@ -66,7 +66,7 @@ class Layout:
                 Directions.EAST
             ]
 
-            visibility = Grid(self.width, self.height, {
+            visibility = GridPacman(self.width, self.height, {
                 Directions.NORTH: set(),
                 Directions.SOUTH: set(),
                 Directions.EAST: set(),

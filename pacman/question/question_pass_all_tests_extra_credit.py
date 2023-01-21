@@ -47,6 +47,6 @@ class QuestionPassAllTestsExtraCredit(Question):
             return False
         else:
             grader.assignFullCredit()
-            grader.addPoints(self.POINTS_EXTRA)
+            grader.addPoints(self.INT_POINTS_EXTRA)
 
         return True

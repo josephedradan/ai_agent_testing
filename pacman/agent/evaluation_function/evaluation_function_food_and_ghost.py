@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from pacman.agent.state_agent import StateAgent
     from pacman.game.directions import Action
     from pacman.game.game_state import GameState
-    from pacman.game.grid import Grid
+    from pacman.game.grid_pacman import GridPacman
 
 
 def evaluation_function_food_and_ghost_helper(game_state: GameState,
@@ -62,7 +62,7 @@ def evaluation_function_food_and_ghost_helper(game_state: GameState,
 
     list_position_capsule: List[Tuple[int, int]] = game_state.getCapsules()
 
-    grid_food: Grid = game_state.getFood()
+    grid_food: GridPacman = game_state.getFood()
 
     list_position_food: List[Tuple[int, int]] = grid_food.asList()
 
@@ -204,7 +204,7 @@ def evaluation_function_food_and_ghost(game_state_current: GameState, action: Ac
     # Useful information you can extract from a GameState (agent_pacman_.py)
     game_state_successor: GameState = game_state_current.generatePacmanSuccessor(action)
     newPos: Tuple[int, int] = game_state_successor.getPacmanPosition()
-    newFood: Grid = game_state_successor.getFood()
+    newFood: GridPacman = game_state_successor.getFood()
     newGhostStates: List[StateAgent] = game_state_successor.getGhostStates()
     newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
 
@@ -336,7 +336,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: GameState, a
     # Useful information you can extract from a GameState (agent_pacman_.py)
     game_state_successor: GameState = currentGameState.generatePacmanSuccessor(action)
     newPos: Tuple[int, int] = game_state_successor.getPacmanPosition()
-    newFood: Grid = game_state_successor.getFood()
+    newFood: GridPacman = game_state_successor.getFood()
     newGhostStates: List[StateAgent] = game_state_successor.getGhostStates()
     newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
 

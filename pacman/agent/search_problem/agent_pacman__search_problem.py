@@ -35,7 +35,7 @@ from pacman.agent.search_problem.common import HashableGoal
 from pacman.agent.search_problem.search_problem_corners import CornersProblem
 
 if TYPE_CHECKING:
-    from pacman.game.grid import Grid
+    from pacman.game.grid_pacman import GridPacman
 
 
 def _get_path_distance(position_initial: tuple, permutation: Iterable):
@@ -277,7 +277,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     admissible (as well as consistent).
     """
     corners: tuple = problem.corners  # These are the position_corner_local_shortest coordinates
-    walls: Grid = problem.walls  # These are the walls of the maze, as a Grid (game.py)
+    walls: GridPacman = problem.walls  # These are the walls of the maze, as a GridPacman (game.py)
 
     "*** YOUR CODE HERE ***"
 

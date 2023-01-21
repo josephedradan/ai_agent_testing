@@ -217,7 +217,7 @@ class GameState:
 
     def getFood(self):
         """
-        Returns a Grid of boolean food indicator variables.
+        Returns a GridPacman of boolean food indicator variables.
 
         Grids can be accessed via list notation, so to check
         if there is food at (x,y), just call
@@ -229,7 +229,7 @@ class GameState:
 
     def getWalls(self):
         """
-        Returns a Grid of boolean wall indicator variables.
+        Returns a GridPacman of boolean wall indicator variables.
 
         Grids can be accessed via list notation, so to check
         if there is a wall at (x,y), just call

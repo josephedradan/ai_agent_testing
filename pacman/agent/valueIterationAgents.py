@@ -33,9 +33,9 @@ from typing import Union, Tuple
 
 
 # import collections
+from gridworld_rename.main_grid_world import Gridworld
 from pacman import util
 from pacman.agent.agent_value_estimation import ValueEstimationAgent
-from pacman.gridworld import Gridworld
 
 
 class ValueIterationAgent(ValueEstimationAgent):

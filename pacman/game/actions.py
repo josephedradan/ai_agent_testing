@@ -31,7 +31,7 @@ from pacman.game.directions import Directions
 
 if TYPE_CHECKING:
     from pacman.game.container_vector import ContainerVector
-    from pacman.game.grid import Grid
+    from pacman.game.grid_pacman import GridPacman
 
 
 class Actions:
@@ -82,7 +82,7 @@ class Actions:
         return (dx * speed, dy * speed)
 
     @staticmethod
-    def getPossibleActions(container_vector: ContainerVector, walls: Grid):
+    def getPossibleActions(container_vector: ContainerVector, walls: GridPacman):
         possible = []
         x, y = container_vector.position
         x_int, y_int = int(x + 0.5), int(y + 0.5)
@@ -101,7 +101,7 @@ class Actions:
         return possible
 
     @staticmethod
-    def getLegalNeighbors(position: Tuple[int, int], walls: Grid) -> List[Tuple[int, int]]:
+    def getLegalNeighbors(position: Tuple[int, int], walls: GridPacman) -> List[Tuple[int, int]]:
 
         x, y = position
         x_int, y_int = int(x + 0.5), int(y + 0.5)

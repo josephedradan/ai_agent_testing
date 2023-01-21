@@ -43,7 +43,7 @@ from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeur
 from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
-from pacman.game.grid import Grid
+from pacman.game.grid_pacman import GridPacman
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState
@@ -230,15 +230,15 @@ class ClosestDotSearchAgent(SearchAgent):
         # Here are some useful elements of the startState
 
         # position_start: tuple = game_state.getPacmanPosition()
-        # food: Grid = game_state.getFood()
-        # walls: Grid = game_state.getWalls()
+        # food: GridPacman = game_state.getFood()
+        # walls: GridPacman = game_state.getWalls()
         problem: AnyFoodSearchProblem = AnyFoodSearchProblem(game_state)
 
         "*** YOUR CODE HERE ***"
 
         position_start: tuple
-        food: Grid
-        walls: Grid
+        food: GridPacman
+        walls: GridPacman
         problem: AnyFoodSearchProblem
 
         # print(type(position_start))
