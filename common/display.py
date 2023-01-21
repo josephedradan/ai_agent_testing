@@ -100,3 +100,7 @@ class Display(ABC):
     @abstractmethod
     def move_circle(self, id, pos, r, endpoints=None):
         pass
+
+    @abstractmethod
+    def clear_screen(self):
+        pass

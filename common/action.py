@@ -22,5 +22,12 @@ Reference:
 
 """
 
+
 class Action:
-    pass
+    """
+    Generic Action object for representing an action defined for reinforcement leaning or just for Agents to know
+    about the world. Idk
+
+    """
+
+

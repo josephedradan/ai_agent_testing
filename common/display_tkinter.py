@@ -17,8 +17,8 @@ import sys
 import time
 import tkinter
 
-from pacman.graphics.display import Display
-from pacman.graphics.display import formatColor
+from common.display import Display
+from common.display import formatColor
 
 _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
@@ -32,8 +32,6 @@ _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 # _canvas_col = None      # Current colour (set to black below)
 # _canvas_tsize = 12
 # _canvas_tserifs = 0
-
-
 
 
 def colorToVector(color):
@@ -203,7 +201,7 @@ class DisplayTkinter(Display):
     ##########################################
     ##########################################
 
-    def remove_from_screen(self,x):
+    def remove_from_screen(self, x):
 
         self._canvas.delete(x)
         # d_o_e(d_w)
@@ -383,7 +381,6 @@ class DisplayTkinter(Display):
 
     def get_keys_waiting(self):
         # global _keyswaiting
-
         keys = list(self._keyswaiting.keys())
         self._keyswaiting = {}
         return keys
@@ -392,6 +389,7 @@ class DisplayTkinter(Display):
 
     def get_wait_for_keys(self):
         keys = []
+        print("--------------keys", keys)
         while not keys:
             keys = self.get_keys_pressed()
             self.sleep(0.05)
@@ -406,8 +404,12 @@ class DisplayTkinter(Display):
             time.sleep(secs)
         else:
             self._root_window.update_idletasks()
+            self._root_window.update()
+
             self._root_window.after(int(1000 * secs), self._root_window.quit)
-            self._root_window.mainloop()
+
+            # .mainloop() calls .update_idletasks() and .update() while looping
+            # self._root_window.mainloop()  # FIXME: STRANGE CALL, ALSO REMOVING IT WILL MAKE THE CODE GO FAST
 
     def end_graphics(self):
         # global _root_window, _canvas, _mouse_enabled
@@ -425,18 +427,18 @@ class DisplayTkinter(Display):
             self._mouse_enabled = 0
             self._clear_keys()
 
+    def clear_screen(self):
+        # global _canvas_x, _canvas_y
+
+        self._canvas.delete('all')
+        self._draw_background()
+        self._canvas_x, self._canvas_y = 0, self._canvas_ys
+
 
 #    global _root_window
 #    _root_window.destroy()
 #    _root_window = None
 # print "DESTROY"
-
-
-def clear_screen(background=None):
-    global _canvas_x, _canvas_y
-    _canvas.delete('all')
-    draw_background()
-    _canvas_x, _canvas_y = 0, _canvas_ys
 
 
 def image(pos, file="../../blueghost.gif"):

@@ -22,8 +22,8 @@ Reference:
 
 """
 from common import mdp
+from gridworld_rename.grid_grid_world import GridGridworld
 from pacman import util
-from pacman.game.grid import Grid
 
 
 class Gridworld(mdp.MarkovDecisionProcess):
@@ -105,7 +105,7 @@ class Gridworld(mdp.MarkovDecisionProcess):
             for y in range(self.grid.height):
                 if self.grid[x][y] == 'S':
                     return (x, y)
-        raise Exception('Grid has no start state')
+        raise Exception('GridPacman has no start state')
 
     def isTerminal(self, state):
         """
@@ -186,7 +186,7 @@ class Gridworld(mdp.MarkovDecisionProcess):
 
 def makeGrid(gridString):
     width, height = len(gridString[0]), len(gridString)
-    grid = Grid(width, height)
+    grid = GridGridworld(width, height)
     for ybar, line in enumerate(gridString):
         y = height - ybar - 1
         for x, el in enumerate(line):

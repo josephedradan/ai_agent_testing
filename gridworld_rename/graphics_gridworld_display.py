@@ -13,7 +13,6 @@
 
 
 from functools import reduce
-from time import sleep
 from typing import Union
 
 from common.display import Display
@@ -37,33 +36,44 @@ MARGIN = -1
 class GraphicsGridworldDisplay:
 
     def __init__(self,
-                 # display: Union[Display, None] = DisplayTkinter(),
                  gridworld,
                  size=120,
-                 speed=1.0):
+                 speed=1.0,
+                 display: Union[Display, None] = DisplayTkinter(),
+                 ):
 
+        print("INIT CALLED")
         # FIXME CHANGE LATER
-        self.display: Union[Display, None] = DisplayTkinter()
+        self.display: Union[DisplayTkinter, None] = DisplayTkinter()
 
         self.gridworld = gridworld
         self.size = size
         self.speed = speed
 
+        self.count = 1
+
     def start(self):
-        self.setup(self.gridworld, size=self.size)
+        self.setup( size=self.size)
 
     def pause(self):
         self.display.get_wait_for_keys()
 
+    # TODO: IMPORTANT
     def displayValues(self, agent, currentState=None, message='Agent Values'):
         values = util.Counter()
         policy = {}
         states = self.gridworld.getStates()
+
         for state in states:
             values[state] = agent.getValue(state)
             policy[state] = agent.getPolicy(state)
         self.drawValues(values, policy, currentState, message)
-        sleep(0.05 / self.speed)
+        # self.pause()  # TODO: WTF
+        self.display.sleep(0.05 / self.speed)
+        # self.display.sleep(0.1)
+
+        # print(0.05 / self.speed)  # speed in 1 so 0.05
+        # self.display.sleep(0.0125)
 
     def displayNullValues(self, currentState=None, message=''):
         values = util.Counter()
@@ -74,7 +84,7 @@ class GraphicsGridworldDisplay:
             # policy[state] = agent.getPolicy(state)
         self.drawNullValues(self.gridworld, currentState, '')
         # drawValues(self.gridworld, values, policy, currentState, message)
-        sleep(0.05 / self.speed)
+        self.display.sleep(0.05 / self.speed)
 
     def displayQValues(self, agent, currentState=None, message='Agent Q-Values'):
         qValues = util.Counter()
@@ -83,9 +93,9 @@ class GraphicsGridworldDisplay:
             for action in self.gridworld.getPossibleActions(state):
                 qValues[(state, action)] = agent.getQValue(state, action)
         self.drawQValues(qValues, currentState, message)
-        sleep(0.05 / self.speed)
+        self.display.sleep(0.05 / self.speed)
 
-    def setup(self, gridworld, title="Gridworld Display", size=120):
+    def setup(self, title="Gridworld Display", size=120):
         global GRID_SIZE, MARGIN, SCREEN_WIDTH, SCREEN_HEIGHT, GRID_HEIGHT
 
         grid = self.gridworld.grid
@@ -121,8 +131,9 @@ class GraphicsGridworldDisplay:
                     self.drawNullSquare(x, y, False, isExit, isCurrent)
 
         pos = to_screen(((grid.width - 1.0) / 2.0, - 0.8))
-        self.display.draw_self.display.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
+        self.display.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
 
+    # TODO: IMPORTANT SHIT
     def drawValues(self, values, policy, currentState=None, message='State Values'):
         grid = self.gridworld.grid
 
@@ -148,9 +159,10 @@ class GraphicsGridworldDisplay:
                         action = 'exit'
                     valString = '%.2f' % value
                     self.drawSquare(x, y, value, minValue, maxValue, valString, action, False, isExit, isCurrent)
-        pos = to_screen(((grid.width - 1.0) / 2.0, - 0.8))
 
+        pos = to_screen(((grid.width - 1.0) / 2.0, - 0.8))
         self.display.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
+        # self.pause() # TODO: WTF
 
     def drawQValues(self, qValues, currentState=None, message='State-Action Q-Values'):
         grid = self.gridworld.grid
@@ -203,36 +215,38 @@ class GraphicsGridworldDisplay:
 
         (screen_x, screen_y) = to_screen((x, y))
         self.square((screen_x, screen_y),
-               0.5 * GRID_SIZE,
-               color=square_color,
-               filled=1,
-               width=1)
+                    0.5 * GRID_SIZE,
+                    color=square_color,
+                    filled=1,
+                    width=1)
 
         self.square((screen_x, screen_y),
-               0.5 * GRID_SIZE,
-               color=EDGE_COLOR,
-               filled=0,
-               width=3)
+                    0.5 * GRID_SIZE,
+                    color=EDGE_COLOR,
+                    filled=0,
+                    width=3)
 
         if isTerminal and not isObstacle:
             self.square((screen_x, screen_y),
-                   0.4 * GRID_SIZE,
-                   color=EDGE_COLOR,
-                   filled=0,
-                   width=2)
+                        0.4 * GRID_SIZE,
+                        color=EDGE_COLOR,
+                        filled=0,
+                        width=2)
             self.display.draw_text((screen_x, screen_y),
-                                    TEXT_COLOR,
-                                    str(grid[x][y]),
-                                    "Courier", -24, "bold", "c")
+                                   TEXT_COLOR,
+                                   str(grid[x][y]),
+                                   "Courier", -24, "bold", "c")
 
-            text_color = TEXT_COLOR
+        text_color = TEXT_COLOR
 
-            if not isObstacle and isCurrent:
-                self.display.draw_circle((screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR, fillColor=LOCATION_COLOR)
+        if not isObstacle and isCurrent:
+            self.display.draw_circle((screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR,
+                                     fillColor=LOCATION_COLOR)
 
-                # if not isObstacle:
-                #   self.display.draw_text(( (screen_x, screen_y), text_color, valStr, "Courier", 24, "bold", "c")
+        # if not isObstacle:
+        #   self.display.draw_text( (screen_x, screen_y), text_color, valStr, "Courier", 24, "bold", "c")
 
+    # TODO: IMPORTANT
     def drawSquare(self, x, y, val, min, max, valStr, action, isObstacle, isTerminal, isCurrent):
         square_color = getColor(val, min, max)
 
@@ -241,21 +255,21 @@ class GraphicsGridworldDisplay:
 
         (screen_x, screen_y) = to_screen((x, y))
         self.square((screen_x, screen_y),
-               0.5 * GRID_SIZE,
-               color=square_color,
-               filled=1,
-               width=1)
+                    0.5 * GRID_SIZE,
+                    color=square_color,
+                    filled=1,
+                    width=1)
         self.square((screen_x, screen_y),
-               0.5 * GRID_SIZE,
-               color=EDGE_COLOR,
-               filled=0,
-               width=3)
+                    0.5 * GRID_SIZE,
+                    color=EDGE_COLOR,
+                    filled=0,
+                    width=3)
         if isTerminal and not isObstacle:
             self.square((screen_x, screen_y),
-                   0.4 * GRID_SIZE,
-                   color=EDGE_COLOR,
-                   filled=0,
-                   width=2)
+                        0.4 * GRID_SIZE,
+                        color=EDGE_COLOR,
+                        filled=0,
+                        width=2)
 
         if action == 'north':
             self.display.draw_polygon(
@@ -277,7 +291,14 @@ class GraphicsGridworldDisplay:
         text_color = TEXT_COLOR
 
         if not isObstacle and isCurrent:
-            self.display.draw_circle((screen_x, screen_y), 0.1 * GRID_SIZE, outlineColor=LOCATION_COLOR, fillColor=LOCATION_COLOR)
+            print('FUCK YOU', (screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR)
+            x = self.display.draw_circle(
+                (screen_x, screen_y),
+                0.1 * GRID_SIZE,
+                outlineColor=LOCATION_COLOR,
+                fillColor=LOCATION_COLOR
+            )
+            print(x)
 
         if not isObstacle:
             self.display.draw_text((screen_x, screen_y), text_color, valStr, "Courier", -30, "bold", "c")
@@ -313,11 +334,13 @@ class GraphicsGridworldDisplay:
                 self.display.draw_polygon((center, nw, sw), wedge_color, filled=1, smoothed=False)
                 # self.display.draw_text((w, text_color, valStr, "Courier", 8, "bold", "w")
 
-        self.square((screen_x, screen_y),
-               0.5 * GRID_SIZE,
-               color=EDGE_COLOR,
-               filled=0,
-               width=3)
+        self.square(
+            (screen_x, screen_y),
+            0.5 * GRID_SIZE,
+            color=EDGE_COLOR,
+            filled=0,
+            width=3
+        )
         self.display.draw_line(ne, sw, color=EDGE_COLOR)
         self.display.draw_line(nw, se, color=EDGE_COLOR)
 
@@ -344,7 +367,6 @@ class GraphicsGridworldDisplay:
                 # self.display.draw_polygon( (center, nw, sw), wedge_color, filled = 1, smooth = 0)
                 self.display.draw_text(w, text_color, valStr, "Courier", h, "bold", "w")
 
-
     # FIXME: TEST ME OUT YO WTF IS COING ON HERE
     def square(self, pos, size, color, filled, width):
         x, y = pos
@@ -357,6 +379,20 @@ class GraphicsGridworldDisplay:
                                          fillColor=color, filled=filled, width=width, smoothed=False)
 
 
+
+    def drawsss(self):
+        self.count += 2
+        print("#"* 10, "drawsss", "#"* 10)
+        print(self.display._canvas)
+        self.display.draw_circle(
+            (262.5, 112.5),
+            0.1 * GRID_SIZE,
+            outlineColor=LOCATION_COLOR,
+            fillColor=LOCATION_COLOR
+        )
+
+
+
 def getColor(val, minVal, max):
     r, g = 0.0, 0.0
     if val < 0 and minVal < 0:
@@ -364,7 +400,6 @@ def getColor(val, minVal, max):
     if val > 0 and max > 0:
         g = val * 0.65 / max
     return formatColor(r, g, 0.0)
-
 
 
 def to_screen(point):

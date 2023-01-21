@@ -14,8 +14,18 @@ import argparse
 import os
 import random
 import sys
+import time
 from typing import Sequence
 from typing import Union
+
+from common.display_tkinter import DisplayTkinter
+
+print("OS PATH APPENDED", os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "FROM",
+      __file__)  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+from pprint import pprint
+pprint(sys.path)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 from gridworld_rename.grid import get_callable_get_grid_world
 from gridworld_rename.gridworld_environment import GridworldEnvironment
@@ -25,11 +35,6 @@ from pacman.agent import valueIterationAgents
 from gridworld_rename.graphics_gridworld_display import GraphicsGridworldDisplay
 from gridworld_rename.textGridworldDisplay import TextGridworldDisplay
 
-print("OS PATH APPENDED", os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "FROM",
-      __file__)  # FIXME: GHETTO SOLUTION TO MISSING MODULE
-# from pprint import pprint
-# pprint(sys.path)
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from common import mdp
 
@@ -59,8 +64,8 @@ def getUserAction(state, actionFunction):
 
 def printString(x): print(x)
 
-
-def runEpisode(agent, environment, discount, decision, display, message, pause, episode):
+# TODO: Main loop
+def runEpisode(agent, environment, discount, decision, display, message, pause, episode, display_):
     returns = 0
     totalDiscount = 1.0
     environment.reset()
@@ -70,14 +75,21 @@ def runEpisode(agent, environment, discount, decision, display, message, pause, 
 
         # DISPLAY CURRENT STATE
         state = environment.getCurrentState()
-        display(state)
+        display(state)  # TODO: HERERERSR
         pause()
+
+        print("state", state)
+
+        display_.drawsss()
+        # display_.pause()
+
 
         # END IF IN A TERMINAL STATE
         actions = environment.getPossibleActions(state)
         if len(actions) == 0:
             message("EPISODE " + str(episode) + " COMPLETE: RETURN WAS " + str(returns) + "\n")
             return returns
+
 
         # GET ACTION (USUALLY FROM AGENT)
         action = decision(state)
@@ -244,6 +256,10 @@ if __name__ == '__main__':
         # sys.argv  # DONT USE THIS UNLESS USING optparse
         sys.argv[1:]
     )
+    print("argparse_args")
+    print(argparse_args)
+    print("#" * 100)
+
     ###########################
     # GET THE GRIDWORLD
     ###########################
@@ -261,7 +277,12 @@ if __name__ == '__main__':
 
     display = TextGridworldDisplay(mdp)
     if not argparse_args.textDisplay:
-        display = GraphicsGridworldDisplay(mdp, argparse_args.gridSize, argparse_args.speed)
+
+        tkinter_display = DisplayTkinter()  # TODO: JOSEPH CUSTOM
+
+        display: GraphicsGridworldDisplay= GraphicsGridworldDisplay(mdp, argparse_args.gridSize, argparse_args.speed,tkinter_display)
+
+
     try:
         display.start()
     except KeyboardInterrupt:
@@ -331,8 +352,15 @@ if __name__ == '__main__':
 
             display.displayValues(a, message="VALUES AFTER " + str(argparse_args.iters) + " ITERATIONS")
             display.pause()
+            print("PAUSE DONE 1")
+            display.displayValues(a, message="FFFFFFFFFFFF " + str(argparse_args.iters) + " ITERATIONS")
+            display.pause()
+            print("PAUSE DONE 2")
+
             display.displayQValues(a, message="Q-VALUES AFTER " + str(argparse_args.iters) + " ITERATIONS")
             display.pause()
+            print("PAUSE DONE 3")
+
     except KeyboardInterrupt:
         sys.exit(0)
 
@@ -343,7 +371,7 @@ if __name__ == '__main__':
             displayCallback = lambda state: display.displayNullValues(state)
         else:
             if argparse_args.agent in ('random', 'value', 'asynchvalue', 'priosweepvalue'):
-                displayCallback = lambda state: display.displayValues(a, state, "CURRENT VALUES")
+                displayCallback = lambda state: display.displayValues(a, state, "CURRENT VALUES")  # TODO: THE CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
             if argparse_args.agent == 'q': displayCallback = lambda state: display.displayQValues(a, state,
                                                                                                   "CURRENT Q-VALUES")
 
@@ -371,7 +399,9 @@ if __name__ == '__main__':
     for episode in range(1, argparse_args.episodes + 1):
         returns += runEpisode(a, env, argparse_args.discount, decisionCallback, displayCallback, messageCallback,
                               pauseCallback,
-                              episode)
+                              episode,
+                              display
+                              )
     if argparse_args.episodes > 0:
         print()
         print("AVERAGE RETURNS FROM START STATE: " + str((returns + 0.0) / argparse_args.episodes))

@@ -21,3 +21,11 @@ Tags:
 Reference:
 
 """
+from gridworld_rename.main_grid_world import Gridworld
+
+
+def getBridgeGrid():
+    grid = [['#', -100, -100, -100, -100, -100, '#'],
+            [1, 'S', ' ', ' ', ' ', ' ', 10],
+            ['#', -100, -100, -100, -100, -100, '#']]
+    return Gridworld(grid)

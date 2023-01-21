@@ -21,3 +21,11 @@ Tags:
 Reference:
 
 """
+from gridworld_rename.main_grid_world import Gridworld
+
+
+def getBookGrid():
+    grid = [[' ', ' ', ' ', +1],
+            [' ', '#', ' ', -1],
+            ['S', ' ', ' ', ' ']]
+    return Gridworld(grid)

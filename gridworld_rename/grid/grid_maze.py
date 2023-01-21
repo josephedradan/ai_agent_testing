@@ -21,3 +21,13 @@ Tags:
 Reference:
 
 """
+from gridworld_rename.main_grid_world import Gridworld
+
+
+def getMazeGrid():
+    grid = [[' ', ' ', ' ', +1],
+            ['#', '#', ' ', '#'],
+            [' ', '#', ' ', ' '],
+            [' ', '#', '#', ' '],
+            ['S', ' ', ' ', ' ']]
+    return Gridworld(grid)
