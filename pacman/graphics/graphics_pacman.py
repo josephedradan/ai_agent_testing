@@ -28,7 +28,7 @@ from abc import abstractmethod
 from typing import TYPE_CHECKING
 from typing import Union
 
-from common.display import Display
+from common.graphics.display import Display
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState

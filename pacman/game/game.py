@@ -57,7 +57,8 @@ class Game:
                  rules: ClassicGameRules,
                  index_starting: int = 0,
                  bool_mute_agents: bool = False,
-                 bool_catch_exceptions: bool = False):
+                 bool_catch_exceptions: bool = False
+                 ):
 
         self.agentCrashed: bool = False
         self.list_agent: List[Agent] = list_agent

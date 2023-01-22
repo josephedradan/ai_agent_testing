@@ -23,11 +23,11 @@ from typing import Union
 
 from pacman.game.directions import Directions
 from pacman.game.layout import Layout
-from common.display import Display
-from common.display_tkinter import DisplayTkinter
-from common.display_tkinter import colorToVector
-from common.display_tkinter import formatColor
-from common.display_tkinter import writePostscript
+from common.graphics.display import Display
+from common.graphics.display_tkinter import DisplayTkinter
+from common.graphics.display_tkinter import colorToVector
+from common.graphics.display_tkinter import formatColor
+from common.graphics.display_tkinter import writePostscript
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 ###########################

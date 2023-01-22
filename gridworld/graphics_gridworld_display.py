@@ -15,9 +15,9 @@
 from functools import reduce
 from typing import Union
 
-from common.display import Display
-from common.display import formatColor
-from common.display_tkinter import DisplayTkinter
+from common.graphics.display import Display
+from common.graphics.display import formatColor
+from common.graphics.display_tkinter import DisplayTkinter
 from common import util
 
 BACKGROUND_COLOR = formatColor(0, 0, 0)

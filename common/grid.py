@@ -42,10 +42,11 @@ class Grid:
     The __str__ method constructs an output that is oriented like a agent_pacman_ board.
     """
 
-    def __init__(self, width: int, height: int, initialValue=False, bitRepresentation=None):
+    def __init__(self, width: int, height: int, initialValue: bool=False, bitRepresentation=None):
 
         if initialValue not in [False, True]:
             raise Exception('Grids can only contain booleans')
+
         self.CELLS_PER_INT = 30
 
         self.width: int = width

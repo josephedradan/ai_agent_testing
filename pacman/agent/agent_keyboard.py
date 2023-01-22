@@ -20,8 +20,8 @@ from typing import Union
 from pacman.agent.agent import Agent
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
-from common.display import Display
-from common.display_tkinter import DisplayTkinter
+from common.graphics.display import Display
+from common.graphics.display_tkinter import DisplayTkinter
 
 if TYPE_CHECKING:
     from pacman.game.game_state import GameState

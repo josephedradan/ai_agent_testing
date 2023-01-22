@@ -19,7 +19,7 @@ from typing import Sequence
 from typing import Tuple
 from typing import Union
 
-from common.display_tkinter import DisplayTkinter
+from common.graphics.display_tkinter import DisplayTkinter
 from pacman.agent.agent_value_estimation import ValueEstimationAgent
 from pacman.agent.valueIterationAgents import ValueIterationAgent
 
@@ -389,10 +389,12 @@ if __name__ == '__main__':
             callback_display = lambda state: display.displayNullValues(state)
         else:
             if argparse_args.agent in ('random', 'value', 'asynchvalue', 'priosweepvalue'):
-                callback_display = lambda state: display.displayValues(agent, state,
+                callback_display = lambda state: display.displayValues(agent,
+                                                                       state,
                                                                        "CURRENT VALUES")  # TODO: THE CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
             if argparse_args.agent == 'q':
-                callback_display = lambda state: display.displayQValues(agent, state,
+                callback_display = lambda state: display.displayQValues(agent,
+                                                                        state,
                                                                         "CURRENT Q-VALUES")
 
     callback_message = lambda x: printString(x)

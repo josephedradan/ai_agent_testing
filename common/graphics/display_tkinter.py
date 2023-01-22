@@ -16,9 +16,12 @@ import os.path
 import sys
 import time
 import tkinter
+from typing import Dict
+from typing import List
+from typing import Union
 
-from common.display import Display
-from common.display import formatColor
+from common.graphics.display import Display
+from common.graphics.display import formatColor
 
 _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
@@ -39,26 +42,26 @@ def colorToVector(color):
 
 
 if _Windows:
-    _canvas_tfonts = ['times new roman', 'lucida console']
+    _CANVAS_TFONTS = ['times new roman', 'lucida console']
 else:
-    _canvas_tfonts = ['times', 'lucidasans-24']
+    _CANVAS_TFONTS = ['times', 'lucidasans-24']
     pass  # XXX need defaults here
 
 
 class DisplayTkinter(Display):
 
     def __init__(self):
-        self._root_window = None  # The root window for graphics output
-        self._canvas = None  # The canvas which holds graphics
-        self._canvas_xs = None  # Size of canvas object
-        self._canvas_ys = None
-        self._canvas_x = None  # Current position on canvas
-        self._canvas_y = None
+        self._root_window: Union[tkinter.Tk, None] = None  # The root window for graphics output
+        self._canvas: Union[tkinter.Canvas, None] = None  # The canvas which holds graphics
+        self._canvas_xs: float = 0  # Size of canvas object
+        self._canvas_ys: float = 0
+        self._canvas_x: float = 0  # Current position on canvas
+        self._canvas_y: float = 0
         self._canvas_col = None  # Current colour (set to black below)
-        self._canvas_tsize = 12
-        self._canvas_tserifs = 0
+        self._canvas_tsize: int = 12
+        self._canvas_tserifs: List[str] = _CANVAS_TFONTS
 
-        self._bg_color = None
+        self._bg_color: Union[str, None] = None
 
         self._leftclick_loc = None
         self._rightclick_loc = None
@@ -66,8 +69,8 @@ class DisplayTkinter(Display):
 
         # We bind to key-down and key-up events.
 
-        self._keysdown = {}
-        self._keyswaiting = {}
+        self._keysdown: Dict[str, int] = {}
+        self._keyswaiting: Dict[str, int] = {}
         # This holds an unprocessed key release.  We delay key releases by up to
         # one call to keys_pressed() to get round a problem with auto repeat.
         self._got_release = None
@@ -172,7 +175,8 @@ class DisplayTkinter(Display):
             # global _got_release
             # remap_arrows(event)
             try:
-                del self._keysdown[event.keysym]  # TODO INTERESTING CODE...
+                # del self._keysdown[event.keysym]  # TODO INTERESTING CODE...
+                self._keysdown.pop(event.keysym)
             except:
                 pass
             self._got_release = 1
