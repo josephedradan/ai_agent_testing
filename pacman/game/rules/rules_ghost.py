@@ -52,10 +52,11 @@ class GhostRules(RulesAgent):
         Ghosts cannot stop, and cannot turn around unless they
         reach a dead end, but can turn 90 degrees at intersections.
         """
-        container_vector = state.getGhostState(index_agent).container_vector
+        container_position_vector = state.getGhostState(index_agent).container_position_vector
         possibleActions = Actions.getPossibleActions(
-            container_vector, state.game_state_data.layout.walls)
-        reverse = Actions.reverseDirection(container_vector.direction)
+            container_position_vector, state.game_state_data.layout.walls
+        )
+        reverse = Actions.reverseDirection(container_position_vector.direction)
         if Directions.STOP in possibleActions:
             possibleActions.remove(Directions.STOP)
         if reverse in possibleActions and len(possibleActions) > 1:
@@ -75,15 +76,15 @@ class GhostRules(RulesAgent):
         if ghostState.scaredTimer > 0:
             speed /= 2.0
         vector = Actions.directionToVector(action, speed)
-        ghostState.container_vector = ghostState.container_vector.get_container_vector_successor(
+        ghostState.container_position_vector = ghostState.container_position_vector.get_container_position_vector_successor(
             vector)
 
     @staticmethod
     def decrementTimer(ghostState):
         timer = ghostState.scaredTimer
         if timer == 1:
-            ghostState.container_vector.position = nearestPoint(
-                ghostState.container_vector.position)
+            ghostState.container_position_vector.position = nearestPoint(
+                ghostState.container_position_vector.position)
         ghostState.scaredTimer = max(0, timer - 1)
 
     @staticmethod
@@ -92,12 +93,12 @@ class GhostRules(RulesAgent):
         if agentIndex == 0:  # Pacman just moved; Anyone can kill him
             for index in range(1, len(state.game_state_data.list_state_agent)):
                 ghostState = state.game_state_data.list_state_agent[index]
-                ghostPosition = ghostState.container_vector.get_position()
+                ghostPosition = ghostState.container_position_vector.get_position()
                 if GhostRules.canKill(pacmanPosition, ghostPosition):
                     GhostRules.collide(state, ghostState, index)
         else:
             ghostState = state.game_state_data.list_state_agent[agentIndex]
-            ghostPosition = ghostState.container_vector.get_position()
+            ghostPosition = ghostState.container_position_vector.get_position()
             if GhostRules.canKill(pacmanPosition, ghostPosition):
                 GhostRules.collide(state, ghostState, agentIndex)
 
@@ -120,4 +121,4 @@ class GhostRules(RulesAgent):
 
     @staticmethod
     def placeGhost(state, ghostState):
-        ghostState.container_vector = ghostState.container_vector_start
+        ghostState.container_position_vector = ghostState.container_position_vector_start

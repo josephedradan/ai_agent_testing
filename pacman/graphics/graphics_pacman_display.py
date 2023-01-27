@@ -493,14 +493,14 @@ class GraphicsPacmanDisplay(GraphicsPacman):
         self.display.refresh()
 
     def getPosition(self, agentState):
-        if agentState.container_vector == None:
+        if agentState.container_position_vector == None:
             return (-1000, -1000)
         return agentState.get_position()
 
     def getDirection(self, agentState):
-        if agentState.container_vector == None:
+        if agentState.container_position_vector == None:
             return Directions.STOP
-        return agentState.container_vector.get_direction()
+        return agentState.container_position_vector.get_direction()
 
     def finish(self):
         self.display.end_graphics()

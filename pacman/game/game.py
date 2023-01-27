@@ -129,7 +129,7 @@ class Game:
         self.graphics_pacman.initialize(self.game_state.game_state_data)
 
         # print(self.state, type(self.state), "self.state", type(self.state.data))
-        # print("FFFFF")
+
 
         self.numMoves: int = 0
 
@@ -191,7 +191,6 @@ class Game:
         while not self.gameOver:  # TODO: GAME LOOP IS RIGHT HERE
             # Fetch the next agent
             agent = self.list_agent[index_agent]
-
             move_time = 0
             skip_action = False
 
@@ -254,8 +253,7 @@ class Game:
 
                         action = timed_func(observation)
                     except TimeoutFunctionException:
-                        print("Agent %d timed out on a single move!" %
-                              index_agent, file=sys.stderr)
+                        print("Agent {} timed out on a single move!".format(index_agent), file=sys.stderr)
                         self.agentTimeout = True
                         self._agentCrash(index_agent, quiet=True)
                         self._unmute()
@@ -290,7 +288,7 @@ class Game:
                     self._unmute()
                     return
             else:
-                action = agent.getAction(observation)
+                action = agent.getAction(observation)  # # TODO: AGENT MOVES HERE
 
             ##################################################
 
@@ -319,11 +317,12 @@ class Game:
             ###self.graphics_pacman.update( self.game_state.makeObservation(idx).data )
 
             # Allow for game specific conditions (winning, losing, etc.)
-            self.rules.process(self.game_state, self)
+            self.rules.process(self.game_state, self)  # TODO: CAN AFFECT gameOver
 
             # Track progress
             if index_agent == number_of_agents + 1:
                 self.numMoves += 1
+
             # Next agent
             index_agent = (index_agent + 1) % number_of_agents
 
@@ -346,4 +345,5 @@ class Game:
                     self._agentCrash(index_agent)
                     self._unmute()
                     return
+
         self.graphics_pacman.finish()

@@ -41,7 +41,8 @@ class AgentPacmanReflex(AgentPacman):
     def __init__(self,
                  index: int = 0,
                  evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
-                         evaluation_function_food_and_ghost)
+                         evaluation_function_food_and_ghost
+                 )
 
                  ):
         super().__init__(index, evaluation_function)
@@ -60,7 +61,7 @@ class AgentPacmanReflex_Attempt_1(AgentPacmanReflex):  # NOQA
     def __init__(self,
                  index: int = 0,
                  evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
-                         evaluation_function_food_and_ghost__attempt_1)
-
+                         evaluation_function_food_and_ghost__attempt_1
+                 )
                  ):
         super().__init__(index, evaluation_function)

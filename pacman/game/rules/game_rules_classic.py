@@ -80,29 +80,29 @@ class ClassicGameRules:
     def set_quiet(self, bool_quiet: bool):
         self.bool_quiet = bool_quiet
 
-    def process(self, game_state: GameState, game):
+    def process(self, game_state: GameState, game: Game):
         """
         Checks to see whether it is time to end the game.
         """
         if game_state.isWin():
-            self.win(game_state, game)
+            self._win(game_state, game)
         if game_state.isLose():
-            self.lose(game_state, game)
+            self._lose(game_state, game)
 
-    def win(self, game_state: GameState, game):
+    def _win(self, game_state: GameState, game: Game):
         if not self.bool_quiet:
-            print("Pacman emerges victorious! Score: %d" % game_state.game_state_data.score)
+            print(f"Pacman emerges victorious! Score: {game_state.game_state_data.score}")
         game.gameOver = True
 
-    def lose(self, game_state: GameState, game):
+    def _lose(self, game_state: GameState, game: Game):
         if not self.bool_quiet:
-            print("Pacman died! Score: %d" % game_state.game_state_data.score)
+            print(f"Pacman died! Score: {game_state.game_state_data.score}")
         game.gameOver = True
 
-    def getProgress(self, game):
+    def getProgress(self, game: Game):
         return float(game.game_state.getNumFood()) / self.initialState.getNumFood()
 
-    def agentCrash(self, game, agentIndex):
+    def agentCrash(self, game: Game, agentIndex):
         if agentIndex == 0:
             print("Pacman crashed")
         else:

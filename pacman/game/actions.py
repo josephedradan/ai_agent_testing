@@ -30,7 +30,7 @@ from typing import Tuple
 from pacman.game.directions import Directions
 
 if TYPE_CHECKING:
-    from pacman.game.container_vector import ContainerVector
+    from pacman.game.container_position_vector import ContainerPositionVector
     from pacman.game.grid_pacman import GridPacman
 
 
@@ -82,14 +82,14 @@ class Actions:
         return (dx * speed, dy * speed)
 
     @staticmethod
-    def getPossibleActions(container_vector: ContainerVector, walls: GridPacman):
+    def getPossibleActions(container_position_vector: ContainerPositionVector, walls: GridPacman):
         possible = []
-        x, y = container_vector.position
+        x, y = container_position_vector.position
         x_int, y_int = int(x + 0.5), int(y + 0.5)
 
         # In between grid points, all agents must continue straight
         if (abs(x - x_int) + abs(y - y_int) > Actions.TOLERANCE):
-            return [container_vector.get_direction()]
+            return [container_position_vector.get_direction()]
 
         for dir, vec in Actions._directionsAsList:
             dx, dy = vec

@@ -37,6 +37,7 @@ from pacman.agent import *  # IMPORTANT: THIS IS NEEDED FOR eval TO WORK CORRECT
 from pacman.game.game import Game
 from pacman.game.layout import get_layout
 from pacman.main import arg_parser_pacman
+from pacman.main import get_dict_namespace
 from pacman.main import run_pacman_games
 from pacman.test_case.test_case import TestCase
 
@@ -57,9 +58,9 @@ class EvalAgentTest(TestCase):
 
         pacman_args = dict_file_test.get('pacmanParams')
         if pacman_args and isinstance(pacman_args, str):
-            self.dict_file_test.update(arg_parser_pacman(pacman_args.split()))
+            self.dict_file_test.update(get_dict_namespace(arg_parser_pacman(pacman_args.split())))
             pprint("LKL")
-            pprint(arg_parser_pacman(pacman_args.split()))
+            pprint(get_dict_namespace(arg_parser_pacman(pacman_args.split())))
             pprint("LKL")
 
             self.__special_condition = True

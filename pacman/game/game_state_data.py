@@ -29,7 +29,7 @@ from typing import Union
 
 from common.grid import reconstituteGrid
 from pacman.agent.state_agent import StateAgent
-from pacman.game.container_vector import ContainerVector
+from pacman.game.container_position_vector import ContainerPositionVector
 from pacman.game.directions import Directions
 from pacman.game.grid_pacman import GridPacman
 from pacman.game.layout import Layout
@@ -135,10 +135,10 @@ class GameStateData:
         for staet_agent in self.list_state_agent:
             if staet_agent is None:
                 continue
-            if staet_agent.container_vector is None:
+            if staet_agent.container_position_vector is None:
                 continue
-            x, y = [int(i) for i in nearestPoint(staet_agent.container_vector.position)]
-            agent_dir = staet_agent.container_vector.direction
+            x, y = [int(i) for i in nearestPoint(staet_agent.container_position_vector.position)]
+            agent_dir = staet_agent.container_position_vector.direction
             if staet_agent.is_pacman:
                 map[x][y] = self._get_str_pacman_from_direction(agent_dir)
             else:
@@ -198,6 +198,6 @@ class GameStateData:
                 else:
                     count_number_of_agent_ghosts += 1
             self.list_state_agent.append(
-                StateAgent(ContainerVector(pos, Directions.STOP), isPacman)
+                StateAgent(ContainerPositionVector(pos, Directions.STOP), isPacman)
             )
         self._eaten = [False for a in self.list_state_agent]

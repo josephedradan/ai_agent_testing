@@ -45,6 +45,8 @@ import argparse
 import os
 import random
 import sys
+from typing import Any
+from typing import Dict
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -86,7 +88,7 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
     Processes the command used to run pacman from the command line.
     """
     description = """
-    USAGE:      python pacman.py <argparse_args>
+    USAGE:      python pacman.py <namespace>
     EXAMPLES:   (1) python pacman.py
                     - starts an interactive game
                 (2) python pacman.py --layout smallClassic --zoom 2
@@ -136,7 +138,6 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
                         help='Generate minimal output and no graphics',
                         # default=False
                         )
-
     parser.add_argument('-g', '--ghost',
                         dest='str_class_agent_ghost',
                         help='the ghost agent TYPE in the list_agent_ghost module to use',
@@ -200,96 +201,97 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
                         default=30
                         )
 
-    argparse_args = parser.parse_args(argv)
+    namespace = parser.parse_args(argv)
+
+    return namespace
+
+def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
 
     print("VARS")
-    pprint(vars(argparse_args))
+    pprint(vars(namespace))
     print("=------=")
-
-    # if len(otherjunk) != 0:
-    #     raise Exception('Command line input not understood: ' + str(otherjunk))
 
     dict_k_name_arg_v_arg = {}
 
     # Fix the random seed
-    if argparse_args.fixRandomSeed:
+    if namespace.fixRandomSeed:
         random.seed('cs188')
 
     # Choose a layout
-    dict_k_name_arg_v_arg['layout'] = _layout.get_layout(argparse_args.layout)
+    dict_k_name_arg_v_arg['layout'] = _layout.get_layout(namespace.layout)
 
     if dict_k_name_arg_v_arg['layout'] == None:
-        raise Exception("The layout " + argparse_args.layout + " cannot be found")
+        raise Exception("The layout " + namespace.layout + " cannot be found")
 
     # Choose a Pacman agent
-    # noKeyboard = argparse_args.path_game_to_replay == None and (argparse_args.textGraphics or argparse_args.quietGraphics)
+    # noKeyboard = namespace.path_game_to_replay == None and (namespace.textGraphics or namespace.quietGraphics)
 
-    class_agent_pacman = get_subclass_agent(argparse_args.str_class_agent_pacman)  # FIXME: PACMAN AGENT HERE
+    class_agent_pacman = get_subclass_agent(namespace.str_class_agent_pacman)  # FIXME: PACMAN AGENT HERE
 
-    # FIXME: argparse_args.pacman IS A AgentKeyboard
-    # print("str_class_agent_pacman", argparse_args.str_class_agent_pacman, type(argparse_args.str_class_agent_pacman))
+    # FIXME: namespace.pacman IS A AgentKeyboard
+    # print("str_class_agent_pacman", namespace.str_class_agent_pacman, type(namespace.str_class_agent_pacman))
 
-    agent_pacman_kwargs = get_dict_kwargs(argparse_args.agent_pacman_kwargs)
+    agent_pacman_kwargs = get_dict_kwargs(namespace.agent_pacman_kwargs)
 
-    if argparse_args.numTraining > 0:
-        dict_k_name_arg_v_arg['numTraining'] = argparse_args.numTraining
+    if namespace.numTraining > 0:
+        dict_k_name_arg_v_arg['numTraining'] = namespace.numTraining
         if 'numTraining' not in agent_pacman_kwargs:
-            agent_pacman_kwargs['numTraining'] = argparse_args.numTraining
+            agent_pacman_kwargs['numTraining'] = namespace.numTraining
 
     agent_pacman_ = class_agent_pacman(**agent_pacman_kwargs)  # Instantiate Pacman with agent_pacman_kwargs
     dict_k_name_arg_v_arg['agent_pacman'] = agent_pacman_
 
     # Don't graphics_pacman training games  # FIXME: WTF IS THIS
     if 'numTrain' in agent_pacman_kwargs:
-        argparse_args.numQuiet = int(agent_pacman_kwargs['numTrain'])
-        argparse_args.numIgnore = int(agent_pacman_kwargs['numTrain'])
+        namespace.numQuiet = int(agent_pacman_kwargs['numTrain'])
+        namespace.numIgnore = int(agent_pacman_kwargs['numTrain'])
 
     # Choose a ghost agent
-    class_agent_ghost = get_subclass_agent(argparse_args.str_class_agent_ghost)  # FIXME: GHOST AGENTS HERE
-    print(argparse_args.str_class_agent_ghost,
-          type(argparse_args.str_class_agent_ghost))  # FIXME: class_agent_ghost is AgentGhostRandom
+    class_agent_ghost = get_subclass_agent(namespace.str_class_agent_ghost)  # FIXME: GHOST AGENTS HERE
+    print(namespace.str_class_agent_ghost,
+          type(namespace.str_class_agent_ghost))  # FIXME: class_agent_ghost is AgentGhostRandom
 
     dict_k_name_arg_v_arg['list_agent_ghost'] = [class_agent_ghost(i + 1) for i in
-                                                 range(argparse_args.list_agent_ghost)]
+                                                 range(namespace.list_agent_ghost)]
 
-    class_graphics_pacman = get_class_graphics_pacman(argparse_args.graphics_pacman)
+    class_graphics_pacman = get_class_graphics_pacman(namespace.graphics_pacman)
 
-    if argparse_args.quietGraphics:
+    if namespace.quietGraphics:
         dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanNull(
-            zoom=argparse_args.zoom,
-            time_frame=argparse_args.time_frame
+            zoom=namespace.zoom,
+            time_frame=namespace.time_frame
         )
     else:
         dict_k_name_arg_v_arg['graphics_pacman'] = class_graphics_pacman(
-            zoom=argparse_args.zoom,
-            time_frame=argparse_args.time_frame
+            zoom=namespace.zoom,
+            time_frame=namespace.time_frame
         )
 
     # # Choose a graphics_pacman format
-    # if argparse_args.quietGraphics:
+    # if namespace.quietGraphics:
     #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanNull()
-    # elif argparse_args.textGraphics:
-    #     graphics_pacman_null.SLEEP_TIME = argparse_args.time_frame  # TODO: WTF THIS Y
+    # elif namespace.textGraphics:
+    #     graphics_pacman_null.SLEEP_TIME = namespace.time_frame  # TODO: WTF THIS Y
     #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
     # else:
     #     dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanDisplay(
-    #         zoom=argparse_args.zoom,
-    #         time_frame=argparse_args.time_frame
+    #         zoom=namespace.zoom,
+    #         time_frame=namespace.time_frame
     #     )
 
     # dict_k_name_arg_v_arg['graphics_pacman'] = textDisplay.GraphicsPacmanNull()
     # dict_k_name_arg_v_arg['graphics_pacman'] = GraphicsPacmanTerminal()
 
-    dict_k_name_arg_v_arg['number_of_games'] = argparse_args.number_of_games
-    dict_k_name_arg_v_arg['bool_record'] = argparse_args.bool_record
-    dict_k_name_arg_v_arg['bool_catch_exceptions'] = argparse_args.catchExceptions
-    dict_k_name_arg_v_arg['timeout'] = argparse_args.timeout
+    dict_k_name_arg_v_arg['number_of_games'] = namespace.number_of_games
+    dict_k_name_arg_v_arg['bool_record'] = namespace.bool_record
+    dict_k_name_arg_v_arg['bool_catch_exceptions'] = namespace.catchExceptions
+    dict_k_name_arg_v_arg['timeout'] = namespace.timeout
 
     # Special case: recorded games don't use the runGames method or dict_k_name_arg_v_arg structure
-    if argparse_args.path_game_to_replay != None:
-        print('Replaying recorded game %s.' % argparse_args.path_game_to_replay)
+    if namespace.path_game_to_replay != None:
+        print('Replaying recorded game %s.' % namespace.path_game_to_replay)
         import pickle
-        f = open(argparse_args.path_game_to_replay)
+        f = open(namespace.path_game_to_replay)
         try:
             recorded = pickle.load(f)
         finally:
@@ -300,54 +302,7 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
 
     return dict_k_name_arg_v_arg
 
-
-# def loadAgent(agent_: str, nographics: bool) -> Type[Agent]:  # RETURNS A CLASS
-#
-#     print(agent_, type(agent_))
-#     print(nographics, type(nographics))
-#
-#     # FIXME: pacman IS AgentKeyboard <class 'string_given'> OR AgentGhostRandom <class 'string_given'>
-#
-#     return get_class_agent(agent_)
-#
-#     # if agent_ == "AgentKeyboard":
-#     #     return AgentKeyboard
-#     # elif agent_ == "AgentGhostRandom":
-#     #     return AgentGhostRandom
-#
-#     # # Looks through all pythonPath Directories for the right module,
-#     # pythonPathStr = os.path_file_test.expandvars("$PYTHONPATH")
-#     # if pythonPathStr.find(';') == -1:
-#     #     pythonPathDirs = pythonPathStr.split(':')
-#     # else:
-#     #     pythonPathDirs = pythonPathStr.split(';')
-#     # pythonPathDirs.append('.')
-#     #
-#     # for moduleDir in pythonPathDirs:
-#     #     if not os.path_file_test.isdir(moduleDir):
-#     #         continue
-#     #     moduleNames = [f for f in os.listdir(
-#     #         moduleDir) if f.endswith('gents.py')]
-#     #     for modulename in moduleNames:
-#     #         try:
-#     #             module = __import__(modulename[:-3])
-#     #         except ImportError:
-#     #             continue
-#     #
-#     #         if pacman in dir(module):
-#     #             if nographics and modulename == 'keyboardAgents.py':
-#     #                 raise Exception(
-#     #                     'Using the keyboard requires graphics (not text graphics_pacman)')
-#     #
-#     #             print("FFFF", getattr(module, pacman))
-#     #
-#     #             # FIXME: <class 'keyboardAgents.AgentKeyboard'>  OR  <class 'list_agent_ghost.AgentGhostRandom'>
-#     #             return getattr(module, pacman)
-#     # raise Exception('The agent ' + pacman +
-#     #                 ' is not specified in any *Agents.py.')
-
-
-def replay_game(layout, actions, display):
+def replay_game(layout, actions, display):  # FIXME: FIGURE THSI SHIT OUT LATER
     # import pacmanAgents
     # import list_agent_ghost
 
@@ -360,7 +315,7 @@ def replay_game(layout, actions, display):
 
     for action in actions:
         # Execute the action
-        state = state.get_container_vector_successor(*action)
+        state = state.get_container_position_vector_successor(*action)
         # Change the graphics_pacman
         display.update(state.game_state_data)
         # Allow for game specific conditions (winning, losing, etc.)
@@ -394,19 +349,14 @@ def run_pacman_games(layout: _layout.Layout,
     :param timeout:
     :return:
     """
-    # FIXME: IDK WHY THIS HERE
-    # import __main__
-    # __main__.__dict__['_display'] = graphics_pacman
-    print("#" * 100)
-    __ALL = (
-        layout, agent_pacman, list_agent_ghost, graphics_pacman, number_of_games, bool_record, numTraining,
-        bool_catch_exceptions,
-        timeout)
 
-    # __DICT = {i: type(i) for i in __ALL}
-
-    pprint(__ALL)
-    print("#" * 100)
+    # print("#" * 100)
+    # __ALL = (
+    #     layout, agent_pacman, list_agent_ghost, graphics_pacman, number_of_games, bool_record, numTraining,
+    #     bool_catch_exceptions,
+    #     timeout)
+    # pprint(__ALL)
+    # print("#" * 100)
 
     classic_game_rules: ClassicGameRules = ClassicGameRules(timeout)
     list_game: List[Game] = []
@@ -478,17 +428,13 @@ if __name__ == '__main__':
 
     > python pacman.py --help
     """
-    # from code_analyzer import code_analyzer
 
-    # code_analyzer.start()
+    namespace = arg_parser_pacman(sys.argv[1:])  # Get game components based on input
 
-    kwargs = arg_parser_pacman(sys.argv[1:])  # Get game components based on input
+    dict_namespace = get_dict_namespace(namespace)
 
-    # code_analyzer.stop()
-    # code_analyzer.get_code_analyzer_printer().export_rich_to_html()
-
-    pprint(kwargs)
-    run_pacman_games(**kwargs)
+    pprint(dict_namespace)
+    run_pacman_games(**dict_namespace)
 
     # import cProfile
     # cProfile.run("runGames( **args )")

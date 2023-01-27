@@ -46,7 +46,7 @@ class PacmanRules(RulesAgent):
     @staticmethod
     def getLegalActions(game_state: GameState, index_agent: Union[int, None] = None) -> List[Directions]:
         return Actions.getPossibleActions(
-            game_state.getPacmanState().container_vector,
+            game_state.getPacmanState().container_position_vector,
             game_state.game_state_data.layout.walls
         )
 
@@ -61,11 +61,11 @@ class PacmanRules(RulesAgent):
 
         # Update ContainerVector
         vector = Actions.directionToVector(action, PacmanRules.PACMAN_SPEED)
-        pacmanState.container_vector = pacmanState.container_vector.get_container_vector_successor(
+        pacmanState.container_position_vector = pacmanState.container_position_vector.get_container_position_vector_successor(
             vector)
 
         # Eat
-        next = pacmanState.container_vector.get_position()
+        next = pacmanState.container_position_vector.get_position()
         nearest = nearestPoint(next)
         if manhattanDistance(nearest, next) <= 0.5:
             # Remove food

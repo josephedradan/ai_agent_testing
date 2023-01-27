@@ -30,7 +30,7 @@ from pacman.game.actions import Actions
 from pacman.game.directions import Directions
 
 
-class ContainerVector:
+class ContainerPositionVector:
     """
     A ContainerVector holds the (x,y) coordinate of a character, along with its
     traveling direction.
@@ -53,11 +53,11 @@ class ContainerVector:
     #     x, y = self.position
     #     return x == int(x) and y == int(y)
 
-    def __eq__(self, container_vector_possible: Union[ContainerVector, None]):
-        if container_vector_possible is None:
+    def __eq__(self, container_position_vector_possible: Union[ContainerPositionVector, None]):
+        if container_position_vector_possible is None:
             return False
 
-        return self.position == container_vector_possible.position and self.direction == container_vector_possible.direction
+        return self.position == container_position_vector_possible.position and self.direction == container_position_vector_possible.direction
 
     def __hash__(self):
         # x = hash(self.position)
@@ -67,10 +67,10 @@ class ContainerVector:
     def __str__(self):
         return "(x, y)=" + str(self.position) + ", " + str(self.direction)
 
-    def get_container_vector_successor(self, vector: Tuple[int, ...]) -> ContainerVector:  # FIXME: NOT GENERALIZED
+    def get_container_position_vector_successor(self, vector: Tuple[int, ...]) -> ContainerPositionVector:  # FIXME: NOT GENERALIZED
         """
-        Generates a new container_vector reached by translating the current
-        container_vector by the action vector.  This is a low-level call and does
+        Generates a new container_position_vector reached by translating the current
+        container_position_vector by the action vector.  This is a low-level call and does
         not attempt to respect the legality of the movement.
 
         Actions are movement vectors.
@@ -82,4 +82,4 @@ class ContainerVector:
         if direction == Directions.STOP:
             direction = self.direction  # There is no stop direction
 
-        return ContainerVector((x + dx, y + dy), direction)
+        return ContainerPositionVector((x + dx, y + dy), direction)
