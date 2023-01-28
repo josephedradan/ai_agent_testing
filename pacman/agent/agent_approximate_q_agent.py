@@ -25,6 +25,7 @@ from common import util
 from pacman.agent import PacmanQAgent
 from pacman.feature_extractor_coordiate import FeatureExtractor
 from pacman.feature_extractor_coordiate import get_subclass_feature_extractor
+from pacman.game.game_state import GameState
 
 
 class ApproximateQAgent(PacmanQAgent):
@@ -157,10 +158,10 @@ class ApproximateQAgent(PacmanQAgent):
             # w_i = w_i + (alpha * TD(s,a) * f_i(s,a))
             self.weights[feature] = w_i_old + (self.alpha * temporal_difference * feature_value)
 
-    def final(self, state):
+    def final(self, game_state: GameState):
         "Called at the end of each game."
         # call the super-class final method
-        PacmanQAgent.final(self, state)
+        PacmanQAgent.final(self, game_state)
 
         # did we finish training?
         if self.episodesSoFar == self.numTraining:

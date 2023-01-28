@@ -41,7 +41,7 @@ class Agent(ABC):
     An agent must define a getAction method, but may also define the
     following methods which will be called if they exist:
 
-    def registerInitialState(self, game_state): # inspects the starting game_state
+    def registerInitialState(self, game_state: GameState): # inspects the starting game_state
     """
 
     def __init_subclass__(cls, **kwargs):
@@ -75,9 +75,9 @@ class Agent(ABC):
         return self.graphics_pacman
 
 
-    # def registerInitialState(self):
-    #     """
-    #     Hidden function used by test cases and stuff, use it if you know what you are doing
-    #
-    #     """
-    #     pass
+    def registerInitialState(self, game_state: GameState):
+        """
+        Hidden function used by test cases and stuff, use it if you know what you are doing
+
+        """
+        pass

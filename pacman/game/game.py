@@ -30,6 +30,7 @@ from typing import TYPE_CHECKING
 from typing import Union
 
 from pacman.agent.agent import Agent
+from pacman.agent.agent_value_estimation_reinforcement import ReinforcementAgent
 from pacman.game.game_state import GameState
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from common.util import TimeoutFunction
@@ -198,8 +199,10 @@ class Game:
             # Do operation related to Reinforcement learning
             ##################################################
 
-            # Generate an observation of the game_state
-            if 'observationFunction' in dir(agent):
+            game_state_observation: GameState
+
+            if isinstance(agent, ReinforcementAgent):
+            # Generate an game_state_observation of the game_state
                 self._mute(index_agent)
                 if self.bool_catch_exceptions:
                     try:
@@ -210,7 +213,7 @@ class Game:
 
                         time_start = time.time()
                         try:
-                            observation = timed_func(self.game_state.get_deep_copy())
+                            game_state_observation = timed_func(self.game_state.get_deep_copy())
                         except TimeoutFunctionException:
                             skip_action = True
 
@@ -222,12 +225,13 @@ class Game:
                         self._unmute()
                         return
                 else:
-                    observation = agent.observationFunction(self.game_state.get_deep_copy())
+                    game_state_observation = agent.observationFunction(self.game_state.get_deep_copy())
                 self._unmute()
 
             ##################################################
             else:
-                observation = self.game_state.get_deep_copy()
+                game_state_observation = self.game_state.get_deep_copy()
+
 
             ##################################################
             # Do operation related to autograder.py
@@ -251,7 +255,7 @@ class Game:
                         if skip_action:  # TODO: DONT HAVE CONTROL OVER THIS JOSEPH
                             raise TimeoutFunctionException()
 
-                        action = timed_func(observation)
+                        action = timed_func(game_state_observation)
                     except TimeoutFunctionException:
                         print("Agent {} timed out on a single move!".format(index_agent), file=sys.stderr)
                         self.agentTimeout = True
@@ -288,7 +292,7 @@ class Game:
                     self._unmute()
                     return
             else:
-                action = agent.getAction(observation)  # # TODO: AGENT MOVES HERE
+                action = agent.getAction(game_state_observation)  # # TODO: AGENT ACTION COMES FROM HERE
 
             ##################################################
 
@@ -311,13 +315,13 @@ class Game:
                 self.game_state = self.game_state.generateSuccessor(index_agent, action)
 
             # Change the graphics_pacman
-            self.graphics_pacman.update(self.game_state.game_state_data)
+            self.graphics_pacman.update(self.game_state.game_state_data)  # TODO: DRAWING THE GAME_STATE IS HERE
 
             ###idx = index_agent - index_agent % 2 + 1
             ###self.graphics_pacman.update( self.game_state.makeObservation(idx).data )
 
             # Allow for game specific conditions (winning, losing, etc.)
-            self.rules.process(self.game_state, self)  # TODO: CAN AFFECT gameOver
+            self.rules.process(self.game_state, self)  # TODO: CAN AFFECT self.gameOver
 
             # Track progress
             if index_agent == number_of_agents + 1:

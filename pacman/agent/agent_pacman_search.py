@@ -111,7 +111,7 @@ class SearchAgent(Agent):
 
         print('[SearchAgent] using problem type ' + prob)
 
-    def registerInitialState(self, state: GameState):
+    def registerInitialState(self, game_state: GameState):
         """
         This is the first time that the agent sees the layout of the game
         board. Here, we choose a path to the goal. In this phase, the agent
@@ -123,7 +123,7 @@ class SearchAgent(Agent):
 
         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
         starttime = time.time()
-        problem: object = self.searchType(state)  # Makes a new search problem  # TODO: MAKE OBJECT FROM CLASS
+        problem: object = self.searchType(game_state)  # Makes a new search problem  # TODO: MAKE OBJECT FROM CLASS
 
         # TODO: APPRENTLY NOT ALL self.searchType are of type SearchProblem because of poor design of the original
         if isinstance(problem, SearchProblem):
@@ -207,9 +207,9 @@ class AStarFoodSearchAgent(SearchAgent):
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
 
-    def registerInitialState(self, state):
+    def registerInitialState(self, game_state: GameState):
         self.actions = []
-        currentState = state
+        currentState = game_state
         while (currentState.getFood().count() > 0):
             nextPathSegment = self.findPathToClosestDot(currentState)  # The missing piece
             self.actions += nextPathSegment

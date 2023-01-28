@@ -108,12 +108,11 @@ class PolyAgent(Agent):
 
         return (ourpac, alternative_depth_pacs, partial_ply_bug_pacs)
 
-    def registerInitialState(self, state):
+    def registerInitialState(self, game_state: GameState):
 
-        raise Exception("registerInitialState _test_case POLY")
         for agent in self.solutionAgents + self.alternativeDepthAgents:
             if 'registerInitialState' in dir(agent):
-                agent.registerInitialState(state)
+                agent.registerInitialState(game_state)
         random.seed(self.seed)
 
     def getAction(self, game_state):

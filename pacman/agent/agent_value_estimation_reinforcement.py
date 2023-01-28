@@ -26,6 +26,7 @@ from abc import ABC
 from abc import abstractmethod
 
 from pacman.agent.agent_value_estimation import ValueEstimationAgent
+from pacman.game.game_state import GameState
 
 
 class ReinforcementAgent(ValueEstimationAgent):
@@ -150,27 +151,27 @@ class ReinforcementAgent(ValueEstimationAgent):
     ###################
     # Pacman Specific #
     ###################
-    def observationFunction(self, state):
+    def observationFunction(self, game_state: GameState):
         """
             This is where we ended up after our last action.
             The simulation should somehow ensure this is called
         """
         if not self.lastState is None:
-            reward = state.getScore() - self.lastState.getScore()
-            self.observeTransition(self.lastState, self.lastAction, state, reward)
-        return state
+            reward = game_state.getScore() - self.lastState.getScore()
+            self.observeTransition(self.lastState, self.lastAction, game_state, reward)
+        return game_state
 
-    def registerInitialState(self, state):
+    def registerInitialState(self, game_state: GameState):
         self.startEpisode()
         if self.episodesSoFar == 0:
             print('Beginning %d episodes of Training' % (self.numTraining))
 
-    def final(self, state):
+    def final(self, game_state: GameState):
         """
           Called by Pacman game at the terminal state
         """
-        deltaReward = state.getScore() - self.lastState.getScore()
-        self.observeTransition(self.lastState, self.lastAction, state, deltaReward)
+        deltaReward = game_state.getScore() - self.lastState.getScore()
+        self.observeTransition(self.lastState, self.lastAction, game_state, deltaReward)
         self.stopEpisode()
 
         # Make sure we have this var
@@ -178,7 +179,7 @@ class ReinforcementAgent(ValueEstimationAgent):
             self.episodeStartTime = time.time()
         if not 'lastWindowAccumRewards' in self.__dict__:
             self.lastWindowAccumRewards = 0.0
-        self.lastWindowAccumRewards += state.getScore()
+        self.lastWindowAccumRewards += game_state.getScore()
 
         NUM_EPS_UPDATE = 100
         if self.episodesSoFar % NUM_EPS_UPDATE == 0:

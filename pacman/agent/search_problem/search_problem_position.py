@@ -21,6 +21,8 @@ Tags:
 Reference:
 
 """
+from typing import Callable
+from typing import Tuple
 
 from pacman.agent.search_problem import SearchProblem
 from pacman.game.actions import Actions
@@ -50,10 +52,13 @@ class PositionSearchProblem(SearchProblem):
         super().__init__()
         self.walls = gameState.getWalls()
         self.startState = gameState.getPacmanPosition()
-        if start != None: self.startState = start
-        self.goal = goal
-        self.costFn = costFn
-        self.visualize = visualize
+
+        if start != None:
+            self.startState = start
+
+        self.goal: Tuple[...] = goal
+        self.costFn: Callable = costFn
+        self.visualize: bool = visualize
         if warn and (gameState.getNumFood() != 1 or not gameState.hasFood(*goal)):
             print('Warning: this does not look like a regular search maze')
 
