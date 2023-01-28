@@ -52,7 +52,7 @@ class ClosestDotTest(TestCase):
         game_state_initial = GameState()
         game_state_initial.initialize(layout, 0)
 
-        path = ClosestDotSearchAgent().findPathToClosestDot(game_state_initial)
+        path = ClosestDotSearchAgent().get_list_action_to_closest_dot(game_state_initial)
         return path
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:

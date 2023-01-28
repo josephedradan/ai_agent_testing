@@ -211,7 +211,7 @@ class ClosestDotSearchAgent(SearchAgent):
         self.actions = []
         currentState = game_state
         while (currentState.getFood().count() > 0):
-            nextPathSegment = self.findPathToClosestDot(currentState)  # The missing piece
+            nextPathSegment = self.get_list_action_to_closest_dot(currentState)  # The missing piece
             self.actions += nextPathSegment
             for action in nextPathSegment:
                 legal = currentState.getLegalActions()
@@ -222,7 +222,7 @@ class ClosestDotSearchAgent(SearchAgent):
         self.actionIndex = 0
         print('Path found with cost {}.'.format(len(self.actions)))
 
-    def findPathToClosestDot(self, game_state: GameState) -> List[Action]:
+    def get_list_action_to_closest_dot(self, game_state: GameState) -> List[Action]:
         """
         Returns a path (a list of actions) to the closest dot, starting from
         gameState.

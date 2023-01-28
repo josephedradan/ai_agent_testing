@@ -25,6 +25,7 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
+from common.action import Action
 from pacman.agent import AgentPacman
 from pacman.game.game_state import GameState
 
@@ -170,7 +171,7 @@ class AgentPacmanExpectimax(AgentPacman):
       Your expectimax agent (str_question 4)
     """
 
-    def getAction(self, gameState):
+    def getAction(self, game_state: GameState) -> Action:
         """
         Returns the expectimax action using self.depth and self.evaluationFunction
 
@@ -255,7 +256,7 @@ class AgentPacmanExpectimax(AgentPacman):
                 to follow your instructor's guidelines to receive credit on your name_project.
         """
         result = dfs_recursive_expectimax_v1(
-            gameState,
+            game_state,
             self.depth,
             self.evaluation_function
         )
