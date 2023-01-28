@@ -407,8 +407,12 @@ def evaluate(bool_generate_solutions: bool,
                 grader_: Grader
 
                 if bool_generate_solutions:
-                    # write solution file to disk
-                    return lambda grader__: test_case_.write_solution(path_test_solution_)
+
+                    def _execute_test_basic(grader__: Grader):
+                        return test_case_.write_solution(path_test_solution_)
+
+                    # write solution file to disk  # TODO: ???????????????
+                    return _execute_test_basic
                 else:
                     # read in solution dictionary and pass as an argument
                     dict_file_test_ = ParseFile(path_test_test).get_dict()
@@ -419,12 +423,16 @@ def evaluate(bool_generate_solutions: bool,
 
                         def _print_test_and_execute_test(grader__: Grader):
                             print_test(dict_file_test_, dict_file_solution_)
-                            test_case_.execute(grader__, dict_file_solution_)
-                            return True
+                            result = test_case_.execute(grader__, dict_file_solution_)
+                            return result
 
                         return _print_test_and_execute_test
                     else:
-                        return lambda grader__: test_case_.execute(grader__, dict_file_solution_)
+
+                        def _execute_test_advanced(grader__: Grader):
+                            return test_case_.execute(grader__, dict_file_solution_)
+
+                        return _execute_test_advanced
 
             callable_that_wraps_test_case = get_callable_that_wraps_test_case(
                 test_case,
