@@ -21,6 +21,7 @@ Tags:
 Reference:
 
 """
+from common.action import Action
 from pacman.agent import AgentPacman
 from pacman.agent.agent_pacman_minimax import dfs_recursive_minimax_v4
 from pacman.game.game_state import GameState
@@ -31,7 +32,7 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
     Your minimax agent with alpha-beta pruning (str_question 3)
     """
 
-    def getAction(self, game_state: GameState):
+    def getAction(self, game_state: GameState) -> Action:
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """

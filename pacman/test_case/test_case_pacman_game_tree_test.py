@@ -186,7 +186,7 @@ class PacmanGameTreeTest(TestCase):
         super(PacmanGameTreeTest, self).__init__(question, dict_file_test)
 
         self.seed: int = int(self.dict_file_test['seed'])
-        self.class_agent: Type[Agent] = self.dict_file_test['alg']
+        self.class_agent: Type[Agent] = self.dict_file_test['agent']
         self.layout_text: str = self.dict_file_test['layout']
         self.layout_name: str = self.dict_file_test['layoutName']
         self.depth: int = int(self.dict_file_test['depth'])
@@ -239,11 +239,11 @@ class PacmanGameTreeTest(TestCase):
         )
 
         if dict_stats['timeouts'] > 0:
-            self.addMessage('Agent timed out on smallClassic.  No credit')
+            self.add_message_to_messages('Agent timed out on smallClassic.  No credit')
             return self._procedure_test_fail(grader)
 
         if dict_stats['crashes'] > 0:
-            self.addMessage('Agent crashed on smallClassic.  No credit')
+            self.add_message_to_messages('Agent crashed on smallClassic.  No credit')
             return self._procedure_test_fail(grader)
 
         value_failure = agent_grading.get_value_failure()
@@ -253,26 +253,26 @@ class PacmanGameTreeTest(TestCase):
 
         elif value_failure == -3:
             if agent_grading.get_amount_wrong_states_explored() > 0:
-                self.addMessage('Bug: Wrong number of states expanded.')
+                self.add_message_to_messages('Bug: Wrong number of states expanded.')
                 return self._procedure_test_fail(grader)
             else:
                 return self._procedure_test_pass(grader)
 
         elif value_failure == -2:
-            self.addMessage('Bug: Partial Play Bug')
+            self.add_message_to_messages('Bug: Partial Play Bug')
             return self._procedure_test_fail(grader)
         elif value_failure == -1:
-            self.addMessage('Bug: Search depth off by 1')
+            self.add_message_to_messages('Bug: Search depth off by 1')
             return self._procedure_test_fail(grader)
 
         elif value_failure > 0:
             moves = agent_grading.get_list_tuple__game_state__action_wrong__action_correct()
             game_state, action_wrong, action_correct = random.choice(moves)
 
-            self.addMessage('Bug: Suboptimal moves')
-            self.addMessage('State:{}\nStudent Move:{}\nOptimal Move:{}'.format(game_state,
-                                                                                action_wrong,
-                                                                                action_correct))
+            self.add_message_to_messages('Bug: Suboptimal moves')
+            self.add_message_to_messages('State:{}\nStudent Move:{}\nOptimal Move:{}'.format(game_state,
+                                                                                             action_wrong,
+                                                                                             action_correct))
             return self._procedure_test_fail(grader)
 
     @staticmethod

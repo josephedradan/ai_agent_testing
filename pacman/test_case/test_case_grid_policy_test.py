@@ -115,13 +115,13 @@ class GridPolicyTest(TestCase):
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
         if not hasattr(analysis, self.parameterFn):
-            self.addMessage('Method not implemented: analysis.%s' % (self.parameterFn,))
+            self.add_message_to_messages('Method not implemented: analysis.%s' % (self.parameterFn,))
             return self._procedure_test_fail(grader)
 
         result = getattr(analysis, self.parameterFn)()
 
         if type(result) == str and result.lower()[0:3] == "not":
-            self.addMessage('Actually, it is possible!')
+            self.add_message_to_messages('Actually, it is possible!')
             return self._procedure_test_fail(grader)
 
         if self.question2:
@@ -131,11 +131,11 @@ class GridPolicyTest(TestCase):
                 discount = float(discount)
                 noise = float(noise)
             except:
-                self.addMessage('Did not return a (discount, noise) pair; instead analysis.%s returned: %s' % (
+                self.add_message_to_messages('Did not return a (discount, noise) pair; instead analysis.%s returned: %s' % (
                     self.parameterFn, result))
                 return self._procedure_test_fail(grader)
             if discount != 0.9 and noise != 0.2:
-                self.addMessage(
+                self.add_message_to_messages(
                     'Must change either the discount or the noise, not both. Returned (discount, noise) = %s' % (
                         result,))
                 return self._procedure_test_fail(grader)
@@ -146,7 +146,7 @@ class GridPolicyTest(TestCase):
                 noise = float(noise)
                 livingReward = float(livingReward)
             except:
-                self.addMessage(
+                self.add_message_to_messages(
                     'Did not return a (discount, noise, living reward) triple; instead analysis.%s returned: %s' % (
                         self.parameterFn, result))
                 return self._procedure_test_fail(grader)
@@ -169,18 +169,18 @@ class GridPolicyTest(TestCase):
                     policyPassed = False
 
         if not policyPassed:
-            self.addMessage('Policy not correct.')
-            self.addMessage('    Student policy at %s: %s' % (differPoint, policy[differPoint]))
-            self.addMessage(
+            self.add_message_to_messages('Policy not correct.')
+            self.add_message_to_messages('    Student policy at %s: %s' % (differPoint, policy[differPoint]))
+            self.add_message_to_messages(
                 '    Correct policy at %s: %s' % (differPoint, actionMap[self.policy[differPoint[0]][differPoint[1]]]))
-            self.addMessage('    Student policy:')
+            self.add_message_to_messages('    Student policy:')
             self.printPolicy(policy, False)
-            self.addMessage("        Legend:  N,S,E,W at states which move north etc, X at states which exit,")
-            self.addMessage("                 . at states where the policy is not defined (e.g. walls)")
-            self.addMessage('    Correct policy specification:')
+            self.add_message_to_messages("        Legend:  N,S,E,W at states which move north etc, X at states which exit,")
+            self.add_message_to_messages("                 . at states where the policy is not defined (e.g. walls)")
+            self.add_message_to_messages('    Correct policy specification:')
             self.printPolicy(self.policy, True)
-            self.addMessage("        Legend:  N,S,E,W for states in which the student policy must move north etc,")
-            self.addMessage("                 _ for states where it doesn't matter what the student policy does.")
+            self.add_message_to_messages("        Legend:  N,S,E,W for states in which the student policy must move north etc,")
+            self.add_message_to_messages("                 _ for states where it doesn't matter what the student policy does.")
             self.printGridworld()
             return self._procedure_test_fail(grader)
 
@@ -188,32 +188,32 @@ class GridPolicyTest(TestCase):
         path = followPath(policy, self.grid.getStartState())
 
         if self.pathVisits != None and self.pathVisits not in path:
-            self.addMessage('Policy does not visit state %s when moving without noise.' % (self.pathVisits,))
-            self.addMessage('    States visited: %s' % (path,))
-            self.addMessage('    Student policy:')
+            self.add_message_to_messages('Policy does not visit state %s when moving without noise.' % (self.pathVisits,))
+            self.add_message_to_messages('    States visited: %s' % (path,))
+            self.add_message_to_messages('    Student policy:')
             self.printPolicy(policy, False)
-            self.addMessage("        Legend:  N,S,E,W at states which move north etc, X at states which exit,")
-            self.addMessage("                 . at states where policy not defined")
+            self.add_message_to_messages("        Legend:  N,S,E,W at states which move north etc, X at states which exit,")
+            self.add_message_to_messages("                 . at states where policy not defined")
             self.printGridworld()
             return self._procedure_test_fail(grader)
 
         if self.pathNotVisits != None and self.pathNotVisits in path:
-            self.addMessage('Policy visits state %s when moving without noise.' % (self.pathNotVisits,))
-            self.addMessage('    States visited: %s' % (path,))
-            self.addMessage('    Student policy:')
+            self.add_message_to_messages('Policy visits state %s when moving without noise.' % (self.pathNotVisits,))
+            self.add_message_to_messages('    States visited: %s' % (path,))
+            self.add_message_to_messages('    Student policy:')
             self.printPolicy(policy, False)
-            self.addMessage("        Legend:  N,S,E,W at states which move north etc, X at states which exit,")
-            self.addMessage("                 . at states where policy not defined")
+            self.add_message_to_messages("        Legend:  N,S,E,W at states which move north etc, X at states which exit,")
+            self.add_message_to_messages("                 . at states where policy not defined")
             self.printGridworld()
             return self._procedure_test_fail(grader)
 
         return self._procedure_test_pass(grader)
 
     def printGridworld(self):
-        self.addMessage('    Gridworld:')
+        self.add_message_to_messages('    Gridworld:')
         for line in self.gridText.split('\n'):
-            self.addMessage('     ' + line)
-        self.addMessage('        Legend: # wall, _ empty, S start, numbers terminal states with that reward.')
+            self.add_message_to_messages('     ' + line)
+        self.add_message_to_messages('        Legend: # wall, _ empty, S start, numbers terminal states with that reward.')
 
     def printPolicy(self, policy, policyTypeIsGrid):
         if policyTypeIsGrid:
@@ -224,10 +224,10 @@ class GridPolicyTest(TestCase):
         for ybar in range(self.grid.grid.height):
             y = self.grid.grid.height - 1 - ybar
             if policyTypeIsGrid:
-                self.addMessage(
+                self.add_message_to_messages(
                     "        %s" % ("    ".join([legend[policy[x][y]] for x in range(self.grid.grid.width)]),))
             else:
-                self.addMessage("        %s" % (
+                self.add_message_to_messages("        %s" % (
                     "    ".join([legend[policy.get((x, y), '.')] for x in range(self.grid.grid.width)]),))
         # for state in sorted(self.grid.getStates()):
         #     if state != 'TERMINAL_STATE':

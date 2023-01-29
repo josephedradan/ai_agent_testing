@@ -171,9 +171,9 @@ class Grader:
         we need to cgi.escape the traceback but wrap the exception in a <pre> tag
         """
         self.fail('FAIL: Exception raised: %s' % inst)
-        self.addMessage('')
+        self.add_message_to_messages('')
         for line in traceback.format_exc().split('\n'):
-            self.addMessage(line)
+            self.add_message_to_messages(line)
 
     def addErrorHints(self, exceptionMap, errorInstance, questionNum):
         typeOf = str(type(errorInstance))

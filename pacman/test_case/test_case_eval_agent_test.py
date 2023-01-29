@@ -181,26 +181,26 @@ class EvalAgentTest(TestCase):
             totalPoints += points
             if not passed:
                 assert points == 0
-                self.addMessage(
+                self.add_message_to_messages(
                     "%s %s (fail: below minimum value %s)" % (value, name, minimum))
             else:
-                self.addMessage("%s %s (%s of %s points)" %
-                                (value, name, points, len(thresholds)))
+                self.add_message_to_messages("%s %s (%s of %s points)" %
+                                             (value, name, points, len(thresholds)))
 
             if minimum != None:
-                self.addMessage("    Grading scheme:")
-                self.addMessage("     < %s:  fail" % (minimum,))
+                self.add_message_to_messages("    Grading scheme:")
+                self.add_message_to_messages("     < %s:  fail" % (minimum,))
                 if len(thresholds) == 0 or minimum != thresholds[0]:
-                    self.addMessage("    >= %s:  0 points" % (minimum,))
+                    self.add_message_to_messages("    >= %s:  0 points" % (minimum,))
                 for idx, threshold in enumerate(thresholds):
-                    self.addMessage("    >= %s:  %s points" %
-                                    (threshold, idx + 1))
+                    self.add_message_to_messages("    >= %s:  %s points" %
+                                                 (threshold, idx + 1))
             elif len(thresholds) > 0:
-                self.addMessage("    Grading scheme:")
-                self.addMessage("     < %s:  0 points" % (thresholds[0],))
+                self.add_message_to_messages("    Grading scheme:")
+                self.add_message_to_messages("     < %s:  0 points" % (thresholds[0],))
                 for idx, threshold in enumerate(thresholds):
-                    self.addMessage("    >= %s:  %s points" %
-                                    (threshold, idx + 1))
+                    self.add_message_to_messages("    >= %s:  %s points" %
+                                                 (threshold, idx + 1))
 
         if any([not passed for passed, _, _, _, _, _ in results]):
             totalPoints = 0

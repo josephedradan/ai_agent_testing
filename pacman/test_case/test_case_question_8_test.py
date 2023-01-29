@@ -43,8 +43,8 @@ class Question8Test(TestCase):
         if hashedSolution == '46729c96bb1e4081fdc81a8ff74b3e5db8fba415':
             return self._procedure_test_pass(grader)
         else:
-            self.addMessage("Solution is not correct.")
-            self.addMessage("   Student solution: %s" % (studentSolution,))
+            self.add_message_to_messages("Solution is not correct.")
+            self.add_message_to_messages("   Student solution: %s" % (studentSolution,))
             return self._procedure_test_fail(grader)
 
     def write_solution(self, path_file_solution: str) -> bool:

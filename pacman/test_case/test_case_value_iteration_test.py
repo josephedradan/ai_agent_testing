@@ -72,8 +72,8 @@ class ValueIterationTest(TestCase):
             failureOutputStdString += stdOutString
             failureOutputFileString += fileOutString
             if not testPass:
-                self.addMessage(failureOutputStdString)
-                self.addMessage('For more details to help you debug, see test output file %s\n\n' % self.testOutFile)
+                self.add_message_to_messages(failureOutputStdString)
+                self.add_message_to_messages('For more details to help you debug, see test output file %s\n\n' % self.testOutFile)
                 self.writeFailureFile(failureOutputFileString)
                 return self._procedure_test_fail(grader)
         self.removeFailureFileIfExists()

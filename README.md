@@ -34,7 +34,9 @@
     # Standard map stuff
     python main.py -l originalClassic -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
     
+    # TESTS (DON'T ADD .test)
 
+    autograder -t "test_cases/q11/2-1a-vary-depth"
     
 # Q LEARNING PACMAN
     

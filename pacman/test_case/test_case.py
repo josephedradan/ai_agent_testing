@@ -54,7 +54,7 @@ class TestCase(ABC):
 
         # self.container_file_test: ContainerFileTest = ContainerFileTest(dict_file_test)
 
-        self.messages: List[str] = []
+        self.list_str_message: List[str] = []
 
     def get_path_file_test(self) -> str:
         return self.path_file_test
@@ -90,13 +90,13 @@ class TestCase(ABC):
     # then these should be moved into Question proper.
     def _procedure_test_pass(self, grader: Grader):
         grader.addMessage('PASS: %s' % (self.path_file_test,))
-        for line in self.messages:
+        for line in self.list_str_message:
             grader.addMessage('    %s' % (line,))
         return True
 
     def _procedure_test_fail(self, grader: Grader):
         grader.addMessage('FAIL: %s' % (self.path_file_test,))
-        for line in self.messages:
+        for line in self.list_str_message:
             grader.addMessage('    %s' % (line,))
         return False
 
@@ -116,10 +116,10 @@ class TestCase(ABC):
         if points_extra_credit > 0:
             grader.addMessage('EXTRA CREDIT: %s points' % (points_extra_credit,))
 
-        for line in self.messages:
+        for line in self.list_str_message:
             grader.addMessage('    %s' % (line,))
 
         return True
 
-    def addMessage(self, message):
-        self.messages.extend(message.split('\n'))
+    def add_message_to_messages(self, message: str):
+        self.list_str_message.extend(message.split('\n'))

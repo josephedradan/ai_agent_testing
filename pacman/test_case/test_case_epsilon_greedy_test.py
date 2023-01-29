@@ -114,8 +114,8 @@ class EpsilonGreedyTest(TestCase):
             empiricalEpsilon = empiricalEpsilonNumerator / empiricalEpsilonDenominator
             error = abs(empiricalEpsilon - self.epsilon)
             if error > tolerance:
-                self.addMessage("Epsilon-greedy action selection is not correct.")
-                self.addMessage("Actual epsilon = %f; student empirical epsilon = %f; error = %f > tolerance = %f" % (
+                self.add_message_to_messages("Epsilon-greedy action selection is not correct.")
+                self.add_message_to_messages("Actual epsilon = %f; student empirical epsilon = %f; error = %f > tolerance = %f" % (
                     self.epsilon, empiricalEpsilon, error, tolerance))
                 return False
         return True
