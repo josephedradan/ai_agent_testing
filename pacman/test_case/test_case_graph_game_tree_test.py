@@ -102,7 +102,7 @@ class MultiagentTreeProblem(object):
                  list_successor: List[Tuple[str, str, str]],
                  dict_evaluation_k_state_v_value: Dict[str, float]):
 
-        self.state_start = MultiagentTreeState(self, state_start)
+        self.state_start: MultiagentTreeState = MultiagentTreeState(self, state_start)
 
         self.num_agents:int = num_agents
         self.set_state_win: Set[str] = set_state_win
@@ -161,7 +161,13 @@ class GraphGameTreeTest(TestCase):
         self.depth = int(self.dict_file_test['depth'])
 
     def _solve_problem(self):
+        """
 
+        Notes:
+            Create agent
+            Give
+
+        """
         self.problem.reset()
         # agent_being_tested = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
 
@@ -169,9 +175,6 @@ class GraphGameTreeTest(TestCase):
 
         action = agent_being_tested.getAction(self.problem.state_start)
         generated = self.problem.generatedStates
-
-        print("FUC", action)
-        print(self.problem)
 
         return action, " ".join([str(s) for s in sorted(generated)])
 
