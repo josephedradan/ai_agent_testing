@@ -24,7 +24,7 @@ Reference:
 from common.action import Action
 from pacman.agent import AgentPacman
 from pacman.agent.agent_pacman_minimax import dfs_recursive_minimax_v4
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 
 
 class AgentPacmanMinimaxAlphaBeta(AgentPacman):

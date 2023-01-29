@@ -25,7 +25,7 @@ from common import util
 from pacman.agent import PacmanQAgent
 from pacman.feature_extractor_coordiate import FeatureExtractor
 from pacman.feature_extractor_coordiate import get_subclass_feature_extractor
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 
 
 class ApproximateQAgent(PacmanQAgent):

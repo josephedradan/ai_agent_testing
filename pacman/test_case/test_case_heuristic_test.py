@@ -27,10 +27,11 @@ from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
 
+from common.game_state_pacman import GameStatePacman
 from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search.search import astar
 from pacman.agent.search_problem import get_subclass_search_problem
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.test_case.test_case import TestCase
 
@@ -49,7 +50,7 @@ class HeuristicTest(TestCase):
 
     def _setupProblem(self):
         lay = Layout([l.strip() for l in self.layoutText.split('\n')])
-        gameState = GameState()
+        gameState = GameStatePacman()
         gameState.initialize(lay, 0)
         # class_problem = getattr(searchAgents, self.searchProblemClassName)
         class_problem = get_subclass_search_problem(self.searchProblemClassName)

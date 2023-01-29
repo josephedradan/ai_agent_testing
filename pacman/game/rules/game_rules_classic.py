@@ -28,9 +28,10 @@ from typing import List
 #                                                                          #
 # You shouldn't need to look through the code in this section of the file. #
 ############################################################################
+from common.game_state_pacman import GameStatePacman
 from pacman.agent.agent import Agent
 from pacman.game.game import Game
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.graphics import GraphicsPacman
 
@@ -59,7 +60,7 @@ class ClassicGameRules:
         for agent in list_agent:
             agent.set_graphics_pacman(graphics_pacman)
 
-        game_state_start = GameState()
+        game_state_start = GameStatePacman()
         game_state_start.initialize(layout, len(list_agent_ghost))
 
         game = Game(
@@ -80,7 +81,7 @@ class ClassicGameRules:
     def set_quiet(self, bool_quiet: bool):
         self.bool_quiet = bool_quiet
 
-    def process(self, game_state: GameState, game: Game):
+    def process(self, game_state: GameStatePacman, game: Game):
         """
         Checks to see whether it is time to end the game.
         """
@@ -89,12 +90,12 @@ class ClassicGameRules:
         if game_state.isLose():
             self._lose(game_state, game)
 
-    def _win(self, game_state: GameState, game: Game):
+    def _win(self, game_state: GameStatePacman, game: Game):
         if not self.bool_quiet:
             print(f"Pacman emerges victorious! Score: {game_state.game_state_data.score}")
         game.gameOver = True
 
-    def _lose(self, game_state: GameState, game: Game):
+    def _lose(self, game_state: GameStatePacman, game: Game):
         if not self.bool_quiet:
             print(f"Pacman died! Score: {game_state.game_state_data.score}")
         game.gameOver = True

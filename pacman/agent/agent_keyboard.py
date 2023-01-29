@@ -24,7 +24,7 @@ from common.graphics.display import Display
 from common.graphics.display_tkinter import DisplayTkinter
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
 
 
 class AgentKeyboard(Agent):

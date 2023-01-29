@@ -31,7 +31,7 @@ from pacman.game.actions import Actions
 from common.util import manhattanDistance
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
 
 
 class AgentGhostDirectional(AgentGhost):

@@ -29,9 +29,10 @@ from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
 
+from common.game_state_pacman import GameStatePacman
 from pacman.agent.agent import Agent
 from pacman.agent.agent_value_estimation_reinforcement import ReinforcementAgent
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from common.util import TimeoutFunction
 from common.util import TimeoutFunctionException
@@ -79,7 +80,7 @@ class Game:
 
         #####
 
-        self.game_state: Union[GameState, None] = None
+        self.game_state: Union[GameStatePacman, None] = None
 
 
     def _get_progress(self) -> float:
@@ -134,7 +135,7 @@ class Game:
 
         self.numMoves: int = 0
 
-        self.game_state: GameState
+        self.game_state: GameStatePacman
 
         # self.graphics_pacman.initialize(self.game_state.makeObservation(1).data)
         # inform learning agents of the game start

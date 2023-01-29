@@ -36,7 +36,7 @@ from pacman.agent.evaluation_function.evaluation_function_game_state_score impor
     evaluation_function_game_state_score
 )
 from pacman.game.directions import Action
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 
 """
 TYPE_EVALUATION_FUNCTION

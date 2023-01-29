@@ -31,8 +31,8 @@ from typing import Union
 from common.graphics.display import Display
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
-    from pacman.game.game_state_data import GameStateData
+    from common.game_state import GameState
+    from common.game_state_data import GameStateData
 
 
 class GraphicsPacman(ABC):

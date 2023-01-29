@@ -37,7 +37,7 @@ from common.util import manhattanDistance
 from common.util import nearestPoint
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
 
 
 class GhostRules(RulesAgent):

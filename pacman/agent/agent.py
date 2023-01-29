@@ -25,14 +25,13 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
-from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
 
 from pacman.game.directions import Action
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
     from pacman.graphics.graphics_pacman import GraphicsPacman
 
 

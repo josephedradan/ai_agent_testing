@@ -36,7 +36,7 @@ from typing import Tuple
 
 from pacman.agent import Agent
 from pacman.game.directions import Action
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 
 TYPE_TUPLE_GAME_STATE__ACTION_WRONG__ACTION_CORRECT = Tuple[GameState, Action, Action]
 

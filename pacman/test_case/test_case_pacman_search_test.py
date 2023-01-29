@@ -27,11 +27,12 @@ from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
 
+from common.game_state_pacman import GameStatePacman
 from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search import get_search_function
 from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.game.directions import Directions
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
@@ -60,7 +61,7 @@ class PacmanSearchTest(TestCase):
         alg = get_search_function(self.alg)
 
         lay = Layout([l.strip() for l in self.layout_text.split('\n')])
-        start_state = GameState()
+        start_state = GameStatePacman()
         start_state.initialize(lay, 0)
 
         # problemClass = getattr(searchAgents, self.searchProblemClassName)

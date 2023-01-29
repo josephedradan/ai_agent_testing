@@ -37,7 +37,7 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
 
 if TYPE_CHECKING:
     from pacman.game.directions import Action
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
     from pacman.game.grid_pacman import GridPacman
 
 

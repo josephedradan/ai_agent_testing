@@ -31,8 +31,8 @@ from pacman.graphics.graphics_pacman import GraphicsPacman
 from common.util import nearestPoint
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
-    from pacman.game.game_state_data import GameStateData
+    from common.game_state import GameState
+    from common.game_state_data import GameStateData
 
 DRAW_EVERY = 1
 SLEEP_TIME = 0  # This can be overwritten by __init__

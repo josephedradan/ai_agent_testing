@@ -29,10 +29,11 @@ from typing import Dict
 from typing import TYPE_CHECKING
 from typing import Union
 
+from common.game_state_pacman import GameStatePacman
 from pacman.agent.search.search import astar
 from pacman.agent.search_problem import CornersProblem
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.test_case.common import followPath
 from pacman.test_case.common import wrap_solution
@@ -56,7 +57,7 @@ class CornerHeuristicSanity(TestCase):
         # search = moduleDict['search']
         # searchAgents = moduleDict['searchAgents']
 
-        game_state = GameState()
+        game_state = GameStatePacman()
         lay = Layout([l.strip() for l in self.str_layout.split('\n')])
         game_state.initialize(lay, 0)
         problem = CornersProblem(game_state)

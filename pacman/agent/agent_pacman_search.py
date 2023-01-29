@@ -46,7 +46,7 @@ from pacman.game.directions import Directions
 from pacman.game.grid_pacman import GridPacman
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
 
 
 class SearchAgent(Agent):

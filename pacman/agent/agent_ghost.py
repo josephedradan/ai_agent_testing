@@ -23,7 +23,7 @@ from pacman.game.directions import Action
 from pacman.game.directions import Directions
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
 
 
 class AgentGhost(Agent, ABC):

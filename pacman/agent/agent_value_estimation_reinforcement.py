@@ -22,11 +22,10 @@ Reference:
 
 """
 import time
-from abc import ABC
 from abc import abstractmethod
 
 from pacman.agent.agent_value_estimation import ValueEstimationAgent
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 
 
 class ReinforcementAgent(ValueEstimationAgent):

@@ -23,9 +23,7 @@ Reference:
 """
 from __future__ import annotations
 
-import os
 import random
-import sys
 from abc import ABC
 from typing import TYPE_CHECKING
 
@@ -39,7 +37,7 @@ from pacman.game.directions import Action
 
 
 if TYPE_CHECKING:
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
 
 
 class AgentPacman(Agent, ABC):

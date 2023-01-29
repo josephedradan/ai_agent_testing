@@ -32,7 +32,7 @@ from common import util
 if TYPE_CHECKING:
     from pacman.agent.state_agent import StateAgent
     from pacman.game.directions import Action
-    from pacman.game.game_state import GameState
+    from common.game_state import GameState
     from pacman.game.grid_pacman import GridPacman
 
 

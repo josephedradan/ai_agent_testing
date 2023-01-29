@@ -27,8 +27,9 @@ from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
 
+from common.game_state_pacman import GameStatePacman
 from pacman.agent import *
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.test_case.test_case import TestCase
 
@@ -49,7 +50,7 @@ class ClosestDotTest(TestCase):
     def _get_solution(self) -> Any:
         layout = Layout([l.strip() for l in self.str_layout.split('\n')])
 
-        game_state_initial = GameState()
+        game_state_initial = GameStatePacman()
         game_state_initial.initialize(layout, 0)
 
         path = ClosestDotSearchAgent().get_list_action_to_closest_dot(game_state_initial)

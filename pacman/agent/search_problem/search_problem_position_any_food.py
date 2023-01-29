@@ -24,7 +24,7 @@ Reference:
 from typing import TYPE_CHECKING
 
 from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 
 if TYPE_CHECKING:
     from pacman.game.grid_pacman import GridPacman

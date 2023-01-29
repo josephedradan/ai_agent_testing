@@ -2,7 +2,7 @@
 Created by Joseph Edradan
 Github: https://github.com/josephedradan
 
-Date created: 12/27/2022
+Date created: 1/29/2023
 
 Purpose:
 
@@ -21,16 +21,14 @@ Tags:
 Reference:
 
 """
-###################################################
-# YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
-###################################################
 from __future__ import annotations
 
 from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
 
-from pacman.game.game_state_data import GameStateData
+from common.game_state import GameState
+from common.game_state_data import GameStateData
 from pacman.game.layout import Layout
 from pacman.game.rules.common import TIME_PENALTY
 from pacman.game.rules.rules_ghost import GhostRules
@@ -39,28 +37,9 @@ from pacman.game.rules.rules_pacman import PacmanRules
 if TYPE_CHECKING:
     from pacman.game.directions import Action
 
+class GameStatePacman(GameState):
 
-class GameState:
-    """
-    A GameState specifies the full game game_state, including the food, list_capsule,
-    agent configurations and score changes.
-
-    GameStates are used by the Game object to capture the actual game_state of the game and
-    can be used by agents to reason about the game.
-
-    Much of the information in a GameState is stored in a GameStateData object.  We
-    strongly suggest that you access that data via the accessor methods below rather
-    than referring to the GameStateData object directly.
-
-    Note that in classic Pacman, Pacman is always agent 0.
-    """
-
-    #############################################
-    #             Helper methods:               #
-    # You shouldn't need to call these directly #
-    #############################################
-
-    def __init__(self, game_state_previous: Union[GameState, None] = None):
+    def __init__(self, game_state_previous: Union[GameStatePacman, None] = None):
         """
         Generates a new game_state by copying information from its predecessor.
         """
@@ -72,7 +51,7 @@ class GameState:
             self.game_state_data = GameStateData()
 
     def get_deep_copy(self) -> GameState:
-        state = GameState(self)
+        state = type(self)(self)
         state.game_state_data = self.game_state_data.get_deep_copy()
         return state
 
@@ -106,8 +85,7 @@ class GameState:
     # Accessor methods: use these to access game_state data #
     ####################################################
 
-    # static variable keeps track of which states have had getLegalActions called
-    explored = set()
+
 
     def getAndResetExplored():
         tmp = GameState.explored.copy()
@@ -138,7 +116,7 @@ class GameState:
             raise Exception('Can\'t generate a successor of a terminal game_state.')
 
         # Copy current game_state
-        state = GameState(self)
+        state = GameStatePacman(self)
 
         # Let agent's logic deal with its action's effects on the board
         if index_agent == 0:  # AgentPacman is moving
@@ -159,8 +137,9 @@ class GameState:
         # Book keeping
         state.game_state_data._agentMoved = index_agent
         state.game_state_data.score += state.game_state_data.scoreChange
-        GameState.explored.add(self)
-        GameState.explored.add(state)
+
+        type(self).explored.add(self)
+        type(self).explored.add(state)
         return state
 
     def getLegalPacmanActions(self) -> List[Action]:

@@ -29,10 +29,11 @@ from typing import Dict
 from typing import TYPE_CHECKING
 from typing import Union
 
+from common.game_state_pacman import GameStatePacman
 from pacman.agent.search.search import bfs
 from pacman.agent.search_problem import CornersProblem
 from pacman.game.actions import Actions
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.test_case.test_case import TestCase
 
@@ -64,12 +65,12 @@ class CornerProblemTest(TestCase):
 
     def solution(self):
         lay = Layout([l.strip() for l in self.str_layout.split('\n')])
-        gameState = GameState()
+        gameState = GameStatePacman()
         gameState.initialize(lay, 0)
         problem = CornersProblem(gameState)
         path = bfs(problem)
 
-        gameState = GameState()
+        gameState = GameStatePacman()
         gameState.initialize(lay, 0)
         visited = getStatesFromPath(gameState.getPacmanPosition(), path)
         top, right = gameState.getWalls().height - 2, gameState.getWalls().width - 2

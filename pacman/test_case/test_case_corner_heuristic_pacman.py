@@ -28,10 +28,11 @@ from typing import Dict
 from typing import TYPE_CHECKING
 from typing import Union
 
+from common.game_state_pacman import GameStatePacman
 from pacman.agent.search.search import astar
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
 from pacman.agent.search_problem.search_problem_corners import CornersProblem
-from pacman.game.game_state import GameState
+from common.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
@@ -59,7 +60,7 @@ class CornerHeuristicPacman(TestCase):
         true_cost = float(dict_file_solution['cost'])
         thresholds = [int(x) for x in dict_file_solution['thresholds'].split()]
 
-        game_state_initial = GameState()
+        game_state_initial = GameStatePacman()
         lay = Layout([l.strip() for l in self.str_layout.split('\n')])
 
         game_state_initial.initialize(lay, 0)

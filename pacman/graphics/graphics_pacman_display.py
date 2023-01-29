@@ -35,7 +35,7 @@ from pacman.graphics.graphics_pacman import GraphicsPacman
 ###########################
 
 if TYPE_CHECKING:
-    from pacman.game.game_state_data import GameStateData
+    from common.game_state_data import GameStateData
 
 DEFAULT_GRID_SIZE = 30.0
 INFO_PANE_HEIGHT = 35
