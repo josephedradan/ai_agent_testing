@@ -35,7 +35,10 @@ if TYPE_CHECKING:
 
 
 class AgentGhostDirectional(AgentGhost):
-    "A ghost that prefers to rush Pacman, or flee when scared."
+    """
+    A ghost that prefers to rush Pacman, or flee when scared.
+
+    """
 
     def __init__(self, index: int, prob_attack: float = 0.8, prob_scaredFlee: float = 0.8):
         super().__init__(index)
@@ -43,7 +46,7 @@ class AgentGhostDirectional(AgentGhost):
         self.prob_attack: float = prob_attack
         self.prob_scaredFlee: float = prob_scaredFlee
 
-    def getDistribution(self, game_state: GameState):
+    def getDistribution(self, game_state: GameState) -> Dict[Action: float]:
 
         # Read variables from game_state
         ghostState = game_state.getGhostState(self.index)

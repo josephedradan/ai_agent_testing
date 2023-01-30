@@ -62,7 +62,7 @@ def dfs_recursive_problem_main(problem: SearchProblem) -> List[str]:
     def dfs_recursive_successor(list_successor_current: List[Tuple[Tuple[int, int], str, int]]) -> Union[None, bool]:
         """
         Recursive DFS on the list_successor_current to travel to all the tuple positions given by
-        problem.getSuccessors()
+        problem_multi_agent_tree.getSuccessors()
 
         Notes:
             Does a DFS search using recursive calls
@@ -155,7 +155,7 @@ def dfs_iterative_problem_main(problem: SearchProblem) -> List[str]:
 
     # ----- Memory Utility Setup (Equivalent to a Stack frame) -----
 
-    # List containing the result of problem.getSuccessors calls (Mimics stack frame memory)
+    # List containing the result of problem_multi_agent_tree.getSuccessors calls (Mimics stack frame memory)
     list_list_successor_stack_frame: List[List[Tuple[Tuple[int, int], str, int]]] = []
 
     # Stack containing tuple position objects (Mimics stack frame memory)
@@ -389,7 +389,7 @@ def generic_search_algorithm_base(problem: SearchProblem,
         # Check if the container's position is the goal
         if problem.isGoalState(container_current.position):
             # Hack 1
-            # if type(problem).__name__ == "CornersProblem":
+            # if type(problem_multi_agent_tree).__name__ == "CornersProblem":
             #     # for i in container_current.get_path():
             #     #     print(i)
             #     list_str_direction_answer.extend(container_current.get_path())
@@ -401,10 +401,10 @@ def generic_search_algorithm_base(problem: SearchProblem,
             #
             #     container_current.container_parent = None
             #
-            #     # print(problem.getSuccessors(container_current.position))
+            #     # print(problem_multi_agent_tree.getSuccessors(container_current.position))
             #     # print(container_current)
             #     # print()
-            #     if problem.is_goal_state_all():
+            #     if problem_multi_agent_tree.is_goal_state_all():
             #         break
             # else:
             #     # Assign the answer and leave the while loop
@@ -441,27 +441,27 @@ def depth_first_search(problem: SearchProblem, heuristic: Callable = nullHeurist
     goal. Make sure to implement a graph search algorithm.
 
     To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
+    understand the search problem_multi_agent_tree that is being passed in:
 
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    print("Start:", problem_multi_agent_tree.getStartState())
+    print("Is the start a goal?", problem_multi_agent_tree.isGoalState(problem_multi_agent_tree.getStartState()))
+    print("Start's successors:", problem_multi_agent_tree.getSuccessors(problem_multi_agent_tree.getStartState()))
     """
     "*** YOUR CODE HERE ***"
     # util.raiseNotDefined()
 
-    # print("Start:", problem.getStartState())  # (int, int) Is a Position
-    # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    # print("Problem:", problem)  # some object who cares
-    # print("Position:", problem.getStartState())  # (int, int) -> Position
+    # print("Start:", problem_multi_agent_tree.getStartState())  # (int, int) Is a Position
+    # print("Is the start a goal?", problem_multi_agent_tree.isGoalState(problem_multi_agent_tree.getStartState()))
+    # print("Start's successors:", problem_multi_agent_tree.getSuccessors(problem_multi_agent_tree.getStartState()))
+    # print("Problem:", problem_multi_agent_tree)  # some object who cares
+    # print("Position:", problem_multi_agent_tree.getStartState())  # (int, int) -> Position
     # print()
 
     # Version 1 (DFS Recursive)
-    # solution: List[string_given] = dfs_recursive_problem_main(problem)
+    # solution: List[string_given] = dfs_recursive_problem_main(problem_multi_agent_tree)
 
     # Version 2 (DFS Iterative that mimics DFS Recursive)
-    # solution: List[string_given] = dfs_iterative_problem_main(problem)
+    # solution: List[string_given] = dfs_iterative_problem_main(problem_multi_agent_tree)
 
     # Version 3 (Generic Iterative)
     solution: List[str] = generic_search_algorithm_base(problem, util.Stack)
@@ -532,7 +532,7 @@ def a_star_search(problem: SearchProblem, heuristic: Callable = nullHeuristic) -
         nonlocal heuristic  # Make it clear that we are using a nonlocal var
 
         """
-        Give the heuristic function the container's position and the problem object to get the heuristic 
+        Give the heuristic function the container's position and the problem_multi_agent_tree object to get the heuristic 
         algorithm's distance to the goal
         """
         heuristic_result = heuristic(container.position, problem)

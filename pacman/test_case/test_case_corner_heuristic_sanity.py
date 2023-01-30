@@ -112,7 +112,7 @@ class CornerHeuristicSanity(TestCase):
         handle.write('# of the heuristic must be less at each state than the\n')
         handle.write('# true cost of the optimal path from that state to a goal.\n')
 
-        # solve problem and write solution
+        # solve problem_multi_agent_tree and write solution
         lay = Layout([l.strip() for l in self.str_layout.split('\n')])
         start_state = GameState()
         start_state.initialize(lay, 0)

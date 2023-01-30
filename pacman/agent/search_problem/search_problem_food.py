@@ -28,10 +28,10 @@ from pacman.game.directions import Directions
 
 class FoodSearchProblem:
     """
-    A search problem associated with finding a path that collects all of the
+    A search problem_multi_agent_tree associated with finding a path that collects all of the
     food (dots) in a Pacman game.
 
-    A search state in this problem is a tuple ( pacmanPosition, foodGrid ) where
+    A search state in this problem_multi_agent_tree is a tuple ( pacmanPosition, foodGrid ) where
       pacmanPosition: a tuple (x,y) of integers specifying Pacman's position
       foodGrid:       a GridPacman (see game.py) of either True or False, specifying remaining food
     """

@@ -32,16 +32,16 @@ if TYPE_CHECKING:
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
-    A search problem for finding a path to any food.
+    A search problem_multi_agent_tree for finding a path to any food.
 
-    This search problem is just like the PositionSearchProblem, but has a
+    This search problem_multi_agent_tree is just like the PositionSearchProblem, but has a
     different goal test, which you need to fill in below.  The state space and
     successor function do not need to be changed.
 
     The class definition above, AnyFoodSearchProblem(PositionSearchProblem),
     inherits the methods of the PositionSearchProblem.
 
-    You can use this search problem to help you fill in the findPathToClosestDot
+    You can use this search problem_multi_agent_tree to help you fill in the findPathToClosestDot
     method.
     """
 
@@ -60,7 +60,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     def isGoalState(self, state):
         """
         The state is Pacman's position. Fill this in with a goal test that will
-        complete the problem definition.
+        complete the problem_multi_agent_tree definition.
         """
         x, y = state
 
@@ -70,7 +70,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         self.food: GridPacman
         self.walls: GridPacman
 
-        # Note that self.food is the same a foodGrid from problem 7 and foodGrid CHANGES OVER (foodHeuristic)
+        # Note that self.food is the same a foodGrid from problem_multi_agent_tree 7 and foodGrid CHANGES OVER (foodHeuristic)
         list_position_food_remaining = self.food.asList()
 
         ####################

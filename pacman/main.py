@@ -366,17 +366,14 @@ def run_pacman_games(layout: _layout.Layout,
 
         if bool_quiet:
             # Suppress output and graphics
-            display_game = GraphicsPacmanNull()
+            graphics_pacman = GraphicsPacmanNull()
             classic_game_rules.set_quiet(True)
         else:
-            display_game = graphics_pacman
+            graphics_pacman = graphics_pacman
             classic_game_rules.set_quiet(False)
 
         #####
-        # TODO JOSEPH SPEICAL
-        # TODO: ALT GRAPHICS: GraphicsPacmanNull, GraphicsPacmanDisplay
-        if isinstance(agent_pacman, AgentKeyboard) and isinstance(display_game, GraphicsPacmanDisplay):
-            agent_pacman.set_display(display_game.get_display())
+
 
         ####
 
@@ -384,7 +381,7 @@ def run_pacman_games(layout: _layout.Layout,
             layout,
             agent_pacman,
             list_agent_ghost,
-            display_game,
+            graphics_pacman,
             bool_quiet,
             bool_catch_exceptions
         )

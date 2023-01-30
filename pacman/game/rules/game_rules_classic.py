@@ -29,14 +29,15 @@ from typing import List
 # You shouldn't need to look through the code in this section of the file. #
 ############################################################################
 from common.game_state_pacman import GameStatePacman
+from pacman.agent import AgentKeyboard
 from pacman.agent.agent import Agent
 from pacman.game.game import Game
 from common.game_state import GameState
 from pacman.game.layout import Layout
 from pacman.graphics import GraphicsPacman
+from pacman.graphics import GraphicsPacmanDisplay
 
 
-# TODO: YOU GIVE GameState SHIT TO THIS AND IT WILL VALIDATE IF GAME WIN AND STUFF IDK
 class ClassicGameRules:
     """
     These game rules manage the control flow of a game, deciding when
@@ -56,6 +57,13 @@ class ClassicGameRules:
                             ) -> Game:
 
         list_agent: List[Agent] = [agent_pacman, *list_agent_ghost[:layout.getNumGhosts()]]
+
+
+        # TODO JOSEPH SPEICAL
+        # TODO: ALT GRAPHICS: GraphicsPacmanNull, GraphicsPacmanDisplay
+        if isinstance(agent_pacman, AgentKeyboard) and isinstance(graphics_pacman, GraphicsPacmanDisplay):
+            agent_pacman.set_display(graphics_pacman.get_display())
+
 
         for agent in list_agent:
             agent.set_graphics_pacman(graphics_pacman)

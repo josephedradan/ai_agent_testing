@@ -71,15 +71,15 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     a list of food coordinates instead.
 
     If you want access to info like walls, list_capsule, etc., you can query the
-    problem.  For example, problem.walls gives you a GridPacman of where the walls
+    problem_multi_agent_tree.  For example, problem_multi_agent_tree.walls gives you a GridPacman of where the walls
     are.
 
     If you want to *store* information to be reused in other calls to the
-    heuristic, there is a dictionary called problem.heuristicInfo that you can
+    heuristic, there is a dictionary called problem_multi_agent_tree.heuristicInfo that you can
     use. For example, if you only want to count the walls once and store that
-    value, try: problem.heuristicInfo['wallCount'] = problem.walls.count()
+    value, try: problem_multi_agent_tree.heuristicInfo['wallCount'] = problem_multi_agent_tree.walls.count()
     Subsequent calls to this heuristic can access
-    problem.heuristicInfo['wallCount']
+    problem_multi_agent_tree.heuristicInfo['wallCount']
     """
     foodGrid: GridPacman
     position: tuple
@@ -97,12 +97,12 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
 
     ###
     # THE COMMENTED OUT BELOW IS NOT NECESSARY ANYMORE
-    # if problem.heuristicInfo.get("set_position_food_location_visited") is None:
+    # if problem_multi_agent_tree.heuristicInfo.get("set_position_food_location_visited") is None:
     #     set_position_food_location_temp = set()
-    #     problem.heuristicInfo["set_position_food_location_visited"] = set_position_food_location_temp
+    #     problem_multi_agent_tree.heuristicInfo["set_position_food_location_visited"] = set_position_food_location_temp
     #
     # # Set of visited food
-    # set_position_food_location_visited = problem.heuristicInfo.get("set_position_food_location_visited")
+    # set_position_food_location_visited = problem_multi_agent_tree.heuristicInfo.get("set_position_food_location_visited")
     #
     # """
     # Set of remaining food
@@ -120,7 +120,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     ####################
     # r"""
     # V1
-    #     Solve problem using V4 or V5 from the previous problem (Problem 6) which were to do the full
+    #     Solve problem_multi_agent_tree using V4 or V5 from the previous problem_multi_agent_tree (Problem 6) which were to do the full
     #     path to each position corner by making your corner
     #
     # Notes:
@@ -129,7 +129,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     # IMPORTANT NOTES:
     #     V5 SHOULD HAV
     # Result:
-    #     _get_shortest_path_using_immediate  # V5 solution from problem 6
+    #     _get_shortest_path_using_immediate  # V5 solution from problem_multi_agent_tree 6
     #         Notes:
     #             On case 15 it needs to go (down, up, up, uo, uo) not (up, down, up, up, up) which is longer
     #
@@ -144,7 +144,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     #             *** Heuristic failed admissibility test
     #             *** Tests failed.
     #
-    #     _get_shortest_path_from_permutation  # V4 solution from problem 6
+    #     _get_shortest_path_from_permutation  # V4 solution from problem_multi_agent_tree 6
     #         Notes:
     #             TOO MUCH FOOD LOCATIONS -> TOO MANY PERMUTATIONS
     #
@@ -165,7 +165,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     # # Can't Solve test 14 (Too many permutations, load time takes to long (Probably))
     # distance = _get_shortest_path_from_permutation(position_start, set_position_food_location_remaining)
     #
-    # print(problem.walls)
+    # print(problem_multi_agent_tree.walls)
     # print("Food:", foodGrid.asList())
     # print("Position Current:", position_start)
     # print("Heuristic Cost:", distance)
@@ -176,7 +176,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     #####
     # r"""
     # V2
-    #     Solve the problem using the idea from V6 of problem 6 which used UCS to get the heuristic cost.
+    #     Solve the problem_multi_agent_tree using the idea from V6 of problem_multi_agent_tree 6 which used UCS to get the heuristic cost.
     #
     # Result:
     #     *** PASS: test_cases\q7\food_heuristic_1.test
@@ -192,14 +192,14 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     #
     # distance_shortest = _get_shortest_path_using_ucs_crude(position_start,
     #                                                        set_position_food_location_remaining,
-    #                                                        problem.walls)
+    #                                                        problem_multi_agent_tree.walls)
     #
     # return distance_shortest
 
     #####
     # r"""
     # V3
-    #     Use a modified version of V6 from the previous problem (Problem 6)
+    #     Use a modified version of V6 from the previous problem_multi_agent_tree (Problem 6)
     #         "Uniform Cost Search based on the walls grid to find the exact distance to each position corner
     #         Return the shortest distance to a position corner"
     #     The modification is to support both min() and max() distance selection.
@@ -274,7 +274,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     # list_distance = []
     #
     # for position_corner_local_shortest in list_position_food_remaining:
-    #     result_ucs: Union[int, None] = _get_heuristic_cost_ucs_crude(problem.startingGameState.getWalls(),
+    #     result_ucs: Union[int, None] = _get_heuristic_cost_ucs_crude(problem_multi_agent_tree.startingGameState.getWalls(),
     #                                                                  position_start,
     #                                                                  position_corner_local_shortest,
     #                                                                  None)
@@ -290,11 +290,11 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     r"""
     V4
         Use the mazeDistance at the bottom of this file which is literally doing V3 of this 
-        problem but better, but this time you have gameState because it's an instance variable WITHIN the 
+        problem_multi_agent_tree but better, but this time you have gameState because it's an instance variable WITHIN the 
         object which is required for mazeDistance.
 
     Notes:
-        I Selected V4 because mazeDistance can be CACHED so the problem can be solved fast.
+        I Selected V4 because mazeDistance can be CACHED so the problem_multi_agent_tree can be solved fast.
 
     IMPORTANT NOTES:
 

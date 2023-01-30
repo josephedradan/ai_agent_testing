@@ -116,7 +116,7 @@ class CornerProblemTest(TestCase):
         handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
 
-        print("Solving problem", self.name_layout)
+        print("Solving problem_multi_agent_tree", self.name_layout)
         print(self.str_layout)
 
         path, _ = self.solution()

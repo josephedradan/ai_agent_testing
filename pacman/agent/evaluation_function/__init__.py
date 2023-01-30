@@ -59,7 +59,7 @@ Notes:
     HOWEVER; it does not support
         _callable(GameState)
 
-    The solution to this problem is to use mypy, but I don't want to implement that because this problem
+    The solution to this problem_multi_agent_tree is to use mypy, but I don't want to implement that because this problem_multi_agent_tree
     should be solved in cPython
         https://mypy.readthedocs.io/en/latest/protocols.html#callback-protocols
 """

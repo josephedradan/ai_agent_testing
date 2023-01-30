@@ -33,7 +33,7 @@ from pacman.graphics.graphics_pacman import GraphicsPacman
 
 class SearchProblem(ABC):
     """
-    This class outlines the structure of a search problem, but doesn't implement
+    This class outlines the structure of a search problem_multi_agent_tree, but doesn't implement
     any of the methods (in object-oriented terminology: an abstract class).
 
     You do not need to change anything in this class, ever.
@@ -50,7 +50,7 @@ class SearchProblem(ABC):
     @abstractmethod
     def getStartState(self) -> Union[Tuple[int, int], Hashable]:
         """
-        Returns the start state for the search problem.
+        Returns the start state for the search problem_multi_agent_tree.
         """
         pass
 

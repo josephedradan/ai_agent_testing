@@ -264,7 +264,7 @@ def dfs_recursive_minimax_v2(game_state: GameState,
                              game_state_previous: GameState = None,
                              ) -> [float, AgentContainer]:
     """
-    This function tries to compress all ghost agents together, the problem is that not all list_agent_ghost need to move in order
+    This function tries to compress all ghost agents together, the problem_multi_agent_tree is that not all list_agent_ghost need to move in order
     for the game to end.
 
     Basically, the game can end when one of the list_agent_ghost moves so compressing all ghost agent moves together passes the

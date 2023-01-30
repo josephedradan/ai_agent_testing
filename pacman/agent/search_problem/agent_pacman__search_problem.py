@@ -268,12 +268,12 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     A heuristic for the CornersProblem that you defined.
 
       state:   The current search state
-               (a data structure you chose in your search problem)
+               (a data structure you chose in your search problem_multi_agent_tree)
 
-      problem: The CornersProblem instance for this layout.
+      problem_multi_agent_tree: The CornersProblem instance for this layout.
 
     This function should always return a number that is a lower bound on the
-    shortest path from the state to a goal of the problem; i.e.  it should be
+    shortest path from the state to a goal of the problem_multi_agent_tree; i.e.  it should be
     admissible (as well as consistent).
     """
     corners: tuple = problem.corners  # These are the position_corner_local_shortest coordinates

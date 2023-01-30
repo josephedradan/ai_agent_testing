@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
+from typing import Dict
 from typing import TYPE_CHECKING
 
 from common import util
@@ -40,7 +41,7 @@ class AgentGhost(Agent, ABC):
             return util.chooseFromDistribution(dist)
 
     @abstractmethod
-    def getDistribution(self, game_state: GameState):
+    def getDistribution(self, game_state: GameState) -> Dict[Action: float]:
         "Returns a Counter encoding a distribution over actions from the provided game_state."
         pass
 

@@ -72,7 +72,7 @@ class DisplayTkinter(Display):
         self._keysdown: Dict[str, int] = {}
         self._keyswaiting: Dict[str, int] = {}
         # This holds an unprocessed key release.  We delay key releases by up to
-        # one call to keys_pressed() to get round a problem with auto repeat.
+        # one call to keys_pressed() to get round a problem_multi_agent_tree with auto repeat.
         self._got_release = None
 
         self._mouse_enabled = 1

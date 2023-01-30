@@ -20,7 +20,7 @@ from pacman.agent.search.search import SearchProblem
 
 
 
-# Search problem on a plain graph
+# Search problem_multi_agent_tree on a plain graph
 
 
 

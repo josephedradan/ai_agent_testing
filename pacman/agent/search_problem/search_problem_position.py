@@ -32,13 +32,13 @@ from pacman.graphics.graphics_pacman_display import GraphicsPacmanDisplay
 
 class PositionSearchProblem(SearchProblem):
     """
-    A search problem defines the state space, start state, goal test, successor
-    function and cost function.  This search problem can be used to find paths
+    A search problem_multi_agent_tree defines the state space, start state, goal test, successor
+    function and cost function.  This search problem_multi_agent_tree can be used to find paths
     to a particular point on the agent_pacman_ board.
 
     The state space consists of (x,y) positions in a agent_pacman_ game.
 
-    Note: this search problem is fully specified; you should NOT change it.
+    Note: this search problem_multi_agent_tree is fully specified; you should NOT change it.
     """
 
     def __init__(self, gameState, costFn=lambda x: 1, goal=(1, 1), start=None, warn=True, visualize=True) -> object:

@@ -98,7 +98,7 @@ class CornerHeuristicPacman(TestCase):
         handle.write('# as well as the thresholds on number of nodes expanded to be\n')
         handle.write('# used in scoring.\n')
 
-        # solve problem and write solution
+        # solve problem_multi_agent_tree and write solution
         lay = Layout([l.strip() for l in self.str_layout.split('\n')])
         start_state = GameState()
 

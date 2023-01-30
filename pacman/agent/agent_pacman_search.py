@@ -52,7 +52,7 @@ if TYPE_CHECKING:
 class SearchAgent(Agent):
     """
     This very general search agent finds a path using a supplied search
-    algorithm for a supplied search problem, then returns actions to follow that
+    algorithm for a supplied search problem_multi_agent_tree, then returns actions to follow that
     path.
 
     As a default, this agent runs DFS on a PositionSearchProblem to find
@@ -100,16 +100,16 @@ class SearchAgent(Agent):
 
         print("prob", prob)
         print("globals().keys()", globals().keys())
-        # # Get the search problem type from the test_case_object
+        # # Get the search problem_multi_agent_tree type from the test_case_object
         # if prob not in globals().keys() or not prob.endswith('Problem'):
-        #     raise AttributeError(prob + ' is not a search problem type in SearchAgents.py.')
+        #     raise AttributeError(prob + ' is not a search problem_multi_agent_tree type in SearchAgents.py.')
         # self.searchType = globals()[prob]
 
         # TODO: JOSEPH CUSTOM HERE
 
         self.searchType: Type[SearchProblem] = get_subclass_search_problem(prob)
 
-        print('[SearchAgent] using problem type ' + prob)
+        print('[SearchAgent] using problem_multi_agent_tree type ' + prob)
 
     def registerInitialState(self, game_state: GameState):
         """
@@ -123,7 +123,7 @@ class SearchAgent(Agent):
 
         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
         starttime = time.time()
-        problem: object = self.searchType(game_state)  # Makes a new search problem  # TODO: MAKE OBJECT FROM CLASS
+        problem: object = self.searchType(game_state)  # Makes a new search problem_multi_agent_tree  # TODO: MAKE OBJECT FROM CLASS
 
         # TODO: APPRENTLY NOT ALL self.searchType are of type SearchProblem because of poor design of the original
         if isinstance(problem, SearchProblem):
@@ -247,30 +247,30 @@ class ClosestDotSearchAgent(SearchAgent):
         # print(food)
         # print(type(walls))
         # print(walls)
-        # print(type(problem))
+        # print(type(problem_multi_agent_tree))
         # print()
 
-        # Note that food is the same a foodGrid from problem 7 and foodGrid CHANGES OVER (foodHeuristic)
+        # Note that food is the same a foodGrid from problem_multi_agent_tree 7 and foodGrid CHANGES OVER (foodHeuristic)
         # list_position_food_remaining = food.asList()
 
         ####################
         """
         V1
-            "problem" has everything in it and you need to return a path which is the result
+            "problem_multi_agent_tree" has everything in it and you need to return a path which is the result
             of what the algorithms in search.py do.
 
         IMPORTANT NOTES:
 
-            Cannot use foodHeuristic because it requires "problem" to be of type FoodSearchProblem.
+            Cannot use foodHeuristic because it requires "problem_multi_agent_tree" to be of type FoodSearchProblem.
 
-            Cannot use manhattanHeuristic and euclideanHeuristic because they require "problem" to be of type
+            Cannot use manhattanHeuristic and euclideanHeuristic because they require "problem_multi_agent_tree" to be of type
             PositionSearchProblem.
 
             Basically:
-                Using "problem" of type FoodSearchProblem, you can use these heuristics:
+                Using "problem_multi_agent_tree" of type FoodSearchProblem, you can use these heuristics:
                     foodHeuristic
 
-                Using "problem" of type PositionSearchProblem, you can use these heuristics:
+                Using "problem_multi_agent_tree" of type PositionSearchProblem, you can use these heuristics:
                     manhattanHeuristic
                     euclideanHeuristic
 

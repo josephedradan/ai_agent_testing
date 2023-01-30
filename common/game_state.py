@@ -28,6 +28,7 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
+from typing import Set
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -75,11 +76,11 @@ class GameState(ABC):
         pass
 
     # static variable keeps track of which states have had getLegalActions called
-    explored = set()
+    set_game_state_explored: Set[GameState] = set()
 
     @classmethod
     def getAndResetExplored(cls):
-        tmp = cls.explored.copy()
-        cls.explored = set()
+        tmp = cls.set_game_state_explored.copy()
+        cls.set_game_state_explored = set()
         return tmp
 

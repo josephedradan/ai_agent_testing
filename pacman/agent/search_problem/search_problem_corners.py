@@ -34,7 +34,7 @@ from pacman.game.directions import Directions
 
 class CornersProblem(SearchProblem):
     """
-    This search problem finds paths through all four corners of a layout.
+    This search problem_multi_agent_tree finds paths through all four corners of a layout.
 
     You must select a suitable state space and successor function
     """
@@ -58,7 +58,7 @@ class CornersProblem(SearchProblem):
         self._expanded = 0  # DO NOT CHANGE; Number of search nodes expanded
 
         # Please add any code here which you would like to use
-        # in initializing the problem
+        # in initializing the problem_multi_agent_tree
         "*** YOUR CODE HERE ***"
 
         # Hack V2
@@ -127,7 +127,7 @@ class CornersProblem(SearchProblem):
 
     def isGoalState(self, state: HashableGoal) -> bool:
         """
-        Returns whether this search state is a goal state of the problem.
+        Returns whether this search state is a goal state of the problem_multi_agent_tree.
         """
         "*** YOUR CODE HERE ***"
 

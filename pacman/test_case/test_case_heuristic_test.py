@@ -109,7 +109,7 @@ class HeuristicTest(TestCase):
         handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
 
-        print("Solving problem", self.layoutName, self.heuristicName)
+        print("Solving problem_multi_agent_tree", self.layoutName, self.heuristicName)
         print(self.layoutText)
         problem, _, heuristic = self._setupProblem()
 

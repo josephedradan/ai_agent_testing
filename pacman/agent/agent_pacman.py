@@ -31,10 +31,10 @@ from pacman.agent import Agent
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
 from pacman.agent.evaluation_function import get_evaluation_function
-from pacman.agent.evaluation_function.evaluation_function_game_state_score import \
+from pacman.agent.evaluation_function.evaluation_function_game_state_score import (
     evaluation_function_game_state_score
+)
 from pacman.game.directions import Action
-
 
 if TYPE_CHECKING:
     from common.game_state import GameState
@@ -76,7 +76,9 @@ class AgentPacman(Agent, ABC):
         # Choose one of the best actions
         scores = [self.evaluation_function(game_state, action) for action in legalMoves]
         bestScore = max(scores)
+
         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
+
         chosenIndex = random.choice(bestIndices)  # Pick randomly among the best
 
         "Add more of your code here if you want to"

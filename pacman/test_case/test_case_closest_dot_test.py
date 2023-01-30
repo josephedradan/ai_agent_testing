@@ -86,7 +86,7 @@ class ClosestDotTest(TestCase):
         with open(path_file_solution, 'w') as file_obj:
             file_obj.write(f'# This is the solution file for {self.path_file_test}.\n')
 
-            print("Solving problem", self.name_layout)
+            print("Solving problem_multi_agent_tree", self.name_layout)
             print(self.str_layout)
 
             length = len(self._get_solution())

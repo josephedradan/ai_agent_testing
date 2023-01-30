@@ -61,7 +61,7 @@ class GameStatePacman(GameState):
         """
         # return hasattr(other, 'game_state_data') and self.game_state_data == other.game_state_data
 
-        if isinstance(other, GameState):
+        if isinstance(other, GameStatePacman):
             return self.game_state_data == other.game_state_data
         return False
 
@@ -82,23 +82,15 @@ class GameStatePacman(GameState):
         self.game_state_data.initialize(layout, numGhostAgents)
 
     ####################################################
-    # Accessor methods: use these to access game_state data #
+    # Accessor methods: use these to access GameState data #
     ####################################################
 
-
-
-    def getAndResetExplored():
-        tmp = GameState.explored.copy()
-        GameState.explored = set()
-        return tmp
-
-    getAndResetExplored = staticmethod(getAndResetExplored)
 
     def getLegalActions(self, agentIndex=0):
         """
         Returns the legal actions for the agent specified.
         """
-        #        GameState.explored.add(self)
+        #        GameState.set_game_state_explored.add(self)
         if self.isWin() or self.isLose():
             return []
 
@@ -116,31 +108,31 @@ class GameStatePacman(GameState):
             raise Exception('Can\'t generate a successor of a terminal game_state.')
 
         # Copy current game_state
-        state = GameStatePacman(self)
+        game_state_pacman = GameStatePacman(self)
 
         # Let agent's logic deal with its action's effects on the board
         if index_agent == 0:  # AgentPacman is moving
-            state.game_state_data._eaten = [False for i in range(state.getNumAgents())]
-            PacmanRules.applyAction(state, action)
+            game_state_pacman.game_state_data._eaten = [False for i in range(game_state_pacman.getNumAgents())]
+            PacmanRules.applyAction(game_state_pacman, action)
         else:  # A ghost is moving
-            GhostRules.applyAction(state, action, index_agent)
+            GhostRules.applyAction(game_state_pacman, action, index_agent)
 
         # Time passes
         if index_agent == 0:
-            state.game_state_data.scoreChange += -TIME_PENALTY  # Penalty for waiting around
+            game_state_pacman.game_state_data.scoreChange += -TIME_PENALTY  # Penalty for waiting around
         else:
-            GhostRules.decrementTimer(state.game_state_data.list_state_agent[index_agent])
+            GhostRules.decrementTimer(game_state_pacman.game_state_data.list_state_agent[index_agent])
 
         # Resolve multi-agent effects
-        GhostRules.checkDeath(state, index_agent)
+        GhostRules.checkDeath(game_state_pacman, index_agent)
 
         # Book keeping
-        state.game_state_data._agentMoved = index_agent
-        state.game_state_data.score += state.game_state_data.scoreChange
+        game_state_pacman.game_state_data._agentMoved = index_agent
+        game_state_pacman.game_state_data.score += game_state_pacman.game_state_data.scoreChange
 
-        type(self).explored.add(self)
-        type(self).explored.add(state)
-        return state
+        type(self).set_game_state_explored.add(self)
+        type(self).set_game_state_explored.add(game_state_pacman)
+        return game_state_pacman
 
     def getLegalPacmanActions(self) -> List[Action]:
         return self.getLegalActions(0)

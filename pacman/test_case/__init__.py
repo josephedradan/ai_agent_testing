@@ -36,7 +36,7 @@ from pacman.test_case.test_case_corner_problem_test import CornerProblemTest
 from pacman.test_case.test_case_epsilon_greedy_test import EpsilonGreedyTest
 from pacman.test_case.test_case_eval_agent_test import EvalAgentTest
 from pacman.test_case.test_case_graph_game_tree_test import GraphGameTreeTest
-from pacman.test_case.test_case_graph_game_tree_test import MultiagentTreeState
+from pacman.test_case.test_case_graph_game_tree_test import MultiAgentTreeState
 from pacman.test_case.test_case_graph_search_tes import GraphSearchTest
 from pacman.test_case.test_case_grid_policy_test import GridPolicyTest
 from pacman.test_case.test_case_heuristic_grade import HeuristicGrade
@@ -58,7 +58,7 @@ LIST_SUBCLASS_TEST_CASE = [
     CornerHeuristicPacman,
     CornerHeuristicSanity,
     CornerProblemTest,
-    MultiagentTreeState,
+    MultiAgentTreeState,
     GraphSearchTest,
     HeuristicGrade,
     HeuristicTest,
