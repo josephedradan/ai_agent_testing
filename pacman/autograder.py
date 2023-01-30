@@ -408,11 +408,11 @@ def evaluate(bool_generate_solutions: bool,
 
                 if bool_generate_solutions:
 
-                    def _execute_test_basic(grader__: Grader):
+                    def _execute_test_write(grader__: Grader):
                         return test_case_.write_solution(path_test_solution_)
 
                     # write solution file to disk  # TODO: ???????????????
-                    return _execute_test_basic
+                    return _execute_test_write
                 else:
                     # read in solution dictionary and pass as an argument
                     dict_file_test_ = ParseFile(path_test_test).get_dict()

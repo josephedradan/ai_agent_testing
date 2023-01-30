@@ -60,10 +60,17 @@
 
 
 
+CHECK .test FILES FOR THE BELOW JOSEPH
 
+class: "EvalAgentTest"  # Q23 IS UNIQUE
 
+OR
 
+ghosts: 
 
+OR
+
+pacmanParams:
 
 
 
