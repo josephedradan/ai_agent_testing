@@ -44,18 +44,18 @@ class ValueEstimationAgent(AgentPacman):
       Q-Values while acting in the environment.
     """
 
-    def __init__(self, alpha=1.0, epsilon=0.05, gamma=0.8, numTraining = 10):
+    def __init__(self, alpha=1.0, epsilon=0.05, gamma=0.8, num_training = 10):
         """
         Sets options, which can be passed in via the Pacman command line using -a alpha=0.5,...
         alpha    - learning rate
         epsilon  - exploration rate
         gamma    - discount factor
-        numTraining - number of training episodes, i.e. no learning after these many episodes
+        num_training - number of training episodes, i.e. no learning after these many episodes
         """
         self.alpha = float(alpha)
         self.epsilon = float(epsilon)
         self.discount = float(gamma)
-        self.numTraining = int(numTraining)
+        self.num_training = int(num_training)
 
     ####################################
     #    Override These Functions      #

@@ -132,7 +132,6 @@ class Game:
 
         # print(self.state, type(self.state), "self.state", type(self.state.data))
 
-
         self.numMoves: int = 0
 
         self.game_state: GameStatePacman

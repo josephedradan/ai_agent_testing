@@ -49,7 +49,7 @@ class CornerHeuristicPacman(TestCase):
 
         self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 
-        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('str_path_layout')
 
     # def execute(self, grade, moduleDict, solutionDict):
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:

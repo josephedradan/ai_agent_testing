@@ -175,7 +175,7 @@ class AgentPacmanExpectimax(AgentPacman):
         """
         Returns the expectimax action using self.depth and self.evaluationFunction
 
-        All list_agent_ghost should be modeled as choosing uniformly at random from their
+        All ghosts should be modeled as choosing uniformly at random from their
         legal moves.
         """
         "*** YOUR CODE HERE ***"
@@ -223,14 +223,14 @@ class AgentPacmanExpectimax(AgentPacman):
                 *** PASS: test_cases\q4\1-expectimax2.test
                 *** PASS: test_cases\q4\2-one-ghost-3level.test
                 *** PASS: test_cases\q4\3-one-ghost-4level.test
-                *** PASS: test_cases\q4\4-two-list_agent_ghost-3level.test
-                *** PASS: test_cases\q4\5-two-list_agent_ghost-4level.test
+                *** PASS: test_cases\q4\4-twoghosts-3level.test
+                *** PASS: test_cases\q4\5-twoghosts-4level.test
                 *** PASS: test_cases\q4\6-1a-check-depth-one-ghost.test
                 *** PASS: test_cases\q4\6-1b-check-depth-one-ghost.test
                 *** PASS: test_cases\q4\6-1c-check-depth-one-ghost.test
-                *** PASS: test_cases\q4\6-2a-check-depth-two-list_agent_ghost.test
-                *** PASS: test_cases\q4\6-2b-check-depth-two-list_agent_ghost.test
-                *** PASS: test_cases\q4\6-2c-check-depth-two-list_agent_ghost.test
+                *** PASS: test_cases\q4\6-2a-check-depth-two-ghosts.test
+                *** PASS: test_cases\q4\6-2b-check-depth-two-ghosts.test
+                *** PASS: test_cases\q4\6-2c-check-depth-two-ghosts.test
                 *** Running AgentPacmanExpectimax on smallClassic 1 time(s).
                 Pacman died! Score: 84
                 Average Score: 84.0

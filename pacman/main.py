@@ -47,17 +47,17 @@ import random
 import sys
 from typing import Any
 from typing import Dict
-
+from typing import Tuple
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from pacman.agent import DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT
+
 
 # print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # pprint(sys.path_file_test)
 from typing import Sequence
 from typing import Union
 
-from pacman.agent import Agent
-from pacman.agent import AgentKeyboard
-from pacman.agent import get_subclass_agent
 from pacman.graphics import LIST_GRAPHICS_PACMAN
 from pacman.graphics import get_class_graphics_pacman
 from pacman.graphics import GraphicsPacmanNull
@@ -67,9 +67,8 @@ from typing import List
 
 from pacman.game.game import Game
 from pacman.graphics.graphics_pacman import GraphicsPacman
-from pacman.parser import get_dict_kwargs
+from pacman.parser import get_dict_kwargs_from_string
 
-from pacman.game import layout as _layout
 from pacman.game.rules.game_rules_classic import ClassicGameRules
 from pacman.graphics.graphics_pacman_display import GraphicsPacmanDisplay
 
@@ -91,11 +90,19 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
     USAGE:      python pacman.py <namespace>
     EXAMPLES:   (1) python pacman.py
                     - starts an interactive game
-                (2) python pacman.py --layout smallClassic --zoom 2
+                (2) python pacman.py --str_path_layout smallClassic --zoom 2
                 OR  python pacman.py -l smallClassic -z 2
                     - starts an interactive game on a smaller board, zoomed in
     """
     parser = argparse.ArgumentParser(description=description)
+
+    group_pacman_selection = parser.add_mutually_exclusive_group()
+    group_pacman_selection_explicit = group_pacman_selection.add_argument_group()
+    group_pacman_selection_implicit = group_pacman_selection.add_argument_group()
+
+    group_ghost_selection = parser.add_mutually_exclusive_group()
+    group_ghost_selection_explicit = group_ghost_selection.add_argument_group()
+    group_ghost_selection_implicit = group_ghost_selection.add_argument_group()
 
     parser.add_argument('-n', '--numGames',
                         dest='number_of_games',
@@ -105,20 +112,70 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
                         default=1
                         )
     parser.add_argument('-l', '--layout',
-                        dest='layout',
-                        help='the LAYOUT_FILE from which to load the map layout',
+                        dest='str_path_layout',
+                        help='the LAYOUT_FILE from which to load the map str_path_layout',
                         metavar='LAYOUT_FILE',
                         default='mediumClassic'
                         )
-    parser.add_argument('-p', '--pacman',
-                        dest='str_class_agent_pacman',
-                        help='the agent TYPE in the pacmanAgents module to use',
-                        metavar='TYPE',
-                        default='AgentKeyboard'
-                        )
+    group_pacman_selection_explicit.add_argument('-aps', '--AgentPacmans',
+                                                 dest='str_list_agent_pacman',
+                                                 help='the agent TYPE in the pacmanAgents module to use',
+                                                 )
 
+    group_pacman_selection_explicit.add_argument('-apsa', '--AgentPacmansArgs',
+                                                 dest='str_list_agent_pacman_kwargs',
+                                                 help='Comma separated values sent to agent. e.g. "opt1=val1,opt2,opt3=val3"')
+
+    #####
+
+    group_pacman_selection_implicit.add_argument('-ap', '--AgentPacman',  # TODO: RENAME -p to -ap
+                                                 dest='str_agent_pacman',
+                                                 help='the agent TYPE in the pacmanAgents module to use',
+                                                 choices=DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT.keys(),
+                                                 default='AgentKeyboard',
+                                                 )
+    group_pacman_selection_implicit.add_argument('-apa', '--AgentPacmanArgs',  # TODO: RENAME -a to -apa
+                                                 dest='str_agent_pacman_kwargs',
+                                                 help='Comma separated values sent to agent. e.g. "opt1=val1,opt2,opt3=val3"')
+
+    group_pacman_selection_implicit.add_argument('-apn', '--AgentPacmanNum',  # TODO: RENAME -np to -apn
+                                                 dest='num_str_agent_pacman',
+                                                 type=int,
+                                                 help='The maximum number of pacman to use',
+                                                 default=1
+                                                 )
+
+    ##########
+
+    group_ghost_selection_explicit.add_argument('-ags', '--AgentGhosts',
+                                                dest='str_list_agent_ghost',
+                                                help="Explicit ghost agents",
+                                                type=str,
+                                                )
+
+    group_ghost_selection_explicit.add_argument('-agsa', '--AgentGhostsArgs',
+                                                dest='str_list_agent_ghost_kwargs',
+                                                help='Comma separated values sent to agent. e.g. "opt1=val1,opt2,opt3=val3"')
+
+    #####
+
+    group_ghost_selection_implicit.add_argument('-ag', '--AgentGhost',  # TODO: RENAME -g to -ag
+                                                dest='str_agent_ghost',
+                                                help='the ghost agent TYPE in the ghosts module to use',
+                                                choices=DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT.keys(),
+                                                default='AgentGhostRandom'
+                                                )
+    group_ghost_selection_implicit.add_argument('-aga', '--AgentGhostArgs',
+                                                dest='str_agent_ghost_kwargs',
+                                                help='Comma separated values sent to agent. e.g. "opt1=val1,opt2,opt3=val3"')
+
+    group_ghost_selection_implicit.add_argument('-agn', '--AgentGhostNum',
+                                                type=int,
+                                                dest='num_str_agent_ghost',
+                                                help='The maximum number of ghosts to use',
+                                                default=4
+                                                )
     # GRAPHICS
-
     parser.add_argument('--graphics',
                         dest='graphics_pacman',
                         choices=[graphics_pacman_.__name__ for graphics_pacman_ in LIST_GRAPHICS_PACMAN],
@@ -126,30 +183,18 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
                         default=GraphicsPacmanDisplay.__name__,
                         help="What graphics to display the game with (default: %(default)s)"
                         )
-    # parser.add_argument('-t', '--textGraphics',
-    #                     action='store_true',
-    #                     dest='textGraphics',
-    #                     help='GraphicsPacman output as text only',
-    #                     # default=False
-    #                     )
     parser.add_argument('-q', '--quietTextGraphics',
                         action='store_true',
                         dest='quietGraphics',
                         help='Generate minimal output and no graphics',
                         # default=False
                         )
-    parser.add_argument('-g', '--ghost',
-                        dest='str_class_agent_ghost',
-                        help='the ghost agent TYPE in the list_agent_ghost module to use',
-                        metavar='TYPE',
-                        default='AgentGhostRandom'
-                        )
-    parser.add_argument('-k', '--numGhosts',
-                        type=int,
-                        dest='list_agent_ghost',
-                        help='The maximum number of ghosts to use',
-                        default=4
-                        )
+    # parser.add_argument('-t', '--textGraphics',
+    #                     action='store_true',
+    #                     dest='textGraphics',
+    #                     help='GraphicsPacman output as text only',
+    #                     # default=False
+    #                     )
     parser.add_argument('-z', '--zoom',
                         type=float,
                         dest='zoom',
@@ -173,11 +218,8 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
                         help='A recorded game file (pickle) to replay',
                         default=None
                         )
-    parser.add_argument('-a', '--agentArgs',
-                        dest='agent_pacman_kwargs',
-                        help='Comma separated values sent to agent. e.g. "opt1=val1,opt2,opt3=val3"')
     parser.add_argument('-x', '--numTraining',
-                        dest='numTraining',
+                        dest='num_training',
                         type=int,
                         help='How many episodes are training (suppresses output)',
                         default=0
@@ -205,8 +247,8 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
 
     return namespace
 
-def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
 
+def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     print("VARS")
     pprint(vars(namespace))
     print("=------=")
@@ -217,42 +259,142 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     if namespace.fixRandomSeed:
         random.seed('cs188')
 
-    # Choose a layout
-    dict_k_name_arg_v_arg['layout'] = _layout.get_layout(namespace.layout)
+    # Choose a str_path_layout
+    dict_k_name_arg_v_arg['str_path_layout'] = namespace.layout
 
-    if dict_k_name_arg_v_arg['layout'] == None:
-        raise Exception("The layout " + namespace.layout + " cannot be found")
+    if dict_k_name_arg_v_arg['str_path_layout'] == None:
+        raise Exception("The str_path_layout " + namespace.layout + " cannot be found")
 
     # Choose a Pacman agent
     # noKeyboard = namespace.path_game_to_replay == None and (namespace.textGraphics or namespace.quietGraphics)
 
-    class_agent_pacman = get_subclass_agent(namespace.str_class_agent_pacman)  # FIXME: PACMAN AGENT HERE
+    ##########
+    """
+    Pacman creation stuff
+    """
+
+    _list_tuple__str_agent_pacman__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]]
+
+    if namespace.str_list_agent_pacman is not None:
+
+        _list_str_agent_pacman = namespace.str_list_agent_pacman.split(" ")
+
+        _list_str_agent_pacman_kwargs = namespace.str_list_agent_pacman_kwargs.split(" ")
+
+        _list_str_agent_pacman_dict_kwargs: List[Dict[str, Union[str, Union[str, int]]]] = (
+            [get_dict_kwargs_from_string(_kwargs) for _kwargs in _list_str_agent_pacman_kwargs]
+        )
+
+        _list_tuple__str_agent_pacman__dict_kwargs = list(zip(_list_str_agent_pacman,
+                                                          _list_str_agent_pacman_dict_kwargs)
+                                                      )
+    else:
+
+        _str_agent_pacman = str(namespace.str_agent_pacman)
+
+        _str_agent_pacman_kwargs = get_dict_kwargs_from_string(namespace.str_agent_pacman_kwargs)
+
+        _list_tuple__str_agent_pacman__dict_kwargs = (
+            [(_str_agent_pacman, _str_agent_pacman_kwargs) for _ in
+             range(namespace.num_str_agent_pacman)]
+        )
+
+    if namespace.num_training > 0:
+        dict_k_name_arg_v_arg['num_training'] = namespace.num_training
+
+        for tuple__pacman_agent__dict_kwargs in _list_tuple__str_agent_pacman__dict_kwargs:
+
+            _dict_kwargs = tuple__pacman_agent__dict_kwargs[1]
+
+            if 'num_training' not in _dict_kwargs:
+                _dict_kwargs['num_training'] = namespace.num_training
+
+    dict_k_name_arg_v_arg['list_tuple__str_agent_pacman__dict_kwargs'] = _list_tuple__str_agent_pacman__dict_kwargs
+
+    #####
+
+    # class_agent_pacman = get_subclass_agent(namespace.str_pacman_ghost_agent)  # FIXME: PACMAN AGENT HERE
 
     # FIXME: namespace.pacman IS A AgentKeyboard
-    # print("str_class_agent_pacman", namespace.str_class_agent_pacman, type(namespace.str_class_agent_pacman))
+    # print("str_pacman_ghost_agent", namespace.str_pacman_ghost_agent, type(namespace.str_pacman_ghost_agent))
 
-    agent_pacman_kwargs = get_dict_kwargs(namespace.agent_pacman_kwargs)
+    # _list_dict_pacman_pacman_agent_kwargs = get_dict_kwargs_from_string(namespace.str_agent_pacman_kwargs)
 
-    if namespace.numTraining > 0:
-        dict_k_name_arg_v_arg['numTraining'] = namespace.numTraining
-        if 'numTraining' not in agent_pacman_kwargs:
-            agent_pacman_kwargs['numTraining'] = namespace.numTraining
+    # agent_pacman_ = class_agent_pacman(
+    #     **_str_agent_pacman_kwargs)  # Instantiate Pacman with _str_agent_pacman_kwargs
 
-    agent_pacman_ = class_agent_pacman(**agent_pacman_kwargs)  # Instantiate Pacman with agent_pacman_kwargs
-    dict_k_name_arg_v_arg['agent_pacman'] = agent_pacman_
+    # dict_k_name_arg_v_arg['list_tuple__str_agent_ghost__dict_kwargs'] = agent_pacman_
 
-    # Don't graphics_pacman training games  # FIXME: WTF IS THIS
-    if 'numTrain' in agent_pacman_kwargs:
-        namespace.numQuiet = int(agent_pacman_kwargs['numTrain'])
-        namespace.numIgnore = int(agent_pacman_kwargs['numTrain'])
+    # # Don't graphics_pacman training games  # FIXME: WTF IS THIS
+    # if 'numTrain' in _list_dict_pacman_pacman_agent_kwargs:
+    #     namespace.numQuiet = int(_list_dict_pacman_pacman_agent_kwargs['numTrain'])
+    #     namespace.numIgnore = int(_list_dict_pacman_pacman_agent_kwargs['numTrain'])
 
-    # Choose a ghost agent
-    class_agent_ghost = get_subclass_agent(namespace.str_class_agent_ghost)  # FIXME: GHOST AGENTS HERE
-    print(namespace.str_class_agent_ghost,
-          type(namespace.str_class_agent_ghost))  # FIXME: class_agent_ghost is AgentGhostRandom
+    ##########
 
-    dict_k_name_arg_v_arg['list_agent_ghost'] = [class_agent_ghost(i + 1) for i in
-                                                 range(namespace.list_agent_ghost)]
+    """
+    Ghost creation stuff
+    """
+
+    # if namespace.str_list_agent_ghost:
+    #
+    #     str_list_agent_ghost = str(namespace.str_list_agent_ghost)
+    #     dict_k_name_arg_v_arg['list_str_pacman_ghost_agent'] = (
+    #         [str_list_agent_ghost.strip().split(",")]
+    #     )
+    #     print("FFFFFFFFFFFFFFFFFU")
+    #     print(dict_k_name_arg_v_arg['list_str_pacman_ghost_agent'])
+    #
+    # else:
+    #     # Choose a ghost agent
+    #     str_pacman_ghost_agent = namespace.str_pacman_ghost_agent  # FIXME: GHOST AGENTS HERE
+    #
+    #     # print(namespace.str_pacman_ghost_agent,
+    #     #       type(namespace.str_pacman_ghost_agent))  # FIXME: str_pacman_ghost_agent is AgentGhostRandom
+    #
+    #     dict_k_name_arg_v_arg['list_str_pacman_ghost_agent'] = (
+    #         [str_pacman_ghost_agent for _ in range(namespace.num_str_agent_ghost)]
+    #     )
+
+    _list_tuple__str_agent_ghost__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]]
+
+    if namespace.str_list_agent_ghost is not None:
+
+        _list_str_agent_ghost = namespace.str_list_agent_ghost.split(" ")
+
+        _list_str_agent_ghost_kwargs = namespace.str_list_agent_ghost_kwargs.split(" ")
+
+        _list_str_agent_ghost_dict_kwargs: List[Dict[str, Union[str, Union[str, int]]]] = (
+            [get_dict_kwargs_from_string(_kwargs) for _kwargs in _list_str_agent_ghost_kwargs]
+        )
+
+        _list_tuple__str_agent_ghost__dict_kwargs = list(zip(_list_str_agent_ghost,
+                                                         _list_str_agent_ghost_dict_kwargs)
+                                                     )
+    else:
+
+        _str_agent_ghost = str(namespace.str_agent_ghost)
+
+        _str_agent_ghost_kwargs = get_dict_kwargs_from_string(namespace.str_agent_ghost_kwargs)
+
+        _list_tuple__str_agent_ghost__dict_kwargs = (
+            [(_str_agent_ghost, _str_agent_ghost_kwargs) for _ in range(namespace.num_str_agent_ghost)]
+        )
+
+    # TODO: THIS IS COPY FROM THE PACMAN VERSION ABOVE, NEED BETTER DESIGN
+    if namespace.num_training > 0:
+        # dict_k_name_arg_v_arg['num_training'] = namespace.num_training
+
+        for tuple__pacman_ghost__dict_kwargs in _list_tuple__str_agent_ghost__dict_kwargs:
+
+            _dict_kwargs = tuple__pacman_ghost__dict_kwargs[1]
+
+            if 'num_training' not in _dict_kwargs:
+                _dict_kwargs['num_training'] = namespace.num_training
+
+    dict_k_name_arg_v_arg['list_tuple__str_agent_ghost__dict_kwargs'] = _list_tuple__str_agent_ghost__dict_kwargs
+
+    ##########
 
     class_graphics_pacman = get_class_graphics_pacman(namespace.graphics_pacman)
 
@@ -302,9 +444,10 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
 
     return dict_k_name_arg_v_arg
 
+
 def replay_game(layout, actions, display):  # FIXME: FIGURE THSI SHIT OUT LATER
     # import pacmanAgents
-    # import list_agent_ghost
+    # import list_str_pacman_ghost_agent
 
     rules = ClassicGameRules()
     agents = [pacmanAgents.AgentPacmanGreedy()] + [ghostAgents.AgentGhostRandom(i + 1)
@@ -324,13 +467,29 @@ def replay_game(layout, actions, display):  # FIXME: FIGURE THSI SHIT OUT LATER
     display.finish()
 
 
-def run_pacman_games(layout: _layout.Layout,
-                     agent_pacman: Agent,  # FIXME: ADD MULTIPLE PLAYERS
-                     list_agent_ghost: List[Agent],
+"""
+def run_pacman_games(str_path_layout: _layout.Layout,
+                     list_tuple__str_agent_ghost__dict_kwargs: Agent,  # FIXME: ADD MULTIPLE PLAYERS
+                     list_str_pacman_ghost_agent: List[str],
                      graphics_pacman: GraphicsPacman,
                      number_of_games: int,
                      bool_record: bool,
-                     numTraining: int = 0,
+                     num_training: int = 0,
+                     bool_catch_exceptions: bool = False,
+                     timeout: int = 30,
+                     **kwargs,
+                     ) -> List[Game]:
+
+"""
+
+
+def run_pacman_games(str_path_layout: str,
+                     list_tuple__str_agent_pacman__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
+                     list_tuple__str_agent_ghost__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
+                     graphics_pacman: GraphicsPacman,
+                     number_of_games: int,
+                     bool_record: bool,
+                     num_training: int = 0,
                      bool_catch_exceptions: bool = False,
                      timeout: int = 30,
                      **kwargs,
@@ -338,13 +497,13 @@ def run_pacman_games(layout: _layout.Layout,
     """
     Execute playing Pacman
 
-    :param layout:
-    :param agent_pacman:
-    :param list_agent_ghost:
+    :param str_path_layout:
+    :param list_tuple__str_agent_ghost__dict_kwargs:
+    :param list_str_pacman_ghost_agent:
     :param graphics_pacman:
     :param number_of_games:
     :param bool_record:
-    :param numTraining:
+    :param num_training:
     :param bool_catch_exceptions:
     :param timeout:
     :return:
@@ -352,7 +511,7 @@ def run_pacman_games(layout: _layout.Layout,
 
     # print("#" * 100)
     # __ALL = (
-    #     layout, agent_pacman, list_agent_ghost, graphics_pacman, number_of_games, bool_record, numTraining,
+    #     str_path_layout, list_tuple__str_agent_ghost__dict_kwargs, list_str_pacman_ghost_agent, graphics_pacman, number_of_games, bool_record, num_training,
     #     bool_catch_exceptions,
     #     timeout)
     # pprint(__ALL)
@@ -362,7 +521,7 @@ def run_pacman_games(layout: _layout.Layout,
     list_game: List[Game] = []
 
     for i in range(number_of_games):
-        bool_quiet = i < numTraining
+        bool_quiet = i < num_training
 
         if bool_quiet:
             # Suppress output and graphics
@@ -374,13 +533,12 @@ def run_pacman_games(layout: _layout.Layout,
 
         #####
 
-
         ####
 
         game = classic_game_rules.create_and_get_game(
-            layout,
-            agent_pacman,
-            list_agent_ghost,
+            str_path_layout,
+            list_tuple__str_agent_pacman__dict_kwargs,
+            list_tuple__str_agent_ghost__dict_kwargs,
             graphics_pacman,
             bool_quiet,
             bool_catch_exceptions
@@ -398,10 +556,10 @@ def run_pacman_games(layout: _layout.Layout,
 
             # f = file(filename_recorded, 'w')
             with open(filename_recorded, 'w') as f:
-                components = {'layout': layout, 'actions': game.moveHistory}
+                components = {'str_path_layout': str_path_layout, 'actions': game.moveHistory}
                 pickle.dump(components, f)
 
-    if (number_of_games - numTraining) > 0:
+    if (number_of_games - num_training) > 0:
         scores = [game.game_state.getScore() for game in list_game]
         wins = [game.game_state.isWin() for game in list_game]
         winRate = wins.count(True) / float(len(wins))

@@ -42,7 +42,7 @@ if TYPE_CHECKING:
 
 class GhostRules(RulesAgent):
     """
-    These functions dictate how list_agent_ghost interact with their environment.
+    These functions dictate how ghosts interact with their environment.
     """
     GHOST_SPEED = 1.0
 

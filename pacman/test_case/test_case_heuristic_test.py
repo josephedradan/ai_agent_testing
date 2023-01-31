@@ -43,7 +43,7 @@ class HeuristicTest(TestCase):
 
     def __init__(self, question, testDict):
         super(HeuristicTest, self).__init__(question, testDict)
-        self.layoutText = testDict['layout']
+        self.layoutText = testDict['str_path_layout']
         self.layoutName = testDict['layoutName']
         self.searchProblemClassName = testDict['searchProblemClass']
         self.heuristicName = testDict['heuristic']

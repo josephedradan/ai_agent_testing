@@ -113,7 +113,7 @@ class SearchAgent(Agent):
 
     def registerInitialState(self, game_state: GameState):
         """
-        This is the first time that the agent sees the layout of the game
+        This is the first time that the agent sees the str_path_layout of the game
         board. Here, we choose a path to the goal. In this phase, the agent
         should compute the path to the goal and store it in a local variable.
         All of the work is done in this method!

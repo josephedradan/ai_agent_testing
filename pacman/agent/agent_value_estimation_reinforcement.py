@@ -90,30 +90,30 @@ class ReinforcementAgent(ValueEstimationAgent):
         """
           Called by environment when episode is done
         """
-        if self.episodesSoFar < self.numTraining:
+        if self.episodesSoFar < self.num_training:
             self.accumTrainRewards += self.episodeRewards
         else:
             self.accumTestRewards += self.episodeRewards
         self.episodesSoFar += 1
-        if self.episodesSoFar >= self.numTraining:
+        if self.episodesSoFar >= self.num_training:
             # Take off the training wheels
             self.epsilon = 0.0  # no exploration
             self.alpha = 0.0  # no learning
 
     def isInTraining(self):
-        return self.episodesSoFar < self.numTraining
+        return self.episodesSoFar < self.num_training
 
     def isInTesting(self):
         return not self.isInTraining()
 
-    def __init__(self, actionFn=None, numTraining=100, epsilon=0.5, alpha=0.5, gamma=1):
+    def __init__(self, actionFn=None, num_training=100, epsilon=0.5, alpha=0.5, gamma=1):
         """
         actionFn: Function which takes a state and returns the list of legal actions
 
         alpha    - learning rate
         epsilon  - exploration rate
         gamma    - discount factor
-        numTraining - number of training episodes, i.e. no learning after these many episodes
+        num_training - number of training episodes, i.e. no learning after these many episodes
         """
         if actionFn == None:
             actionFn = lambda state: state.getLegalActions()
@@ -122,7 +122,7 @@ class ReinforcementAgent(ValueEstimationAgent):
         self.episodesSoFar = 0
         self.accumTrainRewards = 0.0
         self.accumTestRewards = 0.0
-        self.numTraining = int(numTraining)
+        self.num_training = int(num_training)
         self.epsilon = float(epsilon)
         self.alpha = float(alpha)
         self.discount = float(gamma)
@@ -163,7 +163,7 @@ class ReinforcementAgent(ValueEstimationAgent):
     def registerInitialState(self, game_state: GameState):
         self.startEpisode()
         if self.episodesSoFar == 0:
-            print('Beginning %d episodes of Training' % (self.numTraining))
+            print('Beginning %d episodes of Training' % (self.num_training))
 
     def final(self, game_state: GameState):
         """
@@ -184,15 +184,15 @@ class ReinforcementAgent(ValueEstimationAgent):
         if self.episodesSoFar % NUM_EPS_UPDATE == 0:
             print('Reinforcement Learning Status:')
             windowAvg = self.lastWindowAccumRewards / float(NUM_EPS_UPDATE)
-            if self.episodesSoFar <= self.numTraining:
+            if self.episodesSoFar <= self.num_training:
                 trainAvg = self.accumTrainRewards / float(self.episodesSoFar)
                 print('\tCompleted %d out of %d training episodes' % (
-                    self.episodesSoFar, self.numTraining))
+                    self.episodesSoFar, self.num_training))
                 print('\tAverage Rewards over all training: %.2f' % (
                     trainAvg))
             else:
-                testAvg = float(self.accumTestRewards) / (self.episodesSoFar - self.numTraining)
-                print('\tCompleted %d test episodes' % (self.episodesSoFar - self.numTraining))
+                testAvg = float(self.accumTestRewards) / (self.episodesSoFar - self.num_training)
+                print('\tCompleted %d test episodes' % (self.episodesSoFar - self.num_training))
                 print('\tAverage Rewards over testing: %.2f' % testAvg)
             print('\tAverage Rewards for last %d episodes: %.2f' % (
                 NUM_EPS_UPDATE, windowAvg))
@@ -200,6 +200,6 @@ class ReinforcementAgent(ValueEstimationAgent):
             self.lastWindowAccumRewards = 0.0
             self.episodeStartTime = time.time()
 
-        if self.episodesSoFar == self.numTraining:
+        if self.episodesSoFar == self.num_training:
             msg = 'Training Done (turning off epsilon and alpha)'
             print('%s\n%s' % (msg, '-' * len(msg)))

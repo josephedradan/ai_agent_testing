@@ -81,11 +81,11 @@ class ValueIterationAgent(ValueEstimationAgent):
         MDP 
         
         Execution:
-            python gridworld.py -a value -i 100 -k 10
+            python gridworld.py -a value -i 100 -ng 10
             python gridworld.py -a value -i 5
             python autograder.py -q q1
 
-            py -3.6 gridworld.py -a value -i 100 -k 10
+            py -3.6 gridworld.py -a value -i 100 -ng 10
             py -3.6 gridworld.py -a value -i 5
             py -3.6 autograder.py -q q1
         
@@ -451,10 +451,10 @@ class AsynchronousValueIterationAgent(ValueIterationAgent):
         Question 4 (Not Required): Asynchronous Value Iteration
 
         Execution:
-            python gridworld.py -a asynchvalue -i 1000 -k 10
+            python gridworld.py -a asynchvalue -i 1000 -ng 10
             python autograder.py -q q4
 
-            py -3.6 gridworld.py -a asynchvalue -i 1000 -k 10
+            py -3.6 gridworld.py -a asynchvalue -i 1000 -ng 10
             py -3.6 autograder.py -q q4
         
 
@@ -538,10 +538,10 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
         Question 5 (Not Required): Prioritized Sweeping Value Iteration
 
         Execution:
-            python gridworld.py -a asynchvalue -i 1000 -k 10
+            python gridworld.py -a asynchvalue -i 1000 -ng 10
             python autograder.py -q q4
 
-            py -3.6 gridworld.py -a asynchvalue -i 1000 -k 10
+            py -3.6 gridworld.py -a asynchvalue -i 1000 -ng 10
             py -3.6 autograder.py -q q4
 
         Notes:

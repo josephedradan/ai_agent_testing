@@ -164,7 +164,7 @@ class ApproximateQAgent(PacmanQAgent):
         PacmanQAgent.final(self, game_state)
 
         # did we finish training?
-        if self.episodesSoFar == self.numTraining:
+        if self.episodesSoFar == self.num_training:
             # you might want to print your weights here for debugging
             "*** YOUR CODE HERE ***"
             # pprint(self.weights)

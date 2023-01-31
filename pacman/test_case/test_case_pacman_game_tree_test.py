@@ -187,7 +187,7 @@ class PacmanGameTreeTest(TestCase):
 
         self.seed: int = int(self.dict_file_test['seed'])
         self.class_agent: Type[Agent] = self.dict_file_test['agent']
-        self.layout_text: str = self.dict_file_test['layout']
+        self.layout_text: str = self.dict_file_test['str_path_layout']
         self.layout_name: str = self.dict_file_test['layoutName']
         self.depth: int = int(self.dict_file_test['depth'])
         self.max_points: int = int(self.dict_file_test['max_points'])
@@ -287,7 +287,7 @@ class PacmanGameTreeTest(TestCase):
         WRite solutions given path_file
 
         """
-        # load module, set seed, create list_agent_ghost and macman, run game
+        # load module, set seed, create ghosts and macman, run game
         # multiAgents = moduleDict['projectTestClasses']
 
         random.seed(self.seed)

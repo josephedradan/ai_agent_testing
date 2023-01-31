@@ -89,6 +89,6 @@ class PacmanRules(RulesAgent):
         if (position in game_state.getCapsules()):
             game_state.game_state_data.list_capsule.remove(position)
             game_state.game_state_data._capsuleEaten = position
-            # Reset all list_agent_ghost' scared timers
+            # Reset all ghosts' scared timers
             for index in range(1, len(game_state.game_state_data.list_state_agent)):
                 game_state.game_state_data.list_state_agent[index].scaredTimer = SCARED_TIME

@@ -270,7 +270,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
       state:   The current search state
                (a data structure you chose in your search problem_multi_agent_tree)
 
-      problem_multi_agent_tree: The CornersProblem instance for this layout.
+      problem_multi_agent_tree: The CornersProblem instance for this str_path_layout.
 
     This function should always return a number that is a lower bound on the
     shortest path from the state to a goal of the problem_multi_agent_tree; i.e.  it should be

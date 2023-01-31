@@ -49,7 +49,7 @@ class CornerHeuristicSanity(TestCase):
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(CornerHeuristicSanity, self).__init__(question, dict_file_test)
 
-        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('str_path_layout')
 
         self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 

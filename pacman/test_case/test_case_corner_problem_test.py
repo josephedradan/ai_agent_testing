@@ -59,7 +59,7 @@ class CornerProblemTest(TestCase):
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(CornerProblemTest, self).__init__(question, dict_file_test)
 
-        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('str_path_layout')
 
         self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 
@@ -104,7 +104,7 @@ class CornerProblemTest(TestCase):
             return False
 
         grader.addMessage('PASS: %s' % self.path_file_test)
-        grader.addMessage('\tpacman layout:\t\t%s' % self.name_layout)
+        grader.addMessage('\tpacman str_path_layout:\t\t%s' % self.name_layout)
         grader.addMessage('\tsolution length:\t\t%s' % len(solution))
         return True
 

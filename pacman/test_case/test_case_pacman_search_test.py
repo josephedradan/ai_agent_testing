@@ -45,7 +45,7 @@ class PacmanSearchTest(TestCase):
 
     def __init__(self, question, testDict):
         super(PacmanSearchTest, self).__init__(question, testDict)
-        self.layout_text = testDict['layout']
+        self.layout_text = testDict['str_path_layout']
         self.alg = testDict['algorithm']
         self.layoutName = testDict['layoutName']
 
@@ -128,7 +128,7 @@ class PacmanSearchTest(TestCase):
             return False
 
         grader.addMessage('PASS: %s' % self.path_file_test)
-        grader.addMessage('\tpacman layout:\t\t%s' % self.layoutName)
+        grader.addMessage('\tpacman str_path_layout:\t\t%s' % self.layoutName)
         grader.addMessage('\tsolution length: %s' % len(solution))
         grader.addMessage('\tnodes expanded:\t\t%s' % expanded)
         return True

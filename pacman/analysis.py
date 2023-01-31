@@ -175,11 +175,11 @@ def question8():
     Question 8 (1 point): Bridge Crossing Revisited
 
     Execution:
-        py -3.6 gridworld.py -a q -k 50 -n 0 -g BridgeGrid -e 1
-        py -3.6 gridworld.py -a q -k 50 -n 0 -g BridgeGrid -e 0
+        py -3.6 gridworld.py -a q -ng 50 -n 0 -g BridgeGrid -e 1
+        py -3.6 gridworld.py -a q -ng 50 -n 0 -g BridgeGrid -e 0
 
         # Meh answer, -l == learning rate, -e == epsilon
-        py -3.6 gridworld.py -a q -k 50 -n 0 -g BridgeGrid -e 0.5 -l 1
+        py -3.6 gridworld.py -a q -ng 50 -n 0 -g BridgeGrid -e 0.5 -l 1
 
         py -3.6 autograder.py -q q8
 

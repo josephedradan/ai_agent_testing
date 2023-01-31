@@ -197,11 +197,11 @@ def get_list_last_ghost_agent_game_state(game_state: GameState,
                                          list_game_state: List[float] = None
                                          ) -> List[AgentGhostContainer]:
     """
-    This gets the game_state based on the last ghost before it becomes agent_pacman_'s turn to move
+    This gets the game_state based on the last ghost before it becomes pacmans's turn to move
 
     Notes:
-        Needs the first of the list_agent_ghost -> returns list of game_state that are the last game_state
-        before agent_pacman_'s turn
+        Needs the first of the ghosts -> returns list of game_state that are the last game_state
+        before pacmans's turn
 
     """
     if list_game_state is None:
@@ -264,10 +264,10 @@ def dfs_recursive_minimax_v2(game_state: GameState,
                              game_state_previous: GameState = None,
                              ) -> [float, AgentContainer]:
     """
-    This function tries to compress all ghost agents together, the problem_multi_agent_tree is that not all list_agent_ghost need to move in order
+    This function tries to compress all ghost agents together, the problem_multi_agent_tree is that not all ghosts need to move in order
     for the game to end.
 
-    Basically, the game can end when one of the list_agent_ghost moves so compressing all ghost agent moves together passes the
+    Basically, the game can end when one of the ghosts moves so compressing all ghost agent moves together passes the
     point when the game ends, so it's suboptimal to do this.
 
     This means that dfs_recursive_minimax_v1 is more correct than this solution.
@@ -813,7 +813,7 @@ class AgentPacmanMinimax(AgentPacman):
 
         game_state.getLegalActions(agentIndex):
         Returns a list of legal actions for an agent
-        agentIndex=0 means Pacman, list_agent_ghost are >= 1
+        agentIndex=0 means Pacman, ghosts are >= 1
 
         game_state.generateSuccessor(agentIndex, action):
         Returns the successor game game_state after an agent takes an action
@@ -919,7 +919,7 @@ class AgentPacmanMinimax(AgentPacman):
         #
         # Results:
         #     Crashes because dfs_recursive_minimax_v2 runs all ghost agent actions and during that process the game
-        #     may have ended via agent_pacman_ win or loss (most likely loss because only list_agent_ghost move at this time).
+        #     may have ended via agent_pacman_ win or loss (most likely loss because only ghosts move at this time).
         #     So any further game_state past the winning/losing game_state DOES NOT RETURN A SCORE which is needed
         #     to determine the action for agent_pacman_.
         #
@@ -983,15 +983,15 @@ class AgentPacmanMinimax(AgentPacman):
         #             *** FAIL: test_cases\q2\2-4b-vary-depth.test
         #             *** FAIL: test_cases\q2\2-one-ghost-3level.test
         #             *** PASS: test_cases\q2\3-one-ghost-4level.test
-        #             *** PASS: test_cases\q2\4-two-list_agent_ghost-3level.test
-        #             *** FAIL: test_cases\q2\5-two-list_agent_ghost-4level.test
+        #             *** PASS: test_cases\q2\4-twoghosts-3level.test
+        #             *** FAIL: test_cases\q2\5-twoghosts-4level.test
         #             *** FAIL: test_cases\q2\6-tied-root.test
         #             *** FAIL: test_cases\q2\7-1a-check-depth-one-ghost.test
         #             *** PASS: test_cases\q2\7-1b-check-depth-one-ghost.test
         #             *** FAIL: test_cases\q2\7-1c-check-depth-one-ghost.test
-        #             *** FAIL: test_cases\q2\7-2a-check-depth-two-list_agent_ghost.test
-        #             *** PASS: test_cases\q2\7-2b-check-depth-two-list_agent_ghost.test
-        #             *** FAIL: test_cases\q2\7-2c-check-depth-two-list_agent_ghost.test
+        #             *** FAIL: test_cases\q2\7-2a-check-depth-two-ghosts.test
+        #             *** PASS: test_cases\q2\7-2b-check-depth-two-ghosts.test
+        #             *** FAIL: test_cases\q2\7-2c-check-depth-two-ghosts.test
         #             ...
         #             RecursionError: maximum recursion depth exceeded in comparison
         # """
@@ -1046,15 +1046,15 @@ class AgentPacmanMinimax(AgentPacman):
                 *** PASS: test_cases\q2\2-4b-vary-depth.test
                 *** PASS: test_cases\q2\2-one-ghost-3level.test
                 *** PASS: test_cases\q2\3-one-ghost-4level.test
-                *** PASS: test_cases\q2\4-two-list_agent_ghost-3level.test
-                *** PASS: test_cases\q2\5-two-list_agent_ghost-4level.test
+                *** PASS: test_cases\q2\4-twoghosts-3level.test
+                *** PASS: test_cases\q2\5-twoghosts-4level.test
                 *** PASS: test_cases\q2\6-tied-root.test
                 *** PASS: test_cases\q2\7-1a-check-depth-one-ghost.test
                 *** PASS: test_cases\q2\7-1b-check-depth-one-ghost.test
                 *** PASS: test_cases\q2\7-1c-check-depth-one-ghost.test
-                *** PASS: test_cases\q2\7-2a-check-depth-two-list_agent_ghost.test
-                *** PASS: test_cases\q2\7-2b-check-depth-two-list_agent_ghost.test
-                *** PASS: test_cases\q2\7-2c-check-depth-two-list_agent_ghost.test
+                *** PASS: test_cases\q2\7-2a-check-depth-two-ghosts.test
+                *** PASS: test_cases\q2\7-2b-check-depth-two-ghosts.test
+                *** PASS: test_cases\q2\7-2c-check-depth-two-ghosts.test
                 *** Running AgentPacmanMinimax on smallClassic 1 time(s).
                 Pacman died! Score: 84
                 Average Score: 84.0

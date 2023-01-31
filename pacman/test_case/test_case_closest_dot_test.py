@@ -43,7 +43,7 @@ class ClosestDotTest(TestCase):
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(ClosestDotTest, self).__init__(question, dict_file_test)
 
-        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('str_path_layout')
 
         self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 
@@ -76,7 +76,7 @@ class ClosestDotTest(TestCase):
             return False
 
         grader.addMessage(f'PASS: {self.path_file_test}')
-        grader.addMessage(f'\tpacman layout:\t\t{self.name_layout}')
+        grader.addMessage(f'\tpacman str_path_layout:\t\t{self.name_layout}')
         grader.addMessage(f'\tsolution length:\t\t{len(solution)}')
         return True
 

@@ -108,7 +108,7 @@ class EvalAgentTest(TestCase):
 
             class_agent: Type[Agent] = get_subclass_agent(self.name_class_agent)
 
-            agentOpts = main.get_dict_kwargs(self.agentArgs) if self.agentArgs != '' else {}
+            agentOpts = main.get_dict_kwargs_from_string(self.agentArgs) if self.agentArgs != '' else {}
 
             agent_object: Agent = class_agent(**agentOpts)
 

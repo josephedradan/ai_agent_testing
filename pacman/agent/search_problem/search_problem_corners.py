@@ -34,7 +34,7 @@ from pacman.game.directions import Directions
 
 class CornersProblem(SearchProblem):
     """
-    This search problem_multi_agent_tree finds paths through all four corners of a layout.
+    This search problem_multi_agent_tree finds paths through all four corners of a str_path_layout.
 
     You must select a suitable state space and successor function
     """

@@ -88,7 +88,7 @@ class ParseFile():
         return test
 
 
-def get_dict_kwargs(string_given: Union[str, None]) -> Dict[str, Any]:
+def get_dict_kwargs_from_string(string_given: Union[str, None]) -> Dict[str, Any]:
     if string_given is None:
         return {}
 

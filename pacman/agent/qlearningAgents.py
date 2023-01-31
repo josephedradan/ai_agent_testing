@@ -49,7 +49,7 @@ class QLearningAgent(ReinforcementAgent):
         Question 6 (4 points): Q-Learning
 
         Execution:
-            py -3.6 gridworld.py -a q -k 5 -m
+            py -3.6 gridworld.py -a q -ng 5 -m
             py -3.6 autograder.py -q q6
         
         Result:
@@ -168,9 +168,9 @@ class QLearningAgent(ReinforcementAgent):
         Question 7 (2 points): Epsilon Greedy
         
         Execution:
-            py -3.6 gridworld.py -a q -k 100 
-            py -3.6 gridworld.py -a q -k 100 --noise 0.0 -e 0.1
-            py -3.6 gridworld.py -a q -k 100 --noise 0.0 -e 0.9
+            py -3.6 gridworld.py -a q -ng 100 
+            py -3.6 gridworld.py -a q -ng 100 --noise 0.0 -e 0.1
+            py -3.6 gridworld.py -a q -ng 100 --noise 0.0 -e 0.9
             py -3.6 autograder.py -q q7
             
             py -3.6 crawler.py
@@ -323,7 +323,7 @@ Execution:
     py -3.6 pacman.py -p PacmanQAgent -x 2000 -n 2010 -l smallGrid
 
     # Watch Training games
-    py -3.6 pacman.py -p PacmanQAgent -n 10 -l smallGrid -a numTraining=10
+    py -3.6 pacman.py -p PacmanQAgent -n 10 -l smallGrid -a num_training=10
     
     py -3.6 autograder.py -q q9
 
@@ -345,7 +345,7 @@ Results:
 class PacmanQAgent(QLearningAgent):
     "Exactly the same as QLearningAgent, but with different default parameters"
 
-    def __init__(self, epsilon=0.05, gamma=0.8, alpha=0.2, numTraining=0, **args):
+    def __init__(self, epsilon=0.05, gamma=0.8, alpha=0.2, num_training=0, **args):
         """
         These default parameters can be changed from the pacman.py command line.
         For example, to change the exploration rate, try:
@@ -354,12 +354,12 @@ class PacmanQAgent(QLearningAgent):
         alpha    - learning rate
         epsilon  - exploration rate
         gamma    - discount factor
-        numTraining - number of training episodes, i.e. no learning after these many episodes
+        num_training - number of training episodes, i.e. no learning after these many episodes
         """
         args['epsilon'] = epsilon
         args['gamma'] = gamma
         args['alpha'] = alpha
-        args['numTraining'] = numTraining
+        args['num_training'] = num_training
         self.index = 0  # This is always Pacman
         QLearningAgent.__init__(self, **args)
 

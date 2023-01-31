@@ -19,8 +19,8 @@
 #
 #     Notes:
 #         This algorithm involves the influence of closest:
-#             active list_agent_ghost
-#             scared list_agent_ghost
+#             active ghosts
+#             scared ghosts
 #             food
 #
 #         which add onto or subtract from score_new.
@@ -64,7 +64,7 @@
 #     score_ghost_active_closest = 0
 #     score_ghost_scared_closest = 0
 #
-#     # # If list_capsule exist and list_agent_ghost
+#     # # If list_capsule exist and ghosts
 #     # if list_position_capsule:
 #     #     # Get the closest capsule to Pacman
 #     #     distance_pacman_to_capsule_closest = min(
@@ -86,7 +86,7 @@
 #     #     # Modify score_new
 #     #     score_new += score_capsule_closest
 #
-#     # Check active list_agent_ghost exist
+#     # Check active ghosts exist
 #     if list_agent_state_ghost_active:
 #         # Get the closest ghost to Pacman
 #         distance_pacman_to_ghost_closest = min(
@@ -109,7 +109,7 @@
 #         # Modify score_new
 #         score_new += score_ghost_active_closest * -1
 #
-#     # Check scared list_agent_ghost exist
+#     # Check scared ghosts exist
 #     if list_agent_state_ghost_scared:
 #         # Get the closest scared ghost to Pacman
 #         distance_pacman_to_ghost_scared_closest = min(
@@ -124,7 +124,7 @@
 #         )
 #
 #         if function_get_distance is util.manhattanDistance:
-#             # Closer a scared ghost is, score_ghost_scared_closest^POWER (because scared list_agent_ghost are good money)
+#             # Closer a scared ghost is, score_ghost_scared_closest^POWER (because scared ghosts are good money)
 #             score_ghost_scared_closest = score_ghost_scared_closest ** 4  # 4 based on trial and error
 #         else:
 #             score_ghost_scared_closest = score_ghost_scared_closest ** 6.7  # 6.7 based on trial and error
@@ -312,7 +312,7 @@
 #         # for position_ghost in successorGameState.getGhostPositions():
 #         #     distance_pacman_to_ghost = util.manhattanDistance(agent_pacman_.getPosition(), position_ghost)
 #         #
-#         #     # The further away list_agent_ghost are, add to score_new
+#         #     # The further away ghosts are, add to score_new
 #         #     # score_new += distance_pacman_to_ghost
 #         #
 #         #     if distance_pacman_to_ghost_closest is None:
@@ -370,8 +370,8 @@
 #             Improved version of V1
 #
 #             It involves the influence of closest:
-#                 active ghost (the list_agent_ghost that can kill)
-#                 scared ghost (the list_agent_ghost that give you points)
+#                 active ghost (the ghosts that can kill)
+#                 scared ghost (the ghosts that give you points)
 #                 food
 #
 #         IMPORTANT NOTES:

@@ -813,7 +813,7 @@ class FirstPersonGraphics(GraphicsPacmanDisplay):
             return
         else:
             pass
-            # Draw relevant list_agent_ghost
+            # Draw relevant ghosts
             allGhosts = state.getGhostStates()
             visibleGhosts = state.getVisibleGhosts()
             for i, ghost in enumerate(allGhosts):

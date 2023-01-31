@@ -1,4 +1,4 @@
-# layout.py
+# str_path_layout.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
@@ -160,7 +160,7 @@ class Layout:
 
     def _process_char_from_layout(self, x: int, y: int, char_from_layout: str):
         """
-        Makes the actual objects in the layout
+        Makes the actual objects in the str_path_layout
 
         """
         if char_from_layout == '%':
@@ -202,7 +202,7 @@ def get_layout(name: str, back=2) -> Union[Layout, None]:
 
 def get_layout_object_helper(path_layout: str) -> Union[Layout, None]:
     """
-    Given string_given of path of layout file, return Layout object or None
+    Given string_given of path of str_path_layout file, return Layout object or None
 
     :param path_layout:
     :return:
