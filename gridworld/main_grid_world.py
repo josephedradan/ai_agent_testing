@@ -31,7 +31,7 @@ class Gridworld(mdp.MarkovDecisionProcess):
       Gridworld
     """
     def __init__(self, grid):
-        # layout
+        # str_path_layout
         if type(grid) == type([]): grid = makeGrid(grid)
         self.grid = grid
 

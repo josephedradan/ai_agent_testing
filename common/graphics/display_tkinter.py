@@ -393,7 +393,7 @@ class DisplayTkinter(Display):
 
     def get_wait_for_keys(self):
         keys = []
-        print("--------------keys", keys)
+        print("--------------ngeys", keys)
         while not keys:
             keys = self.get_keys_pressed()
             self.sleep(0.05)

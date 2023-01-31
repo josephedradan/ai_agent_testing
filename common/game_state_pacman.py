@@ -77,7 +77,7 @@ class GameStatePacman(GameState):
 
     def initialize(self, layout: Layout, numGhostAgents: int = 1000):
         """
-        Creates an initial game game_state from a layout array (see layout.py).
+        Creates an initial game game_state from a str_path_layout array (see str_path_layout.py).
         """
         self.game_state_data.initialize(layout, numGhostAgents)
 

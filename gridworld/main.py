@@ -187,7 +187,7 @@ def arg_parser_gridworld(argv: Union[Sequence[str], None] = None) -> argparse.Na
                         metavar="K",
                         help='Number of rounds of value iteration (default %default)'
                         )
-    parser.add_argument('-k', '--episodes',
+    parser.add_argument('-ng', '--episodes',
                         action='store',
                         type=int,
                         dest='episodes',

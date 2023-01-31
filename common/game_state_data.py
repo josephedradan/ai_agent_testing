@@ -178,7 +178,7 @@ class GameStateData:
 
     def initialize(self, layout: Layout, number_of_agent_ghost: int):
         """
-        Creates an initial game game_state from a layout array (see layout.py).
+        Creates an initial game game_state from a str_path_layout array (see str_path_layout.py).
         """
         self.grid_food: GridPacman = layout.food.copy()
 
@@ -194,7 +194,7 @@ class GameStateData:
         for isPacman, pos in layout.agentPositions:
             if not isPacman:
                 if count_number_of_agent_ghosts == number_of_agent_ghost:
-                    continue  # Max list_agent_ghost reached already
+                    continue  # Max ghosts reached already
                 else:
                     count_number_of_agent_ghosts += 1
             self.list_state_agent.append(
