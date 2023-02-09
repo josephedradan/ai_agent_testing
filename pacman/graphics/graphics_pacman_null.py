@@ -19,16 +19,17 @@ from typing import TYPE_CHECKING
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
-    from common.game_state_data import GameStateData
+    from common.state import State
+    from common.state_data_pacman import StateDataPacman
 
 
 class GraphicsPacmanNull(GraphicsPacman):
 
-    def initialize(self, state: GameStateData, isBlue=False):
+
+    def initialize(self, state: StateDataPacman, isBlue=False):
         pass
 
-    def update(self, state: GameState):
+    def update(self, state: State):
         pass
 
     # def checkNullDisplay(self):
@@ -44,4 +45,7 @@ class GraphicsPacmanNull(GraphicsPacman):
         pass
 
     def finish(self):
+        pass
+
+    def drawExpandedCells(self, cells):
         pass

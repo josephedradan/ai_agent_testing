@@ -24,7 +24,7 @@ Reference:
 from typing import TYPE_CHECKING
 
 from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
-from common.game_state import GameState
+from common.state import State
 
 if TYPE_CHECKING:
     from pacman.game.grid_pacman import GridPacman
@@ -35,7 +35,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     A search problem_multi_agent_tree for finding a path to any food.
 
     This search problem_multi_agent_tree is just like the PositionSearchProblem, but has a
-    different goal test, which you need to fill in below.  The state space and
+    different goal test, which you need to fill in below.  The state_pacman space and
     successor function do not need to be changed.
 
     The class definition above, AnyFoodSearchProblem(PositionSearchProblem),
@@ -45,7 +45,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     method.
     """
 
-    def __init__(self, gameState: GameState):
+    def __init__(self, gameState: State):
         "Stores information from the gameState.  You don't need to change this."
         # Store the food for later reference
         super().__init__(gameState)
@@ -59,7 +59,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
     def isGoalState(self, state):
         """
-        The state is Pacman's position. Fill this in with a goal test that will
+        The state_pacman is Pacman's position. Fill this in with a goal test that will
         complete the problem_multi_agent_tree definition.
         """
         x, y = state
@@ -75,7 +75,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
         ####################
         """
-        Recall that list_position_food_remaining changes so just check if the state, which is a tuple of the position,
+        Recall that list_position_food_remaining changes so just check if the state_pacman, which is a tuple of the position,
         is in the list_position_food_remaining.
 
         """

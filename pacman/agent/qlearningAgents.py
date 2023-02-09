@@ -11,12 +11,11 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 import random
-from typing import Tuple, Union
+from typing import Tuple
+from typing import Union
 
 from common import util
 from pacman.agent.agent_value_estimation_reinforcement import ReinforcementAgent
-from pacman.feature_extractor_coordiate import FeatureExtractor
-from pacman.feature_extractor_coordiate import get_subclass_feature_extractor
 
 
 class QLearningAgent(ReinforcementAgent):
@@ -36,13 +35,13 @@ class QLearningAgent(ReinforcementAgent):
         - self.discount (discount rate)
 
       Functions you should use
-        - self.getLegalActions(state)
-          which returns legal actions for a state
+        - self.getLegalActions(state_pacman)
+          which returns legal actions for a state_pacman
     """
 
-    def __init__(self, **args):
+    def __init__(self, **kwargs):
         "You can initialize Q-values here..."
-        ReinforcementAgent.__init__(self, **args)
+        super(QLearningAgent, self).__init__(**kwargs)
 
         "*** YOUR CODE HERE ***"
         r"""
@@ -75,13 +74,13 @@ class QLearningAgent(ReinforcementAgent):
             Foundations of Q-Learning
                 Notes:
                     Q-values are stored in a Q-table which has one row for each
-                    possible state and one column for each possible action
+                    possible state_pacman and one column for each possible action
                     
-                    An optimal Q-table contains values that allow the AI agent to take the best
-                    action in any possible state, thus providing the agent with the optimal path to the
+                    An optimal Q-table contains values that allow the AI player to take the best
+                    action in any possible state_pacman, thus providing the player with the optimal path to the
                     highest reward
                     
-                    The Q-table therefore represents the AI agent's policy for acting in the current 
+                    The Q-table therefore represents the AI player's policy for acting in the current 
                     environment
                     
                 Reference:
@@ -94,8 +93,8 @@ class QLearningAgent(ReinforcementAgent):
 
     def getQValue(self, state: Tuple[int, int], action: str) -> float:
         """
-          Returns Q(state,action)
-              Should return 0.0 if we have never seen a state
+          Returns Q(state_pacman,action)
+              Should return 0.0 if we have never seen a state_pacman
               or the Q node value otherwise
         """
         "*** YOUR CODE HERE ***"
@@ -103,12 +102,12 @@ class QLearningAgent(ReinforcementAgent):
 
         return self.counter_q_table_k_state_action_v_value.get((state, action), 0)
 
-    def computeValueFromQValues(self, state: Tuple[int, int]) -> float:
+    def computeValueFromQValues(self, state: str) -> float:
         """
-          Returns max_action Q(state,action)
+          Returns max_action Q(state_pacman,action)
           where the max is over legal actions.  Note that if
           there are no legal actions, which is the case at the
-          terminal state, you should return a value of 0.0.
+          terminal state_pacman, you should return a value of 0.0.
         """
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
@@ -116,7 +115,7 @@ class QLearningAgent(ReinforcementAgent):
         """
         Important: Make sure that in your computeValueFromQValues and computeActionFromQValues functions, you only 
         access Q values by calling getQValue . This abstraction will be useful for question 10 when you override 
-        getQValue to use features of state-action pairs rather than state-action pairs directly.
+        getQValue to use features of state_pacman-action pairs rather than state_pacman-action pairs directly.
         """
 
         actions = self.getLegalActions(state)
@@ -127,8 +126,8 @@ class QLearningAgent(ReinforcementAgent):
 
     def computeActionFromQValues(self, state) -> Union[None, str]:
         """
-          Compute the best action to take in a state.  Note that if there
-          are no legal actions, which is the case at the terminal state,
+          Compute the best action to take in a state_pacman.  Note that if there
+          are no legal actions, which is the case at the terminal state_pacman,
           you should return None.
         """
         "*** YOUR CODE HERE ***"
@@ -137,7 +136,7 @@ class QLearningAgent(ReinforcementAgent):
         """
         Important: Make sure that in your computeValueFromQValues and computeActionFromQValues functions, you only 
         access Q values by calling getQValue . This abstraction will be useful for question 10 when you override 
-        getQValue to use features of state-action pairs rather than state-action pairs directly.
+        getQValue to use features of state_pacman-action pairs rather than state_pacman-action pairs directly.
         """
         actions = self.getLegalActions(state)
 
@@ -148,10 +147,10 @@ class QLearningAgent(ReinforcementAgent):
 
     def getAction(self, state) -> str:
         """
-          Compute the action to take in the current state.  With
+          Compute the action to take in the current state_pacman.  With
           probability self.epsilon, we should take a random action and
           take the best policy action otherwise.  Note that if there are
-          no legal actions, which is the case at the terminal state, you
+          no legal actions, which is the case at the terminal state_pacman, you
           should choose None as the action.
 
           HINT: You might want to use util.flipCoin(prob)
@@ -177,7 +176,7 @@ class QLearningAgent(ReinforcementAgent):
 
         
         Notes:
-            Complete your Q-learning agent by implementing epsilon-greedy action selection in getAction, meaning it 
+            Complete your Q-learning player by implementing epsilon-greedy action selection in getAction, meaning it 
             chooses random actions an epsilon fraction of the time, and follows its current best Q-values otherwise. 
             Note that choosing a random action may result in choosing the best action - that is, you should not 
             choose a random sub-optimal action, but rather any random legal action.
@@ -225,7 +224,7 @@ class QLearningAgent(ReinforcementAgent):
     def update(self, state, action, nextState, reward) -> None:
         """
           The parent class calls this to observe a
-          state = action => nextState and reward transition.
+          state_pacman = action => nextState and reward transition.
           You should do your Q-Value update here
 
           NOTE: You should never call this function,
@@ -240,28 +239,28 @@ class QLearningAgent(ReinforcementAgent):
                 Notes:
                     Temporal Differences
                         Notes:
-                            method of calculating how much Q-value for the action taken in teh previous state
-                            should be changed based on what teh AI agent has learned about the Q-value for the current
-                            state's actions
+                            method of calculating how much Q-value for the action taken in teh previous state_pacman
+                            should be changed based on what teh AI player has learned about the Q-value for the current
+                            state_pacman's actions
                             
                             Previous Q-values are therefore updated after each step
                             
                         Equation:
                             TD(s_t, a_t) = r_t + (gamma * max_a Q(s_t+1, a)) - Q(s_t, a_t)
         
-                            TD =    Temporal Difference for the action taken in the previous state 
-                            r_t =   Reward received for the action taken in the previous state
+                            TD =    Temporal Difference for the action taken in the previous state_pacman 
+                            r_t =   Reward received for the action taken in the previous state_pacman
                             gamma = Discount factor (between 0 and 1)
-                            max_a Q(s_t+1, a) = The largest Q-value available for any action in the current state
+                            max_a Q(s_t+1, a) = The largest Q-value available for any action in the current state_pacman
                                                 (the largest predicted sum of future rewards)    
-                            Q =     Quality of state and action
+                            Q =     Quality of state_pacman and action
                     
                     Bellman Equation
                         Notes:
-                            Tells what new value to use as the Q-value for the action taken in the previous state
+                            Tells what new value to use as the Q-value for the action taken in the previous state_pacman
                             
-                            Relies on both old Q-value for the action taken in the previous state and what has
-                            been learned after moving to the next state.
+                            Relies on both old Q-value for the action taken in the previous state_pacman and what has
+                            been learned after moving to the next state_pacman.
                             
                             Includes a learning rate parameter (alpha) that defines how quickly Q-values are adjusted
                             invented by Richard Bellman                    
@@ -269,8 +268,8 @@ class QLearningAgent(ReinforcementAgent):
                         Equation:
                             Q^new(s_t, a_t) = Q^old(s_t, a_t) + alpha * TD(s_t, a_t)
                             
-                            Q^new = New Q-value for the action taken in the previous state
-                            Q^old = The old Q-value for the action taken in the previous state
+                            Q^new = New Q-value for the action taken in the previous state_pacman
+                            Q^old = The old Q-value for the action taken in the previous state_pacman
                             alpha = The learning rate (between 0 and 1)
                             TD =    Temporal Difference
                     
@@ -320,10 +319,10 @@ Notes:
     Pacman not good at medium sized grid
     
 Execution:
-    py -3.6 pacman.py -p PacmanQAgent -x 2000 -n 2010 -l smallGrid
+    py -3.6 pacman.py -ap PacmanQAgent -x 2000 -n 2010 -l smallGrid
 
     # Watch Training games
-    py -3.6 pacman.py -p PacmanQAgent -n 10 -l smallGrid -a num_training=10
+    py -3.6 pacman.py -ap PacmanQAgent -n 10 -l smallGrid -a num_training=10
     
     py -3.6 autograder.py -q q9
 
@@ -345,23 +344,24 @@ Results:
 class PacmanQAgent(QLearningAgent):
     "Exactly the same as QLearningAgent, but with different default parameters"
 
-    def __init__(self, epsilon=0.05, gamma=0.8, alpha=0.2, num_training=0, **args):
+    def __init__(self, epsilon=0.05, gamma=0.8, alpha=0.2, num_training=0, **kwargs):
         """
         These default parameters can be changed from the pacman.py command line.
         For example, to change the exploration rate, try:
-            python pacman.py -p PacmanQLearningAgent -a epsilon=0.1
+            python pacman.py -ap PacmanQLearningAgent -a epsilon=0.1
 
         alpha    - learning rate
         epsilon  - exploration rate
         gamma    - discount factor
         num_training - number of training episodes, i.e. no learning after these many episodes
         """
-        args['epsilon'] = epsilon
-        args['gamma'] = gamma
-        args['alpha'] = alpha
-        args['num_training'] = num_training
+        super(PacmanQAgent, self).__init__(**kwargs)
+
+        kwargs['epsilon'] = epsilon
+        kwargs['gamma'] = gamma
+        kwargs['alpha'] = alpha
+        kwargs['num_training'] = num_training
         self.index = 0  # This is always Pacman
-        QLearningAgent.__init__(self, **args)
 
     def getAction(self, state):
         """
@@ -372,5 +372,3 @@ class PacmanQAgent(QLearningAgent):
         action = QLearningAgent.getAction(self, state)
         self.doAction(state, action)
         return action
-
-

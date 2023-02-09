@@ -28,12 +28,16 @@ from typing import Dict
 from typing import TYPE_CHECKING
 from typing import Union
 
-from common.game_state_pacman import GameStatePacman
+from common.state_pacman import StatePacman
+from pacman.agent import Agent
+from pacman.agent import AgentPacman
 from pacman.agent.search.search import astar
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
 from pacman.agent.search_problem.search_problem_corners import CornersProblem
-from common.game_state import GameState
-from pacman.game.layout import Layout
+from common.state import State
+from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.player import Player
+from pacman.game.type_player import TypePlayer
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
 
@@ -49,7 +53,7 @@ class CornerHeuristicPacman(TestCase):
 
         self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 
-        self.str_layout: Union[str, None] = dict_file_test.get('str_path_layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('layout')
 
     # def execute(self, grade, moduleDict, solutionDict):
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
@@ -60,11 +64,17 @@ class CornerHeuristicPacman(TestCase):
         true_cost = float(dict_file_solution['cost'])
         thresholds = [int(x) for x in dict_file_solution['thresholds'].split()]
 
-        game_state_initial = GameStatePacman()
-        lay = Layout([l.strip() for l in self.str_layout.split('\n')])
+        agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
-        game_state_initial.initialize(lay, 0)
-        problem = CornersProblem(game_state_initial)
+        list_player = [Player(agent, TypePlayer.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+
+        #####
+
+        lay = LayoutPacman([l.strip() for l in self.str_layout.split('\n')])
+
+        state_pacman = StatePacman()
+        state_pacman.initialize(lay, list_player)
+        problem = CornersProblem(agent, state_pacman)
 
         start_state = problem.getStartState()
         if cornersHeuristic(start_state, problem) > true_cost:
@@ -98,12 +108,17 @@ class CornerHeuristicPacman(TestCase):
         handle.write('# as well as the thresholds on number of nodes expanded to be\n')
         handle.write('# used in scoring.\n')
 
-        # solve problem_multi_agent_tree and write solution
-        lay = Layout([l.strip() for l in self.str_layout.split('\n')])
-        start_state = GameState()
+        agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
-        start_state.initialize(lay, 0)
-        problem = CornersProblem(start_state)
+        list_player = [Player(agent, TypePlayer.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+
+        ######
+
+        # solve problem_multi_agent_tree and write solution
+        lay = LayoutPacman([l.strip() for l in self.str_layout.split('\n')])
+        start_state = StatePacman()
+        start_state.initialize(lay, list_player)
+        problem = CornersProblem(agent, start_state)
         solution = astar(problem, cornersHeuristic)
         handle.write('cost: "%d"\n' % len(solution))
         handle.write('path: """\n%s\n"""\n' % wrap_solution(solution))

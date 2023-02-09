@@ -27,8 +27,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pacman.game.directions import Action
-    from common.game_state import GameState
+    from common.state import State
 
 
-def evaluation_function_game_state_score(game_state: GameState, action: Action) -> float:
-    return game_state.getScore()
+def evaluation_function_state_score(state: State, action: Action) -> float:
+    return state.getScore()

@@ -31,8 +31,8 @@ from typing import Type
 from typing import Union
 
 from pacman.agent import Agent
-from pacman.agent.heuristic_function import foodHeuristic
 from pacman.agent.heuristic_function import get_heuristic_function
+from pacman.agent.heuristic_function import foodHeuristic
 from pacman.agent.search import search
 from pacman.agent.search_problem import AnyFoodSearchProblem
 from pacman.agent.search_problem import CornersProblem
@@ -46,16 +46,16 @@ from pacman.game.directions import Directions
 from pacman.game.grid_pacman import GridPacman
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
+    from common.state import State
 
 
 class SearchAgent(Agent):
     """
-    This very general search agent finds a path using a supplied search
+    This very general search player finds a path using a supplied search
     algorithm for a supplied search problem_multi_agent_tree, then returns actions to follow that
     path.
 
-    As a default, this agent runs DFS on a PositionSearchProblem to find
+    As a default, this player runs DFS on a PositionSearchProblem to find
     location (1,1)
 
     Options for fn include:
@@ -69,7 +69,9 @@ class SearchAgent(Agent):
     def __init__(self,
                  fn: Callable = 'depth_first_search',
                  prob: Union[Type[SearchProblem], str] = 'PositionSearchProblem',
-                 heuristic: Callable = 'nullHeuristic'):
+                 heuristic: Callable = 'nullHeuristic',
+                 **kwargs
+                 ):  # TODO: NO SUPER CALL
         # Warning: some advanced Python magic is employed below to find the right functions and problems
 
         # Get the search function from the test_case_object and heuristic
@@ -111,23 +113,23 @@ class SearchAgent(Agent):
 
         print('[SearchAgent] using problem_multi_agent_tree type ' + prob)
 
-    def registerInitialState(self, game_state: GameState):
+    def registerInitialState(self, state: State):
         """
-        This is the first time that the agent sees the str_path_layout of the game
-        board. Here, we choose a path to the goal. In this phase, the agent
+        This is the first time that the player sees the str_path_layout of the game
+        board. Here, we choose a path to the goal. In this phase, the player
         should compute the path to the goal and store it in a local variable.
         All of the work is done in this method!
 
-        state: a GameState object (agent_pacman_.py)
+        state_pacman: a State object
         """
 
         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
         starttime = time.time()
-        problem: object = self.searchType(game_state)  # Makes a new search problem_multi_agent_tree  # TODO: MAKE OBJECT FROM CLASS
+        problem: SearchProblem = self.searchType(state)  # Makes a new search problem_multi_agent_tree  # TODO: MAKE OBJECT FROM CLASS
 
         # TODO: APPRENTLY NOT ALL self.searchType are of type SearchProblem because of poor design of the original
         if isinstance(problem, SearchProblem):
-            problem.set_graphics(self.get_graphics_pacman())
+            problem.set_graphics(self.get_graphics())
 
         # TODO: I THINK THIS IS A LIST OF Direction
         self.actions: List[Action] = self.searchFunction(problem)  # Find a path
@@ -141,7 +143,7 @@ class SearchAgent(Agent):
         registerInitialState).  Return Directions.STOP if there is no further
         action to take.
 
-        state: a GameState object (agent_pacman_.py)
+        state_pacman: a State object
         """
         if 'actionIndex' not in dir(self):
             self.actionIndex = 0
@@ -156,7 +158,7 @@ class SearchAgent(Agent):
 
 class StayEastSearchAgent(SearchAgent):
     """
-    An agent for position search with a cost function that penalizes being in
+    An player for position search with a cost function that penalizes being in
     positions on the West side of the board.
 
     The cost function for stepping into a position (x,y) is 1/2^x.
@@ -171,7 +173,7 @@ class StayEastSearchAgent(SearchAgent):
 
 class StayWestSearchAgent(SearchAgent):
     """
-    An agent for position search with a cost function that penalizes being in
+    An player for position search with a cost function that penalizes being in
     positions on the East side of the board.
 
     The cost function for stepping into a position (x,y) is 2^x.
@@ -207,9 +209,9 @@ class AStarFoodSearchAgent(SearchAgent):
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
 
-    def registerInitialState(self, game_state: GameState):
+    def registerInitialState(self, state: State):
         self.actions = []
-        currentState = game_state
+        currentState = state
         while (currentState.getFood().count() > 0):
             nextPathSegment = self.get_list_action_to_closest_dot(currentState)  # The missing piece
             self.actions += nextPathSegment
@@ -222,17 +224,17 @@ class ClosestDotSearchAgent(SearchAgent):
         self.actionIndex = 0
         print('Path found with cost {}.'.format(len(self.actions)))
 
-    def get_list_action_to_closest_dot(self, game_state: GameState) -> List[Action]:
+    def get_list_action_to_closest_dot(self, state: State) -> List[Action]:
         """
         Returns a path (a list of actions) to the closest dot, starting from
         gameState.
         """
         # Here are some useful elements of the startState
 
-        # position_start: tuple = game_state.getPacmanPosition()
-        # food: GridPacman = game_state.getFood()
-        # walls: GridPacman = game_state.getWalls()
-        problem: AnyFoodSearchProblem = AnyFoodSearchProblem(game_state)
+        # position_start: tuple = state_pacman.getPacmanPosition()
+        # food: GridPacman = state_pacman.getFood()
+        # walls: GridPacman = state_pacman.getWalls()
+        problem: AnyFoodSearchProblem = AnyFoodSearchProblem(state)
 
         "*** YOUR CODE HERE ***"
 

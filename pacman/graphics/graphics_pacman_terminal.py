@@ -27,12 +27,12 @@ import time
 
 from typing import TYPE_CHECKING
 
-from pacman.graphics.graphics_pacman import GraphicsPacman
 from common.util import nearestPoint
+from pacman.graphics.graphics_pacman import GraphicsPacman
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
-    from common.game_state_data import GameStateData
+    from common.state import State
+    from common.state_data_pacman import StateDataPacman
 
 DRAW_EVERY = 1
 SLEEP_TIME = 0  # This can be overwritten by __init__
@@ -48,13 +48,13 @@ class GraphicsPacmanTerminal(GraphicsPacman):
     #         global SLEEP_TIME
     #         SLEEP_TIME = speed
 
-    def initialize(self, state: GameStateData, isBlue: bool = False):
+    def initialize(self, state: StateDataPacman, isBlue: bool = False):
         self.draw(state)
         self.pause()
         self.turn = 0
         self.agentCounter = 0
 
-    def update(self, state: GameState):
+    def update(self, state: State):
         numAgents = len(state.agentStates)
 
         self.agentCounter = (self.agentCounter + 1) % numAgents

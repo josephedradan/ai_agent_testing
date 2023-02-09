@@ -33,7 +33,7 @@ from pacman.test_case import TestCase
 from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
 
 if TYPE_CHECKING:
-    from pacman.graphics.graphics_pacman import GraphicsPacman
+    from common.graphics.graphics import Graphics
 
 TYPE_LIST_TUPLE__TEST_CASE__TYPE_CALLABLE_THAT_NEEDS_GRADER = List[Tuple[TestCase, TYPE_CALLABLE_THAT_NEEDS_GRADER]]
 
@@ -41,14 +41,14 @@ TYPE_LIST_TUPLE__TEST_CASE__TYPE_CALLABLE_THAT_NEEDS_GRADER = List[Tuple[TestCas
 class Question(ABC):
     DICT_K_NAME_SUBCLASS_QUESTION_V_SUBCLASS_QUESTION = {}
 
-    def __init__(self, dict_question: Dict[str, Any], graphics_pacman: GraphicsPacman):
+    def __init__(self, dict_question: Dict[str, Any], graphics_pacman: Graphics):
         self.INT_POINTS_MAX: int = int(dict_question['max_points'])
 
         self.INT_POINTS_EXTRA = int(dict_question.get('extra_points', 0))
 
         self.list_tuple__test_case__callable_that_wraps_test_case: TYPE_LIST_TUPLE__TEST_CASE__TYPE_CALLABLE_THAT_NEEDS_GRADER = []
 
-        self.graphics_pacman: GraphicsPacman = graphics_pacman
+        self.graphics_pacman: Graphics = graphics_pacman
 
     def __init_subclass__(cls, **kwargs):
         cls.DICT_K_NAME_SUBCLASS_QUESTION_V_SUBCLASS_QUESTION[cls.__name__] = cls
@@ -57,7 +57,7 @@ class Question(ABC):
     #     print('Method not implemented: %s' % inspect.stack()[1][3])
     #     sys.exit(1)
 
-    def get_graphics_pacman(self) -> GraphicsPacman:
+    def get_graphics_pacman(self) -> Graphics:
         return self.graphics_pacman
 
     def get_points_max(self) -> int:

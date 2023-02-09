@@ -18,23 +18,23 @@ class Environment:
 
     def getCurrentState(self):
         """
-        Returns the current state of enviornment
+        Returns the current state_pacman of enviornment
         """
         abstract
 
     def getPossibleActions(self, state):
         """
-          Returns possible actions the agent
-          can take in the given state. Can
+          Returns possible actions the player
+          can take in the given state_pacman. Can
           return the empty list if we are in
-          a terminal state.
+          a terminal state_pacman.
         """
         abstract
 
     def doAction(self, action):
         """
           Performs the given action in the current
-          environment state and updates the enviornment.
+          environment state_pacman and updates the enviornment.
 
           Returns a (reward, nextState) pair
         """
@@ -42,14 +42,14 @@ class Environment:
 
     def reset(self):
         """
-          Resets the current state to the start state
+          Resets the current state_pacman to the start state_pacman
         """
         abstract
 
     def isTerminal(self):
         """
           Has the enviornment entered a terminal
-          state? This means there are no successors
+          state_pacman? This means there are no successors
         """
         state = self.getCurrentState()
         actions = self.getPossibleActions(state)

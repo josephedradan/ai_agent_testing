@@ -16,20 +16,25 @@ import os
 import random
 from functools import reduce
 from typing import List
+from typing import TYPE_CHECKING
 from typing import Tuple
 from typing import Union
 
+from common.util import manhattanDistance
 from pacman import constants
 from pacman.game.directions import Directions
 from pacman.game.grid_pacman import GridPacman
-from common.util import manhattanDistance
+from pacman.game.type_player import TypePlayer
+
+if TYPE_CHECKING:
+    pass
 
 VISIBILITY_MATRIX_CACHE = {}
 
 
-class Layout:
+class LayoutPacman:
     """
-    A Layout manages the static information about the game board.
+    A LayoutPacman manages the static information about the game board.
     """
 
     def __init__(self, list_str_layout_line: List[str]):
@@ -41,7 +46,7 @@ class Layout:
         self.food: GridPacman = GridPacman(self.width, self.height, False)
         self.list_capsule: List[Tuple[int, ...]] = []
 
-        self.agentPositions: List[Tuple[bool, Tuple[int, ...]]] = []
+        self.list_tuple__type_player__position: List[Tuple[TypePlayer, Tuple[int, ...]]] = []
         self.numGhosts: int = 0
 
         self._processLayoutText(list_str_layout_line)
@@ -132,7 +137,7 @@ class Layout:
         return "\n".join(self.layoutText)
 
     def deepCopy(self):
-        return Layout(self.layoutText[:])
+        return LayoutPacman(self.layoutText[:])
 
     def _processLayoutText(self, layoutText: List[List[str]]):
         """
@@ -154,13 +159,16 @@ class Layout:
                 layoutChar = layoutText[height_layout_max - y][x]
                 self._process_char_from_layout(x, y, layoutChar)
 
-        self.agentPositions.sort()
+        # self.list_tuple__class_player__position.sort()  # FIXME: POTENTIALLY REMOVE?????????????????????????????????
 
-        self.agentPositions = [(i == 0, pos) for i, pos in self.agentPositions]
+        # self.list_tuple__class_player__position = [(i == 0, pos) for i, pos in self.list_tuple__class_player__position]
 
     def _process_char_from_layout(self, x: int, y: int, char_from_layout: str):
         """
         Makes the actual objects in the str_path_layout
+
+        Notes:
+            Given position and char, add that tuple to
 
         """
         if char_from_layout == '%':
@@ -170,39 +178,44 @@ class Layout:
         elif char_from_layout == 'o':
             self.list_capsule.append((x, y))
         elif char_from_layout == 'P':
-            self.agentPositions.append((0, (x, y)))
+            self.list_tuple__type_player__position.append((TypePlayer.PACMAN, (x, y)))
         elif char_from_layout in ['G']:
-            self.agentPositions.append((1, (x, y)))
+            self.list_tuple__type_player__position.append((TypePlayer.GHOST, (x, y)))
             self.numGhosts += 1
-        elif char_from_layout in ['1', '2', '3', '4']:  # TODO: THIS IS IF THE MAP SPECIFIES GHOSTS EXACTLY
-            self.agentPositions.append((int(char_from_layout), (x, y)))
+        elif char_from_layout in ['1', '2', '3',
+                                  '4']:  # TODO: THIS IS IF THE MAP SPECIFIES GHOSTS EXACTLY # TOOD: ACTUALLY, IDK
+            self.list_tuple__type_player__position.append((int(char_from_layout), (x, y)))
             self.numGhosts += 1
 
 
-def get_layout(name: str, back=2) -> Union[Layout, None]:
-    if name.endswith('.lay'):
-        layout = get_layout_object_helper('layouts/' + name)
+def get_layout_pacman(layout_thing: Union[str, LayoutPacman], back=2) -> Union[LayoutPacman, None]:
+
+    if isinstance(layout_thing, LayoutPacman):
+        return layout_thing
+
+    if layout_thing.endswith('.lay'):
+        layout = get_layout_object_helper('layouts/' + layout_thing)
         if layout is None:
-            layout = get_layout_object_helper(name)
+            layout = get_layout_object_helper(layout_thing)
 
     else:
-        layout = get_layout_object_helper(constants.PATH_LAYOUTS + name + '.lay')
+        layout = get_layout_object_helper(constants.PATH_LAYOUTS + layout_thing + '.lay')
 
         if layout is None:
-            layout = get_layout_object_helper(name + '.lay')
+            layout = get_layout_object_helper(layout_thing + '.lay')
 
     if layout is None and back >= 0:
         curdir = os.path.abspath('.')
         os.chdir('..')
-        layout = get_layout(name, back - 1)
+        layout = get_layout_pacman(layout_thing, back - 1)
         os.chdir(curdir)
 
     return layout
 
 
-def get_layout_object_helper(path_layout: str) -> Union[Layout, None]:
+def get_layout_object_helper(path_layout: str) -> Union[LayoutPacman, None]:
     """
-    Given string_given of path of str_path_layout file, return Layout object or None
+    Given string_given of path of str_path_layout file, return LayoutPacman object or None
 
     :param path_layout:
     :return:
@@ -212,4 +225,4 @@ def get_layout_object_helper(path_layout: str) -> Union[Layout, None]:
         return None
 
     with open(path_layout, 'r') as f:
-        return Layout([line.strip() for line in f])
+        return LayoutPacman([line.strip() for line in f])

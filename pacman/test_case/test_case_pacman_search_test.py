@@ -23,17 +23,21 @@ Reference:
 """
 from __future__ import annotations
 
+from pprint import pprint
 from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
 
-from common.game_state_pacman import GameStatePacman
+from common.state_pacman import StatePacman
+from pacman.agent import AgentPacman
 from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search import get_search_function
 from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.game.directions import Directions
-from common.game_state import GameState
-from pacman.game.layout import Layout
+from common.state import State
+from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.player import Player
+from pacman.game.type_player import TypePlayer
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
 
@@ -43,45 +47,47 @@ if TYPE_CHECKING:
 
 class PacmanSearchTest(TestCase):
 
-    def __init__(self, question, testDict):
-        super(PacmanSearchTest, self).__init__(question, testDict)
-        self.layout_text = testDict['str_path_layout']
-        self.alg = testDict['algorithm']
-        self.layoutName = testDict['layoutName']
+    def __init__(self, question, dict_file_test):
+        super(PacmanSearchTest, self).__init__(question, dict_file_test)
+
+        self.layout_text = dict_file_test['layout']
+        self.alg = dict_file_test['algorithm']
+        self.layoutName = dict_file_test['layoutName']
 
         # TODO: sensible to have defaults like this?
-        self.leewayFactor = float(testDict.get('leewayFactor', '1'))
-        self.costFn = eval(testDict.get('costFn', 'None'))
-        self.searchProblemClassName = testDict.get('searchProblemClass', 'PositionSearchProblem')
-        self.heuristicName = testDict.get('heuristic', None)
+        self.leewayFactor = float(dict_file_test.get('leewayFactor', '1'))
+        self.costFn = eval(dict_file_test.get('costFn', 'None'))
+        self.searchProblemClassName = dict_file_test.get('searchProblemClass', 'PositionSearchProblem')
+        self.heuristicName = dict_file_test.get('heuristic', None)
 
 
     def getSolInfo(self):
         # alg = getattr(search, self.alg)
         alg = get_search_function(self.alg)
 
-        lay = Layout([l.strip() for l in self.layout_text.split('\n')])
-        start_state = GameStatePacman()
-        start_state.initialize(lay, 0)
+        lay = LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
 
-        # problemClass = getattr(searchAgents, self.searchProblemClassName)
-        problemClass = get_subclass_search_problem(self.searchProblemClassName)
+        state_pacman_start = StatePacman()
+        state_pacman_start.initialize(lay, [Player(AgentPacman(), TypePlayer.PACMAN)])
+
+        # class_problem = getattr(searchAgents, self.searchProblemClassName)
+        class_problem = get_subclass_search_problem(self.searchProblemClassName)
 
         problemOptions = {}
         if self.costFn != None:
             problemOptions['costFn'] = self.costFn
 
-
-        problem = problemClass(start_state, **problemOptions)
-
+        # TODO: Will most likely be PositionSearchProblem (Ctrl+F -> class: "PacmanSearchTest")
+        problem_instance = class_problem(state_pacman_start, **problemOptions)
 
         # heuristic = getattr(searchAgents, self.heuristicName) if self.heuristicName != None else None
         heuristic = get_heuristic_function(self.heuristicName) if self.heuristicName != None else None
 
         if heuristic != None:
-            solution = alg(problem, heuristic)
+            # TODO: EXAMPLE: depth_first_search(position_search_problem, callable_heuristic)
+            solution = alg(problem_instance, heuristic)
         else:
-            solution = alg(problem, None)
+            solution = alg(problem_instance, None)
 
         if type(solution) != type([]):
             return None, None, 'The result of %s must be a list. (Instead, it is %s)' % (self.alg, type(solution))
@@ -90,7 +96,7 @@ class PacmanSearchTest(TestCase):
         if [el in dirs for el in solution].count(False) != 0:
             return None, None, 'Output of %s must be a list of actions from game.Directions' % self.alg
 
-        expanded = problem._expanded
+        expanded = problem_instance._expanded
         return solution, expanded, None
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
@@ -100,6 +106,7 @@ class PacmanSearchTest(TestCase):
         gold_expanded = max(int(dict_file_solution['expanded_nodes']), int(dict_file_solution['rev_expanded_nodes']))
 
         solution, expanded, error = self.getSolInfo()
+
         if error != None:
             grader.addMessage('FAIL: %s' % self.path_file_test)
             grader.addMessage('%s' % error)
@@ -128,13 +135,13 @@ class PacmanSearchTest(TestCase):
             return False
 
         grader.addMessage('PASS: %s' % self.path_file_test)
-        grader.addMessage('\tpacman str_path_layout:\t\t%s' % self.layoutName)
+        grader.addMessage('\tpacman layout name:\t\t%s' % self.layoutName)
         grader.addMessage('\tsolution length: %s' % len(solution))
         grader.addMessage('\tnodes expanded:\t\t%s' % expanded)
         return True
 
 
-    def write_solution(self, path_file_solution: str) -> bool:
+    def write_solution(self, path_file_solution: str) -> bool:  # TODO: DONT KNOW
         # search = moduleDict['search']
         # searchAgents = moduleDict['searchAgents']
         # open file and write comments

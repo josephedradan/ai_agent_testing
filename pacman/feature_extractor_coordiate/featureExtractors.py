@@ -15,7 +15,7 @@
 
 
 # class FeatureExtractor(ABC):
-#     def getFeatures(self, state, action):
+#     def getFeatures(self, state_pacman, action):
 #         """
 #           Returns a dict from features to counts
 #           Usually, the count will just be 1.0 for
@@ -25,9 +25,9 @@
 #
 #
 # class IdentityExtractor(FeatureExtractor):
-#     def getFeatures(self, state, action):
+#     def getFeatures(self, state_pacman, action):
 #         feats = util.Counter()
-#         feats[(state, action)] = 1.0
+#         feats[(state_pacman, action)] = 1.0
 #         return feats
 #
 #

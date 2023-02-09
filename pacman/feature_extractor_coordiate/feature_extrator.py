@@ -24,11 +24,13 @@ Reference:
 from abc import ABC
 from abc import abstractmethod
 
+from common.state import State
+
 
 class FeatureExtractor(ABC):
 
     @abstractmethod
-    def getFeatures(self, state, action):
+    def getFeatures(self, state: State, action):
         """
           Returns a dict from features to counts
           Usually, the count will just be 1.0 for

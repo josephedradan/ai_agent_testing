@@ -27,9 +27,9 @@ from typing import Union
 
 from pacman.agent import AgentPacman
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
-from pacman.agent.evaluation_function import evaluation_function_game_state_score
+from pacman.agent.evaluation_function import evaluation_function_state_score
 from pacman.game.directions import Action
-from common.game_state import GameState
+from common.state import State
 
 
 class AgentContainer:
@@ -45,7 +45,7 @@ class AgentContainer:
 
 
 # @callgraph(use_list_index_args=[1, 3, 4], display_callable_name=False, )
-def dfs_recursive_minimax_v1(game_state: GameState,
+def dfs_recursive_minimax_v1(state: State,
                              depth: int,
                              function_evaluation: callable,
                              index_agent: int = 0,
@@ -75,14 +75,14 @@ def dfs_recursive_minimax_v1(game_state: GameState,
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
 
-    # print("index_agent", index_agent, "depth", depth)
+    # print("agent", agent, "depth", depth)
 
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
-    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
-    if game_state.isWin() or game_state.isLose() or depth == 0:
-        score = function_evaluation(game_state, None)
+    # Check if game is over via pacman dead or pacman got all food and survived
+    if state.isWin() or state.isLose() or depth == 0:
+        score = function_evaluation(state, None)
         agent_container_previous.score = score
 
         # Return the score
@@ -98,14 +98,14 @@ def dfs_recursive_minimax_v1(game_state: GameState,
 
         for action in list_str_move_legal:
 
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
+            # Agent selection (Select next player for the next call)
             index_agent_new = index_agent + 1
 
-            score_calculated, agent_container_returned = dfs_recursive_minimax_v1(game_state_new,
+            score_calculated, agent_container_returned = dfs_recursive_minimax_v1(state_new,
                                                                                   depth,
                                                                                   function_evaluation,
                                                                                   index_agent_new,
@@ -140,19 +140,19 @@ def dfs_recursive_minimax_v1(game_state: GameState,
 
         for action in list_str_move_legal:
 
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
-            if index_agent >= game_state.getNumAgents() - 1:
+            # Agent selection (Select next player for the next call)
+            if index_agent >= state.getNumAgents() - 1:
                 index_agent_new = 0
                 depth -= 1  # Depth is only decremented when all agents have moved
 
             else:
                 index_agent_new = index_agent + 1
 
-            score_calculated, agent_container_returned = dfs_recursive_minimax_v1(game_state_new,
+            score_calculated, agent_container_returned = dfs_recursive_minimax_v1(state_new,
                                                                                   depth,
                                                                                   function_evaluation,
                                                                                   index_agent_new,
@@ -169,11 +169,11 @@ def dfs_recursive_minimax_v1(game_state: GameState,
                 """
                 agent_container_final_score_min = agent_container_current  # *** WRONG TO ASSIGN agent_container_current
 
-        # print(f"G{index_agent} Depth", depth)
-        # print(f"G{index_agent} MOVE", list_str_move_legal)
-        # print(f"G{index_agent} ACTION", agent_container_final_score_min.action)
-        # print(f"G{index_agent} CALCULATED", _LIST_TEMP)
-        # print("G{} Score: {} Action: {} ".format(index_agent, score_min, agent_container_final_score_min.action))
+        # print(f"G{agent} Depth", depth)
+        # print(f"G{agent} MOVE", list_str_move_legal)
+        # print(f"G{agent} ACTION", agent_container_final_score_min.action)
+        # print(f"G{agent} CALCULATED", _LIST_TEMP)
+        # print("G{} Score: {} Action: {} ".format(agent, score_min, agent_container_final_score_min.action))
         # print()
 
         return score_min, agent_container_final_score_min
@@ -183,91 +183,91 @@ def dfs_recursive_minimax_v1(game_state: GameState,
 
 class AgentGhostContainer:
 
-    def __init__(self, game_state: GameState, index_agent: int, action: str,
-                 game_state_previous: GameState):
-        self.game_state = game_state
+    def __init__(self, state: State, index_agent: int, action: str,
+                 state_previous: State):
+        self.state = state
         self.index_agent = index_agent
         self.action = action
-        self.game_state_previous = game_state_previous
+        self.state_previous = state_previous
 
 
-def get_list_last_ghost_agent_game_state(game_state: GameState,
+def get_list_last_ghost_agent_state(state: State,
                                          index_agent: int,
-                                         game_state_previous: GameState,
-                                         list_game_state: List[float] = None
+                                         state_previous: State,
+                                         list_state: List[float] = None
                                          ) -> List[AgentGhostContainer]:
     """
-    This gets the game_state based on the last ghost before it becomes pacmans's turn to move
+    This gets the state_pacman based on the last ghost before it becomes pacmans's turn to move
 
     Notes:
-        Needs the first of the ghosts -> returns list of game_state that are the last game_state
+        Needs the first of the ghosts -> returns list of state_pacman that are the last state_pacman
         before pacmans's turn
 
     """
-    if list_game_state is None:
-        list_game_state = []
+    if list_state is None:
+        list_state = []
 
     if index_agent == 0:
         print("YOUR INPUT IS WRONG")
-        return get_list_last_ghost_agent_game_state(game_state, index_agent + 1, game_state_previous)
+        return get_list_last_ghost_agent_state(state, index_agent + 1, state_previous)
 
-    list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
     # print(list_str_move_legal)
 
     for action in list_str_move_legal:
 
-        game_state_new = game_state.generateSuccessor(index_agent, action)
+        state_new = state.generateSuccessor(index_agent, action)
 
         index_agent_new = index_agent + 1
         # print(index_agent_new)
 
-        if index_agent >= game_state.getNumAgents() - 1:
+        if index_agent >= state.getNumAgents() - 1:
 
-            # print("ADD TO LIST", index_agent, action, game_state.getGhostPosition(index_agent))
-            # if index_agent == 2:
-            #     print(game_state.getGhostPosition(index_agent - 1))
+            # print("ADD TO LIST", agent, action, state_pacman.getGhostPosition(agent))
+            # if agent == 2:
+            #     print(state_pacman.getGhostPosition(agent - 1))
             # print()
 
-            agent_ghost_container = AgentGhostContainer(game_state,
+            agent_ghost_container = AgentGhostContainer(state,
                                                         index_agent,
                                                         action,
-                                                        game_state_previous)
+                                                        state_previous)
 
-            list_game_state.append(agent_ghost_container)
+            list_state.append(agent_ghost_container)
         else:
-            # print("RECURSIVE CALL", index_agent, action, game_state.getGhostPosition(index_agent))
-            # if index_agent == 2:
-            #     print(game_state.getGhostPosition(index_agent - 1))
+            # print("RECURSIVE CALL", agent, action, state_pacman.getGhostPosition(agent))
+            # if agent == 2:
+            #     print(state_pacman.getGhostPosition(agent - 1))
 
-            if game_state.isWin() or game_state.isLose():
-                agent_ghost_container = AgentGhostContainer(game_state,
+            if state.isWin() or state.isLose():
+                agent_ghost_container = AgentGhostContainer(state,
                                                             index_agent,
                                                             action,
-                                                            game_state_previous)
+                                                            state_previous)
                 return [agent_ghost_container]
 
-            get_list_last_ghost_agent_game_state(game_state_new,
+            get_list_last_ghost_agent_state(state_new,
                                                  index_agent_new,
-                                                 game_state,
-                                                 list_game_state)
+                                                 state,
+                                                 list_state)
 
-    return list_game_state
+    return list_state
 
 
 # @callgraph(use_list_index_args=[1, 3, 4], display_callable_name=False, )
-def dfs_recursive_minimax_v2(game_state: GameState,
+def dfs_recursive_minimax_v2(state: State,
                              depth: int,
                              function_evaluation: callable,
                              index_agent: int = 0,
                              agent_container_previous: AgentContainer = None,
-                             game_state_previous: GameState = None,
+                             state_previous: State = None,
                              ) -> [float, AgentContainer]:
     """
     This function tries to compress all ghost agents together, the problem_multi_agent_tree is that not all ghosts need to move in order
     for the game to end.
 
-    Basically, the game can end when one of the ghosts moves so compressing all ghost agent moves together passes the
+    Basically, the game can end when one of the ghosts moves so compressing all ghost player moves together passes the
     point when the game ends, so it's suboptimal to do this.
 
     This means that dfs_recursive_minimax_v1 is more correct than this solution.
@@ -277,13 +277,13 @@ def dfs_recursive_minimax_v2(game_state: GameState,
 
     """
 
-    # print("index_agent", index_agent)
+    # print("agent", agent)
 
-    list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
-    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
-    if game_state.isWin() or game_state.isLose() or depth == 0:
-        score = function_evaluation(game_state, None)
+    # Check if game is over via pacman dead or pacman got all food and survived
+    if state.isWin() or state.isLose() or depth == 0:
+        score = function_evaluation(state, None)
         agent_container_previous.score = score
 
         # Return the score
@@ -299,19 +299,19 @@ def dfs_recursive_minimax_v2(game_state: GameState,
 
         for action in list_str_move_legal:
 
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
+            # Agent selection (Select next player for the next call)
             index_agent_new = index_agent + 1
 
-            score_calculated, agent_container_returned = dfs_recursive_minimax_v2(game_state_new,
+            score_calculated, agent_container_returned = dfs_recursive_minimax_v2(state_new,
                                                                                   depth,
                                                                                   function_evaluation,
                                                                                   index_agent_new,
                                                                                   agent_container_current,
-                                                                                  game_state,
+                                                                                  state,
                                                                                   )
 
             list_temp.append(score_calculated)
@@ -328,40 +328,40 @@ def dfs_recursive_minimax_v2(game_state: GameState,
     # If a Ghost (Minimizer)
     else:
 
-        list_last_ghost_agent_game_state = get_list_last_ghost_agent_game_state(game_state,
+        list_last_ghost_agent_state = get_list_last_ghost_agent_state(state,
                                                                                 index_agent,
-                                                                                game_state_previous)
+                                                                                state_previous)
 
-        # print("list_last_ghost_agent_game_state", list_last_ghost_agent_game_state)
+        # print("list_last_ghost_agent_state", list_last_ghost_agent_state)
 
         score_min: Union[float, None] = None
         agent_container_final_score_min: Union[AgentContainer, None] = None
 
         _LIST_TEMP = []
 
-        for last_ghost_agent_game_state in list_last_ghost_agent_game_state:
+        for last_ghost_agent_state in list_last_ghost_agent_state:
 
-            index_agent_last = last_ghost_agent_game_state.index_agent
+            index_agent_last = last_ghost_agent_state.index_agent
 
-            action = list_last_ghost_agent_game_state
+            action = list_last_ghost_agent_state
 
-            game_state_new = last_ghost_agent_game_state.game_state
+            state_new = last_ghost_agent_state.state
 
             agent_container_current = AgentContainer(index_agent_last, action)
 
-            # Agent selection (Select next agent for the next call)
-            if index_agent_last >= game_state.getNumAgents() - 1:
+            # Agent selection (Select next player for the next call)
+            if index_agent_last >= state.getNumAgents() - 1:
                 index_agent_new = 0
                 depth -= 1  # Depth is only decremented when all agents have moved
             else:
                 index_agent_new = index_agent_last + 1
 
-            score_calculated, agent_container_returned = dfs_recursive_minimax_v2(game_state_new,
+            score_calculated, agent_container_returned = dfs_recursive_minimax_v2(state_new,
                                                                                   depth,
                                                                                   function_evaluation,
                                                                                   index_agent_new,
                                                                                   agent_container_current,
-                                                                                  game_state,
+                                                                                  state,
                                                                                   )
 
             _LIST_TEMP.append(score_calculated)
@@ -373,29 +373,29 @@ def dfs_recursive_minimax_v2(game_state: GameState,
         # THE BELOW WILL BASICALLY ADDS REPEAT CALLS WHICH IS WRONG.
         # for action in list_str_move_legal:
         #
-        #     for last_ghost_agent_game_state in list_last_ghost_agent_game_state:
+        #     for last_ghost_agent_state in list_last_ghost_agent_state:
         #
-        #         game_state_last = last_ghost_agent_game_state.game_state
-        #         # print("last_ghost_agent_game_state.index_agent", last_ghost_agent_game_state.index_agent)
+        #         state_last = last_ghost_agent_state.state_pacman
+        #         # print("last_ghost_agent_state.agent", last_ghost_agent_state.agent)
         #
-        #         index_agent_last = last_ghost_agent_game_state.index_agent
-        #         game_state_new = game_state_last.generateSuccessor(index_agent_last, action)
+        #         index_agent_last = last_ghost_agent_state.agent
+        #         state_new = state_last.generateSuccessor(index_agent_last, action)
         #
         #         agent_container_current = AgentContainer(index_agent_last, action)
         #
-        #         # Agent selection (Select next agent for the next call)
-        #         if index_agent_last >= game_state.getNumAgents() - 1:
+        #         # Agent selection (Select next player for the next call)
+        #         if index_agent_last >= state_pacman.getNumAgents() - 1:
         #             index_agent_new = 0
         #             depth -= 1  # Depth is only decremented when all agents have moved
         #         else:
         #             index_agent_new = index_agent_last + 1
         #
-        #         score_calculated, agent_container_returned = dfs_recursive_minimax_v2(game_state_new,
+        #         score_calculated, agent_container_returned = dfs_recursive_minimax_v2(state_new,
         #                                                                               depth,
         #                                                                               evaluation_function,
         #                                                                               index_agent_new,
         #                                                                               agent_container_current,
-        #                                                                               game_state,
+        #                                                                               state_pacman,
         #                                                                               )
         #
         #         _LIST_TEMP.append(score_calculated)
@@ -413,7 +413,7 @@ def dfs_recursive_minimax_v2(game_state: GameState,
 ##############################################################################################################
 
 # @callgraph(use_list_index_args=[1, 3, 4], display_callable_name=False, )
-def dfs_recursive_minimax_v3(game_state: GameState,
+def dfs_recursive_minimax_v3(state: State,
                              depth: int,
                              function_evaluation: callable,
                              index_agent: int = 0,
@@ -448,11 +448,11 @@ def dfs_recursive_minimax_v3(game_state: GameState,
     """
 
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
-    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
-    if game_state.isWin() or game_state.isLose() or depth == 0:
-        score = function_evaluation(game_state, None)
+    # Check if game is over via pacman dead or pacman got all food and survived
+    if state.isWin() or state.isLose() or depth == 0:
+        score = function_evaluation(state, None)
         agent_container_previous.score = score
         # Return the score
         return score, agent_container_previous
@@ -465,14 +465,14 @@ def dfs_recursive_minimax_v3(game_state: GameState,
 
         for action in list_str_move_legal:
 
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
+            # Agent selection (Select next player for the next call)
             index_agent_new = index_agent + 1
 
-            score_calculated, agent_container_returned = dfs_recursive_minimax_v3(game_state_new,
+            score_calculated, agent_container_returned = dfs_recursive_minimax_v3(state_new,
                                                                                   depth,
                                                                                   function_evaluation,
                                                                                   index_agent_new,
@@ -500,19 +500,19 @@ def dfs_recursive_minimax_v3(game_state: GameState,
 
         for action in list_str_move_legal:
 
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
-            if index_agent >= game_state.getNumAgents() - 1:
+            # Agent selection (Select next player for the next call)
+            if index_agent >= state.getNumAgents() - 1:
                 index_agent_new = 0
                 depth -= 1  # Depth is only decremented when all agents have moved
 
             else:
                 index_agent_new = index_agent + 1
 
-            score_calculated, agent_container_returned = dfs_recursive_minimax_v3(game_state_new,
+            score_calculated, agent_container_returned = dfs_recursive_minimax_v3(state_new,
                                                                                   depth,
                                                                                   function_evaluation,
                                                                                   index_agent_new,
@@ -537,7 +537,7 @@ def dfs_recursive_minimax_v3(game_state: GameState,
 ##############################################################################################################
 
 # @callgraph(use_list_index_args=[1, 5, 7], display_callable_name=False, )
-def _dfs_recursive_minimax_v4_handler(game_state: GameState,
+def _dfs_recursive_minimax_v4_handler(state: State,
                                       depth: int,
                                       alpha: Union[None, float],
                                       beta: Union[None, float],
@@ -559,15 +559,15 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
 
-    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
-    if game_state.isWin() or game_state.isLose() or depth <= 0:
-        score = evaluation_function(game_state, None)
+    # Check if game is over via pacman dead or pacman got all food and survived
+    if state.isWin() or state.isLose() or depth <= 0:
+        score = evaluation_function(state, None)
 
         # Return the score
         return score
 
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
     # If Pacman (Maximizer)
     if index_agent == 0:
@@ -578,19 +578,19 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
 
         for action in list_str_move_legal:
 
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
+            # Agent selection (Select next player for the next call)
             index_agent_new = index_agent + 1
 
-            score_calculated = _dfs_recursive_minimax_v4_handler(game_state_new,
+            score_calculated = _dfs_recursive_minimax_v4_handler(state_new,
                                                                  depth,
                                                                  alpha,
                                                                  beta,
                                                                  evaluation_function,
                                                                  index_agent_new,
                                                                  alpha_beta_pruning,
-                                                                 # string_given((depth, index_agent, action))
+                                                                 # string_given((depth, agent, action))
                                                                  )
 
             # _LIST_SCORE_DEBUG.append(score_calculated)
@@ -637,24 +637,24 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
 
         for action in list_str_move_legal:
 
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
-            if index_agent >= game_state.getNumAgents() - 1:
+            # Agent selection (Select next player for the next call)
+            if index_agent >= state.getNumAgents() - 1:
                 index_agent_new = 0
                 depth_new = depth - 1  # *** DEPTH IS ONLY CHANGED WHEN ALL AGENTS HAVE MOVED
             else:
                 index_agent_new = index_agent + 1
                 depth_new = depth
 
-            score_calculated = _dfs_recursive_minimax_v4_handler(game_state_new,
+            score_calculated = _dfs_recursive_minimax_v4_handler(state_new,
                                                                  depth_new,
                                                                  alpha,
                                                                  beta,
                                                                  evaluation_function,
                                                                  index_agent_new,
                                                                  alpha_beta_pruning,
-                                                                 # string_given((depth, index_agent, action))
+                                                                 # string_given((depth, agent, action))
                                                                  )
 
             # _LIST_SCORE_DEBUG.append(score_calculated)
@@ -685,17 +685,17 @@ def _dfs_recursive_minimax_v4_handler(game_state: GameState,
                     # Cut off branch
                     break
 
-        # print(f"G{index_agent} Depth", depth)
-        # print(f"G{index_agent} MOVE", list_str_move_legal)
-        # print(f"G{index_agent} CALCULATED", _LIST_SCORE_DEBUG)
-        # print("G{} Score: {}".format(index_agent, score_min))
+        # print(f"G{agent} Depth", depth)
+        # print(f"G{agent} MOVE", list_str_move_legal)
+        # print(f"G{agent} CALCULATED", _LIST_SCORE_DEBUG)
+        # print("G{} Score: {}".format(agent, score_min))
         # print()
 
         return score_min
 
 
 # @callgraph(use_list_index_args=[1, 3], display_callable_name=False,)
-def dfs_recursive_minimax_v4(game_state: GameState,
+def dfs_recursive_minimax_v4(state: State,
                              depth: int,
                              evaluation_function: callable,
                              index_agent: int = 0,
@@ -706,7 +706,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
 
     Notes:
         This is the header for DFS Recursive Minimax algorithm, the reason why it's the header is because
-        the root is agent_pacman_ and its children should be its actions and you want to select the action based on the
+        the root is pacman and its children should be its actions and you want to select the action based on the
         score. If this header was not hear like with the previous versions of this code, then you would need to
         look at children of the root again to know which move was associated with the score returned to the root.
 
@@ -718,7 +718,7 @@ def dfs_recursive_minimax_v4(game_state: GameState,
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
     # List that contains tuples where each tuple has (score, action) as its elements
     list_pair: List[Tuple[float, str]] = []
@@ -729,19 +729,19 @@ def dfs_recursive_minimax_v4(game_state: GameState,
 
     for action in list_str_move_legal:
 
-        game_state_new = game_state.generateSuccessor(index_agent, action)
+        state_new = state.generateSuccessor(index_agent, action)
 
-        # Agent selection (Select next agent for the next call)
+        # Agent selection (Select next player for the next call)
         index_agent_new = index_agent + 1
 
-        score_calculated = _dfs_recursive_minimax_v4_handler(game_state_new,
+        score_calculated = _dfs_recursive_minimax_v4_handler(state_new,
                                                              depth,
                                                              alpha,
                                                              beta,
                                                              evaluation_function,
                                                              index_agent_new,
                                                              alpha_beta_pruning,
-                                                             # string_given((depth, index_agent, action))
+                                                             # string_given((depth, agent, action))
                                                              )
 
         if alpha_beta_pruning:
@@ -792,40 +792,40 @@ def dfs_recursive_minimax_v4(game_state: GameState,
 
 class AgentPacmanMinimax(AgentPacman):
     """
-    Your minimax agent (str_question 2)
+    Your minimax player (str_question 2)
     """
 
     def __init__(self,
-                 index: int = 0,
                  evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
-                         evaluation_function_game_state_score
+                         evaluation_function_state_score
                  ),
-                 depth: int = 2
+                 depth: int = 2,
+                 **kwargs
                  ):
-        super(AgentPacmanMinimax, self).__init__(index, evaluation_function, depth)
+        super(AgentPacmanMinimax, self).__init__(evaluation_function, depth, **kwargs)
 
-    def getAction(self, game_state: GameState) -> Action:
+    def getAction(self, state: State) -> Action:
         """
-        Returns the minimax action from the current game_state using self.depth
+        Returns the minimax action from the current state_pacman using self.depth
         and self.evaluationFunction.
 
         Here are some method calls that might be useful when implementing minimax.
 
-        game_state.getLegalActions(agentIndex):
-        Returns a list of legal actions for an agent
+        state_pacman.getLegalActions(agentIndex):
+        Returns a list of legal actions for an player
         agentIndex=0 means Pacman, ghosts are >= 1
 
-        game_state.generateSuccessor(agentIndex, action):
-        Returns the successor game game_state after an agent takes an action
+        state_pacman.generateSuccessor(agentIndex, action):
+        Returns the successor game state_pacman after an player takes an action
 
-        game_state.getNumAgents():
+        state_pacman.getNumAgents():
         Returns the total number of agents in the game
 
-        game_state.isWin():
-        Returns whether or not the game game_state is a winning game_state
+        state_pacman.isWin():
+        Returns whether or not the game state_pacman is a winning state_pacman
 
-        game_state.isLose():
-        Returns whether or not the game game_state is a losing game_state
+        state_pacman.isLose():
+        Returns whether or not the game state_pacman is a losing state_pacman
         """
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
@@ -838,14 +838,14 @@ class AgentPacmanMinimax(AgentPacman):
 
             Recall that evaluationFunction does the score stuff related to direction and food
 
-            self.evaluationFunction(game_state) returns a score (float)
+            self.evaluationFunction(state_pacman) returns a score (float)
 
             Use getAction From PacmanReflex as a reference too
         Run:
             Testing:
-                python agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
-                py -3.6 agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
-                py -3.6 agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3  # Use this one
+                python pacman.py -f -ap AgentPacmanMinimax -l trappedClassic -a depth=3
+                py -3.6 pacman.py -f -ap AgentPacmanMinimax -l trappedClassic -a depth=3
+                py -3.6 pacman.py -f -ap AgentPacmanMinimax -l trappedClassic -a depth=3  # Use this one
 
             Actual:
                 python autograder.py -q q2
@@ -858,17 +858,17 @@ class AgentPacmanMinimax(AgentPacman):
 
         ####################
 
-        # print('game_state.getLegalActions(0)',
-        #       type(game_state.getLegalActions(0)),
-        #       game_state.getLegalActions(0))
-        # print('game_state.generateSuccessor(0, "North")',
-        #       type(game_state.generateSuccessor(0, "North")),
-        #       game_state.generateSuccessor(0, "North"))
-        # print('game_state.getNumAgents()',
-        #       type(game_state.getNumAgents()),
-        #       game_state.getNumAgents())
-        # print('game_state.isWin()', type(game_state.isWin()), game_state.isWin())
-        # print('game_state.isLose()', type(game_state.isLose()), game_state.isLose())
+        # print('state_pacman.getLegalActions(0)',
+        #       type(state_pacman.getLegalActions(0)),
+        #       state_pacman.getLegalActions(0))
+        # print('state_pacman.generateSuccessor(0, "North")',
+        #       type(state_pacman.generateSuccessor(0, "North")),
+        #       state_pacman.generateSuccessor(0, "North"))
+        # print('state_pacman.getNumAgents()',
+        #       type(state_pacman.getNumAgents()),
+        #       state_pacman.getNumAgents())
+        # print('state_pacman.isWin()', type(state_pacman.isWin()), state_pacman.isWin())
+        # print('state_pacman.isLose()', type(state_pacman.isLose()), state_pacman.isLose())
         #
         # print("#" * 100)
 
@@ -886,7 +886,7 @@ class AgentPacmanMinimax(AgentPacman):
         #     is because of a mistake I made in the code. Look at V3 for the actual answer.
         #
         # Result:
-        #     py -3.6 agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
+        #     py -3.6 pacman.py -f -ap AgentPacmanMinimax -l trappedClassic -a depth=3
         #         Result:
         #             Pacman died! Score: -501
         #             Average Score: -501.0
@@ -894,14 +894,14 @@ class AgentPacmanMinimax(AgentPacman):
         #             Win Rate:      0/1 (0.00)
         #             Record:        Loss
         # """
-        # result = dfs_recursive_minimax_v1(game_state, self.depth, self.evaluationFunction)
+        # result = dfs_recursive_minimax_v1(state_pacman, self.depth, self.evaluationFunction)
         #
         # score_final: float = result[0]
         #
         # agent_container_final: AgentContainer = result[1]
         #
         # # print("SCORE: {} PLAYER INDEX: {} PLAYER ACTION: {}".format(score_final,
-        # #                                                             agent_container_final.index_agent,
+        # #                                                             agent_container_final.agent,
         # #                                                             agent_container_final.action))
         # # create_callgraph(type_output="png")
         #
@@ -910,31 +910,31 @@ class AgentPacmanMinimax(AgentPacman):
         ##########
         # """
         # V2
-        #     Like v1 (standard minimax algorithm) but tries to compress all ghost agent actions together
-        #     based on the assumption that all ghost actions must be made before a win or loss game game_state is reached.
+        #     Like v1 (standard minimax algorithm) but tries to compress all ghost player actions together
+        #     based on the assumption that all ghost actions must be made before a win or loss game state_pacman is reached.
         #
         # Notes:
         #     I generated the call graph and my assumption is wrong. The game can end even when not all ghost actions
-        #     have been processed. This means you need to constantly check game_state if the game is a win or a loss.
+        #     have been processed. This means you need to constantly check state_pacman if the game is a win or a loss.
         #
         # Results:
-        #     Crashes because dfs_recursive_minimax_v2 runs all ghost agent actions and during that process the game
-        #     may have ended via agent_pacman_ win or loss (most likely loss because only ghosts move at this time).
-        #     So any further game_state past the winning/losing game_state DOES NOT RETURN A SCORE which is needed
-        #     to determine the action for agent_pacman_.
+        #     Crashes because dfs_recursive_minimax_v2 runs all ghost player actions and during that process the game
+        #     may have ended via pacman win or loss (most likely loss because only ghosts move at this time).
+        #     So any further state_pacman past the winning/losing state_pacman DOES NOT RETURN A SCORE which is needed
+        #     to determine the action for pacman.
         #
         #     Basically, it crashes because None is returned when selecting the score and a score needs to be a number
         #
         # """
         #
-        # result = dfs_recursive_minimax_v2(game_state, self.depth, self.evaluationFunction)
+        # result = dfs_recursive_minimax_v2(state_pacman, self.depth, self.evaluationFunction)
         #
         # score_final: float = result[0]
         #
         # agent_container_final: AgentContainer = result[1]
         #
         # # print("SCORE: {} PLAYER INDEX: {} PLAYER ACTION: {}".format(score_final,
-        # #                                                             agent_container_final.index_agent,
+        # #                                                             agent_container_final.agent,
         # #                                                             agent_container_final.action))
         # # create_callgraph(type_output="png")
         #
@@ -949,7 +949,7 @@ class AgentPacmanMinimax(AgentPacman):
         #     This is just V1 with a minor code fix that gets the correct answer
         #
         # Result:
-        #     py -3.6 agent_pacman_.py -f -p AgentPacmanMinimax -l trappedClassic -a depth=3
+        #     py -3.6 pacman.py -f -ap AgentPacmanMinimax -l trappedClassic -a depth=3
         #         Result:
         #             Pacman emerges victorious! Score: 532
         #             Average Score: 532.0
@@ -996,14 +996,14 @@ class AgentPacmanMinimax(AgentPacman):
         #             RecursionError: maximum recursion depth exceeded in comparison
         # """
         #
-        # result = dfs_recursive_minimax_v3(game_state, self.depth, self.evaluationFunction)
+        # result = dfs_recursive_minimax_v3(state_pacman, self.depth, self.evaluationFunction)
         #
         # score_final: float = result[0]
         #
         # agent_container_final: AgentContainer = result[1]
         #
         # # print("SCORE: {} PLAYER INDEX: {} PLAYER ACTION: {}".format(score_final,
-        # #                                                             agent_container_final.index_agent,
+        # #                                                             agent_container_final.agent,
         # #                                                             agent_container_final.action))
         # # create_callgraph(type_output="png")
         #
@@ -1063,7 +1063,7 @@ class AgentPacmanMinimax(AgentPacman):
                 Record:        Loss
                 *** Finished running AgentPacmanMinimax on smallClassic after 0 seconds.
                 *** Won 0 out of 1 games. Average score: 84.000000 ***
-                *** PASS: test_cases\q2\8-agent_pacman_-game.test
+                *** PASS: test_cases\q2\8-pacman-game.test
 
                 ### Question q2: 5/5 ###
 
@@ -1079,7 +1079,7 @@ class AgentPacmanMinimax(AgentPacman):
                 Your grader are NOT yet registered.  To register your grader, make sure
                 to follow your instructor's guidelines to receive credit on your name_project.
         """
-        action = dfs_recursive_minimax_v4(game_state, self.depth, self.evaluation_function)
+        action = dfs_recursive_minimax_v4(state, self.depth, self.evaluation_function)
 
         # print(action)
 

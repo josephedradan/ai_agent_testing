@@ -115,11 +115,11 @@ def prettyPrintNullValues(gridWorld, currentState = None):
         for x in range(grid.width):
             state = (x, y)
 
-            # value = values[state]
+            # value = values[state_pacman]
 
             action = None
-            # if policy != None and state in policy:
-            #   action = policy[state]
+            # if policy != None and state_pacman in policy:
+            #   action = policy[state_pacman]
             #
             actions = gridWorld.getPossibleActions(state)
 

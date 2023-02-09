@@ -21,11 +21,17 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from common import util
 from pacman.agent import PacmanQAgent
-from pacman.feature_extractor_coordiate import FeatureExtractor
 from pacman.feature_extractor_coordiate import get_subclass_feature_extractor
-from common.game_state import GameState
+from common.state import State
+
+if TYPE_CHECKING:
+    from pacman.feature_extractor_coordiate import FeatureExtractor
 
 
 class ApproximateQAgent(PacmanQAgent):
@@ -37,10 +43,11 @@ class ApproximateQAgent(PacmanQAgent):
        should work as is.
     """
 
-    def __init__(self, extractor='IdentityExtractor', **args):
+    def __init__(self, extractor='IdentityExtractor', **kwargs):
+        super().__init__(self, **kwargs)
+
         self.featExtractor: FeatureExtractor = get_subclass_feature_extractor(extractor)()
 
-        PacmanQAgent.__init__(self, **args)
         self.weights = util.Counter()
 
     def getWeights(self) -> util.Counter:
@@ -48,7 +55,7 @@ class ApproximateQAgent(PacmanQAgent):
 
     def getQValue(self, state, action) -> float:
         """
-          Should return Q(state,action) = w * featureVector
+          Should return Q(state_pacman,action) = w * featureVector
           where * is the dotProduct operator
         """
         "*** YOUR CODE HERE ***"
@@ -60,9 +67,9 @@ class ApproximateQAgent(PacmanQAgent):
         Notes:
 
         Execution:
-            py -3.6 pacman.py -p ApproximateQAgent -x 2000 -n 2010 -l smallGrid 
-            py -3.6 pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumGrid 
-            py -3.6 pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic 
+            py -3.6 pacman.py -ap ApproximateQAgent -x 2000 -n 2010 -l smallGrid 
+            py -3.6 pacman.py -ap ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumGrid 
+            py -3.6 pacman.py -ap ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic 
             py -3.6 autograder.py -q q10
 
         Results:
@@ -92,7 +99,7 @@ class ApproximateQAgent(PacmanQAgent):
         """
 
         # print("self.getWeights()", self.getWeights())
-        # print("self.featExtractor.getFeatures(state, action)", self.featExtractor.getFeatures(state, action))
+        # print("self.featExtractor.getFeatures(state_pacman, action)", self.featExtractor.getFeatures(state_pacman, action))
 
         dict_k_feature_v_feature_value: dict = self.featExtractor.getFeatures(state, action)
 
@@ -158,10 +165,10 @@ class ApproximateQAgent(PacmanQAgent):
             # w_i = w_i + (alpha * TD(s,a) * f_i(s,a))
             self.weights[feature] = w_i_old + (self.alpha * temporal_difference * feature_value)
 
-    def final(self, game_state: GameState):
+    def final(self, state: State):
         "Called at the end of each game."
         # call the super-class final method
-        PacmanQAgent.final(self, game_state)
+        PacmanQAgent.final(self, state)
 
         # did we finish training?
         if self.episodesSoFar == self.num_training:

@@ -20,8 +20,8 @@ from typing import Dict
 from typing import List
 from typing import Union
 
-from common.graphics.display import Display
-from common.graphics.display import formatColor
+from common.graphics.gui import GUI
+from common.graphics.gui import formatColor
 
 _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
@@ -48,7 +48,7 @@ else:
     pass  # XXX need defaults here
 
 
-class DisplayTkinter(Display):
+class GUITkinter(GUI):
 
     def __init__(self):
         self._root_window: Union[tkinter.Tk, None] = None  # The root window for graphics output
@@ -112,7 +112,7 @@ class DisplayTkinter(Display):
         # Create the root window
         self._root_window = tkinter.Tk()
         self._root_window.protocol('WM_DELETE_WINDOW', _destroy_window)
-        self._root_window.title(name or 'GraphicsPacman Window')
+        self._root_window.title(name or 'Graphics Window')
         self._root_window.resizable(0, 0)
 
         # Create the canvas object

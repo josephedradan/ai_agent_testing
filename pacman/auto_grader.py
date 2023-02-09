@@ -83,7 +83,7 @@ def arg_parser(argv: Union[Sequence[str], None] = None):
                         # default=True,
                         # action='store_false',
                         action='store_true',
-                        help='No graphics graphics_pacman for agent_pacman_ games.')
+                        help='No graphics graphics for pacman games.')
 
     args = parser.parse_args(argv)
 
@@ -126,5 +126,5 @@ if __name__ == '__main__':
     #     bool_output_json=options.bool_output_json,
     #     bool_print_test_case=options.printTestCase,
     #     question_to_grade=options.gradeQuestion,
-    #     graphics_pacman=getDisplay(options.gradeQuestion != None, options)
+    #     graphics=getDisplay(options.gradeQuestion != None, options)
     # )

@@ -26,11 +26,14 @@ from __future__ import annotations
 from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
+from typing import Union
 
-from common.game_state_pacman import GameStatePacman
-from pacman.agent import *
-from common.game_state import GameState
-from pacman.game.layout import Layout
+from common.state_pacman import StatePacman
+from pacman.agent import AgentPacman
+from pacman.agent import ClosestDotSearchAgent
+from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.player import Player
+from pacman.game.type_player import TypePlayer
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -43,17 +46,17 @@ class ClosestDotTest(TestCase):
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(ClosestDotTest, self).__init__(question, dict_file_test)
 
-        self.str_layout: Union[str, None] = dict_file_test.get('str_path_layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('layout')
 
         self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 
     def _get_solution(self) -> Any:
-        layout = Layout([l.strip() for l in self.str_layout.split('\n')])
+        layout = LayoutPacman([l.strip() for l in self.str_layout.split('\n')])
 
-        game_state_initial = GameStatePacman()
-        game_state_initial.initialize(layout, 0)
+        state_pacman_start = StatePacman()
+        state_pacman_start.initialize(layout, [Player(AgentPacman(), TypePlayer.PACMAN)])
 
-        path = ClosestDotSearchAgent().get_list_action_to_closest_dot(game_state_initial)
+        path = ClosestDotSearchAgent().get_list_action_to_closest_dot(state_pacman_start)
         return path
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:

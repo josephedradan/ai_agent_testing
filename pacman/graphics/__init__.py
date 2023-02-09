@@ -24,18 +24,18 @@ Reference:
 from typing import Type
 from typing import Union
 
-from pacman.graphics.graphics_pacman import GraphicsPacman
-from pacman.graphics.graphics_pacman_display import FirstPersonGraphics
-from pacman.graphics.graphics_pacman_display import GraphicsPacmanDisplay
+from common.graphics.graphics import Graphics
+from pacman.graphics.graphics_pacman_gui import FirstPersonGraphicsPacman
+from pacman.graphics.graphics_pacman_gui import GraphicsPacmanGUI
 from pacman.graphics.graphics_pacman_null import GraphicsPacmanNull
 from pacman.graphics.graphics_pacman_terminal import GraphicsPacmanTerminal
 
 LIST_GRAPHICS_PACMAN = [
-    # GraphicsPacman,  # This is abstract
+    # Graphics,  # This is abstract
     GraphicsPacmanNull,
     GraphicsPacmanTerminal,
-    GraphicsPacmanDisplay,
-    FirstPersonGraphics,
+    GraphicsPacmanGUI,
+    FirstPersonGraphicsPacman,
 ]
 
 DICT_K_NAME_GRAPHICS_PACMAN_V_GRAPHICS_PACMAN = {
@@ -43,13 +43,13 @@ DICT_K_NAME_GRAPHICS_PACMAN_V_GRAPHICS_PACMAN = {
 }
 
 
-def get_class_graphics_pacman(name_graphics_pacman: Union[str, Type[GraphicsPacman], None]) -> Type[GraphicsPacman]:
+def get_class_graphics_pacman(name_graphics_pacman: Union[str, Type[Graphics], None]) -> Type[Graphics]:
     graphics_pacman_ = name_graphics_pacman
 
     if isinstance(name_graphics_pacman, str):
         graphics_pacman_ = DICT_K_NAME_GRAPHICS_PACMAN_V_GRAPHICS_PACMAN.get(name_graphics_pacman)
 
     if graphics_pacman_ is None:
-        Exception("{} is not an GraphicsPacman class".format(name_graphics_pacman))
+        Exception("{} is not an Graphics class".format(name_graphics_pacman))
 
     return graphics_pacman_

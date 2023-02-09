@@ -32,17 +32,14 @@ from typing import Tuple
 from typing import Type
 from typing import Union
 
-from common.game_state_pacman import GameStatePacman
-from pacman.agent import AgentKeyboard
+from common.state_pacman import StatePacman
 from pacman.agent import get_subclass_agent
-from pacman.agent.agent import Agent
 from pacman.game.game import Game
-from pacman.game.layout import get_layout
+from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.layoutpacman import get_layout_pacman
 from pacman.game.player import Player
-from pacman.game.player_ghost import PlayerPacman
-from pacman.game.player_pacman import PlayerGhost
-from pacman.graphics import GraphicsPacman
-from pacman.graphics import GraphicsPacmanDisplay
+from pacman.game.type_player import TypePlayer
+from pacman.graphics import Graphics
 
 
 class ClassicGameRules:
@@ -54,9 +51,13 @@ class ClassicGameRules:
     def __init__(self, timeout=30):
         self.timeout = timeout
 
+        self._state_pacman_initial: Union[StatePacman, None] = None
+
     def get_players(self,
                     list_tuple__str_agent__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
-                    subclass_player: Type[Player]) -> List[Player]:
+                    type_player: TypePlayer,
+                    graphics_pacman: Graphics
+                    ) -> List[Player]:
 
         list_player: List[Player] = []
 
@@ -66,55 +67,57 @@ class ClassicGameRules:
 
             subclass_agent = get_subclass_agent(str_agent)
 
-            agent = subclass_agent(**dict_kwargs)
-
-            player = subclass_player(agent)
+            agent = subclass_agent(graphics=graphics_pacman, **dict_kwargs)
+            player = Player(agent, type_player)
 
             list_player.append(player)
+
 
         return list_player
 
     def create_and_get_game(self,
                             str_path_layout: str,
-                            list_tuple__str_agent_pacman__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
+                            list_tuple__str_pacman_dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
                             list_tuple__str_agent_ghost__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
-                            graphics_pacman: GraphicsPacman,
+                            graphics_pacman: Graphics,
                             bool_quiet: bool = False,
                             bool_catch_exceptions: bool = False
                             ) -> Game:
 
-        layout = get_layout(str_path_layout)
+        layout_pacman: LayoutPacman = get_layout_pacman(str_path_layout)
 
-        list_player_pacman = self.get_players(list_tuple__str_agent_pacman__dict_kwargs, PlayerPacman)
-        list_player_ghost = self.get_players(list_tuple__str_agent_ghost__dict_kwargs, PlayerGhost)
+        list_player_pacman = self.get_players(list_tuple__str_pacman_dict_kwargs, TypePlayer.PACMAN, graphics_pacman)
+        list_player_ghost = self.get_players(list_tuple__str_agent_ghost__dict_kwargs, TypePlayer.GHOST, graphics_pacman)
 
         list_player_all: List[Player] = [*list_player_pacman, *list_player_ghost]
 
-        # list_agent: List[Agent] = [agent_pacman, *list_str_pacman_ghost_class_agent[:layout.getNumGhosts()]]
+        # list_player: List[Agent] = [agent_pacman, *list_str_pacman_ghost_class_agent[:layout_pacman.getNumGhosts()]]
 
+        # # TODO JOSEPH SPEICAL
+        # # TODO: ALT GRAPHICS: GraphicsPacmanNull, GraphicsPacmanDisplay
+        # if isinstance(agent_pacman, AgentKeyboard) and isinstance(graphics_pacman, GraphicsPacmanDisplay):
+        #     agent_pacman.set_display(graphics_pacman.get_display())
+        #
+        # for agent in list_player:
+        #     agent.set_graphics(graphics_pacman)
 
+        state_pacman_start = StatePacman()
+        state_pacman_start.initialize(layout_pacman, list_player_all)
 
-        # TODO JOSEPH SPEICAL
-        # TODO: ALT GRAPHICS: GraphicsPacmanNull, GraphicsPacmanDisplay
-        if isinstance(agent_pacman, AgentKeyboard) and isinstance(graphics_pacman, GraphicsPacmanDisplay):
-            agent_pacman.set_display(graphics_pacman.get_display())
-
-        for agent in list_agent:
-            agent.set_graphics_pacman(graphics_pacman)
-
-        game_state_start = GameStatePacman()
-        game_state_start.initialize(layout, len(list_str_pacman_ghost_class_agent))
-
+        list_player_all_allowed_by_map: List[Player] = list(  # TODO: FIX MOVE ME IN A GAME CREATOR OS SOMESHIT
+            state_pacman_start.get_dict_k_player_v_container_state().keys()
+        )
+        print("----- create_and_get_game ALL PLAYERS", list_player_all_allowed_by_map)
         game = Game(
-            list_agent,
+            list_player_all_allowed_by_map,
             graphics_pacman,
             self,
             bool_catch_exceptions=bool_catch_exceptions
         )
 
-        game.game_state = game_state_start
+        game.set_state_pacman(state_pacman_start)
 
-        self.initialState = game_state_start.get_deep_copy()
+        self._state_pacman_initial = state_pacman_start.get_deep_copy()
 
         self.bool_quiet: bool = bool_quiet
 
@@ -123,27 +126,27 @@ class ClassicGameRules:
     def set_quiet(self, bool_quiet: bool):
         self.bool_quiet = bool_quiet
 
-    def process(self, game_state: GameStatePacman, game: Game):
+    def process(self, state: StatePacman, game: Game):
         """
         Checks to see whether it is time to end the game.
         """
-        if game_state.isWin():
-            self._win(game_state, game)
-        if game_state.isLose():
-            self._lose(game_state, game)
+        if state.isWin():
+            self._win(state, game)
+        if state.isLose():
+            self._lose(state, game)
 
-    def _win(self, game_state: GameStatePacman, game: Game):
+    def _win(self, state: StatePacman, game: Game):
         if not self.bool_quiet:
-            print(f"Pacman emerges victorious! Score: {game_state.game_state_data.score}")
+            print(f"Pacman emerges victorious! Score: {state.state_data.score}")
         game.gameOver = True
 
-    def _lose(self, game_state: GameStatePacman, game: Game):
+    def _lose(self, state: StatePacman, game: Game):
         if not self.bool_quiet:
-            print(f"Pacman died! Score: {game_state.game_state_data.score}")
+            print(f"Pacman died! Score: {state.state_data.score}")
         game.gameOver = True
 
     def getProgress(self, game: Game):
-        return float(game.game_state.getNumFood()) / self.initialState.getNumFood()
+        return float(game.state_pacman.getNumFood()) / self._state_pacman_initial.getNumFood()
 
     def agentCrash(self, game: Game, agentIndex):
         if agentIndex == 0:

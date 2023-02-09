@@ -28,7 +28,8 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from pacman.graphics.graphics_pacman import GraphicsPacman
+from common.graphics.graphics import Graphics
+from pacman.agent import Agent
 
 
 class SearchProblem(ABC):
@@ -39,38 +40,39 @@ class SearchProblem(ABC):
     You do not need to change anything in this class, ever.
     """
 
-    def __init__(self):  # FIXME: THIS IS MISSING game_state
-        self.graphics: Union[GraphicsPacman, None] = None
+    def __init__(self):  # FIXME: THIS IS MISSING state_pacman
+
+        self.graphics: Union[Graphics, None] = None
 
         self._expanded = None  # FIXME: NEED THIS
 
-    def set_graphics(self, graphics: GraphicsPacman):
+    def set_graphics(self, graphics: Graphics):
         self.graphics = graphics
 
     @abstractmethod
     def getStartState(self) -> Union[Tuple[int, int], Hashable]:
         """
-        Returns the start state for the search problem_multi_agent_tree.
+        Returns the start state_pacman for the search problem_multi_agent_tree.
         """
         pass
 
     @abstractmethod
     def isGoalState(self, state) -> bool:
         """
-          state: Search state
+          state_pacman: Search state_pacman
 
-        Returns True if and only if the state is a valid goal state.
+        Returns True if and only if the state_pacman is a valid goal state_pacman.
         """
         pass
 
     @abstractmethod
     def getSuccessors(self, state) -> List[Union[tuple, str, int]]:
         """
-          state: Search state
+          state_pacman: Search state_pacman
 
-        For a given state, this should return a list of triples, (successor,
+        For a given state_pacman, this should return a list of triples, (successor,
         action, stepCost), where 'successor' is a successor to the current
-        state, 'action' is the action required to get there, and 'stepCost' is
+        state_pacman, 'action' is the action required to get there, and 'stepCost' is
         the incremental cost of expanding to that successor.
         """
         pass

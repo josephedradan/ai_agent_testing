@@ -15,24 +15,24 @@
 
     python autograder.py -t "test_cases/q10/1-1-minmax"
 
-    python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
-    python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better --graphics GraphicsPacmanNull
+    python main.py -ap AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
+    python main.py -ap AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better --graphics GraphicsPacmanNull
     
     
     ??????????
-    python main.py -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better --graphics FirstPersonGraphics
+    python main.py -ap AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better --graphics FirstPersonGraphicsPacman
     ??????
 
     autograder -q q4
     autograder -t "test_cases/multiagent/q12/7-pacman-game"
 
     python main.py --quietTextGraphics
-    python main.py -l mediumScaryMaze -p StayWestSearchAgent
+    python main.py -l mediumScaryMaze -ap StayWestSearchAgent
     
-    python main.py -l mediumScaryMaze -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
+    python main.py -l mediumScaryMaze -ap AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
 
     # Standard map stuff
-    python main.py -l originalClassic -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
+    python main.py -l originalClassic -ap AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
     
     # TESTS (DON'T ADD .test)
 
@@ -41,13 +41,13 @@
 # Q LEARNING PACMAN
     
     # 
-    python main.py -p PacmanQAgent -x 2000 -n 2010 -l smallGrid 
+    python main.py -ap PacmanQAgent -x 2000 -n 2010 -l smallGrid 
 
     # 
-    python main.py -p ApproximateQAgent -x 2000 -n 2010 -l smallGrid 
+    python main.py -ap ApproximateQAgent -x 2000 -n 2010 -l smallGrid 
 
     # ApproximateQAgent
-    python main.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic 
+    python main.py -ap ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic 
 
 
 # ON THE SUBJECT OF GRIDWORLD (CD TO gridworld directory)
@@ -72,8 +72,10 @@ OR
 
 pacmanParams:
 
+###
 
-
+SearchProblem USE self.set_graphics and self.graphics WHICH CAME FROM 
+AN Agent get_graphics set_graphics
 
 
 # Licensing Information:  You are free to use or extend these projects for
@@ -87,3 +89,30 @@ pacmanParams:
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+
+# Installing virtual environment (For local installation):
+   
+   1. Install virtualenv
+   
+      
+      pip install virtualenv
+
+   2. Make virtual environment for python 3.11 (pip install virtualenv)
+      
+   
+      virtualenv .venv -ap python3.11
+   
+   3. Activate virtual environment (Unix)
+
+      
+      source .venv/bin/activate
+
+   3. Activate virtual environment (Windows)
+   
+      
+      .venv/Scripts/activate
+
+   4. Install Requirements
+   
+      
+      pip install requirements.txt

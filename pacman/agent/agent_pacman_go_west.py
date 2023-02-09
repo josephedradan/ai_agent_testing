@@ -21,16 +21,22 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from pacman.agent import Agent
 from pacman.game.directions import Directions
 
+if TYPE_CHECKING:
+    from common.state import State
 
 class GoWestAgent(Agent):
-    "An agent that goes West until it can't."
+    "An player that goes West until it can't."
 
-    def getAction(self, state):
-        "The agent receives a GameState (defined in agent_pacman_.py)."
-        if Directions.WEST in state.getLegalPacmanActions():
+    def getAction(self, state: State):
+        "The player receives a State (defined in pacman.py)."
+        if Directions.WEST in state.getLegalActions(self):
             return Directions.WEST
         else:
             return Directions.STOP

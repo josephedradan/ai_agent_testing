@@ -33,30 +33,30 @@ from pacman.game.directions import Action
 from pacman.game.directions import Directions
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
-
+    from common.state import State
+    from common.state_pacman import StatePacman
 
 class AgentPacmanGreedy(AgentPacman):
     # TODO: FIX THIS JOSEPH THE SOLUTION IS SUBOPTIMAL
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
-    def getAction(self, game_state: GameState) -> Action:
+    def getAction(self, state: State) -> Action:
 
         # Generate candidate actions
-        legal: List[Action] = game_state.getLegalPacmanActions()
+        legal: List[Action] = state.getLegalActions(self)
 
         if Directions.STOP in legal:
             legal.remove(Directions.STOP)
 
-        successors: List[Tuple[GameState, Action]] = (
-            [(game_state.generateSuccessor(0, action), action) for action in legal]
+        successors: List[Tuple[State, Action]] = (
+            [(state.generateSuccessor(self, action), action) for action in legal]
         )
 
-        print("successors", successors, type(successors))
+        # print("-- successors", successors, type(successors))
 
         scored: List[Tuple[float, Action]] = (
-            [(self.evaluation_function(_game_state, action), action) for _game_state, action in successors]
+            [(self.evaluation_function(_state, action), action) for _state, action in successors]
         )
 
         # print("scored", scored, type(scored))

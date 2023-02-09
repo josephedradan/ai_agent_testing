@@ -29,13 +29,14 @@ from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
 
-from common.game_state_pacman import GameStatePacman
+from common.state_pacman import StatePacman
 from pacman.agent.agent import Agent
 from pacman.agent.agent_value_estimation_reinforcement import ReinforcementAgent
-from common.game_state import GameState
-from pacman.graphics.graphics_pacman import GraphicsPacman
+from common.state import State
+from common.graphics.graphics import Graphics
 from common.util import TimeoutFunction
 from common.util import TimeoutFunctionException
+from pacman.game.player import Player
 
 if TYPE_CHECKING:
     from pacman.game.rules.game_rules_classic import ClassicGameRules
@@ -54,33 +55,33 @@ class Game:
     """
 
     def __init__(self,
-                 list_agent: List[Agent],
-                 graphics_pacman: GraphicsPacman,  # FIXME: CAN BE NO GRAPHCIS OR ACUTAL GRAPHICS
+                 list_player: List[Player],
+                 graphics_pacman: Graphics,
                  rules: ClassicGameRules,
                  index_starting: int = 0,
                  bool_mute_agents: bool = False,
                  bool_catch_exceptions: bool = False
                  ):
 
+        self.list_player: List[Player] = list_player
         self.agentCrashed: bool = False
-        self.list_agent: List[Agent] = list_agent
-        self.graphics_pacman: GraphicsPacman = graphics_pacman
+        self.graphics_pacman: Graphics = graphics_pacman
         self.rules: ClassicGameRules = rules
         self.index_starting: int = index_starting
         self.gameOver: bool = False
         self.bool_mute_agents: bool = bool_mute_agents
         self.bool_catch_exceptions = bool_catch_exceptions
         self.moveHistory: List = []
-        self.totalAgentTimes: List[int] = [0 for agent in list_agent]
-        self.totalAgentTimeWarnings: List[int] = [0 for agent in list_agent]
+        self.totalAgentTimes: List[int] = [0 for agent in list_player]
+        self.totalAgentTimeWarnings: List[int] = [0 for agent in list_player]
         self.agentTimeout: bool = False
 
         import io
-        self.agentOutput = [io.StringIO() for agent in list_agent]
+        self.agentOutput = [io.StringIO() for agent in list_player]
 
         #####
 
-        self.game_state: Union[GameStatePacman, None] = None
+        self.state_pacman: Union[StatePacman, None] = None
 
 
     def _get_progress(self) -> float:
@@ -90,7 +91,7 @@ class Game:
             return self.rules.getProgress(self)
 
     def _agentCrash(self, index_agent: int, quiet=False):
-        "Helper method for handling agent crashes"
+        "Helper method for handling player crashes"
         if not quiet:
             traceback.print_exc()
         self.gameOver = True
@@ -124,28 +125,33 @@ class Game:
 
         raise Exception("UNMUTE HAPPENED")
 
+    def set_state_pacman(self, state_pacman: StatePacman):
+        self.state_pacman = state_pacman
+
     def run(self):
         """
         Main control loop for game play.
         """
-        self.graphics_pacman.initialize(self.game_state.game_state_data)
+        self.graphics_pacman.initialize(self.state_pacman.state_data)
 
-        # print(self.state, type(self.state), "self.state", type(self.state.data))
+        # print(self.state_pacman, type(self.state_pacman), "self.state_pacman", type(self.state_pacman.data))
 
         self.numMoves: int = 0
 
-        self.game_state: GameStatePacman
+        self.state_pacman: StatePacman
 
-        # self.graphics_pacman.initialize(self.game_state.makeObservation(1).data)
+        # self.graphics.initialize(self.state_pacman.makeObservation(1).data)
         # inform learning agents of the game start
-        for i, agent in enumerate(self.list_agent):
+        for i, player in enumerate(self.list_player):
+
+            agent = player.get_agent()
 
             # TODO: JOSEPH - THIS SHOULD TECHNICALLY NEVER HIT
-            # if not agent:
+            # if not player:
             #
             #     self._mute(i)
             #
-            #     # this is a null agent, meaning it failed to load
+            #     # this is a null player, meaning it failed to load
             #     # the other team wins
             #     print("Agent %d failed to load" % i, file=sys.stderr)
             #     self._unmute()
@@ -153,7 +159,7 @@ class Game:
             #     return
 
             if ("registerInitialState" in dir(agent)):  # Basically hasattr without the raising exception
-                # print("registerInitialState IS HERE YO", dir(agent))
+                # print("registerInitialState IS HERE YO", dir(player))
                 self._mute(i)
                 if self.bool_catch_exceptions:
                     try:
@@ -163,7 +169,7 @@ class Game:
                         )
                         try:
                             time_start = time.time()
-                            timed_func(self.game_state.get_deep_copy())
+                            timed_func(self.state_pacman.get_deep_copy())
                             time_taken = time.time() - time_start
                             self.totalAgentTimes[i] += time_taken
                         except TimeoutFunctionException:
@@ -178,20 +184,22 @@ class Game:
                         self._unmute()
                         return
                 else:
-                    agent.registerInitialState(self.game_state.get_deep_copy())
+                    agent.registerInitialState(self.state_pacman.get_deep_copy())
 
                 # TODO: could this exceed the total time
                 self._unmute()
 
         index_agent = self.index_starting
-        number_of_agents:int  = len(self.list_agent)
+        number_of_agents:int  = len(self.list_player)
 
         ##################################################
         # Main game Loop
         ##################################################
         while not self.gameOver:  # TODO: GAME LOOP IS RIGHT HERE
-            # Fetch the next agent
-            agent = self.list_agent[index_agent]
+            # Fetch the next player
+            player = self.list_player[index_agent]
+
+            agent = player.get_agent()
             move_time = 0
             skip_action = False
 
@@ -199,10 +207,10 @@ class Game:
             # Do operation related to Reinforcement learning
             ##################################################
 
-            game_state_observation: GameState
+            state_observation: State
 
             if isinstance(agent, ReinforcementAgent):
-            # Generate an game_state_observation of the game_state
+            # Generate an state_observation of the state_pacman
                 self._mute(index_agent)
                 if self.bool_catch_exceptions:
                     try:
@@ -213,7 +221,7 @@ class Game:
 
                         time_start = time.time()
                         try:
-                            game_state_observation = timed_func(self.game_state.get_deep_copy())
+                            state_observation = timed_func(self.state_pacman.get_deep_copy())
                         except TimeoutFunctionException:
                             skip_action = True
 
@@ -225,12 +233,12 @@ class Game:
                         self._unmute()
                         return
                 else:
-                    game_state_observation = agent.observationFunction(self.game_state.get_deep_copy())
+                    state_observation = agent.observationFunction(self.state_pacman.get_deep_copy())
                 self._unmute()
 
             ##################################################
             else:
-                game_state_observation = self.game_state.get_deep_copy()
+                state_observation = self.state_pacman.get_deep_copy()
 
 
             ##################################################
@@ -255,7 +263,7 @@ class Game:
                         if skip_action:  # TODO: DONT HAVE CONTROL OVER THIS JOSEPH
                             raise TimeoutFunctionException()
 
-                        action = timed_func(game_state_observation)
+                        action = timed_func(state_observation)
                     except TimeoutFunctionException:
                         print("Agent {} timed out on a single move!".format(index_agent), file=sys.stderr)
                         self.agentTimeout = True
@@ -278,7 +286,7 @@ class Game:
                             return
 
                     self.totalAgentTimes[index_agent] += move_time
-                    # print "Agent: %d, time: %f, total: %f" % (index_agent, move_time, self.totalAgentTimes[index_agent])
+                    # print "Agent: %d, time: %f, total: %f" % (agent, move_time, self.totalAgentTimes[agent])
                     if self.totalAgentTimes[index_agent] > self.rules.getMaxTotalTime(index_agent):
                         print("Agent %d ran out of time! (time: %1.2f)" % (
                             index_agent, self.totalAgentTimes[index_agent]), file=sys.stderr)
@@ -292,18 +300,18 @@ class Game:
                     self._unmute()
                     return
             else:
-                action = agent.getAction(game_state_observation)  # # TODO: AGENT ACTION COMES FROM HERE
+                action = agent.getAction(state_observation)  # # TODO: AGENT ACTION COMES FROM HERE
 
             ##################################################
 
             self._unmute()
 
-            self.moveHistory.append((index_agent, action))
+            self.moveHistory.append((agent, action))
 
             # Execute the action
             if self.bool_catch_exceptions:
                 try:
-                    self.game_state = self.game_state.generateSuccessor(index_agent, action)
+                    self.state_pacman = self.state_pacman.generateSuccessor(agent, action)
                 except Exception as data:
                     # raise Exception("JOSEPH WTF")
 
@@ -312,22 +320,22 @@ class Game:
                     self._unmute()
                     return
             else:
-                self.game_state = self.game_state.generateSuccessor(index_agent, action)
+                self.state_pacman = self.state_pacman.generateSuccessor(agent, action)
 
-            # Change the graphics_pacman
-            self.graphics_pacman.update(self.game_state.game_state_data)  # TODO: DRAWING THE GAME_STATE IS HERE
+            # Change the graphics
+            self.graphics_pacman.update(self.state_pacman.state_data)  # TODO: DRAWING THE state IS HERE
 
-            ###idx = index_agent - index_agent % 2 + 1
-            ###self.graphics_pacman.update( self.game_state.makeObservation(idx).data )
+            ###idx = agent - agent % 2 + 1
+            ###self.graphics.update( self.state_pacman.makeObservation(idx).data )
 
             # Allow for game specific conditions (winning, losing, etc.)
-            self.rules.process(self.game_state, self)  # TODO: CAN AFFECT self.gameOver
+            self.rules.process(self.state_pacman, self)  # TODO: CAN AFFECT self.gameOver
 
             # Track progress
             if index_agent == number_of_agents + 1:
                 self.numMoves += 1
 
-            # Next agent
+            # Next player
             index_agent = (index_agent + 1) % number_of_agents
 
             if _BOINC_ENABLED:
@@ -336,12 +344,12 @@ class Game:
         #########################################################
         #########################################################
 
-        # inform a learning agent of the game result
-        for index_agent, agent in enumerate(self.list_agent):
+        # inform a learning player of the game result
+        for index_agent, agent in enumerate(self.list_player):
             if "final" in dir(agent):
                 try:
                     self._mute(index_agent)
-                    agent.final(self.game_state)
+                    agent.final(self.state_pacman)
                     self._unmute()
                 except Exception as data:
                     if not self.bool_catch_exceptions:

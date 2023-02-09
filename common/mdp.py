@@ -25,13 +25,13 @@ class MarkovDecisionProcess:
 
     def getStartState(self):
         """
-        Return the start state of the MDP.
+        Return the start state_pacman of the MDP.
         """
         abstract
 
     def getPossibleActions(self, state):
         """
-        Return list of possible actions from 'state'.
+        Return list of possible actions from 'state_pacman'.
         """
         abstract
 
@@ -39,7 +39,7 @@ class MarkovDecisionProcess:
         """
         Returns list of (nextState, prob) pairs
         representing the states reachable
-        from 'state' by taking 'action' along
+        from 'state_pacman' by taking 'action' along
         with their transition probabilities.
 
         Note that in Q-Learning and reinforcment
@@ -50,7 +50,7 @@ class MarkovDecisionProcess:
 
     def getReward(self, state, action, nextState):
         """
-        Get the reward for the state, action, nextState transition.
+        Get the reward for the state_pacman, action, nextState transition.
 
         Not available in reinforcement learning.
         """
@@ -58,10 +58,10 @@ class MarkovDecisionProcess:
 
     def isTerminal(self, state):
         """
-        Returns true if the current state is a terminal state.  By convention,
-        a terminal state has zero future rewards.  Sometimes the terminal state(s)
+        Returns true if the current state_pacman is a terminal state_pacman.  By convention,
+        a terminal state_pacman has zero future rewards.  Sometimes the terminal state_pacman(s)
         may have no possible actions.  It is also common to think of the terminal
-        state as having a self-loop action 'pass' with zero reward; the formulations
+        state_pacman as having a self-loop action 'pass' with zero reward; the formulations
         are equivalent.
         """
         abstract

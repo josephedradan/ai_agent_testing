@@ -23,9 +23,15 @@ Reference:
 """
 import time
 from abc import abstractmethod
+from typing import TYPE_CHECKING
 
+from pacman.agent import Agent
 from pacman.agent.agent_value_estimation import ValueEstimationAgent
-from common.game_state import GameState
+from common.state import State
+
+if TYPE_CHECKING:
+
+    pass
 
 
 class ReinforcementAgent(ValueEstimationAgent):
@@ -36,12 +42,34 @@ class ReinforcementAgent(ValueEstimationAgent):
 
         What you need to know:
                     - The environment will call
-                      observeTransition(state,action,nextState,deltaReward),
-                      which will call update(state, action, nextState, deltaReward)
+                      observeTransition(state_pacman,action,nextState,deltaReward),
+                      which will call update(state_pacman, action, nextState, deltaReward)
                       which you should override.
-        - Use self.getLegalActions(state) to know which actions
-                      are available in a state
+        - Use self.getLegalActions(state_pacman) to know which actions
+                      are available in a state_pacman
     """
+    def __init__(self, actionFn=None, num_training=100, epsilon=0.5, alpha=0.5, gamma=1, **kwargs):
+        """
+        actionFn: Function which takes a state_pacman and returns the list of legal actions
+
+        alpha    - learning rate
+        epsilon  - exploration rate
+        gamma    - discount factor
+        num_training - number of training episodes, i.e. no learning after these many episodes
+        """
+        super().__init__(alpha, epsilon, gamma, num_training, **kwargs)
+
+        if actionFn == None:
+            actionFn = lambda state, agent: state.getLegalActions(agent)
+
+        self.actionFn = actionFn
+        self.episodesSoFar = 0
+        self.accumTrainRewards = 0.0
+        self.accumTestRewards = 0.0
+        self.num_training = int(num_training)
+        self.epsilon = float(epsilon)
+        self.alpha = float(alpha)
+        self.discount = float(gamma)
 
     ####################################
     #    Override These Functions      #
@@ -62,14 +90,14 @@ class ReinforcementAgent(ValueEstimationAgent):
     def getLegalActions(self, state):
         """
           Get the actions available for a given
-          state. This is what you should use to
-          obtain legal actions for a state
+          state_pacman. This is what you should use to
+          obtain legal actions for a state_pacman
         """
-        return self.actionFn(state)
+        return self.actionFn(state, self)
 
     def observeTransition(self, state, action, nextState, deltaReward):
         """
-            Called by environment to inform agent that a transition has
+            Called by environment to inform player that a transition has
             been observed. This will result in a call to self.update
             on the same arguments
 
@@ -106,26 +134,6 @@ class ReinforcementAgent(ValueEstimationAgent):
     def isInTesting(self):
         return not self.isInTraining()
 
-    def __init__(self, actionFn=None, num_training=100, epsilon=0.5, alpha=0.5, gamma=1):
-        """
-        actionFn: Function which takes a state and returns the list of legal actions
-
-        alpha    - learning rate
-        epsilon  - exploration rate
-        gamma    - discount factor
-        num_training - number of training episodes, i.e. no learning after these many episodes
-        """
-        if actionFn == None:
-            actionFn = lambda state: state.getLegalActions()
-
-        self.actionFn = actionFn
-        self.episodesSoFar = 0
-        self.accumTrainRewards = 0.0
-        self.accumTestRewards = 0.0
-        self.num_training = int(num_training)
-        self.epsilon = float(epsilon)
-        self.alpha = float(alpha)
-        self.discount = float(gamma)
 
     ################################
     # Controls needed for Crawler  #
@@ -142,7 +150,7 @@ class ReinforcementAgent(ValueEstimationAgent):
     def doAction(self, state, action):
         """
             Called by inherited class when
-            an action is taken in a state
+            an action is taken in a state_pacman
         """
         self.lastState = state
         self.lastAction = action
@@ -150,27 +158,27 @@ class ReinforcementAgent(ValueEstimationAgent):
     ###################
     # Pacman Specific #
     ###################
-    def observationFunction(self, game_state: GameState):
+    def observationFunction(self, state: State):
         """
             This is where we ended up after our last action.
             The simulation should somehow ensure this is called
         """
         if not self.lastState is None:
-            reward = game_state.getScore() - self.lastState.getScore()
-            self.observeTransition(self.lastState, self.lastAction, game_state, reward)
-        return game_state
+            reward = state.getScore() - self.lastState.getScore()
+            self.observeTransition(self.lastState, self.lastAction, state, reward)
+        return state
 
-    def registerInitialState(self, game_state: GameState):
+    def registerInitialState(self, state: State):
         self.startEpisode()
         if self.episodesSoFar == 0:
             print('Beginning %d episodes of Training' % (self.num_training))
 
-    def final(self, game_state: GameState):
+    def final(self, state: State):
         """
-          Called by Pacman game at the terminal state
+          Called by Pacman game at the terminal state_pacman
         """
-        deltaReward = game_state.getScore() - self.lastState.getScore()
-        self.observeTransition(self.lastState, self.lastAction, game_state, deltaReward)
+        deltaReward = state.getScore() - self.lastState.getScore()
+        self.observeTransition(self.lastState, self.lastAction, state, deltaReward)
         self.stopEpisode()
 
         # Make sure we have this var
@@ -178,7 +186,7 @@ class ReinforcementAgent(ValueEstimationAgent):
             self.episodeStartTime = time.time()
         if not 'lastWindowAccumRewards' in self.__dict__:
             self.lastWindowAccumRewards = 0.0
-        self.lastWindowAccumRewards += game_state.getScore()
+        self.lastWindowAccumRewards += state.getScore()
 
         NUM_EPS_UPDATE = 100
         if self.episodesSoFar % NUM_EPS_UPDATE == 0:

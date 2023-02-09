@@ -10,12 +10,11 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
-
+import ast
 import re
-import sys
 from typing import Any
 from typing import Dict
+from typing import Hashable
 from typing import List
 from typing import Union
 
@@ -103,6 +102,66 @@ def get_dict_kwargs_from_string(string_given: Union[str, None]) -> Dict[str, Any
 
         kwargs[key] = val
     return kwargs
+
+
+class ContainerObjectConstruct:
+
+    def __init__(self,
+                 name_class: str,
+                 arguments: List[Any],
+                 keyword_arguments:Dict[Hashable, Any]):
+        self.name_class = name_class
+        self.arguments = arguments
+        self.keyword_arguments = keyword_arguments
+
+
+def get_list_container_object_construct(str_object_construction: str) -> List[ContainerObjectConstruct]:
+    """
+    Old regex that works to parse Class name and its kwargs + args, but parsing args from kwargs is very complex
+    due to string arguments looking like keyword arguments even though those string arguments should not be
+    keyword arguments.
+
+    Example:
+        Person('school="None"', "car='Cool'",
+                name="bob", quote="Fake kwarg age=24",
+                age=21
+                )
+
+    The example above is hard to parse args and kwargs correctly plus there are newlines, spaces, and tabs that
+    need to be accounted for
+
+    FIXME: THE BELOW IS A TESTING STRING
+    code = '''
+    [Bob('sdfsdf',x=23),Bob('sdfsdf', 'AAAA',
+    \"BBBB\",
+    'dude = 44',x=23),
+    Bob('sdfsdf',x=23.2, man='cool'),
+    Person( 'school="None"', "car='Cool'", name="bob", quote="Fake kwarg age=24", age=21)
+    ]'''
+    """
+    # pattern_class_instantiation_ = re.compile(r"(\b\w+)\((.*?)\)")
+    # list_class_instantiation = re.findall(pattern_class_instantiation_, str_object_construction)
+
+    str_object_construction = str_object_construction.strip()  # Clean up unnecessary spacing
+
+    ast_parse = ast.parse(str_object_construction)
+    list_ast_object = [ast_object for ast_object in ast.walk(ast_parse) if isinstance(ast_object, ast.Call)]
+
+    list_container_object_construct: List[ContainerObjectConstruct] = []
+
+    for ast_object in list_ast_object:
+        name_class = ast_object.func.id
+        args = [arg.s for arg in ast_object.args]
+        kwargs = {keyword_arg.arg: keyword_arg.value.s for keyword_arg in ast_object.keywords}
+
+        # print("Name Class:", name_class)
+        # print("args:", args)
+        # print("kwargs:", kwargs)
+
+        list_container_object_construct.append(ContainerObjectConstruct(name_class, args, kwargs))
+
+    return list_container_object_construct
+
 
 # TODO: JOSEPH NOT USED
 # def emitTestDict(dict_file_test, handle):

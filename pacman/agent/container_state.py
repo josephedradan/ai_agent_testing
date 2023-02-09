@@ -30,40 +30,47 @@ from pacman.game.container_position_vector import ContainerPositionVector
 from pacman.game.directions import Directions
 
 
-class StateAgent:
+class ContainerState:
     """
-    AgentStates hold the game_state of an agent (container_position_vector, speed, scared, etc).
+    AgentStates hold the state_pacman of an player (container_position_vector, speed, scared, etc).
+
+    NOTES:
+        CREATED ONCE IN state_data_pacman
+
     """
 
-    def __init__(self, container_position_vector: ContainerPositionVector, is_pacman: bool):
+    def __init__(self, container_position_vector: ContainerPositionVector):
         self.container_position_vector_start: ContainerPositionVector = container_position_vector
         self.container_position_vector: ContainerPositionVector = container_position_vector
 
-        self.is_pacman: bool = is_pacman
         self.scaredTimer: int = 0
 
-        # game_state below potentially used for contest only
+        # state_pacman below potentially used for contest only
         self.numCarrying: int = 0
         self.numReturned: int = 0
 
     def __str__(self):
-        if self.is_pacman:
-            return "Pacman: " + str(self.container_position_vector)
-        else:
-            return "Ghost: " + str(self.container_position_vector)
+        # if self.is_pacman:
+        #     return "Pacman: " + str(self.container_position_vector)
+        # else:
+        #     return "Ghost: " + str(self.container_position_vector)
 
-    def __eq__(self, other: Union[StateAgent, None]):
+        return str(self.container_position_vector)
+
+    def __eq__(self, other: Union[ContainerState, None]):
         if other is None:
             return False
-        return self.container_position_vector == other.container_position_vector and self.scaredTimer == other.scaredTimer
+        return (
+                self.container_position_vector == other.container_position_vector and
+                self.scaredTimer == other.scaredTimer
+        )
 
     def __hash__(self):
         # return hash(hash(self.container_position_vector) + 13 * hash(self.scaredTimer))
         return hash((hash(self.container_position_vector), hash(self.scaredTimer)))
 
-
-    def copy(self):
-        state = StateAgent(self.container_position_vector_start, self.is_pacman)
+    def copy(self) -> ContainerState:
+        state = ContainerState(self.container_position_vector_start)
         state.container_position_vector = self.container_position_vector
         state.scaredTimer = self.scaredTimer
         state.numCarrying = self.numCarrying

@@ -28,7 +28,7 @@ from common import util
 
 
 class Grader:
-    "A data structure for name_project grader, along with formatting code to graphics_pacman them"
+    "A data structure for name_project grader, along with formatting code to graphics them"
 
     def __init__(self,
                  name_project: str,

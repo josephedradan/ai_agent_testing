@@ -35,7 +35,7 @@ class ContainerFileTest:
 
         #####
 
-        self.str_layout: Union[str, None] = dict_file_test.get('str_path_layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('layout')
 
         self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 

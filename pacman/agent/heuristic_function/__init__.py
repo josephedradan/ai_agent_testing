@@ -21,18 +21,15 @@ Tags:
 Reference:
 
 """
-from typing import Callable
-from typing import Tuple
+from __future__ import annotations
+
 from typing import Union
-
-from pacman.agent.search_problem import SearchProblem
-
-TYPE_HEURISTIC_FUNCTION = Callable[[Tuple[int, int], SearchProblem], float]
 
 from pacman.agent.heuristic_function.heuristic_euclidean import euclideanHeuristic
 from pacman.agent.heuristic_function.heuristic_null import nullHeuristic
 from pacman.agent.heuristic_function.heuristic_food import foodHeuristic
 from pacman.agent.heuristic_function.heuristic_manhattan import manhattanHeuristic
+from pacman.game.common import TYPE_HEURISTIC_FUNCTION
 
 LIST_HEURISTIC_FUNCTION = [
     manhattanHeuristic,

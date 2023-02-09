@@ -35,7 +35,7 @@
 #
 # ### q7/q8
 # ### =====
-# ## Average wins of a pacman agent
+# ## Average wins of a pacman player
 #
 # class EvalAgentTest(TestCase):
 #
@@ -54,15 +54,15 @@
 #         self.maxPoints = sum([len(t) for t in [self.scoreThresholds, self.nonTimeoutThresholds, self.winsThresholds]])
 #
 #     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
-#         self.addMessage('Grading agent using command:  python pacman.py %s' % (self.pacmanParams,))
+#         self.addMessage('Grading player using command:  python pacman.py %s' % (self.pacmanParams,))
 #
 #         startTime = time.time()
 #         games = pacman.runGames(**pacman.readCommand(self.pacmanParams.split(' ')))
 #         totalTime = time.time() - startTime
 #         numGames = len(games)
 #
-#         stats = {'time': totalTime, 'wins': [g.state.isWin() for g in games].count(True),
-#                  'games': games, 'scores': [g.state.getScore() for g in games],
+#         stats = {'time': totalTime, 'wins': [g.state_pacman.isWin() for g in games].count(True),
+#                  'games': games, 'scores': [g.state_pacman.getScore() for g in games],
 #                  'timeouts': [g.agentTimeout for g in games].count(True),
 #                  'crashes': [g.agentCrashed for g in games].count(True)}
 #

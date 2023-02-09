@@ -31,25 +31,25 @@ from pacman.agent import Agent
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
 from pacman.agent.evaluation_function import get_evaluation_function
-from pacman.agent.evaluation_function.evaluation_function_game_state_score import (
-    evaluation_function_game_state_score
+from pacman.agent.evaluation_function.evaluation_function_state_score import (
+    evaluation_function_state_score
 )
 from pacman.game.directions import Action
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
+    from common.state import State
 
 
-class AgentPacman(Agent, ABC):
+class AgentPacman(Agent):
 
     def __init__(self,
-                 index: int = 0,
                  evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
-                         evaluation_function_game_state_score
+                         evaluation_function_state_score
                  ),
-                 depth='2'
+                 depth='2',
+                 **kwargs
                  ):
-        super().__init__(index)
+        super(AgentPacman, self).__init__(**kwargs)
 
         self.depth = int(depth)
 
@@ -61,20 +61,20 @@ class AgentPacman(Agent, ABC):
 
         self.evaluation_function: TYPE_EVALUATION_FUNCTION = evaluation_function
 
-    def getAction(self, game_state: GameState) -> Action:
+    def getAction(self, state: State) -> Action:
         """
         You do not need to change this method, but you're welcome to.
 
         getAction chooses among the best options according to the evaluation function.
 
-        Just like in the previous name_project, getAction takes a GameState and returns
+        Just like in the previous name_project, getAction takes a State and returns
         some Directions.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
         """
         # Collect legal moves and successor states
-        legalMoves = game_state.getLegalActions()
+        legalMoves = state.getLegalActions()
 
         # Choose one of the best actions
-        scores = [self.evaluation_function(game_state, action) for action in legalMoves]
+        scores = [self.evaluation_function(state, action) for action in legalMoves]
         bestScore = max(scores)
 
         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]

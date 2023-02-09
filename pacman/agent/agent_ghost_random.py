@@ -31,16 +31,16 @@ from common.action import Action
 from pacman.agent.agent_ghost import AgentGhost
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
+    from common.state import State
 
 
 class AgentGhostRandom(AgentGhost) :
     "A ghost that chooses a legal action uniformly at random."
 
-    def getDistribution(self, game_state: GameState) -> Dict[Action: float]:
+    def getDistribution(self, state: State) -> Dict[Action: float]:
         dist = util.Counter()
 
-        for a in game_state.getLegalActions(self.index):
+        for a in state.getLegalActions(self):
             dist[a] = 1.0
         dist.normalize()
 

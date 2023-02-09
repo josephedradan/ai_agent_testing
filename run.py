@@ -7,13 +7,13 @@ Date created: 12/28/2022
 Purpose:
 
 Details:
-start "H:\Programming\Python\projects_github\ai_testing\" cmd.exe /k py -3.8 "./multiagent/agent_pacman_.py"
+start "H:\Programming\Python\projects_github\ai_testing\" cmd.exe /k py -3.8 "./multiagent/pacman.py"
 
 
-start "H:\Programming\Python\projects_github\ai_testing\multiagent\" cmd.exe /k py -3.8 ".agent_pacman_.py"
+start "H:\Programming\Python\projects_github\ai_testing\multiagent\" cmd.exe /k py -3.8 ".pacman.py"
 
 
-H:\Programming\Python\projects_github\ai_testing\multiagent\agent_pacman_.py
+H:\Programming\Python\projects_github\ai_testing\multiagent\pacman.py
 Description:
 
 Notes:
@@ -34,7 +34,7 @@ LIST_PATH_RELATIVE_ASSIGNMENT = [
     "multiagent/"
 ]
 
-# COMMAND_RUN = "start \"{}\" cmd.exe /k py -3.8 agent_pacman_.py"  # ONLY WORKS ON WINDOWS
+# COMMAND_RUN = "start \"{}\" cmd.exe /k py -3.8 pacman.py"  # ONLY WORKS ON WINDOWS
 
 LiST_ARG = [
     # "-p AgentPacmanGreedy",
@@ -45,8 +45,8 @@ LiST_ARG = [
 
 ]
 # NOTES: /k will keep the shell when done.  /c will kill the shell when done
-# COMMAND_RUN = "start cmd.exe /k py -3.8 agent_pacman_.py {} "  # ONLY WORKS ON WINDOWS
-COMMAND_RUN = "start cmd.exe /c py -3.8 agent_pacman_.py {} "  # ONLY WORKS ON WINDOWS
+# COMMAND_RUN = "start cmd.exe /k py -3.8 pacman.py {} "  # ONLY WORKS ON WINDOWS
+COMMAND_RUN = "start cmd.exe /c py -3.8 pacman.py {} "  # ONLY WORKS ON WINDOWS
 
 def main():
     cwd = os.getcwd()

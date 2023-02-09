@@ -1,6 +1,6 @@
 class: "EvalAgentTest"
 
-agentName: "AgentPacmanReflex"
+str_list_agent_pacman: "AgentPacmanReflex"
 layoutName: "openClassic"
 maxTime: "120"
 numGames: "10"
@@ -15,4 +15,4 @@ winsThresholds: "5 10"
 
 
 randomSeed: "0"
-ghosts: "[AgentGhostRandom(1)]"
+str_list_agent_ghost: "AgentGhostRandom"

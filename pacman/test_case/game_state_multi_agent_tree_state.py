@@ -31,7 +31,7 @@ from typing import Set
 from typing import TYPE_CHECKING
 from typing import Tuple
 
-from common.game_state import GameState
+from common.state import State
 from pacman.agent import *
 from pacman.test_case.test_case import TestCase
 
@@ -42,7 +42,7 @@ if TYPE_CHECKING:
 VERBOSE = False
 
 
-class MultiAgentTreeState(GameState):
+class MultiAgentTreeState(State):
     def __init__(self, problem, state):
         self.problem = problem
         self.state = state
@@ -63,15 +63,15 @@ class MultiAgentTreeState(GameState):
                   (self.state, self.problem.dict_evaluation_k_state_v_value[self.state]))
         if self.state not in self.problem.dict_evaluation_k_state_v_value:
             raise Exception(
-                'getScore() called on non-terminal game_state or before maximum depth achieved.')
+                'getScore() called on non-terminal state_pacman or before maximum depth achieved.')
         return float(self.problem.dict_evaluation_k_state_v_value[self.state])
 
     def getLegalActions(self, agentIndex=0):
         if VERBOSE:
             print("getLegalActions(%s) -> %s" %
                   (self.state, self.problem.stateToActions[self.state]))
-        # if len(self.problem_multi_agent_tree.stateToActions[self.game_state]) == 0:
-        #    print "WARNING: getLegalActions called on leaf game_state %s" % (self.game_state,)
+        # if len(self.problem_multi_agent_tree.stateToActions[self.state_pacman]) == 0:
+        #    print "WARNING: getLegalActions called on leaf state_pacman %s" % (self.state_pacman,)
         return list(self.problem.stateToActions[self.state])
 
     def isWin(self):

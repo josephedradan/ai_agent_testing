@@ -28,13 +28,17 @@ from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
 
-from common.game_state_pacman import GameStatePacman
+from common.state_pacman import StatePacman
+from pacman.agent import Agent
+from pacman.agent import AgentPacman
 from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search_problem import get_subclass_search_problem
 
-from common.game_state import GameState
-from pacman.game.layout import Layout
+from common.state import State
+from pacman.game.layoutpacman import LayoutPacman
 from pacman.agent.search.search import astar
+from pacman.game.player import Player
+from pacman.game.type_player import TypePlayer
 from pacman.test_case.common import checkSolution
 from pacman.test_case.test_case import TestCase
 
@@ -46,7 +50,7 @@ class HeuristicGrade(TestCase):
 
     def __init__(self, question, testDict):
         super(HeuristicGrade, self).__init__(question, testDict)
-        self.layoutText = testDict['str_path_layout']
+        self.layoutText = testDict['layout']
         self.layoutName = testDict['layoutName']
         self.searchProblemClassName = testDict['searchProblemClass']
         self.heuristicName = testDict['heuristic']
@@ -54,9 +58,18 @@ class HeuristicGrade(TestCase):
         self.thresholds = [int(t) for t in testDict['gradingThresholds'].split()]
 
     def _setupProblem(self):
-        lay = Layout([l.strip() for l in self.layoutText.split('\n')])
-        gameState = GameStatePacman()
-        gameState.initialize(lay, 0)
+
+        agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+
+        list_player = [Player(agent, TypePlayer.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+
+        #####
+
+        lay = LayoutPacman([l.strip() for l in self.layoutText.split('\n')])
+
+        gameState = StatePacman()
+        gameState.initialize(lay, list_player)
+
         # problemClass = getattr(searchAgents, self.searchProblemClassName)
         problemClass = get_subclass_search_problem(self.searchProblemClassName)
 

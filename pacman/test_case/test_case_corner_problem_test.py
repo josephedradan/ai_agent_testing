@@ -29,12 +29,15 @@ from typing import Dict
 from typing import TYPE_CHECKING
 from typing import Union
 
-from common.game_state_pacman import GameStatePacman
+from common.state_pacman import StatePacman
+from pacman.agent import Agent
+from pacman.agent import AgentPacman
 from pacman.agent.search.search import bfs
 from pacman.agent.search_problem import CornersProblem
 from pacman.game.actions import Actions
-from common.game_state import GameState
-from pacman.game.layout import Layout
+from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.player import Player
+from pacman.game.type_player import TypePlayer
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -59,21 +62,30 @@ class CornerProblemTest(TestCase):
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(CornerProblemTest, self).__init__(question, dict_file_test)
 
-        self.str_layout: Union[str, None] = dict_file_test.get('str_path_layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('layout')
 
         self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
 
     def solution(self):
-        lay = Layout([l.strip() for l in self.str_layout.split('\n')])
-        gameState = GameStatePacman()
-        gameState.initialize(lay, 0)
-        problem = CornersProblem(gameState)
+        lay = LayoutPacman([l.strip() for l in self.str_layout.split('\n')])
+
+        agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+
+        list_player = [Player(agent, TypePlayer.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+
+        ################
+
+        state_pacman = StatePacman()
+        state_pacman.initialize(lay, list_player)
+
+        problem = CornersProblem(agent, state_pacman)
         path = bfs(problem)
 
-        gameState = GameStatePacman()
-        gameState.initialize(lay, 0)
-        visited = getStatesFromPath(gameState.getPacmanPosition(), path)
-        top, right = gameState.getWalls().height - 2, gameState.getWalls().width - 2
+        state_pacman = StatePacman()
+        state_pacman.initialize(lay, list_player)
+        print("---- FUCK SOLUTION",list_player, state_pacman.get_dict_k_player_v_container_state())
+        visited = getStatesFromPath(state_pacman.getPacmanPosition(), path)
+        top, right = state_pacman.getWalls().height - 2, state_pacman.getWalls().width - 2
         missedCorners = [p for p in ((1, 1), (1, top), (right, 1), (right, top)) if p not in visited]
 
         return path, missedCorners

@@ -145,6 +145,6 @@ def parseHeuristic(heuristicText):  # FIXME: MOVE ME TO heuristic_function
             pp = pprint.PrettyPrinter(indent=4)
             print("Heuristic:")
             pp.pprint(heuristic)
-            raise Exception("Graph heuristic called with invalid state: " + str(state))
+            raise Exception("Graph heuristic called with invalid state_pacman: " + str(state))
 
     return graphHeuristic

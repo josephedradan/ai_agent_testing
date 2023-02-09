@@ -12,7 +12,7 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-# def evaluation_function_food_and_ghost(successorGameState: GameState,
+# def evaluation_function_food_and_ghost(successorGameState: State,
 #                                        function_get_distance: callable = util.manhattanDistance):
 #     """
 #     Evaluation function used for str_question 1
@@ -42,15 +42,15 @@
 #
 #     list_position_food: List[Tuple[int, int]] = grid_food.asList()
 #
-#     agent_state_pacman: StateAgent = successorGameState.getPacmanState()
+#     agent_state_pacman: ContainerState = successorGameState.getPacmanState()
 #
 #     score_new: float = successorGameState.getScore()
 #
-#     list_agent_state_ghost: List[StateAgent] = successorGameState.getGhostStates()
+#     list_agent_state_ghost: List[ContainerState] = successorGameState.getGhostStates()
 #
-#     list_agent_state_ghost_active: List[StateAgent] = []
+#     list_agent_state_ghost_active: List[ContainerState] = []
 #
-#     list_agent_state_ghost_scared: List[StateAgent] = []
+#     list_agent_state_ghost_scared: List[ContainerState] = []
 #
 #     for agent_state_ghost in list_agent_state_ghost:
 #         if agent_state_ghost.scaredTimer > 0:
@@ -164,28 +164,28 @@
 #
 # class AgentPacmanReflex(Agent):
 #     """
-#     A reflex agent chooses an action at each choice point by examining
-#     its alternatives via a game_state evaluation function.
+#     A reflex player chooses an action at each choice point by examining
+#     its alternatives via a state_pacman evaluation function.
 #
 #     The code below is provided as a guide.  You are welcome to change
 #     it in any way you see fit, so long as you don't touch our method
 #     headers.
 #     """
 #
-#     def getAction(self, game_state: GameState) -> string_given:
+#     def getAction(self, state_pacman: State) -> string_given:
 #         """
 #         You do not need to change this method, but you're welcome to.
 #
 #         getAction chooses among the best options according to the evaluation function.
 #
-#         Just like in the previous name_project, getAction takes a GameState and returns
+#         Just like in the previous name_project, getAction takes a State and returns
 #         some Directions.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
 #         """
 #         # Collect legal moves and successor states
-#         legalMoves = game_state.getLegalActions()
+#         legalMoves = state_pacman.getLegalActions()
 #
 #         # Choose one of the best actions
-#         scores = [self.evaluationFunction(game_state, action) for action in legalMoves]
+#         scores = [self.evaluationFunction(state_pacman, action) for action in legalMoves]
 #         bestScore = max(scores)
 #         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
 #         chosenIndex = random.choice(bestIndices)  # Pick randomly among the best
@@ -206,14 +206,14 @@
 #
 #         return legalMoves[chosenIndex]
 #
-#     def evaluationFunction(self, game_state_current: GameState, action) -> float:
+#     def evaluationFunction(self, state_current: State, action) -> float:
 #         """
 #         Design a better evaluation function here.
 #
 #         The evaluation function takes in the current and proposed successor
-#         GameStates (agent_pacman_.py) and returns a number, where higher numbers are better.
+#         GameStates (pacman.py) and returns a number, where higher numbers are better.
 #
-#         The code below extracts some useful information from the game_state, like the
+#         The code below extracts some useful information from the state_pacman, like the
 #         remaining food (newFood) and Pacman position after moving (newPos).
 #         newScaredTimes holds the number of moves that each ghost will remain
 #         scared because of Pacman having eaten a power pellet.
@@ -221,12 +221,12 @@
 #         Print out these variables to see what you're getting, then combine them
 #         to create a masterful evaluation function.
 #         """
-#         # Useful information you can extract from a GameState (agent_pacman_.py)
-#         successorGameState: GameState = game_state_current.generatePacmanSuccessor(action)
+#         # Useful information you can extract from a State (pacman.py)
+#         successorGameState: State = state_current.generatePacmanSuccessor(action)
 #         newPos: Tuple[int, int] = successorGameState.getPacmanPosition()
 #         newFood: GridPacman = successorGameState.getFood()
-#         newGhostStates: List[StateAgent] = successorGameState.getGhostStates()
-#         newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
+#         newGhostStates: List[ContainerState] = successorGameState.getGhostStates()
+#         newScaredTimes: List[float] = [container_state.scaredTimer for container_state in newGhostStates]
 #
 #         "*** YOUR CODE HERE ***"
 #         """
@@ -235,9 +235,9 @@
 #
 #         Run:
 #             Testing:
-#                 python agent_pacman_.py -f -p AgentPacmanReflex -l testClassic
-#                 python36 agent_pacman_.py -f -p AgentPacmanReflex -l testClassic
-#                 py -3.6 agent_pacman_.py -f -p AgentPacmanReflex -l testClassic  # Use this one
+#                 python pacman.py -f -ap AgentPacmanReflex -l testClassic
+#                 python36 pacman.py -f -ap AgentPacmanReflex -l testClassic
+#                 py -3.6 pacman.py -f -ap AgentPacmanReflex -l testClassic  # Use this one
 #
 #             Actual:
 #                 python autograder.py -q q1 --no-graphics
@@ -245,7 +245,7 @@
 #                 py -3.6 autograder.py -q q1
 #         """
 #
-#         # print("game_state_current", type(game_state_current), game_state_current)
+#         # print("state_current", type(state_current), state_current)
 #         # print("action", type(action), action)
 #         #
 #         # print("successorGameState", type(successorGameState), successorGameState)
@@ -262,7 +262,7 @@
 #         # print("#" * 100)
 #
 #         ####################
-#         agent_pacman_: StateAgent = successorGameState.getPacmanState()
+#         pacman: ContainerState = successorGameState.getPacmanState()
 #
 #         score_new: float = successorGameState.getScore()
 #
@@ -271,7 +271,7 @@
 #
 #         # """
 #         # V1
-#         #     Involve the influence of closest food position and closest ghost position onto agent_pacman_'s score
+#         #     Involve the influence of closest food position and closest ghost position onto pacman's score
 #         #
 #         # IMPORTANT NOTES:
 #         #     VALUE PACMAN'S LIFE (AVOID GHOSTS) OVER FOOD
@@ -310,7 +310,7 @@
 #         #
 #         # # Handle ghost positions
 #         # for position_ghost in successorGameState.getGhostPositions():
-#         #     distance_pacman_to_ghost = util.manhattanDistance(agent_pacman_.getPosition(), position_ghost)
+#         #     distance_pacman_to_ghost = util.manhattanDistance(pacman.getPosition(), position_ghost)
 #         #
 #         #     # The further away ghosts are, add to score_new
 #         #     # score_new += distance_pacman_to_ghost
@@ -337,7 +337,7 @@
 #         #
 #         # # Handle food positions
 #         # for position_food in newFood.asList():
-#         #     distance_pacman_to_food = util.manhattanDistance(agent_pacman_.getPosition(), position_food)
+#         #     distance_pacman_to_food = util.manhattanDistance(pacman.getPosition(), position_food)
 #         #
 #         #     # The closer the food is, add to score_new
 #         #     # score_new += (1 / distance_pacman_to_food)
@@ -396,7 +396,7 @@
 #                 Scores:        1429.0, 1190.0, 1245.0, 1237.0, 1423.0, 1254.0, 1235.0, 1229.0, 1411.0, 1433.0
 #                 Win Rate:      10/10 (1.00)
 #                 Record:        Win, Win, Win, Win, Win, Win, Win, Win, Win, Win
-#                 *** PASS: test_cases\q1\grade-agent.test (4 of 4 points)
+#                 *** PASS: test_cases\q1\grade-player.test (4 of 4 points)
 #                 ***     1308.6 average score (2 of 2 points)
 #                 ***         Grading scheme:
 #                 ***          < 500:  0 points
@@ -433,7 +433,7 @@
 
 def scoreEvaluationFunction(currentGameState):
     """
-    This default evaluation function just returns the score of the game_state.
+    This default evaluation function just returns the score of the state_pacman.
     The score is the same one displayed in the Pacman GUI.
 
     This evaluation function is meant for use with adversarial search agents

@@ -331,7 +331,7 @@ def generic_search_algorithm_base(problem: SearchProblem,
 
     :param problem: ( ͡° ͜ʖ ͡°)
     :param data_structure_from_util: a data structure
-    :param args_for_data_structure_from_util: args for initializing data_structure_from_util
+    :param args_for_data_structure_from_util: kwargs for initializing data_structure_from_util
     :return:
     """
     # ----- Utility Setup -----

@@ -29,7 +29,7 @@ from pacman.agent.search_problem import SearchProblem
 
 class GraphSearch(SearchProblem):
 
-    # Read in the state graph; define start/end states, edges and costs
+    # Read in the state_pacman graph; define start/end states, edges and costs
     def __init__(self, graph_text):
         self.expanded_states = []
         lines = graph_text.split('\n')
@@ -70,15 +70,15 @@ class GraphSearch(SearchProblem):
             if s not in self.successors:
                 self.successors[s] = []
 
-    # Get start state
+    # Get start state_pacman
     def getStartState(self):
         return self.start_state
 
-    # Check if a state is a goal state
+    # Check if a state_pacman is a goal state_pacman
     def isGoalState(self, state):
         return state in self.goals
 
-    # Get all successors of a state
+    # Get all successors of a state_pacman
     def getSuccessors(self, state):
         self.expanded_states.append(state)
         return list(self.successors[state])

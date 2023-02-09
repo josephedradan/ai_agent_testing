@@ -21,6 +21,9 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+
 # FIXME: GENERALIZE position TO BE MULTI DIMENSIONAL
 from typing import TYPE_CHECKING
 from typing import Tuple

@@ -20,16 +20,16 @@ from typing import Union
 from pacman.agent.agent import Agent
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
-from common.graphics.display import Display
-from common.graphics.display_tkinter import DisplayTkinter
+from common.graphics.gui import GUI
+from common.graphics.gui_tkinter import GUITkinter
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
+    from common.state import State
 
 
 class AgentKeyboard(Agent):
     """
-    An agent controlled by the keyboard.
+    An player controlled by the keyboard.
     """
     # NOTE: Arrow keys also work.
     WEST_KEY = 'a'
@@ -38,8 +38,8 @@ class AgentKeyboard(Agent):
     SOUTH_KEY = 's'
     STOP_KEY = 'q'
 
-    def __init__(self, index=0):
-        super().__init__(index)
+    def __init__(self, **kwargs):
+        super(AgentKeyboard, self).__init__(**kwargs)
 
         self.lastMove = Directions.STOP
         self.keys = []
@@ -47,13 +47,11 @@ class AgentKeyboard(Agent):
         ###
         # TODO JOSEPH SPEICAL
 
-        self.display: Union[DisplayTkinter, None] = None
-
     # FIXME: GHETTO SOLUTIOn
-    def set_display(self, display: Display):
-        self.display = display
+    def set_gui(self, gui: GUI):
+        self.gui = gui
 
-    def getAction(self, game_state: GameState) -> Action:
+    def getAction(self, state: State) -> Action:
         # from graphicsUtils import get_keys_waiting
         # from graphicsUtils import get_keys_pressed
         #
@@ -61,12 +59,12 @@ class AgentKeyboard(Agent):
         # print(f"getAction {graphicsUtils._root_window=}")
 
         # TODO: THIS IS CRASHABLE JOSEPH
-        keys = self.display.get_keys_waiting() + self.display.get_keys_pressed()
+        keys = self.gui.get_keys_waiting() + self.gui.get_keys_pressed()
 
         if keys != []:
             self.keys = keys
 
-        legal = game_state.getLegalActions(self.index)
+        legal = state.getLegalActions(self)
         move = self.getMove(legal)
 
         if move == Directions.STOP:
@@ -98,7 +96,7 @@ class AgentKeyboard(Agent):
 
 class AgentKeyboard2(AgentKeyboard):
     """
-    A second agent controlled by the keyboard.
+    A second player controlled by the keyboard.
     """
     # NOTE: Arrow keys also work.
     WEST_KEY = 'j'

@@ -29,7 +29,8 @@ from typing import Tuple
 from typing import Type
 from typing import Union
 
-print("OS PATH APPENDED",os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "FROM",__file__)  # FIXME: GHETTO SOLUTION TO MISSING MODULE
+print("OS PATH APPENDED", os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "FROM",
+      __file__)  # FIXME: GHETTO SOLUTION TO MISSING MODULE
 # from pprint import pprint
 # pprint(sys.path)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -37,13 +38,14 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from pacman.test_case import TestCase
 from pacman.test_case import get_subclass_test_case
 from common.grader import Grader
-from pacman.graphics.graphics_pacman import GraphicsPacman
+from common.graphics.graphics import Graphics
 from pacman.parser import ParseFile
 from pacman.types_ import TYPE_CALLABLE_THAT_NEEDS_GRADER
 
 import projectParams
 from pacman.question.question import Question
 from pacman.question import get_subclass_question
+from pacman.graphics import graphics_pacman_null
 
 if TYPE_CHECKING:
     pass
@@ -52,7 +54,7 @@ random.seed(0)
 
 
 # try:
-#     from agent_pacman_ import GameState
+#     from pacman import State
 # except:
 #     pass
 
@@ -104,7 +106,7 @@ def arg_parser_autograder(argv: Union[Sequence[str], None] = None) -> argparse.N
                         dest='bool_print_test_case',
                         action='store_true',
                         help='Print each test case before running them.')
-    parser.add_argument('--test', '-t',  # -t "test_cases/q1/grade-agent"
+    parser.add_argument('--test', '-t',  # -t "test_cases/q1/grade-player"
                         dest='path_file_test',
                         default=None,
                         help='Run one particular test. Relative to test root.')
@@ -195,9 +197,9 @@ DICT_K_STR_QUESTION_V_STR_ERROR_HINT = {
         "<type 'exceptions.IndexError'>": """
       We noticed that your name_project threw an IndexError on q1.
       While many things may cause this, it may have been from
-      assuming a certain number of successors from a game_state space
+      assuming a certain number of successors from a state_pacman space
       or assuming a certain number of actions available from a given
-      game_state. Try making your code more general (no hardcoded indices)
+      state_pacman. Try making your code more general (no hardcoded indices)
       and submit again!
     """
     },
@@ -205,9 +207,9 @@ DICT_K_STR_QUESTION_V_STR_ERROR_HINT = {
         "<type 'exceptions.AttributeError'>": """
         We noticed that your name_project threw an AttributeError on q3.
         While many things may cause this, it may have been from assuming
-        a certain size or structure to the game_state space. For example, if you have
-        a line of code assuming that the game_state is (x, y) and we run your code
-        on a game_state space with (x, y, z), this error could be thrown. Try
+        a certain size or structure to the state_pacman space. For example, if you have
+        a line of code assuming that the state_pacman is (x, y) and we run your code
+        on a state_pacman space with (x, y, z), this error could be thrown. Try
         making your code more general and submit again!
 
     """
@@ -242,7 +244,7 @@ def print_test(dict_file_test: Dict, dict_file_solution: Dict):
 
 def run_path_test(path_file_test: str,
                   bool_print_test_cases: bool = False,
-                  graphics_pacman: GraphicsPacman = None
+                  graphics_pacman: Graphics = None
                   ):
     dict_file_test = ParseFile(path_file_test + ".test").get_dict()
     dict_file_solution = ParseFile(path_file_test + ".solution").get_dict()
@@ -255,7 +257,7 @@ def run_path_test(path_file_test: str,
     dict_question_config, question_object = get_question_stuff(path_directory_of_path_test, graphics_pacman)
 
     # class_question = get_class_question_subclass("Question")
-    # str_question = class_question({'max_points': 0}, graphics_pacman)
+    # str_question = class_question({'max_points': 0}, graphics)
     # test_case_object = class_test_case(str_question, dict_file_test)
 
     test_case_object = class_test_case(question_object, dict_file_test)
@@ -361,6 +363,7 @@ def evaluate(bool_generate_solutions: bool,
     # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
     list_str_question_to_grade = get_list_str_question(path_abs_test_cases, str_question_to_grade)
     print("FSDFSDF", list_str_question_to_grade)
+
     for str_question in list_str_question_to_grade:
         path_question = os.path.join(path_abs_test_cases, str_question)
         if not os.path.isdir(path_question) or str_question[0] == '.':
@@ -385,7 +388,7 @@ def evaluate(bool_generate_solutions: bool,
             # TODO: THIS IS  THE ANSWERS FILE 'test_cases\\q2\\8-pacman-game.solution'
             path_test_solution = os.path.join(path_question, '%s.solution' % test_no_ext)
 
-            # TODO: 'test_cases\\q1\\grade-agent.test_output'  # NOT USED?
+            # TODO: 'test_cases\\q1\\grade-player.test_output'  # NOT USED?
             path_test_output = os.path.join(path_question, '%s.test_output' % test_no_ext)
             ''
             # TODO: A DICT
@@ -492,7 +495,7 @@ def evaluate(bool_generate_solutions: bool,
     return grader.points
 
 
-def get_graphics_pacman(graphicsByDefault: Union[bool, None], options=None) -> GraphicsPacman:
+def get_graphics_pacman(graphicsByDefault: Union[bool, None], options=None) -> Graphics:
     # from multiagent.graphics import graphicsDisplay
     # return graphicsDisplay.GraphicsPacmanDisplay(1, frameTime=.05)
 
@@ -501,18 +504,17 @@ def get_graphics_pacman(graphicsByDefault: Union[bool, None], options=None) -> G
         graphics = False
     if graphics:
         try:
-            from pacman.graphics import graphics_pacman_display
-            return graphics_pacman_display.GraphicsPacmanDisplay(
+            from pacman.graphics import graphics_pacman_gui
+            return graphics_pacman_gui.GraphicsPacmanGUI(
                 time_frame=0.05
             )
         except ImportError:
             pass
 
-    from pacman.graphics import graphics_pacman_null
     return graphics_pacman_null.GraphicsPacmanNull()
 
 
-def get_question_stuff(path_question: str, display: GraphicsPacman) -> Tuple[Dict[str, Any], Question]:
+def get_question_stuff(path_question: str, display: Graphics) -> Tuple[Dict[str, Any], Question]:
     dict_question_config: Dict[str, Any] = ParseFile(os.path.join(path_question, 'CONFIG')).get_dict()
 
     class_question_subclass: Type[Question] = get_subclass_question(dict_question_config['class'])

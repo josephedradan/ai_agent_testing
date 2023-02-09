@@ -34,14 +34,14 @@ from typing import TYPE_CHECKING
 
 from pacman.agent import *
 from pacman.agent._agent_grading import GradingAgent
-from pacman.game import layout
-from pacman.game.layout import Layout
-from pacman.graphics.graphics_pacman import GraphicsPacman
+from pacman.game import layoutpacman
+from pacman.game.layoutpacman import LayoutPacman
+from common.graphics.graphics import Graphics
 from pacman.main import run_pacman_games
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
+    from common.state import State
     from pacman.question.question import Question
     from common.grader import Grader
 
@@ -49,7 +49,7 @@ if TYPE_CHECKING:
 # FIXME: THIS HAPPENS TO BE NOT USED
 class PolyAgent(Agent):
     def __init__(self, seed, ourPacOptions, depth):
-        # prepare our agent_pacman_ agents
+        # prepare our pacman agents
         solutionAgents, alternativeDepthAgents, partialPlyBugAgents = self.construct_our_pacs(
             # multiAgents,
             ourPacOptions
@@ -108,24 +108,24 @@ class PolyAgent(Agent):
 
         return (ourpac, alternative_depth_pacs, partial_ply_bug_pacs)
 
-    def registerInitialState(self, game_state: GameState):
+    def registerInitialState(self, state: State):
 
         for agent in self.solutionAgents + self.alternativeDepthAgents:
             if 'registerInitialState' in dir(agent):
-                agent.registerInitialState(game_state)
+                agent.registerInitialState(state)
         random.seed(self.seed)
 
-    def getAction(self, game_state):
+    def getAction(self, state):
         # survey agents
-        GameState.getAndResetExplored()
+        State.getAndResetExplored()
         optimalActionLists = []
         for agent in self.solutionAgents:
             optimalActionLists.append((agent.getBestPacmanActions(
-                game_state)[0], len(GameState.getAndResetExplored())))
+                state)[0], len(State.getAndResetExplored())))
         alternativeDepthLists = [agent.getBestPacmanActions(
-            game_state)[0] for agent in self.alternativeDepthAgents]
+            state)[0] for agent in self.alternativeDepthAgents]
         partialPlyBugLists = [agent.getBestPacmanActions(
-            game_state)[0] for agent in self.partialPlyBugAgents]
+            state)[0] for agent in self.partialPlyBugAgents]
         # bool_record responses
         self.optimalActionLists.append(optimalActionLists)
         self.alternativeDepthLists.append(alternativeDepthLists)
@@ -139,11 +139,11 @@ class PolyAgent(Agent):
         return (self.optimalActionLists, self.alternativeDepthLists, self.partialPlyBugLists)
 
 
-def _run(layout_: Layout,
+def _run(layout_: LayoutPacman,
          layout_name: str,
-         agent_pacman_: Agent,
+         pacman: Agent,
          list_agent_ghost: List[Agent],
-         graphics_pacman: GraphicsPacman,
+         graphics_pacman: Graphics,
          number_of_games: int = 1,
          name: str = 'games'
          ) -> Dict[str, Any]:
@@ -155,7 +155,7 @@ def _run(layout_: Layout,
 
     list_game = run_pacman_games(
         layout_,
-        agent_pacman_,
+        pacman,
         list_agent_ghost,
         graphics_pacman,
         number_of_games,
@@ -166,9 +166,9 @@ def _run(layout_: Layout,
     print('*** Finished running {} on {} after {} seconds.'.format(name, layout_name, time.time() - time_start))
 
     dict_stats = {
-        'time': time.time() - time_start, 'wins': [g.game_state.isWin() for g in list_game].count(True),
+        'time': time.time() - time_start, 'wins': [g.state_pacman.isWin() for g in list_game].count(True),
         'list_game': list_game,
-        'scores': [g.game_state.getScore() for g in list_game],
+        'scores': [g.state_pacman.getScore() for g in list_game],
         'timeouts': [g.agentTimeout for g in list_game].count(True),
         'crashes': [g.agentCrashed for g in list_game].count(True)
     }
@@ -187,7 +187,7 @@ class PacmanGameTreeTest(TestCase):
 
         self.seed: int = int(self.dict_file_test['seed'])
         self.class_agent: Type[Agent] = self.dict_file_test['agent']
-        self.layout_text: str = self.dict_file_test['str_path_layout']
+        self.layout_text: str = self.dict_file_test['layout']
         self.layout_name: str = self.dict_file_test['layoutName']
         self.depth: int = int(self.dict_file_test['depth'])
         self.max_points: int = int(self.dict_file_test['max_points'])
@@ -212,10 +212,10 @@ class PacmanGameTreeTest(TestCase):
         #     [json.loads(x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
         # )
 
-        # set up game game_state and play a game
+        # set up game state_pacman and play a game
         random.seed(self.seed)
 
-        lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
+        lay = layoutpacman.LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
 
         agent_grading = GradingAgent.from_dict(
             self.seed,
@@ -266,11 +266,11 @@ class PacmanGameTreeTest(TestCase):
             return self._procedure_test_fail(grader)
 
         elif value_failure > 0:
-            moves = agent_grading.get_list_tuple__game_state__action_wrong__action_correct()
-            game_state, action_wrong, action_correct = random.choice(moves)
+            moves = agent_grading.get_list_tuple__state__action_wrong__action_correct()
+            state, action_wrong, action_correct = random.choice(moves)
 
             self.add_message_to_messages('Bug: Suboptimal moves')
-            self.add_message_to_messages('State:{}\nStudent Move:{}\nOptimal Move:{}'.format(game_state,
+            self.add_message_to_messages('State:{}\nStudent Move:{}\nOptimal Move:{}'.format(state,
                                                                                              action_wrong,
                                                                                              action_correct))
             return self._procedure_test_fail(grader)
@@ -291,7 +291,7 @@ class PacmanGameTreeTest(TestCase):
         # multiAgents = moduleDict['projectTestClasses']
 
         random.seed(self.seed)
-        lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
+        lay = layoutpacman.LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
         if self.class_agent == 'AgentPacmanExpectimax':
             ourPacOptions = {'expectimax': 'True'}
         elif self.class_agent == 'AgentPacmanMinimaxAlphaBeta':

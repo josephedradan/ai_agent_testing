@@ -26,13 +26,13 @@ from typing import Callable
 from typing import Union
 
 from pacman.agent import AgentPacman
-from pacman.agent.evaluation_function.evaluation_function_game_state_score import evaluation_function_game_state_score
+from pacman.agent.evaluation_function.evaluation_function_state_score import evaluation_function_state_score
 
 
 class AgentPacmanMultiAgentSearch(AgentPacman, ABC):
     """
     This class provides some common elements to all of your
-    multi-agent searchers.  Any methods defined here will be available
+    multi-player searchers.  Any methods defined here will be available
     to the MinimaxPacmanAgent, AlphaBetaPacmanAgent & ExpectimaxPacmanAgent.
 
     You *do not* need to make any changes here, but you can if you want to
@@ -45,10 +45,11 @@ class AgentPacmanMultiAgentSearch(AgentPacman, ABC):
     """
 
     # evaluation_function='scoreEvaluationFunction'
-    def __init__(self, index: int = 0,
-                 evaluation_function: Union[Callable, None] = evaluation_function_game_state_score,
-                 depth='2'
+    def __init__(self,
+                 evaluation_function: Union[Callable, None] = evaluation_function_state_score,
+                 depth='2',
+                 **kwargs
                  ):
 
-        super().__init__(index, evaluation_function)
+        super().__init__(evaluation_function,**kwargs)
         self.depth = int(depth)

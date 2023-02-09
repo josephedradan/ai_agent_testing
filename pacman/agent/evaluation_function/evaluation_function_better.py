@@ -37,7 +37,7 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
 
 if TYPE_CHECKING:
     from pacman.game.directions import Action
-    from common.game_state import GameState
+    from common.state import State
     from pacman.game.grid_pacman import GridPacman
 
 
@@ -115,7 +115,7 @@ def _get_heuristic_cost_ucs_crude(grid_wall: GridPacman,
     return 0  # Return 0 to imply no path
 
 
-def evaluation_function_better(currentGameState: GameState, action: Action) -> float:
+def evaluation_function_better(currentGameState: State, action: Action) -> float:
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
     evaluation function (str_question 5).
@@ -138,20 +138,20 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
             py -3.6 autograder.py -q q5 --no-graphics  # Use this one
     """
 
-    game_state_successor_pacman: GameState = currentGameState
+    state_successor_pacman: State = currentGameState
 
-    # position_pacman_new: Tuple[int, int] = game_state_successor_pacman.getPacmanPosition()
-    # position_food_new: GridPacman = game_state_successor_pacman.getFood()
+    # position_pacman_new: Tuple[int, int] = state_successor_pacman.getPacmanPosition()
+    # position_food_new: GridPacman = state_successor_pacman.getFood()
     #
-    # list_agent_state_ghost_new: List[StateAgent] = game_state_successor_pacman.getGhostStates()
-    # list_agent_state_ghost_scared_time: List[float] = [ghostState.scaredTimer for ghostState in
+    # list_agent_state_ghost_new: List[ContainerState] = state_successor_pacman.getGhostStates()
+    # list_agent_state_ghost_scared_time: List[float] = [container_state.scaredTimer for container_state in
     #                                                    list_agent_state_ghost_new]
 
-    # print("game_state_current", type(game_state_current), game_state_current)
+    # print("state_current", type(state_current), state_current)
     #
-    # print("game_state_successor_pacman",
-    #       type(game_state_successor_pacman),
-    #       game_state_successor_pacman)
+    # print("state_successor_pacman",
+    #       type(state_successor_pacman),
+    #       state_successor_pacman)
     #
     # print("position_pacman_new (Pacman new position after movement)",
     #       type(position_pacman_new),
@@ -169,13 +169,13 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
     #       type(list_agent_state_ghost_scared_time),
     #       list_agent_state_ghost_scared_time)
     #
-    # print("game_state_successor_pacman.getScore()",
-    #       type(game_state_successor_pacman.getScore()),
-    #       game_state_successor_pacman.getScore())
+    # print("state_successor_pacman.getScore()",
+    #       type(state_successor_pacman.getScore()),
+    #       state_successor_pacman.getScore())
     #
-    # print("game_state_successor_pacman.getPacmanState()",
-    #       type(game_state_successor_pacman.getPacmanState()),
-    #       game_state_successor_pacman.getPacmanState())
+    # print("state_successor_pacman.getPacmanState()",
+    #       type(state_successor_pacman.getPacmanState()),
+    #       state_successor_pacman.getPacmanState())
     #
     # print("#" * 100)
 
@@ -207,7 +207,7 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
     #         Scores:        1162.0, 1330.0, 1343.0, 1253.0, 1137.0, 1173.0, 1159.0, 1158.0, 1344.0, 1367.0
     #         Win Rate:      10/10 (1.00)
     #         Record:        Win, Win, Win, Win, Win, Win, Win, Win, Win, Win
-    #         *** PASS: test_cases\q5\grade-agent.test (6 of 6 points)
+    #         *** PASS: test_cases\q5\grade-player.test (6 of 6 points)
     #         ***     1242.6 average score (2 of 2 points)
     #         ***         Grading scheme:
     #         ***          < 500:  0 points
@@ -237,7 +237,7 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
     #         Total: 6/6
     # """
     #
-    # result = evaluation_function_food_and_ghost(game_state_successor_pacman)
+    # result = evaluation_function_food_and_ghost(state_successor_pacman)
     #
     # return result
 
@@ -269,7 +269,7 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
             Scores:        1367.0, 1365.0, 1368.0, 1167.0, 1171.0, 1356.0, 1361.0, 1141.0, 1366.0, 1164.0
             Win Rate:      10/10 (1.00)
             Record:        Win, Win, Win, Win, Win, Win, Win, Win, Win, Win
-            *** PASS: test_cases\q5\grade-agent.test (6 of 6 points)
+            *** PASS: test_cases\q5\grade-player.test (6 of 6 points)
             ***     1282.6 average score (2 of 2 points)
             ***         Grading scheme:
             ***          < 500:  0 points
@@ -305,12 +305,12 @@ def evaluation_function_better(currentGameState: GameState, action: Action) -> f
             Process finished with exit code 0
 
     """
-    grid_wall: GridPacman = game_state_successor_pacman.getWalls()
+    grid_wall: GridPacman = state_successor_pacman.getWalls()
 
     def evaluation_function_heuristic_cost_ucs_crude(position_1, position_2):
         return _get_heuristic_cost_ucs_crude(grid_wall, position_1, position_2, None)
 
-    result = evaluation_function_food_and_ghost_helper(game_state_successor_pacman,
+    result = evaluation_function_food_and_ghost_helper(state_successor_pacman,
                                                        evaluation_function_heuristic_cost_ucs_crude)
 
     return result

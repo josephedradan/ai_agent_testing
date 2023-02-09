@@ -27,7 +27,7 @@ from abc import abstractmethod
 def formatColor(r, g, b):
     return '#%02x%02x%02x' % (int(r * 255), int(g * 255), int(b * 255))
 
-class Display(ABC):
+class GUI(ABC):
 
     @abstractmethod
     def initialize_graphics(self, width=640, height=480, color=formatColor(0, 0, 0), name=None):

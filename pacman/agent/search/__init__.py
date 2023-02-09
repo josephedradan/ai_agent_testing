@@ -21,21 +21,15 @@ Tags:
 Reference:
 
 """
-from typing import Callable
-from typing import List
+from __future__ import annotations
+
 from typing import Union
-
-from pacman.agent.heuristic_function import TYPE_HEURISTIC_FUNCTION
-from pacman.agent.search_problem import SearchProblem
-from pacman.game.directions import Action
-
-TYPE_SEARCH_FUNCTION = Callable[[SearchProblem, Union[TYPE_HEURISTIC_FUNCTION, None]],
-                                List[Action]]
 
 from pacman.agent.search.search import a_star_search
 from pacman.agent.search.search import breadth_first_search
 from pacman.agent.search.search import depth_first_search
 from pacman.agent.search.search import uniform_cost_search
+from pacman.game.common import TYPE_SEARCH_FUNCTION
 
 LIST_SEARCH_FUNCTION = [
     breadth_first_search,

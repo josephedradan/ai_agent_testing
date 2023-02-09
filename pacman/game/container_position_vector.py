@@ -32,7 +32,7 @@ from pacman.game.directions import Directions
 
 class ContainerPositionVector:
     """
-    A ContainerVector holds the (x,y) coordinate of a character, along with its
+    A ContainerPositionVector holds the (x,y) coordinate of a thingy, along with its
     traveling direction.
 
     The convention for positions, like a graph, is that (0,0) is the lower left corner, x increases

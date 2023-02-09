@@ -15,9 +15,9 @@
 from functools import reduce
 from typing import Union
 
-from common.graphics.display import Display
-from common.graphics.display import formatColor
-from common.graphics.display_tkinter import DisplayTkinter
+from common.graphics.gui import GUI
+from common.graphics.gui import formatColor
+from common.graphics.gui_tkinter import GUITkinter
 from common import util
 
 BACKGROUND_COLOR = formatColor(0, 0, 0)
@@ -39,12 +39,12 @@ class GraphicsGridworldDisplay:
                  gridworld,
                  size=120,
                  speed=1.0,
-                 display: Union[Display, None] = DisplayTkinter(),
+                 gui: Union[GUI, None] = GUITkinter(),
                  ):
 
         print("INIT CALLED")
         # FIXME CHANGE LATER
-        self.display: Union[DisplayTkinter, None] = DisplayTkinter()
+        self.gui: Union[GUITkinter, None] = GUITkinter()
 
         self.gridworld = gridworld
         self.size = size
@@ -56,7 +56,7 @@ class GraphicsGridworldDisplay:
         self.setup( size=self.size)
 
     def pause(self):
-        self.display.get_wait_for_keys()
+        self.gui.get_wait_for_keys()
 
     # TODO: IMPORTANT
     def displayValues(self, agent, currentState=None, message='Agent Values'):
@@ -69,11 +69,11 @@ class GraphicsGridworldDisplay:
             policy[state] = agent.getPolicy(state)
         self.drawValues(values, policy, currentState, message)
         # self.pause()  # TODO: WTF
-        self.display.sleep(0.05 / self.speed)
-        # self.display.sleep(0.1)
+        self.gui.sleep(0.05 / self.speed)
+        # self.gui.sleep(0.1)
 
         # print(0.05 / self.speed)  # speed in 1 so 0.05
-        # self.display.sleep(0.0125)
+        # self.gui.sleep(0.0125)
 
     def displayNullValues(self, currentState=None, message=''):
         values = util.Counter()
@@ -81,10 +81,10 @@ class GraphicsGridworldDisplay:
         states = self.gridworld.getStates()
         for state in states:
             values[state] = 0.0
-            # policy[state] = agent.getPolicy(state)
+            # policy[state_pacman] = player.getPolicy(state_pacman)
         self.drawNullValues(self.gridworld, currentState, '')
         # drawValues(self.gridworld, values, policy, currentState, message)
-        self.display.sleep(0.05 / self.speed)
+        self.gui.sleep(0.05 / self.speed)
 
     def displayQValues(self, agent, currentState=None, message='Agent Q-Values'):
         qValues = util.Counter()
@@ -93,7 +93,7 @@ class GraphicsGridworldDisplay:
             for action in self.gridworld.getPossibleActions(state):
                 qValues[(state, action)] = agent.getQValue(state, action)
         self.drawQValues(qValues, currentState, message)
-        self.display.sleep(0.05 / self.speed)
+        self.gui.sleep(0.05 / self.speed)
 
     def setup(self, title="Gridworld Display", size=120):
         global GRID_SIZE, MARGIN, SCREEN_WIDTH, SCREEN_HEIGHT, GRID_HEIGHT
@@ -107,7 +107,7 @@ class GraphicsGridworldDisplay:
         screen_width = (grid.width - 1) * GRID_SIZE + MARGIN * 2
         screen_height = (grid.height - 0.5) * GRID_SIZE + MARGIN * 2
 
-        self.display.initialize_graphics(
+        self.gui.initialize_graphics(
             screen_width,
             screen_height,
             BACKGROUND_COLOR,
@@ -131,7 +131,7 @@ class GraphicsGridworldDisplay:
                     self.drawNullSquare(x, y, False, isExit, isCurrent)
 
         pos = to_screen(((grid.width - 1.0) / 2.0, - 0.8))
-        self.display.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
+        self.gui.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
 
     # TODO: IMPORTANT SHIT
     def drawValues(self, values, policy, currentState=None, message='State Values'):
@@ -161,7 +161,7 @@ class GraphicsGridworldDisplay:
                     self.drawSquare(x, y, value, minValue, maxValue, valString, action, False, isExit, isCurrent)
 
         pos = to_screen(((grid.width - 1.0) / 2.0, - 0.8))
-        self.display.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
+        self.gui.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
         # self.pause() # TODO: WTF
 
     def drawQValues(self, qValues, currentState=None, message='State-Action Q-Values'):
@@ -202,10 +202,10 @@ class GraphicsGridworldDisplay:
                 else:
                     self.drawSquareQ(x, y, q, minValue, maxValue, valStrings, actions, isCurrent)
         pos = to_screen(((grid.width - 1.0) / 2.0, - 0.8))
-        self.display.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
+        self.gui.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
 
     def blank(self):
-        self.display.clear_screen()
+        self.gui.clear_screen()
 
     def drawNullSquare(self, grid, x, y, isObstacle, isTerminal, isCurrent):
         square_color = getColor(0, -1, 1)
@@ -232,19 +232,19 @@ class GraphicsGridworldDisplay:
                         color=EDGE_COLOR,
                         filled=0,
                         width=2)
-            self.display.draw_text((screen_x, screen_y),
-                                   TEXT_COLOR,
-                                   str(grid[x][y]),
+            self.gui.draw_text((screen_x, screen_y),
+                               TEXT_COLOR,
+                               str(grid[x][y]),
                                    "Courier", -24, "bold", "c")
 
         text_color = TEXT_COLOR
 
         if not isObstacle and isCurrent:
-            self.display.draw_circle((screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR,
-                                     fillColor=LOCATION_COLOR)
+            self.gui.draw_circle((screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR,
+                                 fillColor=LOCATION_COLOR)
 
         # if not isObstacle:
-        #   self.display.draw_text( (screen_x, screen_y), text_color, valStr, "Courier", 24, "bold", "c")
+        #   self.gui.draw_text( (screen_x, screen_y), text_color, valStr, "Courier", 24, "bold", "c")
 
     # TODO: IMPORTANT
     def drawSquare(self, x, y, val, min, max, valStr, action, isObstacle, isTerminal, isCurrent):
@@ -272,19 +272,19 @@ class GraphicsGridworldDisplay:
                         width=2)
 
         if action == 'north':
-            self.display.draw_polygon(
+            self.gui.draw_polygon(
                 [(screen_x, screen_y - 0.45 * GRID_SIZE), (screen_x + 0.05 * GRID_SIZE, screen_y - 0.40 * GRID_SIZE),
                  (screen_x - 0.05 * GRID_SIZE, screen_y - 0.40 * GRID_SIZE)], EDGE_COLOR, filled=1, smoothed=False)
         if action == 'south':
-            self.display.draw_polygon(
+            self.gui.draw_polygon(
                 [(screen_x, screen_y + 0.45 * GRID_SIZE), (screen_x + 0.05 * GRID_SIZE, screen_y + 0.40 * GRID_SIZE),
                  (screen_x - 0.05 * GRID_SIZE, screen_y + 0.40 * GRID_SIZE)], EDGE_COLOR, filled=1, smoothed=False)
         if action == 'west':
-            self.display.draw_polygon(
+            self.gui.draw_polygon(
                 [(screen_x - 0.45 * GRID_SIZE, screen_y), (screen_x - 0.4 * GRID_SIZE, screen_y + 0.05 * GRID_SIZE),
                  (screen_x - 0.4 * GRID_SIZE, screen_y - 0.05 * GRID_SIZE)], EDGE_COLOR, filled=1, smoothed=False)
         if action == 'east':
-            self.display.draw_polygon(
+            self.gui.draw_polygon(
                 [(screen_x + 0.45 * GRID_SIZE, screen_y), (screen_x + 0.4 * GRID_SIZE, screen_y + 0.05 * GRID_SIZE),
                  (screen_x + 0.4 * GRID_SIZE, screen_y - 0.05 * GRID_SIZE)], EDGE_COLOR, filled=1, smoothed=False)
 
@@ -292,7 +292,7 @@ class GraphicsGridworldDisplay:
 
         if not isObstacle and isCurrent:
             print('FUCK YOU', (screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR)
-            x = self.display.draw_circle(
+            x = self.gui.draw_circle(
                 (screen_x, screen_y),
                 0.1 * GRID_SIZE,
                 outlineColor=LOCATION_COLOR,
@@ -301,7 +301,7 @@ class GraphicsGridworldDisplay:
             print(x)
 
         if not isObstacle:
-            self.display.draw_text((screen_x, screen_y), text_color, valStr, "Courier", -30, "bold", "c")
+            self.gui.draw_text((screen_x, screen_y), text_color, valStr, "Courier", -30, "bold", "c")
 
     def drawSquareQ(self, x, y, qVals, minVal, maxVal, valStrs, bestActions, isCurrent):
         (screen_x, screen_y) = to_screen((x, y))
@@ -322,17 +322,17 @@ class GraphicsGridworldDisplay:
             wedge_color = getColor(qVals[action], minVal, maxVal)
 
             if action == 'north':
-                self.display.draw_polygon((center, nw, ne), wedge_color, filled=1, smoothed=False)
-                # self.display.draw_text((n, text_color, valStr, "Courier", 8, "bold", "n")
+                self.gui.draw_polygon((center, nw, ne), wedge_color, filled=1, smoothed=False)
+                # self.gui.draw_text((n, text_color, valStr, "Courier", 8, "bold", "n")
             if action == 'south':
-                self.display.draw_polygon((center, sw, se), wedge_color, filled=1, smoothed=False)
-                # self.display.draw_text((s, text_color, valStr, "Courier", 8, "bold", "s")
+                self.gui.draw_polygon((center, sw, se), wedge_color, filled=1, smoothed=False)
+                # self.gui.draw_text((s, text_color, valStr, "Courier", 8, "bold", "s")
             if action == 'east':
-                self.display.draw_polygon((center, ne, se), wedge_color, filled=1, smoothed=False)
-                # self.display.draw_text((e, text_color, valStr, "Courier", 8, "bold", "e")
+                self.gui.draw_polygon((center, ne, se), wedge_color, filled=1, smoothed=False)
+                # self.gui.draw_text((e, text_color, valStr, "Courier", 8, "bold", "e")
             if action == 'west':
-                self.display.draw_polygon((center, nw, sw), wedge_color, filled=1, smoothed=False)
-                # self.display.draw_text((w, text_color, valStr, "Courier", 8, "bold", "w")
+                self.gui.draw_polygon((center, nw, sw), wedge_color, filled=1, smoothed=False)
+                # self.gui.draw_text((w, text_color, valStr, "Courier", 8, "bold", "w")
 
         self.square(
             (screen_x, screen_y),
@@ -341,11 +341,11 @@ class GraphicsGridworldDisplay:
             filled=0,
             width=3
         )
-        self.display.draw_line(ne, sw, color=EDGE_COLOR)
-        self.display.draw_line(nw, se, color=EDGE_COLOR)
+        self.gui.draw_line(ne, sw, color=EDGE_COLOR)
+        self.gui.draw_line(nw, se, color=EDGE_COLOR)
 
         if isCurrent:
-            self.display.draw_circle((screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR, fillColor=LOCATION_COLOR)
+            self.gui.draw_circle((screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR, fillColor=LOCATION_COLOR)
 
         for action in actions:
             text_color = TEXT_COLOR
@@ -355,17 +355,17 @@ class GraphicsGridworldDisplay:
                 valStr = valStrs[action]
             h = -20
             if action == 'north':
-                # self.display.draw_polygon( (center, nw, ne), wedge_color, filled = 1, smooth = 0)
-                self.display.draw_text(n, text_color, valStr, "Courier", h, "bold", "n")
+                # self.gui.draw_polygon( (center, nw, ne), wedge_color, filled = 1, smooth = 0)
+                self.gui.draw_text(n, text_color, valStr, "Courier", h, "bold", "n")
             if action == 'south':
-                # self.display.draw_polygon( (center, sw, se), wedge_color, filled = 1, smooth = 0)
-                self.display.draw_text(s, text_color, valStr, "Courier", h, "bold", "s")
+                # self.gui.draw_polygon( (center, sw, se), wedge_color, filled = 1, smooth = 0)
+                self.gui.draw_text(s, text_color, valStr, "Courier", h, "bold", "s")
             if action == 'east':
-                # self.display.draw_polygon( (center, ne, se), wedge_color, filled = 1, smooth = 0)
-                self.display.draw_text(e, text_color, valStr, "Courier", h, "bold", "e")
+                # self.gui.draw_polygon( (center, ne, se), wedge_color, filled = 1, smooth = 0)
+                self.gui.draw_text(e, text_color, valStr, "Courier", h, "bold", "e")
             if action == 'west':
-                # self.display.draw_polygon( (center, nw, sw), wedge_color, filled = 1, smooth = 0)
-                self.display.draw_text(w, text_color, valStr, "Courier", h, "bold", "w")
+                # self.gui.draw_polygon( (center, nw, sw), wedge_color, filled = 1, smooth = 0)
+                self.gui.draw_text(w, text_color, valStr, "Courier", h, "bold", "w")
 
     # FIXME: TEST ME OUT YO WTF IS COING ON HERE
     def square(self, pos, size, color, filled, width):
@@ -374,17 +374,17 @@ class GraphicsGridworldDisplay:
 
         coords = [(x - dx, y - dy), (x - dx, y + dy), (x + dx, y + dy), (x + dx, y - dy)]
 
-        return self.display.draw_polygon(coords,
-                                         outlineColor=color,
-                                         fillColor=color, filled=filled, width=width, smoothed=False)
+        return self.gui.draw_polygon(coords,
+                                     outlineColor=color,
+                                     fillColor=color, filled=filled, width=width, smoothed=False)
 
 
 
     def drawsss(self):
         self.count += 2
         print("#"* 10, "drawsss", "#"* 10)
-        print(self.display._canvas)
-        self.display.draw_circle(
+        print(self.gui._canvas)
+        self.gui.draw_circle(
             (262.5, 112.5),
             0.1 * GRID_SIZE,
             outlineColor=LOCATION_COLOR,

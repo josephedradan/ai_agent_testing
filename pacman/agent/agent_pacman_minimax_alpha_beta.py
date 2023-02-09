@@ -23,16 +23,16 @@ Reference:
 """
 from common.action import Action
 from pacman.agent import AgentPacman
-from pacman.agent.agent_pacman_minimax import dfs_recursive_minimax_v4
-from common.game_state import GameState
+from pacman.agent.agent_pacman_minimax  import dfs_recursive_minimax_v4
+from common.state import State
 
 
 class AgentPacmanMinimaxAlphaBeta(AgentPacman):
     """
-    Your minimax agent with alpha-beta pruning (str_question 3)
+    Your minimax player with alpha-beta pruning (str_question 3)
     """
 
-    def getAction(self, game_state: GameState) -> Action:
+    def getAction(self, state: State) -> Action:
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
@@ -42,8 +42,8 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
 
         Run:
             Testing:
-                python agent_pacman_.py -p AgentPacmanMinimaxAlphaBeta -a depth=3 -l smallClassic
-                py -3.6 agent_pacman_.py -p AgentPacmanMinimaxAlphaBeta -a depth=3 -l smallClassic  # Use this one
+                python pacman.py -ap AgentPacmanMinimaxAlphaBeta -a depth=3 -l smallClassic
+                py -3.6 pacman.py -ap AgentPacmanMinimaxAlphaBeta -a depth=3 -l smallClassic  # Use this one
 
                 py -3.6 autograder.py -q q3 --no-graphics  # Use this one
 
@@ -111,7 +111,7 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
                 Record:        Loss
                 *** Finished running AgentPacmanMinimaxAlphaBeta on smallClassic after 0 seconds.
                 *** Won 0 out of 1 games. Average score: 84.000000 ***
-                *** PASS: test_cases\q3\8-agent_pacman_-game.test
+                *** PASS: test_cases\q3\8-pacman-game.test
 
                 ### Question q3: 5/5 ###
 
@@ -128,7 +128,7 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
                 to follow your instructor's guidelines to receive credit on your name_project.
         """
         action = dfs_recursive_minimax_v4(
-            game_state,
+            state,
             self.depth,
             self.evaluation_function,
             alpha_beta_pruning=True

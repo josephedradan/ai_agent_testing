@@ -29,22 +29,23 @@ from pacman.agent import AgentPacman
 
 class ValueEstimationAgent(AgentPacman):
     """
-      Abstract agent which assigns values to (state,action)
+      Abstract player which assigns values to (state_pacman,action)
       Q-Values for an environment. As well as a value to a
-      state and a policy given respectively by,
+      state_pacman and a policy given respectively by,
 
       V(s) = max_{a in actions} Q(s,a)
       policy(s) = arg_max_{a in actions} Q(s,a)
 
       Both ValueIterationAgent and QLearningAgent inherit
-      from this agent. While a ValueIterationAgent has
+      from this player. While a ValueIterationAgent has
       a model of the environment via a MarkovDecisionProcess
       (see mdp.py) that is used to estimate Q-Values before
       ever actually acting, the QLearningAgent estimates
       Q-Values while acting in the environment.
     """
 
-    def __init__(self, alpha=1.0, epsilon=0.05, gamma=0.8, num_training = 10):
+    def __init__(self, alpha=1.0, epsilon=0.05, gamma=0.8, num_training=10, **kwargs):
+        super(AgentPacman, self).__init__(**kwargs)
         """
         Sets options, which can be passed in via the Pacman command line using -a alpha=0.5,...
         alpha    - learning rate
@@ -63,14 +64,14 @@ class ValueEstimationAgent(AgentPacman):
     @abstractmethod
     def getQValue(self, state, action):
         """
-        Should return Q(state,action)
+        Should return Q(state_pacman,action)
         """
         pass
     @abstractmethod
 
     def getValue(self, state):
         """
-        What is the value of this state under the best action?
+        What is the value of this state_pacman under the best action?
         Concretely, this is given by
 
         V(s) = max_{a in actions} Q(s,a)
@@ -79,7 +80,7 @@ class ValueEstimationAgent(AgentPacman):
     @abstractmethod
     def getPolicy(self, state):
         """
-        What is the best action to take in the state. Note that because
+        What is the best action to take in the state_pacman. Note that because
         we might want to explore, this might not coincide with getAction
         Concretely, this is given by
 
@@ -92,7 +93,7 @@ class ValueEstimationAgent(AgentPacman):
     @abstractmethod
     def getAction(self, state):
         """
-        state: can call state.getLegalActions()
+        state_pacman: can call state_pacman.getLegalActions()
         Choose an action and return it.
         """
         pass

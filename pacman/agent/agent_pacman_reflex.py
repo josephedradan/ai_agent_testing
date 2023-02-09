@@ -30,8 +30,8 @@ from pacman.agent.evaluation_function import evaluation_function_food_and_ghost_
 
 class AgentPacmanReflex(AgentPacman):
     """
-    A reflex agent chooses an action at each choice point by examining
-    its alternatives via a game_state evaluation function.
+    A reflex player chooses an action at each choice point by examining
+    its alternatives via a state_pacman evaluation function.
 
     The code below is provided as a guide.  You are welcome to change
     it in any way you see fit, so long as you don't touch our method
@@ -39,19 +39,18 @@ class AgentPacmanReflex(AgentPacman):
     """
 
     def __init__(self,
-                 index: int = 0,
                  evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
                          evaluation_function_food_and_ghost
-                 )
-
+                 ),
+                 **kwargs
                  ):
-        super().__init__(index, evaluation_function)
+        super().__init__(evaluation_function)
 
 
 class AgentPacmanReflex_Attempt_1(AgentPacmanReflex):  # NOQA
     """
-    A reflex agent chooses an action at each choice point by examining
-    its alternatives via a game_state evaluation function.
+    A reflex player chooses an action at each choice point by examining
+    its alternatives via a state_pacman evaluation function.
 
     The code below is provided as a guide.  You are welcome to change
     it in any way you see fit, so long as you don't touch our method

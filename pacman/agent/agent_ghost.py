@@ -24,24 +24,38 @@ from pacman.game.directions import Action
 from pacman.game.directions import Directions
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
+    from common.state import State
 
 
 class AgentGhost(Agent, ABC):
 
-    def __init__(self, index: int):
-        super().__init__(index)
+    def __init__(self, **kwargs):
+        super(AgentGhost, self).__init__(**kwargs)
 
-    def getAction(self, game_state: GameState) -> Action:
+    def getAction(self, state: State) -> Action:
 
-        dist = self.getDistribution(game_state)
+        dist = self.getDistribution(state)
         if len(dist) == 0:
             return Directions.STOP
         else:
             return util.chooseFromDistribution(dist)
 
     @abstractmethod
-    def getDistribution(self, game_state: GameState) -> Dict[Action: float]:
-        "Returns a Counter encoding a distribution over actions from the provided game_state."
+    def getDistribution(self, state: State) -> Dict[Action, float]:
+        "Returns a Counter encoding a distribution over actions from the provided state_pacman."
         pass
 
+    # def get_legal_actions(self, state: StatePacman):
+    #
+    #
+    #     legalActions = state.getLegalActions(self)
+    #
+    #     reverse = Actions.reverseDirection(container_position_vector.direction)
+    #
+    #     # GHOST DONT STOP SO REMOVE IT
+    #     if Directions.STOP in possibleActions:
+    #         possibleActions.remove(Directions.STOP)
+    #
+    #     # DONT REVERSE IF GHOST HAS MORE THAN 1 MOVE
+    #     if reverse in possibleActions and len(possibleActions) > 1:
+    #         possibleActions.remove(reverse)

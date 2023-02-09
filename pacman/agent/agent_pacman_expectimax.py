@@ -27,10 +27,10 @@ from typing import Union
 
 from common.action import Action
 from pacman.agent import AgentPacman
-from common.game_state import GameState
+from common.state import State
 
 
-def _dfs_recursive_expectimax_v1_handler(game_state: GameState,
+def _dfs_recursive_expectimax_v1_handler(state: State,
                                          depth: int,
                                          function_evaluation: callable,
                                          index_agent: int = 0,
@@ -49,15 +49,15 @@ def _dfs_recursive_expectimax_v1_handler(game_state: GameState,
                 https://youtu.be/jaFRyzp7yWw?t=707
     """
 
-    # Check if game is over via agent_pacman_ dead or agent_pacman_ got all food and survived
-    if game_state.isWin() or game_state.isLose() or depth <= 0:
-        score = function_evaluation(game_state, None)
+    # Check if game is over via pacman dead or pacman got all food and survived
+    if state.isWin() or state.isLose() or depth <= 0:
+        score = function_evaluation(state, None)
 
         # Return the score
         return score
 
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
     # If Pacman (Maximizer)
     if index_agent == 0:
@@ -65,12 +65,12 @@ def _dfs_recursive_expectimax_v1_handler(game_state: GameState,
         score_max: Union[float, None] = None
 
         for action in list_str_move_legal:
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
+            # Agent selection (Select next player for the next call)
             index_agent_new = index_agent + 1
 
-            score_calculated = _dfs_recursive_expectimax_v1_handler(game_state_new,
+            score_calculated = _dfs_recursive_expectimax_v1_handler(state_new,
                                                                     depth,
                                                                     function_evaluation,
                                                                     index_agent_new,
@@ -92,17 +92,17 @@ def _dfs_recursive_expectimax_v1_handler(game_state: GameState,
 
         for action in list_str_move_legal:
 
-            game_state_new = game_state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(index_agent, action)
 
-            # Agent selection (Select next agent for the next call)
-            if index_agent >= game_state.getNumAgents() - 1:
+            # Agent selection (Select next player for the next call)
+            if index_agent >= state.getNumAgents() - 1:
                 index_agent_new = 0
                 depth_new = depth - 1  # *** DEPTH IS ONLY CHANGED WHEN ALL AGENTS HAVE MOVED
             else:
                 index_agent_new = index_agent + 1
                 depth_new = depth
 
-            score_calculated = _dfs_recursive_expectimax_v1_handler(game_state_new,
+            score_calculated = _dfs_recursive_expectimax_v1_handler(state_new,
                                                                     depth_new,
                                                                     function_evaluation,
                                                                     index_agent_new,
@@ -114,7 +114,7 @@ def _dfs_recursive_expectimax_v1_handler(game_state: GameState,
         return score_avg
 
 
-def dfs_recursive_expectimax_v1(game_state: GameState,
+def dfs_recursive_expectimax_v1(state: State,
                                 depth: int,
                                 function_evaluation: callable,
                                 index_agent: int = 0,
@@ -134,18 +134,18 @@ def dfs_recursive_expectimax_v1(game_state: GameState,
 
     """
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = game_state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
     # List that contains tuples where each tuple has (score, action) as its elements
     list_pair: List[Tuple[float, str]] = []
 
     for action in list_str_move_legal:
-        game_state_new = game_state.generateSuccessor(index_agent, action)
+        state_new = state.generateSuccessor(index_agent, action)
 
-        # Agent selection (Select next agent for the next call)
+        # Agent selection (Select next player for the next call)
         index_agent_new = index_agent + 1
 
-        score_calculated = _dfs_recursive_expectimax_v1_handler(game_state_new,
+        score_calculated = _dfs_recursive_expectimax_v1_handler(state_new,
                                                                 depth,
                                                                 function_evaluation,
                                                                 index_agent_new,
@@ -168,10 +168,10 @@ def dfs_recursive_expectimax_v1(game_state: GameState,
 
 class AgentPacmanExpectimax(AgentPacman):
     """
-      Your expectimax agent (str_question 4)
+      Your expectimax player (str_question 4)
     """
 
-    def getAction(self, game_state: GameState) -> Action:
+    def getAction(self, state: State) -> Action:
         """
         Returns the expectimax action using self.depth and self.evaluationFunction
 
@@ -239,7 +239,7 @@ class AgentPacmanExpectimax(AgentPacman):
                 Record:        Loss
                 *** Finished running AgentPacmanExpectimax on smallClassic after 0 seconds.
                 *** Won 0 out of 1 games. Average score: 84.000000 ***
-                *** PASS: test_cases\q4\7-agent_pacman_-game.test
+                *** PASS: test_cases\q4\7-pacman-game.test
 
                 ### Question q4: 5/5 ###
 
@@ -256,7 +256,7 @@ class AgentPacmanExpectimax(AgentPacman):
                 to follow your instructor's guidelines to receive credit on your name_project.
         """
         result = dfs_recursive_expectimax_v1(
-            game_state,
+            state,
             self.depth,
             self.evaluation_function
         )

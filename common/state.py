@@ -22,7 +22,7 @@ Reference:
 
 """
 ###################################################
-# YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
+# YOUR INTERFACE TO THE PACMAN WORLD: A State #
 ###################################################
 from __future__ import annotations
 
@@ -31,23 +31,25 @@ from abc import abstractmethod
 from typing import Set
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
-    pass
+    from pacman.agent import Agent
 
 
-class GameState(ABC):
+
+class State(ABC):
     """
-    A GameState specifies the full game game_state, including the food, list_capsule,
-    agent configurations and score changes.
+    A State specifies the full game state_pacman, including the food, list_capsule,
+    player configurations and score changes.
 
-    GameStates are used by the Game object to capture the actual game_state of the game and
+    GameStates are used by the Game object to capture the actual state_pacman of the game and
     can be used by agents to reason about the game.
 
-    Much of the information in a GameState is stored in a GameStateData object.  We
+    Much of the information in a State is stored in a StateDataPacman object.  We
     strongly suggest that you access that data via the accessor methods below rather
-    than referring to the GameStateData object directly.
+    than referring to the StateDataPacman object directly.
 
-    Note that in classic Pacman, Pacman is always agent 0.
+    Note that in classic Pacman, Pacman is always player 0.
     """
 
     #############################################
@@ -56,11 +58,15 @@ class GameState(ABC):
     #############################################
 
     @abstractmethod
-    def getLegalActions(self, agentIndex=0):
+    def getLegalActions(self, agent: Agent):
         pass
 
     @abstractmethod
-    def generateSuccessor(self, agentIndex, action):
+    def generateSuccessor(self, agent: Agent, action):
+        pass
+
+    # @abstractmethod
+    def get_state_container_GHOST(self, agent: Agent):  # TODO: wtf is a state_container
         pass
 
     @abstractmethod
@@ -76,11 +82,11 @@ class GameState(ABC):
         pass
 
     # static variable keeps track of which states have had getLegalActions called
-    set_game_state_explored: Set[GameState] = set()
+    set_state_explored: Set[State] = set()
 
     @classmethod
     def getAndResetExplored(cls):
-        tmp = cls.set_game_state_explored.copy()
-        cls.set_game_state_explored = set()
+        tmp = cls.set_state_explored.copy()
+        cls.set_state_explored = set()
         return tmp
 

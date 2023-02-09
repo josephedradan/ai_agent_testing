@@ -23,15 +23,18 @@ Reference:
 """
 from __future__ import annotations
 
+from typing import Dict
 from typing import TYPE_CHECKING
 
 from common import util
+from common.action import Action
+from common.util import manhattanDistance
 from pacman.agent.agent_ghost import AgentGhost
 from pacman.game.actions import Actions
-from common.util import manhattanDistance
 
 if TYPE_CHECKING:
-    from common.game_state import GameState
+    from common.state import State
+    from common.state_pacman import StatePacman
 
 
 class AgentGhostDirectional(AgentGhost):
@@ -40,18 +43,18 @@ class AgentGhostDirectional(AgentGhost):
 
     """
 
-    def __init__(self, index: int, prob_attack: float = 0.8, prob_scaredFlee: float = 0.8):
-        super().__init__(index)
+    def __init__(self, prob_attack: float = 0.8, prob_flee_scared: float = 0.8, **kwargs):
+        super().__init__(**kwargs)
 
         self.prob_attack: float = prob_attack
-        self.prob_scaredFlee: float = prob_scaredFlee
+        self.prob_flee_scared: float = prob_flee_scared
 
-    def getDistribution(self, game_state: GameState) -> Dict[Action: float]:
+    def getDistribution(self, state: StatePacman) -> Dict[Action, float]:
 
-        # Read variables from game_state
-        ghostState = game_state.getGhostState(self.index)
-        legalActions = game_state.getLegalActions(self.index)
-        pos = game_state.getGhostPosition(self.index)
+        # Read variables from state_pacman
+        ghostState = state.get_state_container_GHOST(self)
+        legalActions = state.getLegalActions(self)
+        pos = state.get_position_of_agent(self)
         isScared = ghostState.scaredTimer > 0
 
         speed = 1
@@ -61,14 +64,14 @@ class AgentGhostDirectional(AgentGhost):
         actionVectors = [Actions.directionToVector(
             a, speed) for a in legalActions]
         newPositions = [(pos[0] + a[0], pos[1] + a[1]) for a in actionVectors]
-        pacmanPosition = game_state.getPacmanPosition()
+        pacmanPosition = state.get_position_of_agent(self)
 
-        # Select best actions given the game_state
+        # Select best actions given the state_pacman
         distancesToPacman = [manhattanDistance(
             pos, pacmanPosition) for pos in newPositions]
         if isScared:
             bestScore = max(distancesToPacman)
-            bestProb = self.prob_scaredFlee
+            bestProb = self.prob_flee_scared
         else:
             bestScore = min(distancesToPacman)
             bestProb = self.prob_attack

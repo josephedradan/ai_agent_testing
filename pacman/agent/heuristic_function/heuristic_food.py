@@ -21,6 +21,8 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
 from functools import lru_cache
 from typing import TYPE_CHECKING
 from typing import Tuple
@@ -37,8 +39,8 @@ if TYPE_CHECKING:
 def mazeDistance(point1, point2, gameState):
     """
     Returns the maze distance between any two points, using the search functions
-    you have already built. The gameState can be any game state -- Pacman's
-    position in that state is ignored.
+    you have already built. The gameState can be any game state_pacman -- Pacman's
+    position in that state_pacman is ignored.
 
     Example usage: mazeDistance( (2,4), (5,6), gameState)
 
@@ -66,7 +68,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     other hand, inadmissible or inconsistent heuristics may find optimal
     solutions, so be careful.
 
-    The state is a tuple ( pacmanPosition, foodGrid ) where foodGrid is a GridPacman
+    The state_pacman is a tuple ( pacmanPosition, foodGrid ) where foodGrid is a GridPacman
     (see game.py) of either True or False. You can call foodGrid.asList() to get
     a list of food coordinates instead.
 
@@ -108,8 +110,8 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     # Set of remaining food
     #
     # IMPORTANT NOTES:
-    #     state is not a HashableGoal but a tuple, therefore it is not possible to transfer information about where
-    #     the agent_pacman_ has legitimately traveled to.
+    #     state_pacman is not a HashableGoal but a tuple, therefore it is not possible to transfer information about where
+    #     the pacman has legitimately traveled to.
     #
     # """
     # set_position_food_location_remaining = set_position_food_location - set_position_food_location_visited
@@ -274,7 +276,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     # list_distance = []
     #
     # for position_corner_local_shortest in list_position_food_remaining:
-    #     result_ucs: Union[int, None] = _get_heuristic_cost_ucs_crude(problem_multi_agent_tree.startingGameState.getWalls(),
+    #     result_ucs: Union[int, None] = _get_heuristic_cost_ucs_crude(problem_multi_agent_tree.state_pacman_starting.getWalls(),
     #                                                                  position_start,
     #                                                                  position_corner_local_shortest,
     #                                                                  None)

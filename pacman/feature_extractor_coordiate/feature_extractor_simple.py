@@ -21,10 +21,16 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from common import util
 from pacman.feature_extractor_coordiate.feature_extrator import FeatureExtractor
 from pacman.game.actions import Actions
 
+if TYPE_CHECKING:
+    from common.state_pacman import StatePacman
 
 def closestFood(pos, food, walls):
     """
@@ -58,18 +64,18 @@ class SimpleExtractor(FeatureExtractor):
     - whether a ghost is one step away
     """
 
-    def getFeatures(self, state, action):
+    def getFeatures(self, state_pacman: StatePacman, action):
         # extract the grid of food and wall locations and get the ghost locations
-        food = state.getFood()
-        walls = state.getWalls()
-        ghosts = state.getGhostPositions()
+        food = state_pacman.getFood()
+        walls = state_pacman.getWalls()
+        ghosts = state_pacman.get_list_position_ghost()
 
         features = util.Counter()
 
         features["bias"] = 1.0
 
         # compute the location of pacman after he takes the action
-        x, y = state.getPacmanPosition()
+        x, y = state_pacman.getPacmanPosition()
         dx, dy = Actions.directionToVector(action)
         next_x, next_y = int(x + dx), int(y + dy)
 

@@ -39,7 +39,7 @@ class Grid:
     via grid[x][y] where (x,y) are positions on a Pacman map with x horizontal,
     y vertical and the origin (0,0) in the bottom left corner.
 
-    The __str__ method constructs an output that is oriented like a agent_pacman_ board.
+    The __str__ method constructs an output that is oriented like a pacman board.
     """
 
     def __init__(self, width: int, height: int, initialValue: bool=False, bitRepresentation=None):

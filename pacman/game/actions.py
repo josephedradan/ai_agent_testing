@@ -27,11 +27,13 @@ from typing import List
 from typing import TYPE_CHECKING
 from typing import Tuple
 
+from common.action import Action
 from pacman.game.directions import Directions
 
 if TYPE_CHECKING:
     from pacman.game.container_position_vector import ContainerPositionVector
     from pacman.game.grid_pacman import GridPacman
+    from pacman.game.common import TYPE_POSITION
 
 
 class Actions:
@@ -77,8 +79,8 @@ class Actions:
         return Directions.STOP
 
     @staticmethod
-    def directionToVector(direction: Directions, speed: float = 1.0):
-        dx, dy = Actions.dict_k_direction_v_position[direction]
+    def directionToVector(action: Action, speed: float = 1.0) -> Tuple[float, ...]:
+        dx, dy = Actions.dict_k_direction_v_position[action]
         return (dx * speed, dy * speed)
 
     @staticmethod
@@ -101,7 +103,7 @@ class Actions:
         return possible
 
     @staticmethod
-    def getLegalNeighbors(position: Tuple[int, int], walls: GridPacman) -> List[Tuple[int, int]]:
+    def getLegalNeighbors(position: TYPE_POSITION, walls: GridPacman) -> List[Tuple[int, int]]: # TODO FUNCTION NEEDS TO BE GENERALIZED
 
         x, y = position
         x_int, y_int = int(x + 0.5), int(y + 0.5)
@@ -119,7 +121,7 @@ class Actions:
         return neighbors
 
     @staticmethod
-    def getSuccessor(position: Tuple[int, int], action: Directions):
+    def getSuccessor(position: TYPE_POSITION, action: Directions):  # TODO FUNCTION NEEDS TO BE GENERALIZED
         dx, dy = Actions.directionToVector(action)
         x, y = position
         return (x + dx, y + dy)

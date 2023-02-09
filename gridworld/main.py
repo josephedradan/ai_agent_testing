@@ -19,7 +19,7 @@ from typing import Sequence
 from typing import Tuple
 from typing import Union
 
-from common.graphics.display_tkinter import DisplayTkinter
+from common.graphics.gui_tkinter import GUITkinter
 from pacman.agent.agent_value_estimation import ValueEstimationAgent
 from pacman.agent.valueIterationAgents import ValueIterationAgent
 
@@ -43,14 +43,14 @@ from common import mdp
 
 def getUserAction(state: Tuple[int, int], actionFunction: Callable, display: GraphicsGridworldDisplay):
     """
-    Get an action from the user (rather than the agent).
+    Get an action from the user (rather than the player).
 
     Used for debugging and lecture demos.
     """
 
     action = None
     while True:
-        keys = display.display.get_wait_for_keys()
+        keys = display.gui.get_wait_for_keys()
         if 'Up' in keys: action = 'north'
         if 'Down' in keys: action = 'south'
         if 'Left' in keys: action = 'west'
@@ -79,7 +79,7 @@ def runEpisode(agent: ValueEstimationAgent,
                episode: int
                ) -> int:
 
-    # print("agent", agent, type(agent))
+    # print("player", player, type(player))
     # print("environment", environment_gridworld, type(environment_gridworld))
     # print("discount", discount, type(discount))
     # print("decision", callback_decision, type(callback_decision))
@@ -104,7 +104,7 @@ def runEpisode(agent: ValueEstimationAgent,
         callback_display(state)  # TODO: HERERERSR
         callback_pause()
 
-        print("state", state)
+        print("state_pacman", state)
 
         # display_.pause()
         actions = environment_gridworld.getPossibleActions(state)
@@ -122,9 +122,9 @@ def runEpisode(agent: ValueEstimationAgent,
         # EXECUTE ACTION
         nextState, reward = environment_gridworld.doAction(action)
 
-        callback_message("Started in state: " + str(state) +
+        callback_message("Started in state_pacman: " + str(state) +
                          "\nTook action: " + str(action) +
-                         "\nEnded in state: " + str(nextState) +
+                         "\nEnded in state_pacman: " + str(nextState) +
                          "\nGot reward: " + str(reward) + "\n")
         # UPDATE LEARNER
         if 'observeTransition' in dir(agent):
@@ -210,11 +210,11 @@ def arg_parser_gridworld(argv: Union[Sequence[str], None] = None) -> argparse.Na
                         default=150,
                         help='Request a window width of X pixels *per grid cell* (default %default)'
                         )
-    parser.add_argument('-a', '--agent',
+    parser.add_argument('-a', '--player',
                         action='store',
                         metavar="A",
                         type=str,
-                        dest='agent',
+                        dest='player',
                         default="random",
                         help='Agent type (options are \'random\', \'value\' and \'q\', default %default)'
                         )
@@ -248,7 +248,7 @@ def arg_parser_gridworld(argv: Union[Sequence[str], None] = None) -> argparse.Na
                         action='store_true',
                         dest='manual',
                         default=False,
-                        help='Manually control agent'
+                        help='Manually control player'
                         )
     parser.add_argument('-v', '--valueSteps',
                         action='store_true',
@@ -301,7 +301,7 @@ if __name__ == '__main__':
 
     display = TextGridworldDisplay(mdp)
     if not argparse_args.textDisplay:
-        tkinter_display = DisplayTkinter()  # TODO: JOSEPH CUSTOM
+        tkinter_display = GUITkinter()  # TODO: JOSEPH CUSTOM
 
         display: GraphicsGridworldDisplay = GraphicsGridworldDisplay(mdp, argparse_args.gridSize, argparse_args.speed,
                                                                      tkinter_display)
@@ -320,7 +320,7 @@ if __name__ == '__main__':
         agent = ValueIterationAgent(mdp, argparse_args.discount, argparse_args.iters)
     elif argparse_args.agent == 'q':
         # env.getPossibleActions, argparse_args.discount, argparse_args.learningRate, argparse_args.epsilon
-        # simulationFn = lambda agent, state: simulation.GridworldSimulation(agent,state,mdp)
+        # simulationFn = lambda player, state_pacman: simulation.GridworldSimulation(player,state_pacman,mdp)
         gridWorldEnv = EnvironmentGridworld(mdp)
         actionFn = lambda state: mdp.getPossibleActions(state)
         qLearnOpts = {'gamma': argparse_args.discount,
@@ -329,7 +329,7 @@ if __name__ == '__main__':
                       'actionFn': actionFn}
         agent = qlearningAgents.QLearningAgent(**qLearnOpts)
     elif argparse_args.agent == 'random':
-        # # No reason to use the random agent without episodes
+        # # No reason to use the random player without episodes
         if argparse_args.episodes == 0:
             argparse_args.episodes = 10
 
@@ -359,7 +359,7 @@ if __name__ == '__main__':
         agent = valueIterationAgents.PrioritizedSweepingValueIterationAgent(mdp, argparse_args.discount,
                                                                             argparse_args.iters)
     else:
-        if not argparse_args.manual: raise Exception('Unknown agent type: ' + argparse_args.agent)
+        if not argparse_args.manual: raise Exception('Unknown player type: ' + argparse_args.agent)
 
     ###########################
     # RUN EPISODES

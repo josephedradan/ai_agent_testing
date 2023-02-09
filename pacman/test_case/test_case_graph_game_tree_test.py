@@ -25,6 +25,7 @@ Reference:
 from __future__ import annotations
 
 from collections import defaultdict
+from pprint import pprint
 from typing import Any
 from typing import Dict
 from typing import List
@@ -32,7 +33,7 @@ from typing import Set
 from typing import TYPE_CHECKING
 from typing import Tuple
 
-from common.game_state import GameState
+from common.state import State
 from pacman.agent import *
 from pacman.test_case.game_state_multi_agent_tree_state import MultiAgentTreeState
 from pacman.test_case.test_case import TestCase
@@ -52,6 +53,7 @@ class MultiagentTreeProblem(object):
                  dict_evaluation_k_state_v_value: Dict[str, float]
                  ):
 
+        print("-- MultiagentTreeProblem", self, state_start)
         self.state_start: MultiAgentTreeState = MultiAgentTreeState(self, state_start)
 
         self.num_agents:int = num_agents
@@ -98,18 +100,24 @@ def get_multi_agent_tree_problem_from_dict_file_test(dict_file_test: Dict[str, A
         else:
             raise Exception("[parseTree] Bad successor line: |%s|" % (line,))
 
-    return MultiagentTreeProblem(num_agents, state_start, set_state_win, set_state_lose, list_successor,
+    return MultiagentTreeProblem(num_agents,
+                                 state_start,
+                                 set_state_win,
+                                 set_state_lose,
+                                 list_successor,
                                  dict_evaluation_k_state_v_value)
 
 
 class GraphGameTreeTest(TestCase):
 
-    def __init__(self, question: Question, dict_test: Dict[str, Any]):
-        super(GraphGameTreeTest, self).__init__(question, dict_test)
+    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
+        super(GraphGameTreeTest, self).__init__(question, dict_file_test)
 
-        self.problem_multi_agent_tree: MultiagentTreeProblem = get_multi_agent_tree_problem_from_dict_file_test(dict_test)
+        self.problem_multi_agent_tree: MultiagentTreeProblem = get_multi_agent_tree_problem_from_dict_file_test(
+            dict_file_test
+        )
 
-        self.str_class_agent: str  = self.dict_file_test['agent']
+        self.str_class_agent: str = self.dict_file_test['agent']
         self.diagram = self.dict_file_test['diagram'].split('\n')
         self.depth = int(self.dict_file_test['depth'])
 
@@ -117,7 +125,7 @@ class GraphGameTreeTest(TestCase):
         """
 
         Notes:
-            Create agent
+            Create player
             Give
 
         """

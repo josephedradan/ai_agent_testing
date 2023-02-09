@@ -2,7 +2,7 @@
 Created by Joseph Edradan
 Github: https://github.com/josephedradan
 
-Date created: 2/1/2023
+Date created: 2/6/2023
 
 Purpose:
 
@@ -21,10 +21,11 @@ Tags:
 Reference:
 
 """
-from abc import ABC
+from enum import Enum
+from enum import auto
 
-from pacman.graphics import Graphics
 
+class TypePlayer(Enum):
+    PACMAN = auto()
+    GHOST = auto()
 
-class GraphicsPacman(Graphics, ABC):
-    pass

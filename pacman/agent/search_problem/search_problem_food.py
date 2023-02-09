@@ -21,9 +21,17 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from pacman.game.actions import Actions
 from pacman.game.directions import Directions
+
+
+if TYPE_CHECKING:
+    pass
+    from common.state_pacman import StatePacman
 
 
 class FoodSearchProblem:
@@ -31,15 +39,16 @@ class FoodSearchProblem:
     A search problem_multi_agent_tree associated with finding a path that collects all of the
     food (dots) in a Pacman game.
 
-    A search state in this problem_multi_agent_tree is a tuple ( pacmanPosition, foodGrid ) where
+    A search state_pacman in this problem_multi_agent_tree is a tuple ( pacmanPosition, foodGrid ) where
       pacmanPosition: a tuple (x,y) of integers specifying Pacman's position
       foodGrid:       a GridPacman (see game.py) of either True or False, specifying remaining food
     """
 
-    def __init__(self, startingGameState):
-        self.start = (startingGameState.getPacmanPosition(), startingGameState.getFood())
-        self.walls = startingGameState.getWalls()
-        self.startingGameState = startingGameState
+    def __init__(self, state_pacman: StatePacman):
+        self.start = (state_pacman.getPacmanPosition(), state_pacman.getFood())
+        self.walls = state_pacman.getWalls()
+
+        self.startingGameState = state_pacman
         self._expanded = 0  # DO NOT CHANGE
         self.heuristicInfo = {}  # A dictionary for the heuristic to store information
 
@@ -69,7 +78,7 @@ class FoodSearchProblem:
         x, y = self.getStartState()[0]
         cost = 0
         for action in actions:
-            # figure out the next state and see whether it's legal
+            # figure out the next state_pacman and see whether it's legal
             dx, dy = Actions.directionToVector(action)
             x, y = int(x + dx), int(y + dy)
             if self.walls[x][y]:

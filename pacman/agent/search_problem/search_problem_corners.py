@@ -21,38 +21,50 @@ Tags:
 Reference:
 
 """
+from __future__ import annotations
+
 from typing import Any
 from typing import List
+from typing import TYPE_CHECKING
 from typing import Tuple
 from typing import Union
 
+from pacman.agent import Agent
 from pacman.agent.search_problem import SearchProblem
 from pacman.agent.search_problem.common import HashableGoal
 from pacman.game.actions import Actions
 from pacman.game.directions import Directions
+
+if TYPE_CHECKING:
+    pass
+    from common.state_pacman import StatePacman
 
 
 class CornersProblem(SearchProblem):
     """
     This search problem_multi_agent_tree finds paths through all four corners of a str_path_layout.
 
-    You must select a suitable state space and successor function
+    You must select a suitable state_pacman space and successor function
     """
 
-    def __init__(self, startingGameState):
+    def __init__(self, agent: Agent, state_pacman_starting: StatePacman):  # TODO: SHOULD AGENT BE GIVEN HERE???
         """
-        Stores the walls, agent_pacman_'s starting position and corners.
+        Stores the walls, pacman's starting position and corners.
         """
         super().__init__()
-        self.walls = startingGameState.getWalls()
-        self.startingPosition = startingGameState.getPacmanPosition()
+
+        self.agent = agent
+
+        self.walls = state_pacman_starting.getWalls()
+
+        self.startingPosition = state_pacman_starting.getPacmanPosition(self.agent)
 
         top, right = self.walls.height - 2, self.walls.width - 2
 
         self.corners = ((1, 1), (1, top), (right, 1), (right, top))
 
         for corner in self.corners:
-            if not startingGameState.hasFood(*corner):
+            if not state_pacman_starting.hasFood(*corner):
                 print('Warning: no food in corner ' + str(corner))
 
         self._expanded = 0  # DO NOT CHANGE; Number of search nodes expanded
@@ -99,7 +111,7 @@ class CornersProblem(SearchProblem):
 
     def getStartState(self) -> Union[HashableGoal, Tuple[int, int]]:
         """
-        Returns the start state (in your state space, not the full Pacman state
+        Returns the start state_pacman (in your state_pacman space, not the full Pacman state_pacman
         space)
         """
         "*** YOUR CODE HERE ***"
@@ -112,8 +124,8 @@ class CornersProblem(SearchProblem):
 
     def _state_modifier(self, state: HashableGoal):
         """
-        Due to state being given back, this must be done to state's list_tuple_order_traveled because
-        functions that receive state assume that you have traveled to state's position.
+        Due to state_pacman being given back, this must be done to state_pacman's list_tuple_order_traveled because
+        functions that receive state_pacman assume that you have traveled to state_pacman's position.
 
         :param state:
         :return:
@@ -122,22 +134,22 @@ class CornersProblem(SearchProblem):
         set_temp = self.set_position_corner - set(state.list_tuple_order_traveled)
         if state.position in set_temp:
             # V1
-            # state.list_tuple_order_traveled[len(self.set_position_corner) - len(set_temp)] = state.position
+            # state_pacman.list_tuple_order_traveled[len(self.set_position_corner) - len(set_temp)] = state_pacman.position
             state.list_tuple_order_traveled.append(state.position)
 
     def isGoalState(self, state: HashableGoal) -> bool:
         """
-        Returns whether this search state is a goal state of the problem_multi_agent_tree.
+        Returns whether this search state_pacman is a goal state_pacman of the problem_multi_agent_tree.
         """
         "*** YOUR CODE HERE ***"
 
         # util.raiseNotDefined()
 
         # Hack v1
-        # if state in self.dict_k_position_corner_v_bool_reached:
+        # if state_pacman in self.dict_k_position_corner_v_bool_reached:
         #
-        #     if self.dict_k_position_corner_v_bool_reached[state] is False:
-        #         self.dict_k_position_corner_v_bool_reached[state] = True
+        #     if self.dict_k_position_corner_v_bool_reached[state_pacman] is False:
+        #         self.dict_k_position_corner_v_bool_reached[state_pacman] = True
         #         return True
         #     else:
         #         return False
@@ -145,9 +157,9 @@ class CornersProblem(SearchProblem):
         # return False
         #
         # Hack v2
-        # if state == self.corner_current:
-        #     if self.dict_k_position_corner_v_bool_reached[state] is False:
-        #         self.dict_k_position_corner_v_bool_reached[state] = True
+        # if state_pacman == self.corner_current:
+        #     if self.dict_k_position_corner_v_bool_reached[state_pacman] is False:
+        #         self.dict_k_position_corner_v_bool_reached[state_pacman] = True
         #         self.corner_current = self._get_corner_current_new()
         #         return True
         #     else:
@@ -161,7 +173,7 @@ class CornersProblem(SearchProblem):
 
         # V1
         # Is of HashableGoal type then return it's method is_done()
-        # return state.is_done()
+        # return state_pacman.is_done()
 
         """
         Return True if the length of the corners that you need to travel to is equal to the size of the list 
@@ -174,9 +186,9 @@ class CornersProblem(SearchProblem):
         Returns successor states, the actions they require, and a cost of 1.
 
          As noted in search.py:
-            For a given state, this should return a list of triples, (successor,
+            For a given state_pacman, this should return a list of triples, (successor,
             action, stepCost), where 'successor' is a successor to the current
-            state, 'action' is the action required to get there, and 'stepCost'
+            state_pacman, 'action' is the action required to get there, and 'stepCost'
             is the incremental cost of expanding to that successor
         """
 
@@ -189,7 +201,7 @@ class CornersProblem(SearchProblem):
         self._state_modifier(state)
 
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            # Add a successor state to the successor list if the action is legal
+            # Add a successor state_pacman to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
             #   x,y = currentPosition
             #   dx, dy = Actions.directionToVector(action)

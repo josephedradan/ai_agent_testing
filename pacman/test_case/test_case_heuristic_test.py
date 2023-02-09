@@ -27,12 +27,15 @@ from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
 
-from common.game_state_pacman import GameStatePacman
+from common.state_pacman import StatePacman
+from pacman.agent import AgentPacman
 from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search.search import astar
 from pacman.agent.search_problem import get_subclass_search_problem
-from common.game_state import GameState
-from pacman.game.layout import Layout
+from common.state import State
+from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.player import Player
+from pacman.game.type_player import TypePlayer
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -43,19 +46,21 @@ class HeuristicTest(TestCase):
 
     def __init__(self, question, testDict):
         super(HeuristicTest, self).__init__(question, testDict)
-        self.layoutText = testDict['str_path_layout']
+        self.layoutText = testDict['layout']
         self.layoutName = testDict['layoutName']
         self.searchProblemClassName = testDict['searchProblemClass']
         self.heuristicName = testDict['heuristic']
 
     def _setupProblem(self):
-        lay = Layout([l.strip() for l in self.layoutText.split('\n')])
-        gameState = GameStatePacman()
-        gameState.initialize(lay, 0)
+        layout = LayoutPacman([l.strip() for l in self.layoutText.split('\n')])
+
+        state_pacman_start = StatePacman()
+        state_pacman_start.initialize(layout, [Player(AgentPacman(), TypePlayer.PACMAN)])
+
         # class_problem = getattr(searchAgents, self.searchProblemClassName)
         class_problem = get_subclass_search_problem(self.searchProblemClassName)
 
-        problem = class_problem(gameState)
+        problem = class_problem(state_pacman_start)
         state = problem.getStartState()
 
         # heuristic = getattr(searchAgents, self.heuristicName)
