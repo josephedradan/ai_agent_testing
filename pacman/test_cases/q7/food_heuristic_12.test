@@ -2,8 +2,8 @@ class: "HeuristicTest"
 
 heuristic: "foodHeuristic"
 searchProblemClass: "FoodSearchProblem"
-layoutName: "Test 12"
-layout: """
+layout_name: "Test 12"
+layout_text: """
 %%%%%%%%
 %      %
 %    P.%

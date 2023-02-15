@@ -11,10 +11,11 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 import random
-from typing import Tuple
+from pprint import pprint
 from typing import Union
 
 from common import util
+from common.state import State
 from pacman.agent.agent_value_estimation_reinforcement import ReinforcementAgent
 
 
@@ -39,9 +40,10 @@ class QLearningAgent(ReinforcementAgent):
           which returns legal actions for a state_pacman
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, alpha, epsilon, gamma, num_training=0, **kwargs):
         "You can initialize Q-values here..."
-        super(QLearningAgent, self).__init__(**kwargs)
+
+        super().__init__(alpha, epsilon, gamma, num_training, **kwargs)
 
         "*** YOUR CODE HERE ***"
         r"""
@@ -91,7 +93,7 @@ class QLearningAgent(ReinforcementAgent):
         # A Counter is a dict with default 0
         self.counter_q_table_k_state_action_v_value: util.Counter = util.Counter()
 
-    def getQValue(self, state: Tuple[int, int], action: str) -> float:
+    def getQValue(self, state: State, action: str) -> float:
         """
           Returns Q(state_pacman,action)
               Should return 0.0 if we have never seen a state_pacman
@@ -102,7 +104,7 @@ class QLearningAgent(ReinforcementAgent):
 
         return self.counter_q_table_k_state_action_v_value.get((state, action), 0)
 
-    def computeValueFromQValues(self, state: str) -> float:
+    def computeValueFromQValues(self, state: State) -> float:
         """
           Returns max_action Q(state_pacman,action)
           where the max is over legal actions.  Note that if
@@ -118,7 +120,7 @@ class QLearningAgent(ReinforcementAgent):
         getQValue to use features of state_pacman-action pairs rather than state_pacman-action pairs directly.
         """
 
-        actions = self.getLegalActions(state)
+        actions = self.getLegalActions(state)  # TODO: THIS IS INTERNAL
 
         if actions:
             return max([self.getQValue(state, action) for action in actions])
@@ -139,7 +141,11 @@ class QLearningAgent(ReinforcementAgent):
         getQValue to use features of state_pacman-action pairs rather than state_pacman-action pairs directly.
         """
         actions = self.getLegalActions(state)
-
+        # print(state)
+        # print(actions)
+        # for action in actions:
+        #     print(action, self.getQValue(state,action))
+        # print("--computeActionFromQValues")
         if actions:
             return max([action for action in actions],
                        key=lambda _action: self.getQValue(state, _action))
@@ -303,7 +309,13 @@ class QLearningAgent(ReinforcementAgent):
         # Q^new(s_t, a_t) =  Q^old(s_t, a_t) + alpha * TD(s_t, a_t)
         q_state_new = q_state_previous + self.alpha * temporal_difference
 
+        # print("alpha:{} epsilon:{} discount(gamma):{}".format(self.alpha, self.epsilon, self.discount))
+
         self.counter_q_table_k_state_action_v_value[(state, action)] = q_state_new
+
+        # pprint(self.counter_q_table_k_state_action_v_value)
+        # print("COUNTER_Q LENGTH:", len(self.counter_q_table_k_state_action_v_value))
+        # print()
 
     def getPolicy(self, state) -> Union[None, str]:
         return self.computeActionFromQValues(state)
@@ -344,7 +356,7 @@ Results:
 class PacmanQAgent(QLearningAgent):
     "Exactly the same as QLearningAgent, but with different default parameters"
 
-    def __init__(self, epsilon=0.05, gamma=0.8, alpha=0.2, num_training=0, **kwargs):
+    def __init__(self, alpha=0.2, epsilon=0.05, gamma=0.8, num_training=0, **kwargs):
         """
         These default parameters can be changed from the pacman.py command line.
         For example, to change the exploration rate, try:
@@ -355,12 +367,14 @@ class PacmanQAgent(QLearningAgent):
         gamma    - discount factor
         num_training - number of training episodes, i.e. no learning after these many episodes
         """
-        super(PacmanQAgent, self).__init__(**kwargs)
 
-        kwargs['epsilon'] = epsilon
-        kwargs['gamma'] = gamma
-        kwargs['alpha'] = alpha
-        kwargs['num_training'] = num_training
+        super().__init__(alpha, epsilon, gamma, num_training, **kwargs)
+
+        # kwargs['epsilon'] = epsilon
+        # kwargs['gamma'] = gamma
+        # kwargs['alpha'] = alpha
+        # kwargs['num_training'] = num_training
+
         self.index = 0  # This is always Pacman
 
     def getAction(self, state):
@@ -369,6 +383,7 @@ class PacmanQAgent(QLearningAgent):
         informs parent of action for Pacman.  Do not change or remove this
         method.
         """
-        action = QLearningAgent.getAction(self, state)
+        action = super().getAction(state)
         self.doAction(state, action)
+
         return action

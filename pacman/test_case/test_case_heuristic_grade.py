@@ -32,13 +32,11 @@ from common.state_pacman import StatePacman
 from pacman.agent import Agent
 from pacman.agent import AgentPacman
 from pacman.agent.heuristic_function import get_heuristic_function
-from pacman.agent.search_problem import get_subclass_search_problem
-
-from common.state import State
-from pacman.game.layoutpacman import LayoutPacman
 from pacman.agent.search.search import astar
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
+from pacman.agent.search_problem import get_subclass_search_problem
+from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
 from pacman.test_case.common import checkSolution
 from pacman.test_case.test_case import TestCase
 
@@ -50,8 +48,8 @@ class HeuristicGrade(TestCase):
 
     def __init__(self, question, testDict):
         super(HeuristicGrade, self).__init__(question, testDict)
-        self.layoutText = testDict['layout']
-        self.layoutName = testDict['layoutName']
+        self.layoutText = testDict['layout_text']
+        self.layout_name = testDict['layout_name']
         self.searchProblemClassName = testDict['searchProblemClass']
         self.heuristicName = testDict['heuristic']
         self.basePoints = int(testDict['basePoints'])
@@ -61,7 +59,10 @@ class HeuristicGrade(TestCase):
 
         agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
-        list_player = [Player(agent, TypePlayer.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+        list_player = [PlayerPacman(self.question.get_graphics().get_gui(),
+                                    self.question.get_graphics(),
+                                    agent,
+                                    TypePlayerPacman.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
         #####
 
@@ -73,14 +74,13 @@ class HeuristicGrade(TestCase):
         # problemClass = getattr(searchAgents, self.searchProblemClassName)
         problemClass = get_subclass_search_problem(self.searchProblemClassName)
 
-        problem = problemClass(gameState) # FIXME: JOSEPH FIX
+        problem = problemClass(gameState)  # FIXME: JOSEPH FIX
 
         state = problem.getStartState()
         # heuristic = getattr(searchAgents, self.heuristicName)
         heuristic = get_heuristic_function(self.heuristicName)
 
         return problem, state, heuristic
-
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
         # search = moduleDict['search']
@@ -112,11 +112,9 @@ class HeuristicGrade(TestCase):
 
         return True
 
-
     def write_solution(self, path_file_solution: str) -> bool:
         handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
         handle.write('# File intentionally blank.\n')
         handle.close()
         return True
-

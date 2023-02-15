@@ -37,6 +37,7 @@ from common.state import State
 from pacman.agent import *
 from pacman.test_case.game_state_multi_agent_tree_state import MultiAgentTreeState
 from pacman.test_case.test_case import TestCase
+from pacman.test_case.test_case_agent import TestCaseAgent
 
 if TYPE_CHECKING:
     from pacman.question.question import Question
@@ -54,7 +55,8 @@ class MultiagentTreeProblem(object):
                  ):
 
         print("-- MultiagentTreeProblem", self, state_start)
-        self.state_start: MultiAgentTreeState = MultiAgentTreeState(self, state_start)
+        # self.state_start: MultiAgentTreeState = MultiAgentTreeState(self, state_start)
+        self.start_start_str = state_start
 
         self.num_agents:int = num_agents
         self.set_state_win: Set[str] = set_state_win
@@ -71,11 +73,21 @@ class MultiagentTreeProblem(object):
             self.stateToActions[state].append(action)
             self.stateToSuccessorMap[state][action] = nextState
 
+    def get_state_start_new(self, agent: Agent):
+        state_new =  MultiAgentTreeState(self, self.start_start_str, agent)
+        # self.generatedStates = set([self.start_start_str])
+        return state_new
     def reset(self):
-        self.generatedStates = set([self.state_start.state])
+        self.generatedStates = set([self.start_start_str])
 
 
-def get_multi_agent_tree_problem_from_dict_file_test(dict_file_test: Dict[str, Any]) -> MultiagentTreeProblem:
+def _get_multi_agent_tree_problem_from_dict_file_test(dict_file_test: Dict[str, Any]) -> MultiagentTreeProblem:
+    """
+    Middleman parsing function to remove mess from whatever class/object that would call this
+
+    :param dict_file_test:
+    :return:
+    """
     num_agents: int = int(dict_file_test["num_agents"])
     state_start: str = dict_file_test["start_state"]
     set_state_win: Set[str] = set(dict_file_test["win_states"].split(" "))
@@ -108,18 +120,24 @@ def get_multi_agent_tree_problem_from_dict_file_test(dict_file_test: Dict[str, A
                                  dict_evaluation_k_state_v_value)
 
 
-class GraphGameTreeTest(TestCase):
+class GraphGameTreeTest(TestCaseAgent):
+    """
 
+    Used by:
+        1-3.minmax.test
+
+    """
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(GraphGameTreeTest, self).__init__(question, dict_file_test)
 
-        self.problem_multi_agent_tree: MultiagentTreeProblem = get_multi_agent_tree_problem_from_dict_file_test(
+        # self.str_class_agent: str = self.dict_file_test['agent']
+        # self.depth = int(self.dict_file_test['depth'])
+
+        self.problem_multi_agent_tree: MultiagentTreeProblem = _get_multi_agent_tree_problem_from_dict_file_test(
             dict_file_test
         )
 
-        self.str_class_agent: str = self.dict_file_test['agent']
         self.diagram = self.dict_file_test['diagram'].split('\n')
-        self.depth = int(self.dict_file_test['depth'])
 
     def _solve_problem(self):
         """
@@ -129,12 +147,18 @@ class GraphGameTreeTest(TestCase):
             Give
 
         """
-        self.problem_multi_agent_tree.reset()
+        self.problem_multi_agent_tree.reset()  # TODO: WTF IS THIS SHIT
+
         # agent_being_tested = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
 
         agent_being_tested: Agent = get_subclass_agent(self.str_class_agent)(depth=self.depth)
 
-        action = agent_being_tested.getAction(self.problem_multi_agent_tree.state_start)
+
+        state_start  = self.problem_multi_agent_tree.get_state_start_new(agent_being_tested)
+
+
+
+        action = agent_being_tested.getAction(state_start)
         generated = self.problem_multi_agent_tree.generatedStates
 
         return action, " ".join([str(s) for s in sorted(generated)])

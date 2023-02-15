@@ -23,6 +23,7 @@ Reference:
 """
 from __future__ import annotations
 
+from functools import cache
 from typing import Tuple
 from typing import Union
 
@@ -41,6 +42,8 @@ class ContainerState:
 
     def __init__(self, container_position_vector: ContainerPositionVector):
         self.container_position_vector_start: ContainerPositionVector = container_position_vector
+
+        # This one will differ on copies
         self.container_position_vector: ContainerPositionVector = container_position_vector
 
         self.scaredTimer: int = 0
@@ -58,16 +61,19 @@ class ContainerState:
         return str(self.container_position_vector)
 
     def __eq__(self, other: Union[ContainerState, None]):
-        if other is None:
-            return False
-        return (
-                self.container_position_vector == other.container_position_vector and
-                self.scaredTimer == other.scaredTimer
-        )
+        if isinstance(other, ContainerState):
+            return (
+                    self.container_position_vector == other.container_position_vector and
+                    self.scaredTimer == other.scaredTimer
+            )
+        return False
 
     def __hash__(self):
         # return hash(hash(self.container_position_vector) + 13 * hash(self.scaredTimer))
-        return hash((hash(self.container_position_vector), hash(self.scaredTimer)))
+        return hash((
+            self.container_position_vector,
+            self.scaredTimer
+        ))
 
     def copy(self) -> ContainerState:
         state = ContainerState(self.container_position_vector_start)

@@ -31,17 +31,18 @@ import random
 # from multiagent.player import *
 from typing import Any
 from typing import Dict
+from typing import Hashable
 from typing import List
 from typing import Tuple
 
+from common.state import State
 from pacman.agent import Agent
 from pacman.game.directions import Action
-from common.state import State
 
-TYPE_TUPLE_state__ACTION_WRONG__ACTION_CORRECT = Tuple[State, Action, Action]
+TYPE_TUPLE__STATE__ACTION_WRONG__ACTION_CORRECT = Tuple[State, Action, Action]
 
 
-class GradingAgent(Agent):
+class _GradingAgent(Agent):
     """
     Takes in an player,
         Uses an player's
@@ -49,7 +50,7 @@ class GradingAgent(Agent):
             registerInitialState
         and
             uses answers from a .solution file via
-                list_list_list_action__value_optimal
+                list_list__list_action__value_optimal
                 list_list_action_alt_depth
                 list_list_action_partial_play_bug
             to check if player's
@@ -58,75 +59,83 @@ class GradingAgent(Agent):
 
     """
 
-    @classmethod
-    def from_dict(cls, seed, agent_to_be_tested, dict_file_solution: Dict[str, Any]):
-
-        list_list_list_action__value_optimal = (
-            [json.loads(x) for x in dict_file_solution['optimalActions'].split('\n')]
-        )
-
-        list_list_action_alt_depth = (
-            [json.loads(x) for x in dict_file_solution['altDepthActions'].split('\n')]
-        )
-
-        list_list_action_partial_play_bug = (
-            [json.loads(x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
-        )
-
-        return cls(
-            seed,
-            agent_to_be_tested,
-            list_list_list_action__value_optimal,
-            list_list_action_alt_depth,
-            list_list_action_partial_play_bug
-        )
+    # TODO: ALTERNATIVE CONSTRUCTION CUSTOM MADE, SHOULD BE REMOVED
+    # @classmethod
+    # def from_dict(cls, seed, agent_to_be_tested, dict_file_solution: Dict[str, Any]):
+    #
+    #     list_list_list_action__value_optimal = (
+    #         [json.loads(x) for x in dict_file_solution['optimalActions'].split('\n')]
+    #     )
+    #
+    #     list_list_action_alt_depth = (
+    #         [json.loads(x) for x in dict_file_solution['altDepthActions'].split('\n')]
+    #     )
+    #
+    #     list_list_action_partial_play_bug = (
+    #         [json.loads(x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
+    #     )
+    #
+    #     return cls(
+    #         seed,
+    #         agent_to_be_tested,
+    #         list_list_list_action__value_optimal,
+    #         list_list_action_alt_depth,
+    #         list_list_action_partial_play_bug
+    #     )
 
     def __init__(self,
                  seed: int,
                  agent_to_be_tested: Agent,
-                 list_list_list_action__value_optimal: List[List[List[List[Action], int]]],
-                 list_list_action_alt_depth: List[List[List[Action]]],
-                 list_list_action_partial_play_bug: List[List[List[Action]]]
+                 dict_file_solution: Dict[str, Any],
+                 **kwargs
                  ):
+
+        super().__init__(**kwargs)
+        self.seed: int = seed
 
         # save student player and actions of reference agents
         self.agent_to_be_tested: Agent = agent_to_be_tested
 
+        self.dict_file_solution: Dict[Hashable, Any] = dict_file_solution
+
         ##########
 
         ##########
 
         # Notes: Should come from reading a file
-        self.list_list_list_list_action__value_optimal: List[List[List[List[Action], int]]] = (
-            list_list_list_action__value_optimal
+        self.list_list_list__list_action__value_optimal: List[List[List[List[Action], int]]] = (
+            [json.loads(x) for x in dict_file_solution['optimalActions'].split('\n')]
         )
 
         # Notes: Should come from reading a file
-        self.list_list_list_action_alt_depth: List[List[List[Action]]] = list_list_action_alt_depth
+        self.list_list_list_action_alt_depth: List[List[List[Action]]] = (
+            [json.loads(x) for x in dict_file_solution['altDepthActions'].split('\n')]
+        )
 
         # Notes: Should come from reading a file
-        self.list_list_list_action_partial_play_bug: List[List[List[Action]]] = list_list_action_partial_play_bug
+        self.list_list_list_action_partial_play_bug: List[List[List[Action]]] = (
+            [json.loads(x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
+        )
 
         # create fields for storing specific wrong actions
         self.list_tuple_state__action_from_agent_to_be_tested__action_optimal: List[
-            TYPE_TUPLE_state__ACTION_WRONG__ACTION_CORRECT] = []
+            TYPE_TUPLE__STATE__ACTION_WRONG__ACTION_CORRECT] = []
 
         self.amount_wrong_states_explored: int = 0
 
         # boolean vectors represent types of implementation the student could have
         self.list_bool_action_consistent_with_optimal: List[bool] = (
-            [True for i in range(len(list_list_list_action__value_optimal[0]))]
+            [True for i in range(len(self.list_list_list__list_action__value_optimal[0]))]
         )
         self.list_bool_action_consistent_with_alternative_depth: List[bool] = (
-            [True for i in range(len(list_list_action_alt_depth[0]))]
+            [True for i in range(len(self.list_list_list_action_alt_depth[0]))]
         )
         self.list_bool_action_consistent_with_partial_play_bug: List[bool] = (
-            [True for i in range(len(list_list_action_partial_play_bug[0]))]
+            [True for i in range(len(self.list_list_list_action_partial_play_bug[0]))]
         )
 
         # keep track of elapsed moves
         self._count_action_called = 0
-        self.seed: int = seed
 
     def registerInitialState(self, state: State):
         if 'registerInitialState' in dir(self.agent_to_be_tested):
@@ -142,7 +151,8 @@ class GradingAgent(Agent):
         )
 
         # Possible correct solution (Came from a file)
-        list_list_list_action__value_optimal = self.list_list_list_list_action__value_optimal[self._count_action_called]
+        list_list_list_action__value_optimal = self.list_list_list__list_action__value_optimal[
+            self._count_action_called]
 
         # Possible correct solution (Came from a file)
         list_list_action_alt_depth = self.list_list_list_action_alt_depth[self._count_action_called]
@@ -203,7 +213,7 @@ class GradingAgent(Agent):
         return action_optimal
 
     def get_list_tuple__state__action_wrong__action_correct(self) -> List[
-        TYPE_TUPLE_state__ACTION_WRONG__ACTION_CORRECT]:
+        TYPE_TUPLE__STATE__ACTION_WRONG__ACTION_CORRECT]:
         return self.list_tuple_state__action_from_agent_to_be_tested__action_optimal
 
     def get_amount_wrong_states_explored(self) -> int:
@@ -225,3 +235,9 @@ class GradingAgent(Agent):
             return -1
         else:
             return len(self.list_tuple_state__action_from_agent_to_be_tested__action_optimal)
+
+    def __hash__(self):  # TODO: THIS STEALS THE HASH AND EQ STUFF
+        return self.agent_to_be_tested.__hash__()
+
+    def __eq__(self, other):
+        return self.agent_to_be_tested.__eq__(other)

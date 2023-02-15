@@ -25,6 +25,7 @@ import os
 import sys
 from functools import reduce
 from pprint import PrettyPrinter
+from pprint import pprint
 from typing import Any
 from typing import Dict
 
@@ -43,23 +44,36 @@ class ApproximateQLearningTest(TestCase):
 
     def __init__(self, question, testDict):
         super(ApproximateQLearningTest, self).__init__(question, testDict)
+
         self.discount = float(testDict['discount'])
         self.grid = Gridworld(parseGrid(testDict['grid']))
-        if 'noise' in testDict: self.grid.setNoise(float(testDict['noise']))
-        if 'livingReward' in testDict: self.grid.setLivingReward(float(testDict['livingReward']))
+
+        if 'noise' in testDict:
+            self.grid.setNoise(float(testDict['noise']))
+        if 'livingReward' in testDict:
+            self.grid.setLivingReward(float(testDict['livingReward']))
+
         self.grid = Gridworld(parseGrid(testDict['grid']))
         self.env = EnvironmentGridworld(self.grid)
         self.epsilon = float(testDict['epsilon'])
         self.learningRate = float(testDict['learningRate'])
         self.extractor = 'IdentityExtractor'
+
         if 'extractor' in testDict:
             self.extractor = testDict['extractor']
-        self.opts = {'actionFn': self.env.getPossibleActions, 'epsilon': self.epsilon, 'gamma': self.discount,
-                     'alpha': self.learningRate}
+
+        self.opts = {'actionFn': self.env.getPossibleActions,
+                     'epsilon': self.epsilon,
+                     'gamma': self.discount,
+                     'alpha': self.learningRate
+                     }
+
         numExperiences = int(testDict['numExperiences'])
         maxPreExperiences = 10
+
         self.numsExperiencesForDisplay = list(range(min(numExperiences, maxPreExperiences)))
         self.testOutFile = testDict['path_test_output']
+
         if sys.platform == 'win32':
             _, name_question, name_test = testDict['path_test_output'].split('\\')
         else:
@@ -131,7 +145,8 @@ class ApproximateQLearningTest(TestCase):
         return True
 
     def runAgent(self, numExperiences):
-        agent = ApproximateQAgent(extractor=self.extractor, **self.opts)
+        agent = ApproximateQAgent(**self.opts, extractor=self.extractor)
+
         states = [state for state in self.grid.getStates() if len(self.grid.getPossibleActions(state)) > 0]
         states.sort()
         lastExperience = None

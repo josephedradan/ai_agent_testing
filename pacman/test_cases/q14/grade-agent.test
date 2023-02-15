@@ -1,11 +1,11 @@
 class: "EvalAgentTest"
 
-str_list_agent_pacman: "ContestAgent"
-layoutName: "contestClassic"
+str_list_agent_pacman: "[ContestAgent()]"
+layout_name: "contestClassic"
 maxTime: "180"
 numGames: "5"
 
 scoreThresholds: "2500 2900"
 
 randomSeed: "0"
-str_list_agent_ghost: "AgentGhostDirectional AgentGhostDirectional AgentGhostDirectional"
+str_list_agent_ghost: "[AgentGhostDirectional(), AgentGhostDirectional(), AgentGhostDirectional()]"

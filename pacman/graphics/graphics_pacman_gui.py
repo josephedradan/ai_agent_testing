@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import math
 import time
+from pprint import pprint
 from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
@@ -31,8 +32,8 @@ from pacman.agent import Agent
 from pacman.agent.container_state import ContainerState
 from pacman.game.directions import Directions
 from pacman.game.layoutpacman import LayoutPacman
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 if TYPE_CHECKING:
@@ -273,7 +274,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
         self.capsules = self.drawCapsules(layout.list_capsule)
         self.gui.refresh()
 
-    def _drawAgentObjects(self, state):
+    def _drawAgentObjects(self, state):  # TODO: THIS IS CALLED ONCEEEEEEEEEEEEEEEE
         self.dict_k_agent_v_tuple__container_state__image = {}  # (container_state, image)
         for index, tuple__player__container_state in enumerate(state.dict_k_player_v_container_state.items()):
 
@@ -281,7 +282,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
             agent = player.get_agent()
             container_state = tuple__player__container_state[1]
 
-            if player.get_type_player() == TypePlayer.PACMAN:
+            if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
                 image = self._draw_pacman(container_state, index)
             else:
                 image = self._draw_ghost(container_state, index)
@@ -315,9 +316,10 @@ class GraphicsPacmanGUI(GraphicsPacman):
     def update(self, state_data_pacman: StateDataPacman):
 
         agent: Agent = state_data_pacman._agentMoved
-        player: Player = state_data_pacman.get_player_from_agent(agent)
+        player: PlayerPacman = state_data_pacman.get_player_from_agent(agent)
 
-        container_state: ContainerState = state_data_pacman.dict_k_player_v_container_state.get(agent)
+
+        container_state: ContainerState = state_data_pacman.dict_k_player_v_container_state.get(player)
 
         # TODO: THIS FUNCTION IS UNNEEDED BECAUSE JOSEPH USE DICT
         # if self.dict_k_agent_v_tuple__container_state__image[agent][0].is_pacman != container_state.is_pacman:
@@ -325,7 +327,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
 
         container_state_previous, image_previous = self.dict_k_agent_v_tuple__container_state__image.get(agent)
 
-        if player.get_type_player() == TypePlayer.PACMAN:
+        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
             self.animatePacman(container_state, container_state_previous, image_previous)
         else:
             self.moveGhost(container_state, player, container_state_previous, image_previous)
@@ -505,7 +507,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
                                        self.gridSize * GHOST_SIZE * (0.3 - dy)),
                              self.gridSize * GHOST_SIZE * 0.08)
 
-    def moveGhost(self, container_state, player: Player, container_state_previous, image_previous):
+    def moveGhost(self, container_state, player: PlayerPacman, container_state_previous, image_previous):
         old_x, old_y = self.to_screen(self.getPosition(container_state_previous))
         new_x, new_y = self.to_screen(self.getPosition(container_state))
         delta = new_x - old_x, new_y - old_y

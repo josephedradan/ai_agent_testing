@@ -36,10 +36,11 @@ class AgentGhost(Agent, ABC):
 
         dist = self.getDistribution(state)
         if len(dist) == 0:
-            return Directions.STOP
+             x= Directions.STOP
         else:
-            return util.chooseFromDistribution(dist)
+             x = util.chooseFromDistribution(dist)
 
+        return x
     @abstractmethod
     def getDistribution(self, state: State) -> Dict[Action, float]:
         "Returns a Counter encoding a distribution over actions from the provided state_pacman."

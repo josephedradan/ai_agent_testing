@@ -83,7 +83,7 @@ class PositionSearchProblem(SearchProblem):
             #     if 'drawExpandedCells' in dir(__main__._display):  # @UndefinedVariable
             #         __main__._display.drawExpandedCells(self._visitedlist)  # @UndefinedVariable
 
-            # TODO: JOSEPH CUSTOM HERE
+            # TODO: JOSEPH CUSTOM HERE, CUSTOM IS TO CHECK INSTANCE, ALSO THIS IS WHERE THE SEARCH PROBLEM DRAWS
 
             if isinstance(self.graphics, GraphicsPacmanGUI):
                 self.graphics.drawExpandedCells(self._visitedlist)

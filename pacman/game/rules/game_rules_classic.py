@@ -21,25 +21,22 @@ Tags:
 Reference:
 
 """
-from typing import Dict
 from typing import List
 ############################################################################
 #                     THE HIDDEN SECRETS OF PACMAN                         #
 #                                                                          #
 # You shouldn't need to look through the code in this section of the file. #
 ############################################################################
-from typing import Tuple
-from typing import Type
 from typing import Union
 
 from common.state_pacman import StatePacman
-from pacman.agent import get_subclass_agent
+from pacman.agent import Agent
 from pacman.game.game import Game
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.layoutpacman import get_layout_pacman
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
-from pacman.graphics import Graphics
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
+from pacman.graphics.graphics_pacman import GraphicsPacman
 
 
 class ClassicGameRules:
@@ -54,43 +51,46 @@ class ClassicGameRules:
         self._state_pacman_initial: Union[StatePacman, None] = None
 
     def get_players(self,
-                    list_tuple__str_agent__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
-                    type_player: TypePlayer,
-                    graphics_pacman: Graphics
-                    ) -> List[Player]:
+                    list_agent: List[Agent],
+                    type_player: TypePlayerPacman,
+                    graphics_pacman: GraphicsPacman
+                    ) -> List[PlayerPacman]:
 
-        list_player: List[Player] = []
+        list_player: List[PlayerPacman] = []
 
-        for tuple__str_agent__dict_kwargs in list_tuple__str_agent__dict_kwargs:
-            str_agent = tuple__str_agent__dict_kwargs[0]
-            dict_kwargs = tuple__str_agent__dict_kwargs[1]
+        for agent in list_agent:
 
-            subclass_agent = get_subclass_agent(str_agent)
+            player = PlayerPacman(graphics_pacman.gui,
+                                  graphics_pacman,
+                                  agent,
+                                  type_player)
 
-            agent = subclass_agent(graphics=graphics_pacman, **dict_kwargs)
-            player = Player(agent, type_player)
+            agent.initialize(player)
 
             list_player.append(player)
-
 
         return list_player
 
     def create_and_get_game(self,
                             str_path_layout: str,
-                            list_tuple__str_pacman_dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
-                            list_tuple__str_agent_ghost__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
-                            graphics_pacman: Graphics,
+                            list_agent_pacman: List[Agent],
+                            list_agent_ghost: List[Agent],
+                            graphics_pacman: GraphicsPacman,
                             bool_quiet: bool = False,
                             bool_catch_exceptions: bool = False
                             ) -> Game:
 
         layout_pacman: LayoutPacman = get_layout_pacman(str_path_layout)
 
-        list_player_pacman = self.get_players(list_tuple__str_pacman_dict_kwargs, TypePlayer.PACMAN, graphics_pacman)
-        list_player_ghost = self.get_players(list_tuple__str_agent_ghost__dict_kwargs, TypePlayer.GHOST, graphics_pacman)
+        list_player_pacman = self.get_players(list_agent_pacman,
+                                              TypePlayerPacman.PACMAN,
+                                              graphics_pacman)
 
-        list_player_all: List[Player] = [*list_player_pacman, *list_player_ghost]
+        list_player_ghost = self.get_players(list_agent_ghost,
+                                             TypePlayerPacman.GHOST,
+                                             graphics_pacman)
 
+        list_player_all: List[PlayerPacman] = [*list_player_pacman, *list_player_ghost]
         # list_player: List[Agent] = [agent_pacman, *list_str_pacman_ghost_class_agent[:layout_pacman.getNumGhosts()]]
 
         # # TODO JOSEPH SPEICAL
@@ -104,10 +104,10 @@ class ClassicGameRules:
         state_pacman_start = StatePacman()
         state_pacman_start.initialize(layout_pacman, list_player_all)
 
-        list_player_all_allowed_by_map: List[Player] = list(  # TODO: FIX MOVE ME IN A GAME CREATOR OS SOMESHIT
+        list_player_all_allowed_by_map: List[PlayerPacman] = list(  # TODO: FIX MOVE ME IN A GAME CREATOR OS SOMESHIT
             state_pacman_start.get_dict_k_player_v_container_state().keys()
         )
-        print("----- create_and_get_game ALL PLAYERS", list_player_all_allowed_by_map)
+        # print("----- create_and_get_game ALL PLAYERS", list_player_all_allowed_by_map)
         game = Game(
             list_player_all_allowed_by_map,
             graphics_pacman,

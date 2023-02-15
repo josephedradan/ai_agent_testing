@@ -123,6 +123,7 @@ def arg_parser_autograder(argv: Union[Sequence[str], None] = None) -> argparse.N
 
     argparse_args = parser.parse_args(argv)
 
+    print("AUTOGRADER.py argparse_args", argparse_args)
     print(argparse_args)
     return argparse_args
 
@@ -362,7 +363,7 @@ def evaluate(bool_generate_solutions: bool,
 
     # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
     list_str_question_to_grade = get_list_str_question(path_abs_test_cases, str_question_to_grade)
-    print("FSDFSDF", list_str_question_to_grade)
+    print("autograder.evaluate", list_str_question_to_grade)
 
     for str_question in list_str_question_to_grade:
         path_question = os.path.join(path_abs_test_cases, str_question)
@@ -459,7 +460,7 @@ def evaluate(bool_generate_solutions: bool,
             get_callable_that_wraps_question(question_object)
         )
 
-        # TODO: LIST OF TUPLE:  ('Questison Nubmer', Max points int)
+        # TODO: LIST OF TUPLE:  ('Question number', Max points int)
         list_tuple__name_question__points_max.append((str_question, question_object.get_points_max()))
 
     grader = Grader(
@@ -514,11 +515,11 @@ def get_graphics_pacman(graphicsByDefault: Union[bool, None], options=None) -> G
     return graphics_pacman_null.GraphicsPacmanNull()
 
 
-def get_question_stuff(path_question: str, display: Graphics) -> Tuple[Dict[str, Any], Question]:
+def get_question_stuff(path_question: str, graphics: Graphics) -> Tuple[Dict[str, Any], Question]:
     dict_question_config: Dict[str, Any] = ParseFile(os.path.join(path_question, 'CONFIG')).get_dict()
 
     class_question_subclass: Type[Question] = get_subclass_question(dict_question_config['class'])
-    question_object: Question = class_question_subclass(dict_question_config, display)
+    question_object: Question = class_question_subclass(dict_question_config, graphics)
 
     return dict_question_config, question_object
 

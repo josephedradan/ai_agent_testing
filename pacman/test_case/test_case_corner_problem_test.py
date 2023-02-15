@@ -36,8 +36,8 @@ from pacman.agent.search.search import bfs
 from pacman.agent.search_problem import CornersProblem
 from pacman.game.actions import Actions
 from pacman.game.layoutpacman import LayoutPacman
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -62,16 +62,21 @@ class CornerProblemTest(TestCase):
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(CornerProblemTest, self).__init__(question, dict_file_test)
 
-        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('layout_text')
 
-        self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
+        self.name_layout: Union[str, None] = dict_file_test.get('layout_name')
 
     def solution(self):
         lay = LayoutPacman([l.strip() for l in self.str_layout.split('\n')])
 
         agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
-        list_player = [Player(agent, TypePlayer.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+        list_player = [PlayerPacman(
+            self.question.get_graphics().get_gui(),
+            self.question.get_graphics(),
+            agent,
+            TypePlayerPacman.PACMAN)
+        ]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
         ################
 

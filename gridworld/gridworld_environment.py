@@ -24,6 +24,8 @@ Reference:
 import random
 
 from common.environment import Environment
+from common.state import State
+from pacman.agent import Agent
 
 
 class EnvironmentGridworld(Environment):
@@ -35,7 +37,7 @@ class EnvironmentGridworld(Environment):
     def getCurrentState(self):
         return self.state
 
-    def getPossibleActions(self, state):
+    def getPossibleActions(self, state: State, agent:Agent):
         return self.gridWorld.getPossibleActions(state)
 
     def doAction(self, action):

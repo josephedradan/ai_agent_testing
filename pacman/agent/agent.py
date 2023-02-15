@@ -25,17 +25,20 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
-from pprint import pprint
+from typing import Any
+from typing import Dict
+from typing import Hashable
 from typing import TYPE_CHECKING
 from typing import Union
 
-from common.graphics.gui import GUI
-from common.graphics.gui_tkinter import GUITkinter
 from pacman.game.directions import Action
 
 if TYPE_CHECKING:
     from common.state import State
-    from common.graphics.graphics import Graphics
+    from common.player import Player
+
+
+# T_PLAYER = TypeVar('T_PLAYER', bound=Player)  # TODO: MAYBE USE THIS, BUT IT WILL GET VERY COMPLEX
 
 
 class Agent(ABC):
@@ -45,33 +48,31 @@ class Agent(ABC):
 
     def registerInitialState(self, state_pacman: State): # inspects the starting state_pacman
     """
+    player: Union[Player, None]
+    kwargs: Dict[Hashable, Any]
 
     def __init_subclass__(cls, **kwargs):
         print("THINGY", cls)
 
     def __init__(self,
-                 graphics: Union[Graphics, None] = None,
-                 gui: Union[GUI, None] = None,
                  **kwargs,
                  ):
+        self.kwargs = kwargs
 
-        self.graphics: Union[Graphics, None] = graphics
+        self.player = None
 
-        if gui:
-            self.gui: Union[GUI, None] = gui
-        elif self.graphics:
-            self.gui: Union[GUI, None] = self.graphics.gui
+    def initialize(self, player: Player):
+        self.player: Player = player
 
+    # TODO: JOSEPH COMMENT JOSEPH JUMP
+    # print("GRAPHICS")
+    # print(self.graphics)
+    # print("ADDITIONAL KWARGS START")
+    # pprint(kwargs)
+    # print("ADDITIONAL KWARGS END")
 
-        # TODO: JOSEPH COMMENT JOSEPH JUMP
-        # print("GRAPHICS")
-        # print(self.graphics)
-        # print("ADDITIONAL KWARGS START")
-        # pprint(kwargs)
-        # print("ADDITIONAL KWARGS END")
-
-        # if kwargs or args:
-        #     raise Exception("ADDITIONAL KWARGS FOUND FIX THIS SHIT JOSEPH: {}".format(kwargs.items()))
+    # if kwargs or args:
+    #     raise Exception("ADDITIONAL KWARGS FOUND FIX THIS SHIT JOSEPH: {}".format(kwargs.items()))
 
     # TODO IN THE FUTURE USE THIS I THINK
     # def __init__(self, index=0, graphics_actual: Union[Display, None] = None):
@@ -98,3 +99,6 @@ class Agent(ABC):
 
         """
         pass
+
+    def get_player(self) -> Union[Player, None]:
+        return self.player

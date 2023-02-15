@@ -32,9 +32,9 @@ from typing import Union
 
 from common.action import Action
 from pacman.agent import Agent
-from pacman.game.player import Player
+from pacman.game.player_pacman import PlayerPacman
 
-TYPE_REPRESENTATIVE = Union[Agent, Player]
+TYPE_REPRESENTATIVE = Union[Agent, PlayerPacman]
 
 TYPE_POSITION = Union[Tuple[int, ...]]
 

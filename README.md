@@ -57,8 +57,9 @@
     python main.py -a q -ng 5 -m
     
 
+#####################################################################
 
-
+# JOSEPH FIX THIS SHIT BELOW
 
 CHECK .test FILES FOR THE BELOW JOSEPH
 
@@ -77,6 +78,25 @@ pacmanParams:
 SearchProblem USE self.set_graphics and self.graphics WHICH CAME FROM 
 AN Agent get_graphics set_graphics
 
+getGhostStates -> get_list_container_state_ghost for StatePacman
+
+PacmanGameTreeTest and GraphGameTreeTest SHARE AN AGENT MAKE A CLASS FOR THEIR SHARED AGENT
+THE PROBLEMS ARE WITH q10
+
+#####
+
+.initialize(lay, 0) Look for this and replace it
+
+######
+
+### Question q9: 2/4 ### Pacman EvalAgentTest   # FIXED
+### Question q10: 0/5 ### Pacman PacmanGameTreeTest
+### Question q11: 0/5 ### Pacman PacmanGameTreeTest
+### Question q12: 0/5 ### Pacman PacmanGameTreeTest
+### Question q14: 0/0 ###  # NEED BETTER ALGO
+
+
+###########################################################################
 
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish

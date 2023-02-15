@@ -26,11 +26,14 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-import sys
-import inspect
 import heapq
+import inspect
 import random
-import io
+import sys
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    pass
 
 
 class FixedRandom:
@@ -225,8 +228,8 @@ class PriorityQueueWithFunction(PriorityQueue):
 
     def __init__(self, priorityFunction):
         "priorityFunction (item) -> priority"
-        self.priorityFunction = priorityFunction      # store the priority function
-        PriorityQueue.__init__(self)        # super-class initializer
+        self.priorityFunction = priorityFunction  # store the priority function
+        PriorityQueue.__init__(self)  # super-class initializer
 
     def push(self, item):
         "Adds an item to the queue with priority from the priority function"
@@ -237,6 +240,7 @@ def manhattanDistance(xy1, xy2):
     "Returns the Manhattan distance between points xy1 and xy2"
     return abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
 
+
 def nearestPoint(pos):
     """
     Finds the nearest grid point to a position (discretizes).
@@ -246,7 +250,6 @@ def nearestPoint(pos):
     grid_row = int(current_row + 0.5)
     grid_col = int(current_col + 0.5)
     return (grid_row, grid_col)
-
 
 
 """
@@ -341,6 +344,7 @@ class Counter(dict):
         sortedItems = list(self.items())
 
         def compare(x, y): return sign(y[1] - x[1])
+
         sortedItems.sort(cmp=compare)
         return [x[0] for x in sortedItems]
 
@@ -572,13 +576,11 @@ def chooseFromDistribution(distribution):
             return element
 
 
-
-
 def sign(x):
     """
     Returns 1 or -1 depending on the sign of x
     """
-    if(x >= 0):
+    if (x >= 0):
         return 1
     else:
         return -1
@@ -704,9 +706,9 @@ def mutePrint():
     _MUTED = True
 
     _ORIGINAL_STDOUT = sys.stdout
-    #_ORIGINAL_STDERR = sys.stderr
+    # _ORIGINAL_STDERR = sys.stderr
     sys.stdout = WritableNull()
-    #sys.stderr = WritableNull()
+    # sys.stderr = WritableNull()
 
 
 def unmutePrint():
@@ -716,7 +718,7 @@ def unmutePrint():
     _MUTED = False
 
     sys.stdout = _ORIGINAL_STDOUT
-    #sys.stderr = _ORIGINAL_STDERR
+    # sys.stderr = _ORIGINAL_STDERR
 
 
 class Experiences(object):
@@ -4202,6 +4204,10 @@ class Experiences(object):
         else:
             raise NotImplementedError
         return list_experiences
+
 #
 #
 #
+
+
+################################ TODO: JOSEPH CUSTOM IS HERE

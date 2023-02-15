@@ -34,10 +34,9 @@ from pacman.agent import AgentPacman
 from pacman.agent.search.search import astar
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
 from pacman.agent.search_problem.search_problem_corners import CornersProblem
-from common.state import State
 from pacman.game.layoutpacman import LayoutPacman
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
 
@@ -51,9 +50,9 @@ class CornerHeuristicPacman(TestCase):
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(CornerHeuristicPacman, self).__init__(question, dict_file_test)
 
-        self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
+        self.name_layout: Union[str, None] = dict_file_test.get('layout_name')
 
-        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('layout_text')
 
     # def execute(self, grade, moduleDict, solutionDict):
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
@@ -66,7 +65,12 @@ class CornerHeuristicPacman(TestCase):
 
         agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
-        list_player = [Player(agent, TypePlayer.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+        list_player = [PlayerPacman(
+            self.question.get_graphics().get_gui(),
+            self.question.get_graphics(),
+            agent,
+            TypePlayerPacman.PACMAN)
+        ]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
         #####
 
@@ -110,7 +114,7 @@ class CornerHeuristicPacman(TestCase):
 
         agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
-        list_player = [Player(agent, TypePlayer.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+        list_player = [PlayerPacman(agent, TypePlayerPacman.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
         ######
 

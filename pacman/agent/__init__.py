@@ -48,7 +48,9 @@ from pacman.agent.agent_pacman_search import SearchAgent
 from pacman.agent.agent_pacman_search import StayEastSearchAgent
 from pacman.agent.agent_pacman_search import StayWestSearchAgent
 from pacman.agent.qlearningAgents import PacmanQAgent
+
 from pacman.agent.agent_approximate_q_agent import ApproximateQAgent  # MUST BE AFTER PacmanQAgent
+from pacman.agent._agent_grading import _GradingAgent  # MUST BE AFTER Agent
 
 LIST_SUBCLASS_AGENT = [
     # Agent,
@@ -75,6 +77,8 @@ LIST_SUBCLASS_AGENT = [
     PacmanQAgent,
     ContestAgent,
     ApproximateQAgent,
+    #
+    _GradingAgent,
 ]
 
 DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT = {

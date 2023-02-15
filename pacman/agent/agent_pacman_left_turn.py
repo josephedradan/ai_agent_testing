@@ -56,7 +56,7 @@ class AgentPacmanLeftTurn(AgentPacman):
     def getAction(self, state: State) -> Action:
         legal = state.getLegalActions(self)
 
-        current = state.get_state_container_GHOST().container_position_vector.direction
+        current = state.get_container_state_GHOST(self).container_position_vector.direction
 
         if current == Directions.STOP:
             current = Directions.NORTH

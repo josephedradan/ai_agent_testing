@@ -23,14 +23,15 @@ Reference:
 """
 import time
 from abc import abstractmethod
+from typing import List
 from typing import TYPE_CHECKING
 
+from common.action import Action
+from common.state import State
 from pacman.agent import Agent
 from pacman.agent.agent_value_estimation import ValueEstimationAgent
-from common.state import State
 
 if TYPE_CHECKING:
-
     pass
 
 
@@ -48,7 +49,8 @@ class ReinforcementAgent(ValueEstimationAgent):
         - Use self.getLegalActions(state_pacman) to know which actions
                       are available in a state_pacman
     """
-    def __init__(self, actionFn=None, num_training=100, epsilon=0.5, alpha=0.5, gamma=1, **kwargs):
+
+    def __init__(self, alpha=0.5, epsilon=0.5, gamma=1, num_training=100, actionFn=None, **kwargs):
         """
         actionFn: Function which takes a state_pacman and returns the list of legal actions
 
@@ -59,17 +61,24 @@ class ReinforcementAgent(ValueEstimationAgent):
         """
         super().__init__(alpha, epsilon, gamma, num_training, **kwargs)
 
+        state: State
+
         if actionFn == None:
-            actionFn = lambda state, agent: state.getLegalActions(agent)
+            def get_legal_action(state_: State, agent_: Agent) -> List[Action]:
+                return state_.getLegalActions(agent_)
+
+            actionFn = get_legal_action
 
         self.actionFn = actionFn
         self.episodesSoFar = 0
         self.accumTrainRewards = 0.0
         self.accumTestRewards = 0.0
-        self.num_training = int(num_training)
-        self.epsilon = float(epsilon)
-        self.alpha = float(alpha)
-        self.discount = float(gamma)
+
+        # TODO: REMOVE BELOW LATER
+        # self.num_training = int(num_training)
+        # self.epsilon = float(epsilon)
+        # self.alpha = float(alpha)
+        # self.discount = float(gamma)
 
     ####################################
     #    Override These Functions      #
@@ -118,6 +127,7 @@ class ReinforcementAgent(ValueEstimationAgent):
         """
           Called by environment when episode is done
         """
+
         if self.episodesSoFar < self.num_training:
             self.accumTrainRewards += self.episodeRewards
         else:
@@ -133,7 +143,6 @@ class ReinforcementAgent(ValueEstimationAgent):
 
     def isInTesting(self):
         return not self.isInTraining()
-
 
     ################################
     # Controls needed for Crawler  #
@@ -170,6 +179,7 @@ class ReinforcementAgent(ValueEstimationAgent):
 
     def registerInitialState(self, state: State):
         self.startEpisode()
+
         if self.episodesSoFar == 0:
             print('Beginning %d episodes of Training' % (self.num_training))
 
@@ -205,6 +215,7 @@ class ReinforcementAgent(ValueEstimationAgent):
             print('\tAverage Rewards for last %d episodes: %.2f' % (
                 NUM_EPS_UPDATE, windowAvg))
             print('\tEpisode took %.2f seconds' % (time.time() - self.episodeStartTime))
+            print("COUNTER_Q LENGTH:", len(self.counter_q_table_k_state_action_v_value))
             self.lastWindowAccumRewards = 0.0
             self.episodeStartTime = time.time()
 

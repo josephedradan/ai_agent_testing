@@ -16,6 +16,7 @@ from typing import Any
 from typing import Dict
 from typing import Hashable
 from typing import List
+from typing import Tuple
 from typing import Union
 
 
@@ -87,37 +88,86 @@ class ParseFile():
         return test
 
 
-def get_dict_kwargs_from_string(string_given: Union[str, None]) -> Dict[str, Any]:
-    if string_given is None:
-        return {}
-
-    list_string: List[str] = string_given.split(',')
-    kwargs = {}
-
-    for string in list_string:
-        if '=' in string:
-            key, val = string.split('=')
-        else:
-            key, val = string, 1
-
-        kwargs[key] = val
-    return kwargs
-
-
 class ContainerObjectConstruct:
 
     def __init__(self,
                  name_class: str,
                  arguments: List[Any],
-                 keyword_arguments:Dict[Hashable, Any]):
+                 keyword_arguments: Dict[Hashable, Any]):
         self.name_class = name_class
         self.arguments = arguments
         self.keyword_arguments = keyword_arguments
 
+    def __repr__(self):
+        return "{}({})".format(
+            self.name_class,
+            ", ".join([
+                *[str(arg) for arg in self.arguments],
+                *["{}={}".format(k, v) for k, v in self.keyword_arguments.items()]
+            ])
+        )
 
-def get_list_container_object_construct(str_object_construction: str) -> List[ContainerObjectConstruct]:
+
+TYPE_RETURNED = Union[int, float, str,
+                      Dict[Hashable, "TYPE_RETURNED"],
+                      List["TYPE_RETURNED"],
+                      Tuple["TYPE_RETURNED", ...]
+]
+
+
+def _get_value_representation_of_ast_node(node: ast.AST) -> TYPE_RETURNED:
     """
-    Old regex that works to parse Class name and its kwargs + args, but parsing args from kwargs is very complex
+    Get the literal value of a ast node. Only a subset of ast node types are allowed to checked
+    to prevent arbitrary code execution.
+
+    Notes:
+        This does not use ast.unparse(...) because it will return the string representation of the node's value
+        and not that the literal value with its corresponding correct type
+
+
+    :param node:
+    :return:
+    """
+    if isinstance(node, ast.Constant):
+        return node.value
+    elif isinstance(node, ast.Name):
+        return node.id
+    elif isinstance(node, ast.Tuple):
+        return tuple((_get_value_representation_of_ast_node(elt) for elt in node.elts))
+    elif isinstance(node, ast.List):
+        return [_get_value_representation_of_ast_node(elt) for elt in node.elts]
+    elif isinstance(node, ast.Dict):
+        return {_get_value_representation_of_ast_node(key): _get_value_representation_of_ast_node(value)
+                for key, value in zip(node.keys, node.values)}
+
+    raise Exception("Prohibited arg/kwarg of type {} with value {} found "
+                    "this type is banned to prevent potential arbitrary code "
+                    "execution.".format(type(node), ast.unparse(node)))
+
+
+def get_list_container_object_construct_from_str(str_object_construction: str) -> List[ContainerObjectConstruct]:
+    """
+    Get a list of objects that contains a class name, its args, and its kwargs that are required
+    to make a instance of the class name
+
+    FIXME: THE BELOW IS A TESTING STRING
+    code = '''
+    [Bob('sdfsdf',x=23),Bob('sdfsdf', 'AAAA',
+    \"BBBB\",
+    'dude = 44',x=23),
+    Bob('sdfsdf',x=23.2, man='cool'),
+    Person( {"Hello": 123} ,joseph, 'school="None"', "car='Cool'", name="bob", quote="Fake kwarg age=24",
+    age=21, a=b, d=2323,
+    random_dict = {"World": {1: {"lol": "Cool Man"}}}
+    )
+    ]'''
+
+    :param str_object_construction:
+    :return:
+    """
+    ##
+    """
+    Old regex that parses Class name and its kwargs + args, but parsing args from kwargs is very complex
     due to string arguments looking like keyword arguments even though those string arguments should not be
     keyword arguments.
 
@@ -129,15 +179,6 @@ def get_list_container_object_construct(str_object_construction: str) -> List[Co
 
     The example above is hard to parse args and kwargs correctly plus there are newlines, spaces, and tabs that
     need to be accounted for
-
-    FIXME: THE BELOW IS A TESTING STRING
-    code = '''
-    [Bob('sdfsdf',x=23),Bob('sdfsdf', 'AAAA',
-    \"BBBB\",
-    'dude = 44',x=23),
-    Bob('sdfsdf',x=23.2, man='cool'),
-    Person( 'school="None"', "car='Cool'", name="bob", quote="Fake kwarg age=24", age=21)
-    ]'''
     """
     # pattern_class_instantiation_ = re.compile(r"(\b\w+)\((.*?)\)")
     # list_class_instantiation = re.findall(pattern_class_instantiation_, str_object_construction)
@@ -145,22 +186,115 @@ def get_list_container_object_construct(str_object_construction: str) -> List[Co
     str_object_construction = str_object_construction.strip()  # Clean up unnecessary spacing
 
     ast_parse = ast.parse(str_object_construction)
+
     list_ast_object = [ast_object for ast_object in ast.walk(ast_parse) if isinstance(ast_object, ast.Call)]
 
     list_container_object_construct: List[ContainerObjectConstruct] = []
-
     for ast_object in list_ast_object:
-        name_class = ast_object.func.id
-        args = [arg.s for arg in ast_object.args]
-        kwargs = {keyword_arg.arg: keyword_arg.value.s for keyword_arg in ast_object.keywords}
+        name_class: str = ast_object.func.id
+
+        args: List[Any] = [_get_value_representation_of_ast_node(arg) for arg in ast_object.args]
+
+        # The below will make everything into strings
+        # kwargs: Dict[Hashable, Any] = {
+        #     keyword_arg.arg: ast.unparse(keyword_arg.value)
+        #     for keyword_arg in ast_object.keywords
+        # }
+
+        kwargs: Dict[Hashable, Any] = {
+            keyword_arg.arg: _get_value_representation_of_ast_node(keyword_arg.value)
+            for keyword_arg in ast_object.keywords
+        }
 
         # print("Name Class:", name_class)
         # print("args:", args)
         # print("kwargs:", kwargs)
+        # for i in kwargs.values():
+        #     print(type(i))
+        # print()
 
         list_container_object_construct.append(ContainerObjectConstruct(name_class, args, kwargs))
 
     return list_container_object_construct
+
+
+def get_list_container_object_construct_implicit(
+        name_class: str,
+        str_args_kwargs: str,
+        amount_to_create: int) -> List[ContainerObjectConstruct]:
+    """
+
+    :param name_class:
+    :param str_args_kwargs:
+    :param amount_to_create:
+    :return:
+    """
+    _str_agent = str(name_class)
+
+    args, kwargs = get_tuple__args__kwargs___from_str(str_args_kwargs)
+    _list_list_container_object_construct = (
+        [ContainerObjectConstruct(name_class, args, kwargs) for _ in range(amount_to_create)]
+    )
+
+    return _list_list_container_object_construct
+
+
+def get_list_container_object_construct_explicit(
+        name_class_space_separated: str,
+        str_args_kwargs_space_separated: str) -> List[ContainerObjectConstruct]:
+    """
+
+    :param name_class_space_separated:
+    :param str_args_kwargs_space_separated:
+    :return:
+    """
+    # Example: "AgentKeyboard AgentKeyboard AgentKeyboard"
+    _list_str_agent = name_class_space_separated.split(" ")
+
+    # Example: "name=Bob,age=21 name=Steve,age=22"
+    _list_str_agent_args_kwargs = str_args_kwargs_space_separated.split(" ")
+
+    _list_tuple__args__kwargs___from_str: List[Tuple[List, Dict[Hashable, Any]]] = (
+        [get_tuple__args__kwargs___from_str(_kwargs) for _kwargs in _list_str_agent_args_kwargs]
+    )
+
+    _list_list_container_object_construct = [
+        ContainerObjectConstruct(name_class, arguments, keyword_arguments)
+        for name_class, arguments, keyword_arguments in
+        zip(_list_str_agent, *_list_tuple__args__kwargs___from_str)
+    ]
+
+    return _list_list_container_object_construct
+
+
+def get_tuple__args__kwargs___from_str(string_given: Union[str, None]) -> Tuple[List, Dict[Hashable, Any]]:
+    """
+    Get a tuple containing args and kwargs parsed from a string
+
+    :param string_given:
+    :return:
+    """
+    # if string_given is None:
+    #     return {}
+    #
+    # list_string: List[str] = string_given.split(',')
+    # kwargs = {}
+    #
+    # for string in list_string:
+    #     if '=' in string:
+    #         key, val = string.split('=')
+    #     else:
+    #         key, val = string, 1
+    #
+    #     kwargs[key] = val
+
+    _str_parsable_fake = "_({})".format(string_given)
+
+    list_container_object_construct = get_list_container_object_construct_from_str(_str_parsable_fake)
+
+    _container_object_construct = list_container_object_construct[0]
+
+    return _container_object_construct.arguments, _container_object_construct.keyword_arguments
 
 
 # TODO: JOSEPH NOT USED
@@ -174,3 +308,16 @@ def get_list_container_object_construct(str_object_construction: str) -> List[Co
 #             handle.write('%s: """\n%s\n"""\n' % (data, dict_file_test[data]))
 #         else:
 #             raise Exception("Bad __emit__")
+
+if __name__ == '__main__':
+    code = '''
+    [Bob('sdfsdf',x=23),Bob('sdfsdf', 'AAAA',
+    \"BBBB\",
+    'dude = 44',x=23),
+    Bob('sdfsdf',x=23.2, man='cool'),
+    Person( {"Hello": 123} ,joseph, 'school="None"', "car='Cool'", name="bob", quote="Fake kwarg age=24", 
+    age=21, a=b, d=2323,
+    random_dict = {"World": {1: {"lol": "Cool Man"}}}
+    )
+    ]'''
+    print(get_list_container_object_construct_from_str(code))

@@ -27,6 +27,8 @@ from typing import Callable
 from typing import Dict
 from typing import Union
 
+from common.state import State
+from pacman.agent import Agent
 from pacman.agent.evaluation_function.evaluation_function_better import evaluation_function_better
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import evaluation_function_food_and_ghost
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import (
@@ -36,7 +38,6 @@ from pacman.agent.evaluation_function.evaluation_function_state_score import (
     evaluation_function_state_score
 )
 from pacman.game.directions import Action
-from common.state import State
 
 """
 TYPE_EVALUATION_FUNCTION
@@ -63,7 +64,7 @@ Notes:
     should be solved in cPython
         https://mypy.readthedocs.io/en/latest/protocols.html#callback-protocols
 """
-TYPE_EVALUATION_FUNCTION = Callable[[State, Union[Action, None]], float]
+TYPE_EVALUATION_FUNCTION = Callable[[Agent, State, Union[Action, None]], float]
 
 # class EvaluationFunction(Protocol):
 #

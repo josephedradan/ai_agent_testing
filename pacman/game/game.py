@@ -22,6 +22,7 @@
 
 from __future__ import annotations
 
+import random
 import sys
 import time
 import traceback
@@ -29,14 +30,13 @@ from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
 
-from common.state_pacman import StatePacman
-from pacman.agent.agent import Agent
-from pacman.agent.agent_value_estimation_reinforcement import ReinforcementAgent
-from common.state import State
 from common.graphics.graphics import Graphics
+from common.state import State
+from common.state_pacman import StatePacman
 from common.util import TimeoutFunction
 from common.util import TimeoutFunctionException
-from pacman.game.player import Player
+from pacman.agent.agent_value_estimation_reinforcement import ReinforcementAgent
+from pacman.game.player_pacman import PlayerPacman
 
 if TYPE_CHECKING:
     from pacman.game.rules.game_rules_classic import ClassicGameRules
@@ -55,7 +55,7 @@ class Game:
     """
 
     def __init__(self,
-                 list_player: List[Player],
+                 list_player: List[PlayerPacman],
                  graphics_pacman: Graphics,
                  rules: ClassicGameRules,
                  index_starting: int = 0,
@@ -63,7 +63,7 @@ class Game:
                  bool_catch_exceptions: bool = False
                  ):
 
-        self.list_player: List[Player] = list_player
+        self.list_player: List[PlayerPacman] = list_player
         self.agentCrashed: bool = False
         self.graphics_pacman: Graphics = graphics_pacman
         self.rules: ClassicGameRules = rules
@@ -82,7 +82,6 @@ class Game:
         #####
 
         self.state_pacman: Union[StatePacman, None] = None
-
 
     def _get_progress(self) -> float:
         if self.gameOver:
@@ -190,10 +189,10 @@ class Game:
                 self._unmute()
 
         index_agent = self.index_starting
-        number_of_agents:int  = len(self.list_player)
+        number_of_agents: int = len(self.list_player)
 
         ##################################################
-        # Main game Loop
+        # Main game Loop (Main Loop)
         ##################################################
         while not self.gameOver:  # TODO: GAME LOOP IS RIGHT HERE
             # Fetch the next player
@@ -210,7 +209,7 @@ class Game:
             state_observation: State
 
             if isinstance(agent, ReinforcementAgent):
-            # Generate an state_observation of the state_pacman
+                # Generate an state_observation of the state_pacman
                 self._mute(index_agent)
                 if self.bool_catch_exceptions:
                     try:
@@ -239,7 +238,6 @@ class Game:
             ##################################################
             else:
                 state_observation = self.state_pacman.get_deep_copy()
-
 
             ##################################################
             # Do operation related to autograder.py
@@ -302,6 +300,10 @@ class Game:
             else:
                 action = agent.getAction(state_observation)  # # TODO: AGENT ACTION COMES FROM HERE
 
+            # print("ACTION TAKEN:", action)
+            # print("_____________MAIN LOOP_____________")
+            # print()
+
             ##################################################
 
             self._unmute()
@@ -345,7 +347,10 @@ class Game:
         #########################################################
 
         # inform a learning player of the game result
-        for index_agent, agent in enumerate(self.list_player):
+        for index_agent, player in enumerate(self.list_player):
+
+            agent = player.get_agent()
+
             if "final" in dir(agent):
                 try:
                     self._mute(index_agent)

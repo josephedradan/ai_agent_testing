@@ -34,8 +34,8 @@ from pacman.game.actions import Actions
 from pacman.game.common import TYPE_POSITION
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
 from pacman.game.rules.common import COLLISION_TOLERANCE
 from pacman.game.rules.rules_agent import RulesAgent
 
@@ -50,7 +50,7 @@ class GhostRules(RulesAgent):
     GHOST_SPEED = 1.0
 
     @staticmethod
-    def getLegalActions(state_pacman: StatePacman, player: Player) -> List[Directions]:
+    def getLegalActions(state_pacman: StatePacman, player: PlayerPacman) -> List[Directions]:
         """
         Ghosts cannot stop, and cannot turn around unless they
         reach a dead end, but can turn 90 degrees at intersections.
@@ -75,7 +75,9 @@ class GhostRules(RulesAgent):
         # print("state_pacman.get_state_container_GHOST(player)",
         #       state_pacman.get_state_container_GHOST(player))
 
-        container_position_vector = state_pacman.get_state_container_GHOST(player).container_position_vector
+        agent = player.get_agent()
+
+        container_position_vector = state_pacman.get_container_state_GHOST(agent).container_position_vector
 
         possibleActions = Actions.getPossibleActions(
             container_position_vector,
@@ -95,7 +97,7 @@ class GhostRules(RulesAgent):
         return possibleActions
 
     @staticmethod
-    def applyAction(state_pacman: StatePacman, action: Action, player: Player):
+    def applyAction(state_pacman: StatePacman, action: Action, player: PlayerPacman):
 
         legal = GhostRules.getLegalActions(state_pacman, player)
         if action not in legal:
@@ -120,16 +122,16 @@ class GhostRules(RulesAgent):
         container_state.scaredTimer = max(0, timer - 1)
 
     @staticmethod
-    def checkDeath(state_pacman: StatePacman, player: Player):
+    def checkDeath(state_pacman: StatePacman, player: PlayerPacman):
 
         position_pacman = state_pacman.getPacmanPosition()
 
-        if player.get_type_player() == TypePlayer.PACMAN:  # Pacman just moved; Anyone can kill him
+        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:  # Pacman just moved; Anyone can kill him
             # for index in range(1, len(state.state_data.dict_k_player_v_container_state)):
 
             for player_inner, container_state in state_pacman.state_data.dict_k_player_v_container_state.items():
 
-                if player_inner.get_type_player() == TypePlayer.GHOST:
+                if player_inner.get_type_player_pacman() == TypePlayerPacman.GHOST:
                     position_ghost = container_state.container_position_vector.get_position()
 
                     if GhostRules.canKill(position_pacman, position_ghost):
@@ -142,7 +144,7 @@ class GhostRules(RulesAgent):
                 GhostRules.collide(state_pacman, container_state_ghost, player)
 
     @staticmethod
-    def collide(state_pacman: StatePacman, container_ghost_state: ContainerState, player: Player):
+    def collide(state_pacman: StatePacman, container_ghost_state: ContainerState, player: PlayerPacman):
         if container_ghost_state.scaredTimer > 0:
             state_pacman.state_data.scoreChange += 200
             GhostRules.placeGhost(state_pacman, container_ghost_state)

@@ -1,7 +1,7 @@
 class: "ClosestDotTest"
 
-layoutName: "Test 11"
-layout: """
+layout_name: "Test 11"
+layout_text: """
 %%%
 % %
 % %

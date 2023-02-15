@@ -3,8 +3,8 @@ algorithm: "uniform_cost_search"
 points: "0.5"
 
 # The following specifies the layout to be used 
-layoutName: "mediumMaze"
-layout: """
+layout_name: "mediumMaze"
+layout_text: """
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                 P%
 % %%%%%%%%%%%%%%%%%%%%%%% %%%%%%%% %

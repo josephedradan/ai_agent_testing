@@ -65,7 +65,6 @@ class GUI(ABC):
     def change_color(self, id, newColor):
         pass
 
-
     @abstractmethod
     def get_keys_pressed(self):
         pass

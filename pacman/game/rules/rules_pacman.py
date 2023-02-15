@@ -33,8 +33,8 @@ from common.util import nearestPoint
 from pacman.game.actions import Actions
 from pacman.game.directions import Action
 from pacman.game.directions import Directions
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
 from pacman.game.rules.common import SCARED_TIME
 from pacman.game.rules.rules_agent import RulesAgent
 
@@ -50,9 +50,9 @@ class PacmanRules(RulesAgent):
     PACMAN_SPEED = 1
 
     @staticmethod
-    def getLegalActions(state_pacman: StatePacman, player: Player) -> List[Directions]:
+    def getLegalActions(state_pacman: StatePacman, player: PlayerPacman) -> List[Directions]:
 
-        container_position_vector = state_pacman.get_state_container_GHOST(player).container_position_vector
+        container_position_vector = state_pacman.get_container_state_GHOST(player.get_agent()).container_position_vector
 
         return Actions.getPossibleActions(
             container_position_vector,
@@ -60,19 +60,20 @@ class PacmanRules(RulesAgent):
         )
 
     @staticmethod
-    def applyAction(state_pacman: StatePacman, action: Action, player: Player):
+    def applyAction(state_pacman: StatePacman, action: Action, player: PlayerPacman):
 
         actions_legal = PacmanRules.getLegalActions(state_pacman, player)
 
         if action not in actions_legal:
             raise Exception("Illegal action " + str(action))
 
-        pacmanState = state_pacman.get_state_container_GHOST(player)
+        pacmanState = state_pacman.get_container_state_GHOST(player.get_agent())
 
         # Update ContainerVector
         vector = Actions.directionToVector(action, PacmanRules.PACMAN_SPEED)
         pacmanState.container_position_vector = pacmanState.container_position_vector.get_container_position_vector_successor(
-            vector)
+            vector
+        )
 
         # Eat
         next = pacmanState.container_position_vector.get_position()
@@ -108,5 +109,5 @@ class PacmanRules(RulesAgent):
             # Reset all ghosts' scared timers
             for player in state_pacman.state_data.dict_k_player_v_container_state:
 
-                if player.type_player == TypePlayer.GHOST:
+                if player.type_player == TypePlayerPacman.GHOST:
                     state_pacman.state_data.dict_k_player_v_container_state.get(player).scaredTimer = SCARED_TIME

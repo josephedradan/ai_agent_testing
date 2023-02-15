@@ -23,7 +23,6 @@ Reference:
 """
 from __future__ import annotations
 
-from pprint import pprint
 from typing import Any
 from typing import Dict
 from typing import TYPE_CHECKING
@@ -34,10 +33,9 @@ from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search import get_search_function
 from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.game.directions import Directions
-from common.state import State
 from pacman.game.layoutpacman import LayoutPacman
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
 
@@ -50,16 +48,15 @@ class PacmanSearchTest(TestCase):
     def __init__(self, question, dict_file_test):
         super(PacmanSearchTest, self).__init__(question, dict_file_test)
 
-        self.layout_text = dict_file_test['layout']
+        self.layout_text = dict_file_test['layout_text']
         self.alg = dict_file_test['algorithm']
-        self.layoutName = dict_file_test['layoutName']
+        self.layout_name = dict_file_test['layout_name']
 
         # TODO: sensible to have defaults like this?
         self.leewayFactor = float(dict_file_test.get('leewayFactor', '1'))
         self.costFn = eval(dict_file_test.get('costFn', 'None'))
         self.searchProblemClassName = dict_file_test.get('searchProblemClass', 'PositionSearchProblem')
         self.heuristicName = dict_file_test.get('heuristic', None)
-
 
     def getSolInfo(self):
         # alg = getattr(search, self.alg)
@@ -68,7 +65,10 @@ class PacmanSearchTest(TestCase):
         lay = LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
 
         state_pacman_start = StatePacman()
-        state_pacman_start.initialize(lay, [Player(AgentPacman(), TypePlayer.PACMAN)])
+        state_pacman_start.initialize(lay, [PlayerPacman(self.question.get_graphics().get_gui(),
+                                                         self.question.get_graphics(),
+                                                         AgentPacman(),
+                                                         TypePlayerPacman.PACMAN)])
 
         # class_problem = getattr(searchAgents, self.searchProblemClassName)
         class_problem = get_subclass_search_problem(self.searchProblemClassName)
@@ -135,11 +135,10 @@ class PacmanSearchTest(TestCase):
             return False
 
         grader.addMessage('PASS: %s' % self.path_file_test)
-        grader.addMessage('\tpacman layout name:\t\t%s' % self.layoutName)
+        grader.addMessage('\tpacman layout name:\t\t%s' % self.layout_name)
         grader.addMessage('\tsolution length: %s' % len(solution))
         grader.addMessage('\tnodes expanded:\t\t%s' % expanded)
         return True
-
 
     def write_solution(self, path_file_solution: str) -> bool:  # TODO: DONT KNOW
         # search = moduleDict['search']
@@ -149,7 +148,8 @@ class PacmanSearchTest(TestCase):
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
         handle.write('# This solution is designed to support both right-to-left\n')
         handle.write('# and left-to-right implementations.\n')
-        handle.write('# Number of nodes expanded must be with a factor of %s of the numbers below.\n' % self.leewayFactor)
+        handle.write(
+            '# Number of nodes expanded must be with a factor of %s of the numbers below.\n' % self.leewayFactor)
 
         # write forward solution
         solution, expanded, error = self.getSolInfo()
@@ -168,4 +168,3 @@ class PacmanSearchTest(TestCase):
         search.REVERSE_PUSH = not search.REVERSE_PUSH
         handle.close()
         return True
-

@@ -26,8 +26,8 @@ from __future__ import annotations
 from typing import Dict
 from typing import TYPE_CHECKING
 
-from common import util
 from common.action import Action
+from common import util
 from common.util import manhattanDistance
 from pacman.agent.agent_ghost import AgentGhost
 from pacman.game.actions import Actions
@@ -52,7 +52,7 @@ class AgentGhostDirectional(AgentGhost):
     def getDistribution(self, state: StatePacman) -> Dict[Action, float]:
 
         # Read variables from state_pacman
-        ghostState = state.get_state_container_GHOST(self)
+        ghostState = state.get_container_state_GHOST(self)
         legalActions = state.getLegalActions(self)
         pos = state.get_position_of_agent(self)
         isScared = ghostState.scaredTimer > 0
@@ -64,7 +64,7 @@ class AgentGhostDirectional(AgentGhost):
         actionVectors = [Actions.directionToVector(
             a, speed) for a in legalActions]
         newPositions = [(pos[0] + a[0], pos[1] + a[1]) for a in actionVectors]
-        pacmanPosition = state.get_position_of_agent(self)
+        pacmanPosition = state.getPacmanPosition()
 
         # Select best actions given the state_pacman
         distancesToPacman = [manhattanDistance(

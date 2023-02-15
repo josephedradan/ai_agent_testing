@@ -21,7 +21,6 @@ Tags:
 Reference:
 
 """
-from abc import ABC
 from abc import abstractmethod
 
 from pacman.agent import AgentPacman
@@ -45,7 +44,7 @@ class ValueEstimationAgent(AgentPacman):
     """
 
     def __init__(self, alpha=1.0, epsilon=0.05, gamma=0.8, num_training=10, **kwargs):
-        super(AgentPacman, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         """
         Sets options, which can be passed in via the Pacman command line using -a alpha=0.5,...
         alpha    - learning rate
@@ -67,8 +66,8 @@ class ValueEstimationAgent(AgentPacman):
         Should return Q(state_pacman,action)
         """
         pass
-    @abstractmethod
 
+    @abstractmethod
     def getValue(self, state):
         """
         What is the value of this state_pacman under the best action?
@@ -77,6 +76,7 @@ class ValueEstimationAgent(AgentPacman):
         V(s) = max_{a in actions} Q(s,a)
         """
         pass
+
     @abstractmethod
     def getPolicy(self, state):
         """
@@ -90,6 +90,7 @@ class ValueEstimationAgent(AgentPacman):
         it doesn't matter which is selected.
         """
         pass
+
     @abstractmethod
     def getAction(self, state):
         """

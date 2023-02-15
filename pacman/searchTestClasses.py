@@ -28,7 +28,7 @@ from pacman.agent.search.search import SearchProblem
 #
 # heuristic: "foodHeuristic"
 # searchProblemClass: "FoodSearchProblem"
-# layoutName: "Test %s"
+# layout_name: "Test %s"
 # str_path_layout: \"\"\"
 # %s
 # \"\"\"
@@ -45,7 +45,7 @@ from pacman.agent.search.search import SearchProblem
 
 # template = """class: "ClosestDotTest"
 #
-# layoutName: "Test %s"
+# layout_name: "Test %s"
 # str_path_layout: \"\"\"
 # %s
 # \"\"\"

@@ -26,9 +26,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from common import util
+from common.state import State
 from pacman.agent import PacmanQAgent
 from pacman.feature_extractor_coordiate import get_subclass_feature_extractor
-from common.state import State
 
 if TYPE_CHECKING:
     from pacman.feature_extractor_coordiate import FeatureExtractor
@@ -43,8 +43,8 @@ class ApproximateQAgent(PacmanQAgent):
        should work as is.
     """
 
-    def __init__(self, extractor='IdentityExtractor', **kwargs):
-        super().__init__(self, **kwargs)
+    def __init__(self, alpha=0.1, epsilon=0.5, gamma=0.5, num_training=100, extractor='IdentityExtractor', **kwargs):
+        super().__init__(alpha, epsilon, gamma, num_training, **kwargs)
 
         self.featExtractor: FeatureExtractor = get_subclass_feature_extractor(extractor)()
 

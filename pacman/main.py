@@ -47,7 +47,12 @@ import random
 import sys
 from typing import Any
 from typing import Dict
-from typing import Tuple
+
+from common.common import get_list_agent_from_list_container_object_construct
+from pacman.agent import Agent
+from pacman.parser import ContainerObjectConstruct
+from pacman.parser import get_list_container_object_construct_explicit
+from pacman.parser import get_list_container_object_construct_implicit
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -66,7 +71,6 @@ from pprint import pprint
 from typing import List
 
 from pacman.game.game import Game
-from pacman.parser import get_dict_kwargs_from_string
 
 from pacman.game.rules.game_rules_classic import ClassicGameRules
 from pacman.graphics.graphics_pacman_gui import GraphicsPacmanGUI
@@ -82,7 +86,7 @@ def default(str):
     return str + ' [Default: %default]'
 
 
-def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Namespace:
+def get_argparse_namespace_for_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Namespace:
     """
     Processes the command used to run pacman from the command line.
     """
@@ -117,71 +121,89 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
                         metavar='LAYOUT_FILE',
                         default='mediumClassic'
                         )
+
+    # ----- Pacman stuff -----
+
+    # Explicit Pacman creation
+
     group_pacman_selection_explicit.add_argument('-aps', '--AgentPacmans',
                                                  dest='str_list_agent_pacman',
                                                  help='the player TYPE in the pacmanAgents module to use',
+                                                 type=str,
+                                                 default=None,
                                                  )
 
-    group_pacman_selection_explicit.add_argument('-apsa', '--AgentPacmansArgs',
-                                                 dest='str_list_agent_pacman_kwargs',
-                                                 help='Comma separated values sent to player. e.g. "opt1=val1,opt2,opt3=val3"')
+    # group_pacman_selection_explicit.add_argument('-apsa', '--AgentPacmansArgs',
+    #                                              dest='str_list_agent_pacman_kwargs',
+    #                                              help='Comma separated values sent to player. e.g. "opt1=val1,opt2,opt3=val3"')
 
-    ##### Implicit is default
+    # Implicit Pacman creation is the default behavior
 
     group_pacman_selection_implicit.add_argument('-ap', '--AgentPacman',  # TODO: RENAME -ap to -ap
                                                  dest='str_agent_pacman',
                                                  help='the player TYPE in the pacmanAgents module to use',
                                                  choices=DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT.keys(),
+                                                 type=str,
                                                  default='AgentKeyboard',
                                                  )
     group_pacman_selection_implicit.add_argument('-apa', '--AgentPacmanArgs',  # TODO: RENAME -a to -apa
                                                  dest='str_agent_pacman_kwargs',
-                                                 help='Comma separated values sent to player. e.g. "opt1=val1,opt2,opt3=val3"')
+                                                 help='Comma separated values sent to player. e.g. "opt1=val1,opt2,opt3=val3"',
+                                                 type=str,
+                                                 default="",
+                                                 )
 
     group_pacman_selection_implicit.add_argument('-apn', '--AgentPacmanNum',  # TODO: RENAME -np to -apn
                                                  dest='num_of_agent_pacman',
-                                                 type=int,
                                                  help='The maximum number of pacman to use',
-                                                 default=1
+                                                 type=int,
+                                                 default=1,
                                                  )
 
-    ##########
+    # ----- Ghost stuff -----
+
+    # Explicit Ghost creation
 
     group_ghost_selection_explicit.add_argument('-ags', '--AgentGhosts',
                                                 dest='str_list_agent_ghost',
-                                                help="Explicit ghost agents",
+                                                help='Explicit ghost agents e.g "Agent("bob", stuff=123)" sd',
                                                 type=str,
+                                                default=None,
                                                 )
 
-    group_ghost_selection_explicit.add_argument('-agsa', '--AgentGhostsArgs',
-                                                dest='str_list_agent_ghost_kwargs',
-                                                help='Comma separated values sent to player. e.g. "opt1=val1,opt2,opt3=val3"')
+    # group_ghost_selection_explicit.add_argument('-agsa', '--AgentGhostsArgs',
+    #                                             dest='str_list_agent_ghost_kwargs',
+    #                                             help='Comma separated values sent to player. e.g. "opt1=val1,opt2,opt3=val3"')
 
-    ##### Implicit is default
+    # Implicit Ghost creation is default
 
     group_ghost_selection_implicit.add_argument('-ag', '--AgentGhost',  # TODO: RENAME -g to -ag
                                                 dest='str_agent_ghost',
                                                 help='the ghost player TYPE in the ghosts module to use',
                                                 choices=DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT.keys(),
+                                                type=str,
                                                 default='AgentGhostRandom'
                                                 )
     group_ghost_selection_implicit.add_argument('-aga', '--AgentGhostArgs',
                                                 dest='str_agent_ghost_kwargs',
-                                                help='Comma separated values sent to player. e.g. "opt1=val1,opt2,opt3=val3"')
+                                                help='Comma separated values sent to player. e.g. "opt1=val1,opt2,opt3=val3"',
+                                                type=str,
+                                                default="",
+                                                )
 
     group_ghost_selection_implicit.add_argument('-agn', '--AgentGhostNum',
-                                                type=int,
                                                 dest='num_of_agent_ghost',
                                                 help='The maximum number of ghosts to use',
+                                                type=int,
                                                 default=4
                                                 )
     # GRAPHICS
     parser.add_argument('--graphics',
                         dest='graphics_pacman',
                         choices=[graphics_pacman_.__name__ for graphics_pacman_ in LIST_GRAPHICS_PACMAN],
+                        help="What graphics to display the game with (default: %(default)s)",
                         type=str,
                         default=GraphicsPacmanGUI.__name__,
-                        help="What graphics to display the game with (default: %(default)s)"
                         )
     parser.add_argument('-q', '--quietTextGraphics',
                         action='store_true',
@@ -242,57 +264,15 @@ def arg_parser_pacman(argv: Union[Sequence[str], None] = None) -> argparse.Names
                         help='Maximum length of time an player can spend computing in a single game',
                         default=30
                         )
-    print("MAIN argv")
+    print("MAIN.py argv")
     print(argv)
     namespace_ = parser.parse_args(argv)
 
     return namespace_
 
 
-def get_list_tuple__str_agent__dict_kwargs___implicit(
-        str_agent: str,
-        str_agent_kwargs: str,
-        num_of_agent: int) -> List[Tuple[str, Dict[str, Union[str, int]]]]:
-    """
-
-    """
-    _str_agent = str(str_agent)
-
-    _str_agent_kwargs = get_dict_kwargs_from_string(str_agent_kwargs)
-
-    _list_tuple__str_agent__dict_kwargs = (
-        [(_str_agent, _str_agent_kwargs) for _ in range(num_of_agent)]
-    )
-
-    return _list_tuple__str_agent__dict_kwargs
-
-
-def get_list_tuple__str_agent__dict_kwargs___explicit(
-        str_list_agent: str,
-        str_list_agent_kwargs: str,
-      ) -> List[Tuple[str, Dict[str, Union[str, int]]]]:
-    """
-
-    """
-    # Example: "AgentKeyboard AgentKeyboard AgentKeyboard"
-    _list_str_agent = str_list_agent.split(" ")
-
-    # Example: "name=Bob,age=21 name=Steve,age=22"
-    _list_str_agent_kwargs = str_list_agent_kwargs.split(" ")
-
-    _list_str_agent_dict_kwargs: List[Dict[str, Union[str, Union[str, int]]]] = (
-        [get_dict_kwargs_from_string(_kwargs) for _kwargs in _list_str_agent_kwargs]
-    )
-
-    _list_tuple__str_agent__dict_kwargs = list(zip(_list_str_agent,
-                                                          _list_str_agent_dict_kwargs)
-                                                      )
-
-    return _list_tuple__str_agent__dict_kwargs
-
-
 def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
-    print("VARS")
+    print("get_dict_namespace VARS")
     pprint(vars(namespace))
     print("=------=")
 
@@ -316,19 +296,17 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     Pacman creation stuff
     """
 
-    _list_tuple__str_agent_pacman__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]]
+    _list_container_object_construct_pacman: List[ContainerObjectConstruct]
 
     if namespace.str_list_agent_pacman is not None:
-
-        _list_tuple__str_agent_pacman__dict_kwargs = get_list_tuple__str_agent__dict_kwargs___explicit(
+        _list_container_object_construct_pacman = get_list_container_object_construct_explicit(
             namespace.str_list_agent_pacman,
             namespace.str_list_agent_pacman_kwargs
         )
 
-
     else:  # Implicit is default
 
-        _list_tuple__str_agent_pacman__dict_kwargs = get_list_tuple__str_agent__dict_kwargs___implicit(
+        _list_container_object_construct_pacman = get_list_container_object_construct_implicit(
             namespace.str_agent_pacman,
             namespace.str_agent_pacman_kwargs,
             namespace.num_of_agent_pacman
@@ -337,14 +315,19 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     if namespace.num_training > 0:
         dict_k_name_arg_v_arg['num_training'] = namespace.num_training
 
-        for tuple__pacman_agent__dict_kwargs in _list_tuple__str_agent_pacman__dict_kwargs:
+        # Loop over container_object_construct_pacman and add the kwarg num_training is possible
+        for container_object_construct_pacman in _list_container_object_construct_pacman:
 
-            _dict_kwargs = tuple__pacman_agent__dict_kwargs[1]
+            _dict_kwargs = container_object_construct_pacman.keyword_arguments
 
             if 'num_training' not in _dict_kwargs:
                 _dict_kwargs['num_training'] = namespace.num_training
 
-    dict_k_name_arg_v_arg['list_tuple__str_agent_pacman__dict_kwargs'] = _list_tuple__str_agent_pacman__dict_kwargs
+    _list_agent_pacman: List[Agent] = get_list_agent_from_list_container_object_construct(
+        _list_container_object_construct_pacman
+    )
+
+    dict_k_name_arg_v_arg['list_agent_pacman'] = _list_agent_pacman
 
     #####
 
@@ -391,18 +374,18 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     #         [str_pacman_ghost_agent for _ in range(namespace.num_of_agent_ghost)]
     #     )
 
-    _list_tuple__str_agent_ghost__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]]
+    _list_container_object_construct_ghost: List[ContainerObjectConstruct]
 
     if namespace.str_list_agent_ghost is not None:
 
-        _list_tuple__str_agent_ghost__dict_kwargs = get_list_tuple__str_agent__dict_kwargs___explicit(
+        _list_container_object_construct_ghost = get_list_container_object_construct_explicit(
             namespace.str_list_agent_ghost,
             namespace.str_list_agent_ghost_kwargs
         )
 
     else:  # Implicit is default
 
-        _list_tuple__str_agent_ghost__dict_kwargs = get_list_tuple__str_agent__dict_kwargs___implicit(
+        _list_container_object_construct_ghost = get_list_container_object_construct_implicit(
             namespace.str_agent_ghost,
             namespace.str_agent_ghost_kwargs,
             namespace.num_of_agent_ghost
@@ -410,16 +393,22 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
 
     # TODO: THIS IS COPY FROM THE PACMAN VERSION ABOVE, NEED BETTER DESIGN
     if namespace.num_training > 0:
-        # dict_k_name_arg_v_arg['num_training'] = namespace.num_training
+        # dict_k_name_arg_v_arg['num_training'] = namespace.num_training  # TODO: Already added from the pacman above
 
-        for tuple__pacman_ghost__dict_kwargs in _list_tuple__str_agent_ghost__dict_kwargs:
+        for container_object_construct_ghost in _list_container_object_construct_ghost:
 
-            _dict_kwargs = tuple__pacman_ghost__dict_kwargs[1]
+            _dict_kwargs = container_object_construct_ghost.keyword_arguments
 
             if 'num_training' not in _dict_kwargs:
                 _dict_kwargs['num_training'] = namespace.num_training
 
-    dict_k_name_arg_v_arg['list_tuple__str_agent_ghost__dict_kwargs'] = _list_tuple__str_agent_ghost__dict_kwargs
+
+    _list_agent_ghost: List[Agent] = get_list_agent_from_list_container_object_construct(
+        _list_container_object_construct_ghost
+    )
+
+
+    dict_k_name_arg_v_arg['list_agent_ghost'] = _list_agent_ghost
 
     ##########
 
@@ -472,6 +461,9 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     return dict_k_name_arg_v_arg
 
 
+
+
+
 def replay_game(layout, actions, display):  # FIXME: FIGURE THSI SHIT OUT LATER
     # import pacmanAgents
     # import list_str_pacman_ghost_agent
@@ -511,8 +503,8 @@ def run_pacman_games(str_path_layout: _layout.LayoutPacman,
 
 
 def run_pacman_games(str_path_layout: str,
-                     list_tuple__str_agent_pacman__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
-                     list_tuple__str_agent_ghost__dict_kwargs: List[Tuple[str, Dict[str, Union[str, int]]]],
+                     list_agent_pacman: List[Agent],
+                     list_agent_ghost: List[Agent],
                      graphics_pacman: GraphicsPacman,
                      number_of_games: int,
                      bool_record: bool,
@@ -525,8 +517,8 @@ def run_pacman_games(str_path_layout: str,
     Execute playing Pacman
 
     :param str_path_layout:
-    :param list_tuple__str_agent_ghost__dict_kwargs:
-    :param list_str_pacman_ghost_agent:
+    :param list_agent_pacman:
+    :param list_agent_ghost:
     :param graphics_pacman:
     :param number_of_games:
     :param bool_record:
@@ -536,13 +528,19 @@ def run_pacman_games(str_path_layout: str,
     :return:
     """
 
-    # print("#" * 100)
-    # __ALL = (
-    #     str_path_layout, list_tuple__str_agent_ghost__dict_kwargs, list_str_pacman_ghost_agent, graphics, number_of_games, bool_record, num_training,
-    #     bool_catch_exceptions,
-    #     timeout)
-    # pprint(__ALL)
-    # print("#" * 100)
+    print("#" * 100, "run_pacman_games")
+    __ALL = (
+        str_path_layout,
+        list_agent_pacman,
+        list_agent_ghost,
+        graphics_pacman,
+        number_of_games,
+        bool_record,
+        num_training,
+        bool_catch_exceptions,
+        timeout)
+    pprint(__ALL)
+    print("#" * 100)
 
     classic_game_rules: ClassicGameRules = ClassicGameRules(timeout)
     list_game: List[Game] = []
@@ -564,8 +562,8 @@ def run_pacman_games(str_path_layout: str,
 
         game = classic_game_rules.create_and_get_game(
             str_path_layout,
-            list_tuple__str_agent_pacman__dict_kwargs,
-            list_tuple__str_agent_ghost__dict_kwargs,
+            list_agent_pacman,
+            list_agent_ghost,
             graphics_pacman,
             bool_quiet,
             bool_catch_exceptions
@@ -611,7 +609,7 @@ if __name__ == '__main__':
     > python pacman.py --help
     """
 
-    namespace = arg_parser_pacman(sys.argv[1:])  # Get game components based on input
+    namespace = get_argparse_namespace_for_pacman(sys.argv[1:])  # Get game components based on input
 
     dict_namespace = get_dict_namespace(namespace)
 

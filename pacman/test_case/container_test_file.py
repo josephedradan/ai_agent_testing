@@ -35,9 +35,9 @@ class ContainerFileTest:
 
         #####
 
-        self.str_layout: Union[str, None] = dict_file_test.get('layout')
+        self.str_layout: Union[str, None] = dict_file_test.get('layout_text')
 
-        self.name_layout: Union[str, None] = dict_file_test.get('layoutName')
+        self.name_layout: Union[str, None] = dict_file_test.get('layout_name')
 
         ##### EpsilonGreedyTest
 

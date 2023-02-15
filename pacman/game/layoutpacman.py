@@ -24,7 +24,7 @@ from common.util import manhattanDistance
 from pacman import constants
 from pacman.game.directions import Directions
 from pacman.game.grid_pacman import GridPacman
-from pacman.game.type_player import TypePlayer
+from pacman.game.type_player import TypePlayerPacman
 
 if TYPE_CHECKING:
     pass
@@ -46,7 +46,7 @@ class LayoutPacman:
         self.food: GridPacman = GridPacman(self.width, self.height, False)
         self.list_capsule: List[Tuple[int, ...]] = []
 
-        self.list_tuple__type_player__position: List[Tuple[TypePlayer, Tuple[int, ...]]] = []
+        self.list_tuple__type_player__position: List[Tuple[TypePlayerPacman, Tuple[int, ...]]] = []
         self.numGhosts: int = 0
 
         self._processLayoutText(list_str_layout_line)
@@ -159,7 +159,8 @@ class LayoutPacman:
                 layoutChar = layoutText[height_layout_max - y][x]
                 self._process_char_from_layout(x, y, layoutChar)
 
-        # self.list_tuple__class_player__position.sort()  # FIXME: POTENTIALLY REMOVE?????????????????????????????????
+        # IMPORTANT: SORT IS NECESSARY FOR ORDERING AGENT MOVING ORDER
+        self.list_tuple__type_player__position.sort(key=lambda tuple_: tuple_[0] )
 
         # self.list_tuple__class_player__position = [(i == 0, pos) for i, pos in self.list_tuple__class_player__position]
 
@@ -171,6 +172,7 @@ class LayoutPacman:
             Given position and char, add that tuple to
 
         """
+
         if char_from_layout == '%':
             self.walls[x][y] = True
         elif char_from_layout == '.':
@@ -178,9 +180,9 @@ class LayoutPacman:
         elif char_from_layout == 'o':
             self.list_capsule.append((x, y))
         elif char_from_layout == 'P':
-            self.list_tuple__type_player__position.append((TypePlayer.PACMAN, (x, y)))
+            self.list_tuple__type_player__position.append((TypePlayerPacman.PACMAN, (x, y)))
         elif char_from_layout in ['G']:
-            self.list_tuple__type_player__position.append((TypePlayer.GHOST, (x, y)))
+            self.list_tuple__type_player__position.append((TypePlayerPacman.GHOST, (x, y)))
             self.numGhosts += 1
         elif char_from_layout in ['1', '2', '3',
                                   '4']:  # TODO: THIS IS IF THE MAP SPECIFIES GHOSTS EXACTLY # TOOD: ACTUALLY, IDK

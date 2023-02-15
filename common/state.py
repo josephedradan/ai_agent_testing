@@ -30,7 +30,7 @@ from abc import ABC
 from abc import abstractmethod
 from typing import Set
 from typing import TYPE_CHECKING
-
+from typing import Union
 
 if TYPE_CHECKING:
     from pacman.agent import Agent
@@ -57,6 +57,15 @@ class State(ABC):
     # You shouldn't need to call these directly #
     #############################################
 
+
+    @abstractmethod  # MultiagentTreeState DOES NOT HAVE THIS WHICH IS WHY ITS NOT ABSTRACT
+    def get_agent_by_index(self, index: int) -> Union[Agent, None]:
+        pass
+
+    @abstractmethod  # MultiagentTreeState DOES NOT HAVE THIS WHICH IS WHY ITS NOT ABSTRACT
+    def get_index_by_agent(self, agent: Agent) -> Union[int, None]:
+        pass
+
     @abstractmethod
     def getLegalActions(self, agent: Agent):
         pass
@@ -65,8 +74,12 @@ class State(ABC):
     def generateSuccessor(self, agent: Agent, action):
         pass
 
-    # @abstractmethod
-    def get_state_container_GHOST(self, agent: Agent):  # TODO: wtf is a state_container
+    @abstractmethod  # MultiagentTreeState DOES NOT HAVE THIS WHICH IS WHY ITS NOT ABSTRACT
+    def get_container_state_GHOST(self, agent: Agent):  # TODO: wtf is a state_container
+        pass
+
+    @abstractmethod
+    def getNumAgents(self) -> int:
         pass
 
     @abstractmethod

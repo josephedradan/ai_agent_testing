@@ -27,18 +27,21 @@ import json
 import random
 import time
 from io import TextIOWrapper
+from pprint import pprint
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import TYPE_CHECKING
 
+from common.common import get_list_agent_from_list_container_object_construct
 from pacman.agent import *
-from pacman.agent._agent_grading import GradingAgent
+from pacman.agent._agent_grading import _GradingAgent
 from pacman.game import layoutpacman
-from pacman.game.layoutpacman import LayoutPacman
-from common.graphics.graphics import Graphics
+from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.main import run_pacman_games
-from pacman.test_case.test_case import TestCase
+from pacman.parser import ContainerObjectConstruct
+from pacman.parser import get_list_container_object_construct_implicit
+from pacman.test_case.test_case_agent import TestCaseAgent
 
 if TYPE_CHECKING:
     from common.state import State
@@ -79,7 +82,7 @@ class PolyAgent(Agent):
         """
         return [list[i] for i in indices]
 
-    def construct_our_pacs(self, keyword_dict):
+    def construct_our_pacs(self, keyword_dict):  # TODO: WTF IS THIS SHIT
 
         multiAgents = None
 
@@ -139,31 +142,37 @@ class PolyAgent(Agent):
         return (self.optimalActionLists, self.alternativeDepthLists, self.partialPlyBugLists)
 
 
-def _run(layout_: LayoutPacman,
-         layout_name: str,
-         pacman: Agent,
-         list_agent_ghost: List[Agent],
-         graphics_pacman: Graphics,
-         number_of_games: int = 1,
-         name: str = 'games'
-         ) -> Dict[str, Any]:
+def _run_pacman_games_wrapper(str_path_layout: str,
+                              list_pacman: List[Agent],
+                              list_ghost: List[Agent],
+                              graphics_pacman: GraphicsPacman,
+                              number_of_games: int = 1,
+                              bool_record: bool = False,
+                              num_training: int = 0,
+                              bool_catch_exceptions: bool = True,
+                              timeout: int = 120,
+                              _name: str = 'games',
+                              **kwargs,
+                              ) -> Dict[str, Any]:
     """
     Runs a few pacman games and outputs their statistics.
     """
     time_start = time.time()
-    print('*** Running %s on {} {} time(s).'.format(name, layout_name, number_of_games))
+    print('*** Running %s on {} {} time(s).'.format(_name, str_path_layout, number_of_games))
 
     list_game = run_pacman_games(
-        layout_,
-        pacman,
-        list_agent_ghost,
+        str_path_layout,
+        list_pacman,
+        list_ghost,
         graphics_pacman,
         number_of_games,
-        False,
-        bool_catch_exceptions=True,
-        timeout=120
+        bool_record,
+        num_training,
+        bool_catch_exceptions,
+        timeout,
+        **kwargs,
     )
-    print('*** Finished running {} on {} after {} seconds.'.format(name, layout_name, time.time() - time_start))
+    print('*** Finished running {} on {} after {} seconds.'.format(_name, str_path_layout, time.time() - time_start))
 
     dict_stats = {
         'time': time.time() - time_start, 'wins': [g.state_pacman.isWin() for g in list_game].count(True),
@@ -180,25 +189,34 @@ def _run(layout_: LayoutPacman,
     return dict_stats
 
 
-class PacmanGameTreeTest(TestCase):
+class PacmanGameTreeTest(TestCaseAgent):
+    """
+
+    Used by:
+        8-pacman-game.test
+
+    """
 
     def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
         super(PacmanGameTreeTest, self).__init__(question, dict_file_test)
 
+        # self.str_class_agent: Type[Agent] = self.dict_file_test['agent']
+        # self.depth: int = int(self.dict_file_test['depth'])
+
         self.seed: int = int(self.dict_file_test['seed'])
-        self.class_agent: Type[Agent] = self.dict_file_test['agent']
-        self.layout_text: str = self.dict_file_test['layout']
-        self.layout_name: str = self.dict_file_test['layoutName']
-        self.depth: int = int(self.dict_file_test['depth'])
+
+        self.layout_text: str = self.dict_file_test['layout_text']
+        self.layout_name: str = self.dict_file_test['layout_name']
         self.max_points: int = int(self.dict_file_test['max_points'])
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
         # load student value_failure and staff value_failure solutions
 
         # multiAgents = moduleDict['projectTestClasses']
-        # agent_ = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
+        # agent_to_be_tested = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
 
-        agent_: Agent = get_subclass_agent(self.class_agent)(depth=self.depth)
+        print("______ PacmanGameTreeTest")
+        pprint(self.dict_file_test)
 
         # list_list_list_action__value_optimal = (
         #     [json.loads(x) for x in dict_file_solution['optimalActions'].split('\n')]
@@ -215,27 +233,54 @@ class PacmanGameTreeTest(TestCase):
         # set up game state_pacman and play a game
         random.seed(self.seed)
 
-        lay = layoutpacman.LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
+        # lay = layoutpacman.LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
 
-        agent_grading = GradingAgent.from_dict(
-            self.seed,
-            agent_,
-            dict_file_solution,
-            # list_list_list_action__value_optimal,
-            # list_list_action_alt_depth,
-            # list_list_action_partial_play_bug
+        agent_to_be_tested: Agent = get_subclass_agent(self.str_class_agent)(depth=self.depth)
+
+        # agent_grading = _GradingAgent.from_dict(
+        #     self.seed,
+        #     agent_to_be_tested,
+        #     dict_file_solution,
+        #     # list_list_list_action__value_optimal,
+        #     # list_list_action_alt_depth,
+        #     # list_list_action_partial_play_bug
+        # )
+
+
+        # TODO: JOSEPH THIS IS YOUR OLD STYLE
+        # list_container_object_construct_pacman = [ContainerObjectConstruct(
+        #     _GradingAgent.__name__,
+        #     [self.seed, agent_to_be_tested, dict_file_solution],
+        #     {}
+        # )]
+
+        # list_agent_pacman = get_list_agent_from_list_container_object_construct(
+        #     list_container_object_construct_pacman
+        # )
+
+        agent_grading = _GradingAgent(self.seed, agent_to_be_tested, dict_file_solution)
+
+        list_agent_pacman = [agent_grading]
+
+        # THE OLD [AgentGhostDirectional(i + 1) for i in range(2)],
+        list_container_object_construct_ghost = get_list_container_object_construct_implicit(
+            AgentGhostDirectional.__name__,
+            "",
+            2
+        )
+
+        list_agent_ghost = get_list_agent_from_list_container_object_construct(
+            list_container_object_construct_ghost
         )
 
         # check return codes and assign grader
-        disp = self.question.get_graphics_pacman()
+        graphics_pacman = self.question.get_graphics()
 
-        dict_stats = _run(
-            lay,
+        dict_stats = _run_pacman_games_wrapper(
             self.layout_name,
-            agent_grading,
-            [AgentGhostDirectional(i + 1) for i in range(2)],
-            disp,
-            name=self.class_agent
+            list_agent_pacman,
+            list_agent_ghost,
+            graphics_pacman,
         )
 
         if dict_stats['timeouts'] > 0:
@@ -292,9 +337,9 @@ class PacmanGameTreeTest(TestCase):
 
         random.seed(self.seed)
         lay = layoutpacman.LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
-        if self.class_agent == 'AgentPacmanExpectimax':
+        if self.str_class_agent == 'AgentPacmanExpectimax':
             ourPacOptions = {'expectimax': 'True'}
-        elif self.class_agent == 'AgentPacmanMinimaxAlphaBeta':
+        elif self.str_class_agent == 'AgentPacmanMinimaxAlphaBeta':
             ourPacOptions = {'alphabeta': 'True'}
         else:
             ourPacOptions = {}
@@ -303,15 +348,15 @@ class PacmanGameTreeTest(TestCase):
 
         pac = PolyAgent(self.seed, ourPacOptions, self.depth)
 
-        disp = self.question.get_graphics_pacman()
+        disp = self.question.get_graphics()
 
-        _run(
+        _run_pacman_games_wrapper(
             lay,
             self.layout_name,
             pac,
             [AgentGhostDirectional(i + 1) for i in range(2)],
             disp,
-            name=self.class_agent
+            _name=self.str_class_agent
         )
 
         (optimalActions, altDepthActions, partialPlyBugActions) = pac.getTraces()

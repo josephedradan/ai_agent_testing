@@ -21,15 +21,17 @@ Tags:
 Reference:
 
 """
+from pprint import pprint
 from typing import List
 from typing import Tuple
 from typing import Union
 
+from common.state import State
+from pacman.agent import Agent
 from pacman.agent import AgentPacman
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
 from pacman.agent.evaluation_function import evaluation_function_state_score
 from pacman.game.directions import Action
-from common.state import State
 
 
 class AgentContainer:
@@ -192,10 +194,10 @@ class AgentGhostContainer:
 
 
 def get_list_last_ghost_agent_state(state: State,
-                                         index_agent: int,
-                                         state_previous: State,
-                                         list_state: List[float] = None
-                                         ) -> List[AgentGhostContainer]:
+                                    index_agent: int,
+                                    state_previous: State,
+                                    list_state: List[float] = None
+                                    ) -> List[AgentGhostContainer]:
     """
     This gets the state_pacman based on the last ghost before it becomes pacmans's turn to move
 
@@ -248,9 +250,9 @@ def get_list_last_ghost_agent_state(state: State,
                 return [agent_ghost_container]
 
             get_list_last_ghost_agent_state(state_new,
-                                                 index_agent_new,
-                                                 state,
-                                                 list_state)
+                                            index_agent_new,
+                                            state,
+                                            list_state)
 
     return list_state
 
@@ -329,8 +331,8 @@ def dfs_recursive_minimax_v2(state: State,
     else:
 
         list_last_ghost_agent_state = get_list_last_ghost_agent_state(state,
-                                                                                index_agent,
-                                                                                state_previous)
+                                                                      index_agent,
+                                                                      state_previous)
 
         # print("list_last_ghost_agent_state", list_last_ghost_agent_state)
 
@@ -537,7 +539,8 @@ def dfs_recursive_minimax_v3(state: State,
 ##############################################################################################################
 
 # @callgraph(use_list_index_args=[1, 5, 7], display_callable_name=False, )
-def _dfs_recursive_minimax_v4_handler(state: State,
+def _dfs_recursive_minimax_v4_handler(agent_primary: Agent,
+                                      state: State,
                                       depth: int,
                                       alpha: Union[None, float],
                                       beta: Union[None, float],
@@ -559,6 +562,20 @@ def _dfs_recursive_minimax_v4_handler(state: State,
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
 
+    agent_selected: Agent = state.get_agent_by_index(index_agent)
+
+    # from common.state_pacman import StatePacman
+    # if isinstance(state, StatePacman):
+    #     print("_____agent_selected",
+    #           agent_selected,
+    #           index_agent)
+    #
+    #     pprint(state.state_data.dict_k_agent_v_index)
+    #     pprint(state.state_data.dict_k_index_v_agent)
+    #     pprint(state.state_data.dict_k_agent_v_player)
+    # print("___depth2", depth, index_agent)
+    # print("___depth----", agent_primary, agent_selected)
+
     # Check if game is over via pacman dead or pacman got all food and survived
     if state.isWin() or state.isLose() or depth <= 0:
         score = evaluation_function(state, None)
@@ -567,10 +584,16 @@ def _dfs_recursive_minimax_v4_handler(state: State,
         return score
 
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agent_selected)
+
+    # print("state")
+    # print(state)
+    # print(list_str_move_legal)
+    # print()
+    # print("#" * 10)
 
     # If Pacman (Maximizer)
-    if index_agent == 0:
+    if agent_primary == agent_selected:
 
         score_max: Union[float, None] = None
 
@@ -578,12 +601,13 @@ def _dfs_recursive_minimax_v4_handler(state: State,
 
         for action in list_str_move_legal:
 
-            state_new = state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(agent_selected, action)
 
             # Agent selection (Select next player for the next call)
             index_agent_new = index_agent + 1
 
-            score_calculated = _dfs_recursive_minimax_v4_handler(state_new,
+            score_calculated = _dfs_recursive_minimax_v4_handler(agent_primary,
+                                                                 state_new,
                                                                  depth,
                                                                  alpha,
                                                                  beta,
@@ -637,7 +661,7 @@ def _dfs_recursive_minimax_v4_handler(state: State,
 
         for action in list_str_move_legal:
 
-            state_new = state.generateSuccessor(index_agent, action)
+            state_new = state.generateSuccessor(agent_selected, action)
 
             # Agent selection (Select next player for the next call)
             if index_agent >= state.getNumAgents() - 1:
@@ -647,7 +671,8 @@ def _dfs_recursive_minimax_v4_handler(state: State,
                 index_agent_new = index_agent + 1
                 depth_new = depth
 
-            score_calculated = _dfs_recursive_minimax_v4_handler(state_new,
+            score_calculated = _dfs_recursive_minimax_v4_handler(agent_primary,
+                                                                 state_new,
                                                                  depth_new,
                                                                  alpha,
                                                                  beta,
@@ -690,12 +715,12 @@ def _dfs_recursive_minimax_v4_handler(state: State,
         # print(f"G{agent} CALCULATED", _LIST_SCORE_DEBUG)
         # print("G{} Score: {}".format(agent, score_min))
         # print()
-
         return score_min
 
 
 # @callgraph(use_list_index_args=[1, 3], display_callable_name=False,)
-def dfs_recursive_minimax_v4(state: State,
+def dfs_recursive_minimax_v4(agent_primary: Agent,
+                             state: State,
                              depth: int,
                              evaluation_function: callable,
                              index_agent: int = 0,
@@ -717,8 +742,10 @@ def dfs_recursive_minimax_v4(state: State,
             Reference:
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
+
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
+    list_str_move_legal: List[str] = state.getLegalActions(agent_primary)
+    # list_str_move_legal: List[str] = state.getLegalActions(agentIndex=index_agent)
 
     # List that contains tuples where each tuple has (score, action) as its elements
     list_pair: List[Tuple[float, str]] = []
@@ -727,14 +754,16 @@ def dfs_recursive_minimax_v4(state: State,
     alpha: Union[None, float] = None
     beta: Union[None, float] = None
 
+
     for action in list_str_move_legal:
 
-        state_new = state.generateSuccessor(index_agent, action)
+        state_new = state.generateSuccessor(agent_primary, action)
 
         # Agent selection (Select next player for the next call)
         index_agent_new = index_agent + 1
 
-        score_calculated = _dfs_recursive_minimax_v4_handler(state_new,
+        score_calculated = _dfs_recursive_minimax_v4_handler(agent_primary,
+                                                             state_new,
                                                              depth,
                                                              alpha,
                                                              beta,
@@ -1079,7 +1108,7 @@ class AgentPacmanMinimax(AgentPacman):
                 Your grader are NOT yet registered.  To register your grader, make sure
                 to follow your instructor's guidelines to receive credit on your name_project.
         """
-        action = dfs_recursive_minimax_v4(state, self.depth, self.evaluation_function)
+        action = dfs_recursive_minimax_v4(self, state, self.depth, self.evaluation_function)
 
         # print(action)
 

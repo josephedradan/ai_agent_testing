@@ -23,29 +23,27 @@ Reference:
 """
 from __future__ import annotations
 
-from collections import defaultdict
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Set
 from typing import TYPE_CHECKING
-from typing import Tuple
+from typing import Union
 
 from common.state import State
-from pacman.agent import *
-from pacman.test_case.test_case import TestCase
+from pacman.agent import Agent
 
 if TYPE_CHECKING:
-    from pacman.question.question import Question
-    from common.grader import Grader
+    pass
 
 VERBOSE = False
 
 
 class MultiAgentTreeState(State):
-    def __init__(self, problem, state):
+
+
+
+    def __init__(self, problem, state, agent: Agent):  # TODO: THIS AGENT IS A BYPASS
         self.problem = problem
         self.state = state
+
+        self._agent_BYPASS = agent
 
     def generateSuccessor(self, agentIndex, action):
         if VERBOSE:
@@ -55,7 +53,7 @@ class MultiAgentTreeState(State):
 
         successor = self.problem.stateToSuccessorMap[self.state][action]
         self.problem.generatedStates.add(successor)
-        return MultiAgentTreeState(self.problem, successor)
+        return MultiAgentTreeState(self.problem, successor, self._agent_BYPASS)
 
     def getScore(self):
         if VERBOSE:
@@ -91,3 +89,15 @@ class MultiAgentTreeState(State):
             print("getNumAgents(%s) -> %s" %
                   (self.state, self.problem.num_agents))
         return self.problem.num_agents
+
+    #############  # TODO: IMPLEMENT THESE JOSEPH
+
+    def get_index_by_agent(self, agent: Agent) -> Union[int, None]:
+        pass
+
+    def get_container_state_GHOST(self, agent: Agent):
+        pass
+
+    def get_agent_by_index(self, index: int) -> Union[Agent, None]:
+        if index == 0:
+            return self._agent_BYPASS

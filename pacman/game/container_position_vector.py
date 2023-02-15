@@ -23,6 +23,7 @@ Reference:
 """
 from __future__ import annotations
 
+from functools import cache
 from typing import Tuple
 from typing import Union
 
@@ -57,11 +58,14 @@ class ContainerPositionVector:
         if container_position_vector_possible is None:
             return False
 
-        return self.position == container_position_vector_possible.position and self.direction == container_position_vector_possible.direction
+        return (self.position == container_position_vector_possible.position and
+                self.direction == container_position_vector_possible.direction)
 
     def __hash__(self):
         # x = hash(self.position)
         # y = hash(self.direction)
+        # return hash(x + 13 * y)
+
         return hash((self.position, self.direction))
 
     def __str__(self):

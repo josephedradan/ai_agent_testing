@@ -2,8 +2,8 @@ class: "HeuristicGrade"
 
 heuristic: "foodHeuristic"
 searchProblemClass: "FoodSearchProblem"
-layoutName: "trickySearch"
-layout: """
+layout_name: "trickySearch"
+layout_text: """
 %%%%%%%%%%%%%%%%%%%%
 %.           ..%   %
 %.%%.%%.%%.%%.%% % %

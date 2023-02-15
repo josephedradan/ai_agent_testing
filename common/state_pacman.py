@@ -35,29 +35,29 @@ from pacman.agent.container_state import ContainerState
 from pacman.game.rules.common import TIME_PENALTY
 from pacman.game.rules.rules_ghost import GhostRules
 from pacman.game.rules.rules_pacman import PacmanRules
-from pacman.game.type_player import TypePlayer
+from pacman.game.type_player import TypePlayerPacman
 
 if TYPE_CHECKING:
-    from pacman.game.player import Player
+    from pacman.game.player_pacman import PlayerPacman
     from pacman.game.directions import Action
     from pacman.game.common import TYPE_POSITION
     from pacman.game.layoutpacman import LayoutPacman
 
 
 class StatePacman(State):
+    state_data: StateDataPacman
 
     def __init__(self, state_previous: Union[StatePacman, None] = None):
         """
         Generates a new state_pacman by copying information from its predecessor.
         """
-        self.state_data: StateDataPacman
 
-        if state_previous is not None:  # Initial state_pacman
+        if isinstance(state_previous, StatePacman):  # Initial state_pacman
             self.state_data = StateDataPacman(state_previous.state_data)
         else:
             self.state_data = StateDataPacman()
 
-    def get_deep_copy(self) -> State:
+    def get_deep_copy(self) -> State:  # TODO: game.py calls this a lot
         state = type(self)(self)
         state.state_data = self.state_data.get_deep_copy()
         return state
@@ -82,7 +82,7 @@ class StatePacman(State):
 
         return str(self.state_data)
 
-    def initialize(self, layout: LayoutPacman, list_player: List[Player]):
+    def initialize(self, layout: LayoutPacman, list_player: List[PlayerPacman]):
         """
         Creates an initial game state_pacman from a str_path_layout array (see str_path_layout.py).
 
@@ -91,41 +91,48 @@ class StatePacman(State):
         """
         self.state_data.initialize(layout, list_player)
 
-    def get_dict_k_player_v_container_state(self) -> Dict[Player, ContainerState]:
+    def get_agent_by_index(self, index: int) -> Union[Agent, None]:
+        return self.state_data.get_agent_by_index(index)
+
+    def get_index_by_agent(self, agent: Agent) -> Union[int, None]:
+        return self.state_data.get_index_by_agent(agent)
+
+    #####
+
+    def get_dict_k_player_v_container_state(self) -> Dict[PlayerPacman, ContainerState]:
         return self.state_data.get_dict_k_player_v_container_state()
 
-    def get_dict_k_agent_v_player(self) -> Dict[Agent, Player]:
+    def get_dict_k_agent_v_player(self) -> Dict[Agent, PlayerPacman]:
         return self.state_data.get_dict_k_agent_v_player()
 
-    def get_player_from_agent(self, agent: Agent) -> Union[Player, None]:
+    def get_player_from_agent(self, agent: Agent) -> Union[PlayerPacman, None]:
         return self.state_data.get_player_from_agent(agent)
 
     ####################################################
     # Accessor methods: use these to access State data #
     ####################################################
 
-    def getLegalActions(self, agent: Agent):
+    def getLegalActions(self, agent: Agent) -> List[Action]:
         """
         Returns the legal actions for the player specified.
         """
         #        State.set_state_explored.add(self)
-        if self.isWin() or self.isLose():
+        if self.isWin() or self.isLose():  # TODO: ADDED or agent is None BECAUSE SHTI IS FUCKED
             return []
 
         # return PacmanRules.getLegalActions(self, agent)  # TODO: JOSEPH COMMENT JOSEPH JUMP
         # print("FFFFFF", agent)
         # for k, v in self.state_data.dict_k_agent_v_player.items():
         #     print(k, v)
-
         # TODO: ULTRA CHEAP SOLUTION TO GET AGENT TYPE (GHOST OR PLAYER)
-        player = self.state_data.dict_k_agent_v_player.get(agent)
+        player = self.state_data.get_player_from_agent(agent)
+        # print("---- getLegalActions agent", agent, player)
 
-        # print("FFFFFF", player)
-
-        if player.get_type_player() == TypePlayer.PACMAN:
-            return PacmanRules.getLegalActions(self, player)
+        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
+            list_actions = PacmanRules.getLegalActions(self, player)
         else:
-            return GhostRules.getLegalActions(self, player)
+            list_actions = GhostRules.getLegalActions(self, player)
+        return list_actions
 
     def generateSuccessor(self, agent: Agent, action: Action) -> StatePacman:
         """
@@ -136,13 +143,12 @@ class StatePacman(State):
             raise Exception('Can\'t generate a successor of a terminal state_pacman.')
 
         # Copy current state_pacman
-        state_pacman = StatePacman(self)
+        state_pacman = type(self)(self)
 
-        player: Player = state_pacman.get_player_from_agent(agent)
-
+        player: PlayerPacman = state_pacman.get_player_from_agent(agent)
 
         # Let player's logic deal with its action's effects on the board
-        if player.get_type_player() == TypePlayer.PACMAN:
+        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
 
             _dict_k_player_v_bool_eaten = state_pacman.state_data._dict_k_player_v_bool_eaten
 
@@ -151,13 +157,12 @@ class StatePacman(State):
                 {player: False for player in _dict_k_player_v_bool_eaten}
             )
 
-
             PacmanRules.applyAction(state_pacman, action, player)
         else:  # A ghost is moving
             GhostRules.applyAction(state_pacman, action, player)
 
         # Time passes
-        if player.get_type_player() == TypePlayer.PACMAN:
+        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
             state_pacman.state_data.scoreChange += -TIME_PENALTY  # Penalty for waiting around
         else:
 
@@ -169,7 +174,7 @@ class StatePacman(State):
         GhostRules.checkDeath(state_pacman, player)
 
         # Book keeping
-        state_pacman.state_data._agentMoved = player
+        state_pacman.state_data._agentMoved = player.get_agent()
         state_pacman.state_data.score += state_pacman.state_data.scoreChange
 
         type(self).set_state_explored.add(self)
@@ -180,14 +185,14 @@ class StatePacman(State):
     # def getLegalPacmanActions(self) -> List[Action]:
     #     return self.getLegalActions(0)
 
-    def generatePacmanSuccessor(self, action: Action):
-        """
-        Generates the successor state_pacman after the specified pacman move
-        """
-        return self.generateSuccessor(0, action)
+    # TODO: DONT USE, USE THIS -> self.generateSuccessor
+    # def generatePacmanSuccessor(self, action: Action):
+    #     """
+    #     Generates the successor state_pacman after the specified pacman move
+    #     """
+    #     return self.generateSuccessor(self.state_data.pacamn, action)
 
-
-    # TODO: DONT NEED NO MORE Use getLegalAction
+    # TODO: DONT NEED NO MORE Use get_container_state_GHOST
     # def getPacmanState(self, agent: TYPE_REPRESENTATIVE):
     #     """
     #     Returns an ContainerState object for pacman (in game.py)
@@ -205,15 +210,15 @@ class StatePacman(State):
 
         return self.get_position_of_agent(agent)
 
-    def get_list_container_state_ghost(self):
+    def get_list_container_state_ghost(self) -> List[ContainerState]:
         # return self.state_data.dict_k_player_v_container_state[1:]
 
         return [container_state_ghost for player, container_state_ghost in
                 self.state_data.dict_k_player_v_container_state.items()
-                if player.get_type_player() == TypePlayer.GHOST]
+                if player.get_type_player_pacman() == TypePlayerPacman.GHOST]
 
     # TODO: POSSIBLY RENAME
-    def get_state_container_GHOST(self, agent: Agent) -> Union[ContainerState, None]:
+    def get_container_state_GHOST(self, agent: Agent) -> Union[ContainerState, None]:
 
         player = self.get_dict_k_agent_v_player().get(agent)
 

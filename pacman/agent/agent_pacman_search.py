@@ -79,8 +79,9 @@ class SearchAgent(Agent):
             raise AttributeError(fn + ' is not a search function in search.py.')
         func = getattr(search, fn)  # FIXME: CHANGE ME PLS TO THE DICT WAY
 
-        print("func.__name__", func.__name__)  # TODO: PRINT STATEMTNS EHRE
-        print("func.__code__.co_varnames", func.__code__.co_varnames)
+        # print("SearchAgent func.__name__", func.__name__)  # TODO: PRINT STATEMTNS EHRE
+        # print("SearchAgent func.__code__.co_varnames", func.__code__.co_varnames)
+
         if 'heuristic' not in func.__code__.co_varnames:
             print('[SearchAgent] using function ' + fn)
             self.searchFunction = func
@@ -129,7 +130,7 @@ class SearchAgent(Agent):
 
         # TODO: APPRENTLY NOT ALL self.searchType are of type SearchProblem because of poor design of the original
         if isinstance(problem, SearchProblem):
-            problem.set_graphics(self.get_graphics())
+            problem.set_graphics(self.graphics)
 
         # TODO: I THINK THIS IS A LIST OF Direction
         self.actions: List[Action] = self.searchFunction(problem)  # Find a path

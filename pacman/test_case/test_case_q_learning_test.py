@@ -48,9 +48,13 @@ class QLearningTest(TestCase):
         self.env = EnvironmentGridworld(self.grid)
         self.epsilon = float(testDict['epsilon'])
         self.learningRate = float(testDict['learningRate'])
-        self.opts = {'actionFn': self.env.getPossibleActions, 'epsilon': self.epsilon, 'gamma': self.discount,
-                     'alpha': self.learningRate}
+        self.opts = {'actionFn': self.env.getPossibleActions,
+                     'epsilon': self.epsilon,
+                     'gamma': self.discount,
+                     'alpha': self.learningRate
+                     }
         numExperiences = int(testDict['numExperiences'])
+
         maxPreExperiences = 10
         self.numsExperiencesForDisplay = list(range(min(numExperiences, maxPreExperiences)))
         self.testOutFile = testDict['path_test_output']

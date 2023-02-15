@@ -2,8 +2,8 @@ class: "PacmanSearchTest"
 algorithm: "a_star_search"
 
 # The following specifies the layout to be used 
-layoutName: "mediumMaze"
-layout: """
+layout_name: "mediumMaze"
+layout_text: """
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                 P%
 % %%%%%%%%%%%%%%%%%%%%%%% %%%%%%%% %

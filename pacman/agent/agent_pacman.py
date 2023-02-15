@@ -49,7 +49,7 @@ class AgentPacman(Agent):
                  depth='2',
                  **kwargs
                  ):
-        super(AgentPacman, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.depth = int(depth)
 
@@ -71,12 +71,11 @@ class AgentPacman(Agent):
         some Directions.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
         """
         # Collect legal moves and successor states
-        legalMoves = state.getLegalActions()
+        legalMoves = state.getLegalActions(self)
 
         # Choose one of the best actions
-        scores = [self.evaluation_function(state, action) for action in legalMoves]
+        scores = [self.evaluation_function(self, state, action) for action in legalMoves]
         bestScore = max(scores)
-
         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
 
         chosenIndex = random.choice(bestIndices)  # Pick randomly among the best

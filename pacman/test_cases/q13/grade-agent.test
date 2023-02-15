@@ -1,8 +1,7 @@
 class: "EvalAgentTest"
 
-str_list_agent_pacman: "AgentPacmanExpectimax"
-str_list_agent_pacman_kwargs: "evaluation_function=evaluation_function_better"
-layoutName: "smallClassic"
+str_list_agent_pacman: "[AgentPacmanExpectimax(evaluation_function=evaluation_function_better)]"
+layout_name: "smallClassic"
 maxTime: "120"
 numGames: "10"
 
@@ -15,4 +14,4 @@ winsMinimum: "1"
 winsThresholds: "1 5 10"
 
 randomSeed: "0"
-str_list_agent_ghost: "AgentGhostRandom"
+str_list_agent_ghost: "[AgentGhostRandom()]"

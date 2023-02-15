@@ -128,6 +128,7 @@ class AgentPacmanMinimaxAlphaBeta(AgentPacman):
                 to follow your instructor's guidelines to receive credit on your name_project.
         """
         action = dfs_recursive_minimax_v4(
+            self,
             state,
             self.depth,
             self.evaluation_function,

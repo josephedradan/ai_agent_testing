@@ -25,7 +25,12 @@ from enum import Enum
 from enum import auto
 
 
-class TypePlayer(Enum):
-    PACMAN = auto()
+class TypePlayerPacman(Enum):
+    PACMAN = auto()  # It is important that PACMAN is first Enum as it determines player movement order
     GHOST = auto()
 
+
+    def __lt__(self, other):
+        if isinstance(other, type(self)):
+            return self.value < other.value
+        return False

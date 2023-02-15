@@ -28,15 +28,17 @@ from typing import TYPE_CHECKING
 from typing import Tuple
 
 from common import util
+from pacman.agent import Agent
 
 if TYPE_CHECKING:
     from pacman.agent.container_state import ContainerState
     from pacman.game.directions import Action
-    from common.state import State
+    from common.state_pacman import StatePacman
     from pacman.game.grid_pacman import GridPacman
 
 
-def evaluation_function_food_and_ghost_helper(state: State,
+def evaluation_function_food_and_ghost_helper(agent: Agent,
+                                              state: StatePacman,
                                               function_get_distance: callable = util.manhattanDistance) -> float:
     """
     Evaluation function used for str_question 1
@@ -66,11 +68,11 @@ def evaluation_function_food_and_ghost_helper(state: State,
 
     list_position_food: List[Tuple[int, int]] = grid_food.asList()
 
-    agent_state_pacman: ContainerState = state.getPacmanState()
+    agent_state_pacman: ContainerState = state.get_container_state_GHOST(agent)
 
     score_new: float = state.getScore()
 
-    list_agent_state_ghost: List[ContainerState] = state.getGhostStates()
+    list_agent_state_ghost: List[ContainerState] = state.get_list_container_state_ghost()
 
     list_agent_state_ghost_active: List[ContainerState] = []
 
@@ -186,7 +188,7 @@ def evaluation_function_food_and_ghost_helper(state: State,
     return score_new
 
 
-def evaluation_function_food_and_ghost(state_current: State, action: Action) -> float:
+def evaluation_function_food_and_ghost(agent: Agent, state_current: StatePacman, action: Action) -> float:
     """
     Design a better evaluation function here.
 
@@ -202,10 +204,10 @@ def evaluation_function_food_and_ghost(state_current: State, action: Action) -> 
     to create a masterful evaluation function.
     """
     # Useful information you can extract from a State (pacman.py)
-    state_successor: State = state_current.generatePacmanSuccessor(action)
-    newPos: Tuple[int, int] = state_successor.getPacmanPosition()
+    state_successor: StatePacman = state_current.generateSuccessor(agent, action)
+    newPos: Tuple[int, int] = state_successor.get_container_state_GHOST(agent).get_position()
     newFood: GridPacman = state_successor.getFood()
-    newGhostStates: List[ContainerState] = state_successor.getGhostStates()
+    newGhostStates: List[ContainerState] = state_successor.get_list_container_state_ghost()
     newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
 
     "*** YOUR CODE HERE ***"
@@ -242,7 +244,7 @@ def evaluation_function_food_and_ghost(state_current: State, action: Action) -> 
     # print("#" * 100)
 
     ####################
-    pacman: ContainerState = state_successor.getPacmanState()
+    state_container_pacman: ContainerState = state_successor.get_container_state_GHOST(agent)
 
     score_new: float = state_successor.getScore()
 
@@ -312,13 +314,13 @@ def evaluation_function_food_and_ghost(state_current: State, action: Action) -> 
             to follow your instructor's guidelines to receive credit on your name_project.
     """
 
-    return evaluation_function_food_and_ghost_helper(state_successor)
+    return evaluation_function_food_and_ghost_helper(agent, state_successor)
 
 
 ########################################################################################################################
 
 
-def evaluation_function_food_and_ghost__attempt_1(currentGameState: State, action) -> float:
+def evaluation_function_food_and_ghost__attempt_1(agent: Agent, currentGameState: StatePacman, action) -> float:
     """
     Design a better evaluation function here.
 
@@ -334,10 +336,10 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: State, actio
     to create a masterful evaluation function.
     """
     # Useful information you can extract from a State (pacman.py)
-    state_successor: State = currentGameState.generatePacmanSuccessor(action)
-    newPos: Tuple[int, int] = state_successor.getPacmanPosition()
+    state_successor: StatePacman = currentGameState.generateSuccessor(agent, action)
+    newPos: Tuple[int, int] = state_successor.get_container_state_GHOST(agent).get_position()
     newFood: GridPacman = state_successor.getFood()
-    newGhostStates: List[ContainerState] = state_successor.getGhostStates()
+    newGhostStates: List[ContainerState] = state_successor.get_list_container_state_ghost()
     newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
 
     "*** YOUR CODE HERE ***"
@@ -374,7 +376,8 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: State, actio
     # print("#" * 100)
 
     ####################
-    pacman: ContainerState = state_successor.getPacmanState()
+
+    state_container_pacman: ContainerState = state_successor.get_container_state_GHOST(agent)
 
     score_new: float = state_successor.getScore()
 
@@ -418,11 +421,12 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: State, actio
 
     distance_pacman_to_ghost_closest = None
 
-    position_ghost: Tuple[int, int]
-
     # Handle ghost positions
-    for position_ghost in state_successor.getGhostPositions():
-        distance_pacman_to_ghost = util.manhattanDistance(pacman.get_position(), position_ghost)
+    for list_container in state_successor.get_list_container_state_ghost():
+
+        position = list_container.get_position()
+
+        distance_pacman_to_ghost = util.manhattanDistance(state_container_pacman.get_position(), position)
 
         # The further away ghosts are, add to score_new
         # score_new += distance_pacman_to_ghost
@@ -449,7 +453,7 @@ def evaluation_function_food_and_ghost__attempt_1(currentGameState: State, actio
 
     # Handle food positions
     for position_food in newFood.asList():
-        distance_pacman_to_food = util.manhattanDistance(pacman.get_position(), position_food)
+        distance_pacman_to_food = util.manhattanDistance(state_container_pacman.get_position(), position_food)
 
         # The closer the food is, add to score_new
         # score_new += (1 / distance_pacman_to_food)

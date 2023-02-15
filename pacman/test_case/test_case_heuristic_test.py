@@ -32,10 +32,9 @@ from pacman.agent import AgentPacman
 from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search.search import astar
 from pacman.agent.search_problem import get_subclass_search_problem
-from common.state import State
 from pacman.game.layoutpacman import LayoutPacman
-from pacman.game.player import Player
-from pacman.game.type_player import TypePlayer
+from pacman.game.player_pacman import PlayerPacman
+from pacman.game.type_player import TypePlayerPacman
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -46,8 +45,8 @@ class HeuristicTest(TestCase):
 
     def __init__(self, question, testDict):
         super(HeuristicTest, self).__init__(question, testDict)
-        self.layoutText = testDict['layout']
-        self.layoutName = testDict['layoutName']
+        self.layoutText = testDict['layout_text']
+        self.layout_name = testDict['layout_name']
         self.searchProblemClassName = testDict['searchProblemClass']
         self.heuristicName = testDict['heuristic']
 
@@ -55,7 +54,10 @@ class HeuristicTest(TestCase):
         layout = LayoutPacman([l.strip() for l in self.layoutText.split('\n')])
 
         state_pacman_start = StatePacman()
-        state_pacman_start.initialize(layout, [Player(AgentPacman(), TypePlayer.PACMAN)])
+        state_pacman_start.initialize(layout, [PlayerPacman(self.question.get_graphics().get_gui(),
+                                                            self.question.get_graphics(),
+                                                            AgentPacman(),
+                                                            TypePlayerPacman.PACMAN)])
 
         # class_problem = getattr(searchAgents, self.searchProblemClassName)
         class_problem = get_subclass_search_problem(self.searchProblemClassName)
@@ -114,7 +116,7 @@ class HeuristicTest(TestCase):
         handle = open(path_file_solution, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path_file_test)
 
-        print("Solving problem_multi_agent_tree", self.layoutName, self.heuristicName)
+        print("Solving problem_multi_agent_tree", self.layout_name, self.heuristicName)
         print(self.layoutText)
         problem, _, heuristic = self._setupProblem()
 
