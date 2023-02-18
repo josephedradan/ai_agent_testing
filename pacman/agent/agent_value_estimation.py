@@ -28,9 +28,9 @@ from pacman.agent import AgentPacman
 
 class ValueEstimationAgent(AgentPacman):
     """
-      Abstract player which assigns values to (state_pacman,action)
+      Abstract player which assigns values to (state,action)
       Q-Values for an environment. As well as a value to a
-      state_pacman and a policy given respectively by,
+      state and a policy given respectively by,
 
       V(s) = max_{a in actions} Q(s,a)
       policy(s) = arg_max_{a in actions} Q(s,a)
@@ -63,14 +63,14 @@ class ValueEstimationAgent(AgentPacman):
     @abstractmethod
     def getQValue(self, state, action):
         """
-        Should return Q(state_pacman,action)
+        Should return Q(state,action)
         """
         pass
 
     @abstractmethod
     def getValue(self, state):
         """
-        What is the value of this state_pacman under the best action?
+        What is the value of this state under the best action?
         Concretely, this is given by
 
         V(s) = max_{a in actions} Q(s,a)
@@ -80,7 +80,7 @@ class ValueEstimationAgent(AgentPacman):
     @abstractmethod
     def getPolicy(self, state):
         """
-        What is the best action to take in the state_pacman. Note that because
+        What is the best action to take in the state. Note that because
         we might want to explore, this might not coincide with getAction
         Concretely, this is given by
 
@@ -94,7 +94,7 @@ class ValueEstimationAgent(AgentPacman):
     @abstractmethod
     def getAction(self, state):
         """
-        state_pacman: can call state_pacman.getLegalActions()
+        state: can call state.getLegalActions()
         Choose an action and return it.
         """
         pass

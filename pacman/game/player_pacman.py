@@ -26,7 +26,7 @@ from typing import TYPE_CHECKING
 from common.graphics.gui import GUI
 from common.player import Player
 from pacman.agent import Agent
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 if TYPE_CHECKING:

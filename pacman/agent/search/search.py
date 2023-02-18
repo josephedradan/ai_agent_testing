@@ -27,7 +27,7 @@ from typing import Union
 from common import util
 from pacman.agent.heuristic_function import nullHeuristic
 from pacman.agent.search_problem import SearchProblem
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import ActionDirection
 
 
 def tinyMazeSearch(problem) -> List[str]:
@@ -35,8 +35,8 @@ def tinyMazeSearch(problem) -> List[str]:
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
     sequence of moves will be incorrect, so only use this for tinyMaze.
     """
-    s = Directions.SOUTH
-    w = Directions.WEST
+    s = ActionDirection.SOUTH
+    w = ActionDirection.WEST
     return [s, s, w, s, w, w, s, w]
 
 
@@ -83,28 +83,28 @@ def dfs_recursive_problem_main(problem: SearchProblem) -> List[str]:
         # Loop over the successors
         for i in list_successor_current:
 
-            # Current position tuple
+            # Current _position tuple
             tuple_position_current: Tuple[int, int] = i[0]
 
-            # Current direction string
+            # Current _direction string
             str_direction_current: str = i[1]
 
             # Current Step cost
             cost_step_current: int = i[2]
 
-            # Check if current position tuple has not been traveled to already
+            # Check if current _position tuple has not been traveled to already
             if tuple_position_current not in set_tuple_position_traveled:
 
-                # Get list of new successors based on current position tuple
+                # Get list of new successors based on current _position tuple
                 list_successor_new = problem.getSuccessors(tuple_position_current)
 
-                # Append current direction string to list of the string directions
+                # Append current _direction string to list of the string directions
                 list_str_direction_answer.append(str_direction_current)
 
-                # Add current position tuple to set of traveled tuple positions
+                # Add current _position tuple to set of traveled tuple positions
                 set_tuple_position_traveled.add(tuple_position_current)
 
-                # If current position tuple has reached the goal
+                # If current _position tuple has reached the goal
                 if problem.isGoalState(tuple_position_current):
                     return True
 
@@ -120,10 +120,10 @@ def dfs_recursive_problem_main(problem: SearchProblem) -> List[str]:
 
     # ----- Initialization -----
 
-    # Get first position tuple
+    # Get first _position tuple
     tuple_position_first: Tuple[int, int] = problem.getStartState()
 
-    # Add the first position tuple to tuple positions traveled
+    # Add the first _position tuple to tuple positions traveled
     set_tuple_position_traveled.add(tuple_position_first)
 
     # Initial recursive call
@@ -158,18 +158,18 @@ def dfs_iterative_problem_main(problem: SearchProblem) -> List[str]:
     # List containing the result of problem_multi_agent_tree.getSuccessors calls (Mimics stack frame memory)
     list_list_successor_stack_frame: List[List[Tuple[Tuple[int, int], str, int]]] = []
 
-    # Stack containing tuple position objects (Mimics stack frame memory)
+    # Stack containing tuple _position objects (Mimics stack frame memory)
     stack_tuple_position_stack_frame: util.Stack[Tuple[int, int]] = util.Stack()
 
     # ----- Initialization -----
 
-    # Get first position tuple
+    # Get first _position tuple
     tuple_position_first: Tuple[int, int] = problem.getStartState()
 
-    # Append the successors of the first position tuple to this stack frame
+    # Append the successors of the first _position tuple to this stack frame
     list_list_successor_stack_frame.append(problem.getSuccessors(tuple_position_first))
 
-    # Push the first position tuple to the stack of tuple positions
+    # Push the first _position tuple to the stack of tuple positions
     stack_tuple_position_stack_frame.push(tuple_position_first)
 
     # Main loop that does the equivalent of a dfs recursive call algorithm
@@ -188,21 +188,21 @@ def dfs_iterative_problem_main(problem: SearchProblem) -> List[str]:
         # Get current successor
         successor_current = list_successor_current.pop()
 
-        # Current tuple position
+        # Current tuple _position
         tuple_position_current: Tuple[int, int] = successor_current[0]
 
-        # Current direction string
+        # Current _direction string
         str_direction_current: str = successor_current[1]
 
-        # Check if current position tuple has not been traveled to already
+        # Check if current _position tuple has not been traveled to already
         if tuple_position_current in set_tuple_position_traveled:
-            # Skip current position tuple
+            # Skip current _position tuple
             continue
 
-        # Add current position tuple to set of traveled tuple positions
+        # Add current _position tuple to set of traveled tuple positions
         set_tuple_position_traveled.add(tuple_position_current)
 
-        # Get list of new successors based on current position tuple
+        # Get list of new successors based on current _position tuple
         list_successor_new: List[Tuple[Tuple[int, int], str, int]] = problem.getSuccessors(tuple_position_current)
 
         # ----- Stack frame related stuff -----
@@ -210,15 +210,15 @@ def dfs_iterative_problem_main(problem: SearchProblem) -> List[str]:
         # Append the new list of successors to the list of list of successors
         list_list_successor_stack_frame.append(list_successor_new)
 
-        # Push the current position tuple to the stack of position tuples
+        # Push the current _position tuple to the stack of _position tuples
         stack_tuple_position_stack_frame.push(tuple_position_current)
 
-        # Append current direction string to list of the string directions
+        # Append current _direction string to list of the string directions
         list_str_direction_answer.append(str_direction_current)
 
         #####
 
-        # If current position tuple has reached the goal
+        # If current _position tuple has reached the goal
         if problem.isGoalState(tuple_position_current):
             # Get out the loop
             break
@@ -246,7 +246,7 @@ class Container:
 
         Takes in a successor (tuple) and a Container of the previous successor.
 
-        :param successor: A tuple containing the position tuple, direction, and step cost
+        :param successor: A tuple containing the _position tuple, _direction, and step cost
         :param container_parent: Container object that is the parent of the given successor
         """
         self.successor: Tuple[Union[Tuple, Hashable], Union[str, None], float] = successor
@@ -265,12 +265,12 @@ class Container:
 
     def __hash__(self):
         """
-        Hash position because it's easy
+        Hash _position because it's easy
         :return:
         """
         return hash(self.position)
 
-        # return hash((self.position, self.direction))
+        # return hash((self._position, self._direction))
 
     def __eq__(self, other):
         """
@@ -298,7 +298,7 @@ class Container:
 
     def get_path(self) -> List[str]:
         """
-        Get path to self.position by repeating the process of getting the container_parent and getting its direction
+        Get path to self._position by repeating the process of getting the container_parent and getting its _direction
         and adding it into a list.
 
         Once all the list has been constructed, reverse that list because the list was constructed by going backwards
@@ -313,7 +313,7 @@ class Container:
         # Current container object
         container_current: Container = self
 
-        # Loop to append current's direction and replace current container.
+        # Loop to append current's _direction and replace current container.
         while container_current.container_parent is not None:
             list_str_direction_answer.append(container_current.direction)
             container_current = container_current.container_parent
@@ -360,7 +360,7 @@ def generic_search_algorithm_base(problem: SearchProblem,
 
     # ----- Initialization -----
 
-    # Get first position tuple
+    # Get first _position tuple
     tuple_position_first: Hashable = problem.getStartState()
 
     # Create the first container object
@@ -386,7 +386,7 @@ def generic_search_algorithm_base(problem: SearchProblem,
         if container_current in set_container_traveled:
             continue
 
-        # Check if the container's position is the goal
+        # Check if the container's _position is the goal
         if problem.isGoalState(container_current.position):
             # Hack 1
             # if type(problem_multi_agent_tree).__name__ == "CornersProblem":
@@ -401,7 +401,7 @@ def generic_search_algorithm_base(problem: SearchProblem,
             #
             #     container_current.container_parent = None
             #
-            #     # print(problem_multi_agent_tree.getSuccessors(container_current.position))
+            #     # print(problem_multi_agent_tree.getSuccessors(container_current._position))
             #     # print(container_current)
             #     # print()
             #     if problem_multi_agent_tree.is_goal_state_all():
@@ -532,7 +532,7 @@ def a_star_search(problem: SearchProblem, heuristic: Callable = nullHeuristic) -
         nonlocal heuristic  # Make it clear that we are using a nonlocal var
 
         """
-        Give the heuristic function the container's position and the problem_multi_agent_tree object to get the heuristic 
+        Give the heuristic function the container's _position and the problem_multi_agent_tree object to get the heuristic 
         algorithm's distance to the goal
         """
         heuristic_result = heuristic(container.position, problem)

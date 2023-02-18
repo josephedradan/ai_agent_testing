@@ -44,25 +44,25 @@ class Gridworld(mdp.MarkovDecisionProcess):
         The (negative) reward for exiting "normal" states.
 
         Note that in the R+N text, this reward is on entering
-        a state_pacman and therefore is not clearly part of the state_pacman's
+        a state and therefore is not clearly part of the state's
         future rewards.
         """
         self.livingReward = reward
 
     def setNoise(self, noise):
         """
-        The probability of moving in an unintended direction.
+        The probability of moving in an unintended _direction.
         """
         self.noise = noise
 
 
     def getPossibleActions(self, state):
         """
-        Returns list of valid actions for 'state_pacman'.
+        Returns list of valid actions for 'state'.
 
         Note that you can request moves into walls and
         that "exit" states transition to the terminal
-        state_pacman under the special action "done".
+        state under the special action "done".
         """
         if state == self.grid.terminalState:
             return ()
@@ -75,7 +75,7 @@ class Gridworld(mdp.MarkovDecisionProcess):
         """
         Return list of all states.
         """
-        # The true terminal state_pacman.
+        # The true terminal state.
         states = [self.grid.terminalState]
         for x in range(self.grid.width):
             for y in range(self.grid.height):
@@ -86,9 +86,9 @@ class Gridworld(mdp.MarkovDecisionProcess):
 
     def getReward(self, state, action, nextState):
         """
-        Get reward for state_pacman, action, nextState transition.
+        Get reward for state, action, nextState transition.
 
-        Note that the reward depends only on the state_pacman being
+        Note that the reward depends only on the state being
         departed (as in the R+N book examples, which more or
         less use this convention).
         """
@@ -105,13 +105,13 @@ class Gridworld(mdp.MarkovDecisionProcess):
             for y in range(self.grid.height):
                 if self.grid[x][y] == 'S':
                     return (x, y)
-        raise Exception('GridPacman has no start state_pacman')
+        raise Exception('GridPacman has no start state')
 
     def isTerminal(self, state):
         """
-        Only the TERMINAL_STATE state_pacman is *actually* a terminal state_pacman.
+        Only the TERMINAL_STATE state is *actually* a terminal state.
         The other "exit" states are technically non-terminals with
-        a single action "exit" which leads to the true terminal state_pacman.
+        a single action "exit" which leads to the true terminal state.
         This convention is to make the grids line up with the examples
         in the R+N textbook.
         """
@@ -122,7 +122,7 @@ class Gridworld(mdp.MarkovDecisionProcess):
         """
         Returns list of (nextState, prob) pairs
         representing the states reachable
-        from 'state_pacman' by taking 'action' along
+        from 'state' by taking 'action' along
         with their transition probabilities.
         """
 

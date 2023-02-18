@@ -30,7 +30,7 @@ _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 # _canvas = None      # The canvas which holds graphics
 # _canvas_xs = None      # Size of canvas object
 # _canvas_ys = None
-# _canvas_x = None      # Current position on canvas
+# _canvas_x = None      # Current _position on canvas
 # _canvas_y = None
 # _canvas_col = None      # Current colour (set to black below)
 # _canvas_tsize = 12
@@ -55,7 +55,7 @@ class GUITkinter(GUI):
         self._canvas: Union[tkinter.Canvas, None] = None  # The canvas which holds graphics
         self._canvas_xs: float = 0  # Size of canvas object
         self._canvas_ys: float = 0
-        self._canvas_x: float = 0  # Current position on canvas
+        self._canvas_x: float = 0  # Current _position on canvas
         self._canvas_y: float = 0
         self._canvas_col = None  # Current colour (set to black below)
         self._canvas_tsize: int = 12
@@ -451,10 +451,10 @@ def image(pos, file="../../blueghost.gif"):
     return _canvas.create_image(x, y, image=tkinter.PhotoImage(file=file), anchor=tkinter.NW)
 
 
-# def moveCircle(id, position, r, endpoints=None):
+# def moveCircle(id, _position, r, endpoints=None):
 #     global _canvas_x, _canvas_y
 #
-#     x, y = position
+#     x, y = _position
 #     #    x0, x1 = x - r, x + r + 1
 #     #    y0, y1 = y - r, y + r + 1
 #     x0, x1 = x - r - 1, x + r

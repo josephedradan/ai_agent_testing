@@ -27,9 +27,9 @@ from typing import Type
 from typing import Union
 
 from pacman.agent.agent import Agent
-from pacman.agent.agent_ghost import AgentGhost
-from pacman.agent.agent_ghost_directional import AgentGhostDirectional
-from pacman.agent.agent_ghost_random import AgentGhostRandom
+from pacman.agent.agent_pacman_ghost import AgentPacmanGhost
+from pacman.agent.agent_pacman_ghost_directional import AgentPacmanGhostDirectional
+from pacman.agent.agent_pacman_ghost_random import AgentPacmanGhostRandom
 from pacman.agent.agent_keyboard import AgentKeyboard
 from pacman.agent.agent_keyboard import AgentKeyboard2
 from pacman.agent.agent_pacman import AgentPacman
@@ -54,9 +54,9 @@ from pacman.agent._agent_grading import _GradingAgent  # MUST BE AFTER Agent
 
 LIST_SUBCLASS_AGENT = [
     # Agent,
-    AgentGhost,
-    AgentGhostDirectional,
-    AgentGhostRandom,
+    AgentPacmanGhost,
+    AgentPacmanGhostDirectional,
+    AgentPacmanGhostRandom,
     AgentKeyboard,
     AgentKeyboard2,
     AgentPacman,

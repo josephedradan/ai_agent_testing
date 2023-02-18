@@ -55,7 +55,7 @@ class ApproximateQAgent(PacmanQAgent):
 
     def getQValue(self, state, action) -> float:
         """
-          Should return Q(state_pacman,action) = w * featureVector
+          Should return Q(state,action) = w * featureVector
           where * is the dotProduct operator
         """
         "*** YOUR CODE HERE ***"
@@ -99,7 +99,7 @@ class ApproximateQAgent(PacmanQAgent):
         """
 
         # print("self.getWeights()", self.getWeights())
-        # print("self.featExtractor.getFeatures(state_pacman, action)", self.featExtractor.getFeatures(state_pacman, action))
+        # print("self.featExtractor.getFeatures(state, action)", self.featExtractor.getFeatures(state, action))
 
         dict_k_feature_v_feature_value: dict = self.featExtractor.getFeatures(state, action)
 

@@ -133,13 +133,13 @@ class Game:
         """
         self.graphics_pacman.initialize(self.state_pacman.state_data)
 
-        # print(self.state_pacman, type(self.state_pacman), "self.state_pacman", type(self.state_pacman.data))
+        # print(self.state, type(self.state), "self.state", type(self.state.data))
 
         self.numMoves: int = 0
 
         self.state_pacman: StatePacman
 
-        # self.graphics.initialize(self.state_pacman.makeObservation(1).data)
+        # self.graphics.initialize(self.state.makeObservation(1).data)
         # inform learning agents of the game start
         for i, player in enumerate(self.list_player):
 
@@ -209,7 +209,7 @@ class Game:
             state_observation: State
 
             if isinstance(agent, ReinforcementAgent):
-                # Generate an state_observation of the state_pacman
+                # Generate an state_observation of the state
                 self._mute(index_agent)
                 if self.bool_catch_exceptions:
                     try:
@@ -328,7 +328,7 @@ class Game:
             self.graphics_pacman.update(self.state_pacman.state_data)  # TODO: DRAWING THE state IS HERE
 
             ###idx = agent - agent % 2 + 1
-            ###self.graphics.update( self.state_pacman.makeObservation(idx).data )
+            ###self.graphics.update( self.state.makeObservation(idx).data )
 
             # Allow for game specific conditions (winning, losing, etc.)
             self.rules.process(self.state_pacman, self)  # TODO: CAN AFFECT self.gameOver

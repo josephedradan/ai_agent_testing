@@ -14,4 +14,4 @@ winsMinimum: "1"
 winsThresholds: "1 5 10"
 
 randomSeed: "0"
-str_list_agent_ghost: "[AgentGhostRandom()]"
+str_list_agent_ghost: "[AgentPacmanGhostRandom()]"

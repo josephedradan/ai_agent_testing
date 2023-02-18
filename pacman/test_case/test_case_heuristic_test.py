@@ -34,7 +34,7 @@ from pacman.agent.search.search import astar
 from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:

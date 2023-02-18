@@ -30,11 +30,11 @@ from typing import Union
 
 from common.util import manhattanDistance
 from common.util import nearestPoint
-from pacman.game.actions import Actions
-from pacman.game.directions import Action
-from pacman.game.directions import Directions
+from pacman.game.handleractiondirection import HandlerActionDirection
+from pacman.game.actiondirection import Action
+from pacman.game.actiondirection import ActionDirection
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 from pacman.game.rules.common import SCARED_TIME
 from pacman.game.rules.rules_agent import RulesAgent
 
@@ -50,13 +50,13 @@ class PacmanRules(RulesAgent):
     PACMAN_SPEED = 1
 
     @staticmethod
-    def getLegalActions(state_pacman: StatePacman, player: PlayerPacman) -> List[Directions]:
+    def getLegalActions(state_pacman: StatePacman, player: PlayerPacman) -> List[ActionDirection]:
 
-        container_position_vector = state_pacman.get_container_state_GHOST(player.get_agent()).container_position_vector
+        container_position_direction = state_pacman.get_container_state_GHOST(player.get_agent())._container_position_direction
 
-        return Actions.getPossibleActions(
-            container_position_vector,
-            state_pacman.state_data.layout.walls
+        return HandlerActionDirection.getPossibleActions(
+            container_position_direction,
+            state_pacman.state_data.layout_pacman.walls
         )
 
     @staticmethod
@@ -70,13 +70,13 @@ class PacmanRules(RulesAgent):
         pacmanState = state_pacman.get_container_state_GHOST(player.get_agent())
 
         # Update ContainerVector
-        vector = Actions.directionToVector(action, PacmanRules.PACMAN_SPEED)
-        pacmanState.container_position_vector = pacmanState.container_position_vector.get_container_position_vector_successor(
+        vector = HandlerActionDirection.get_vector_from_action_direction(action, PacmanRules.PACMAN_SPEED)
+        pacmanState._container_position_direction = pacmanState._container_position_direction.get_container_position_direction_successor(
             vector
         )
 
         # Eat
-        next = pacmanState.container_position_vector.get_position()
+        next = pacmanState._container_position_direction.get_position()
         nearest = nearestPoint(next)
         if manhattanDistance(nearest, next) <= 0.5:
             # Remove food
@@ -103,11 +103,11 @@ class PacmanRules(RulesAgent):
             state_pacman.state_data._capsuleEaten = position
 
             # Reset all ghosts' scared timers
-            # for index in range(1, len(state_pacman.state_data.dict_k_player_v_container_state)):
-            #     state_pacman.state_data.dict_k_player_v_container_state[index].scaredTimer = SCARED_TIME
+            # for index in range(1, len(state.state_data.dict_k_player_v_container_state)):
+            #     state.state_data.dict_k_player_v_container_state[index].time_scared = SCARED_TIME
 
             # Reset all ghosts' scared timers
             for player in state_pacman.state_data.dict_k_player_v_container_state:
 
                 if player.type_player == TypePlayerPacman.GHOST:
-                    state_pacman.state_data.dict_k_player_v_container_state.get(player).scaredTimer = SCARED_TIME
+                    state_pacman.state_data.dict_k_player_v_container_state.get(player).time_scared = SCARED_TIME

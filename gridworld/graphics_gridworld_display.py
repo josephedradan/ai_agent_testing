@@ -81,7 +81,7 @@ class GraphicsGridworldDisplay:
         states = self.gridworld.getStates()
         for state in states:
             values[state] = 0.0
-            # policy[state_pacman] = player.getPolicy(state_pacman)
+            # policy[state] = player.getPolicy(state)
         self.drawNullValues(self.gridworld, currentState, '')
         # drawValues(self.gridworld, values, policy, currentState, message)
         self.gui.sleep(0.05 / self.speed)

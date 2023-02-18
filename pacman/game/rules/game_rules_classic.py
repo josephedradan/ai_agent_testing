@@ -35,7 +35,7 @@ from pacman.game.game import Game
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.layoutpacman import get_layout_pacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 

@@ -31,7 +31,7 @@ from pacman.agent.evaluation_function import evaluation_function_food_and_ghost_
 class AgentPacmanReflex(AgentPacman):
     """
     A reflex player chooses an action at each choice point by examining
-    its alternatives via a state_pacman evaluation function.
+    its alternatives via a state evaluation function.
 
     The code below is provided as a guide.  You are welcome to change
     it in any way you see fit, so long as you don't touch our method
@@ -50,7 +50,7 @@ class AgentPacmanReflex(AgentPacman):
 class AgentPacmanReflex_Attempt_1(AgentPacmanReflex):  # NOQA
     """
     A reflex player chooses an action at each choice point by examining
-    its alternatives via a state_pacman evaluation function.
+    its alternatives via a state evaluation function.
 
     The code below is provided as a guide.  You are welcome to change
     it in any way you see fit, so long as you don't touch our method

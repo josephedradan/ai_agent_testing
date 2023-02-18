@@ -25,7 +25,7 @@ from typing import TYPE_CHECKING
 from typing import Tuple
 from pacman.agent.search_problem import SearchProblem
 
-# FIXME: GENERALIZE position TO BE MULTI DIMENSIONAL
+# FIXME: GENERALIZE _position TO BE MULTI DIMENSIONAL
 def manhattanHeuristic(position: Tuple[int, int], problem: SearchProblem):
     "The Manhattan distance heuristic for a PositionSearchProblem"
     xy1 = position

@@ -8,4 +8,4 @@ numGames: "5"
 scoreThresholds: "2500 2900"
 
 randomSeed: "0"
-str_list_agent_ghost: "[AgentGhostDirectional(), AgentGhostDirectional(), AgentGhostDirectional()]"
+str_list_agent_ghost: "[AgentPacmanGhostDirectional(), AgentPacmanGhostDirectional(), AgentPacmanGhostDirectional()]"

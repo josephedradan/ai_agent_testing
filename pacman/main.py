@@ -115,7 +115,7 @@ def get_argparse_namespace_for_pacman(argv: Union[Sequence[str], None] = None) -
                         metavar='GAMES',
                         default=1
                         )
-    parser.add_argument('-l', '--layout',
+    parser.add_argument('-l', '--layout_pacman',
                         dest='str_path_layout',
                         help='the LAYOUT_FILE from which to load the map str_path_layout',
                         metavar='LAYOUT_FILE',
@@ -177,12 +177,12 @@ def get_argparse_namespace_for_pacman(argv: Union[Sequence[str], None] = None) -
 
     # Implicit Ghost creation is default
 
-    group_ghost_selection_implicit.add_argument('-ag', '--AgentGhost',  # TODO: RENAME -g to -ag
+    group_ghost_selection_implicit.add_argument('-ag', '--AgentPacmanGhost',  # TODO: RENAME -g to -ag
                                                 dest='str_agent_ghost',
                                                 help='the ghost player TYPE in the ghosts module to use',
                                                 choices=DICT_K_NAME_SUBCLASS_AGENT_V_SUBCLASS_AGENT.keys(),
                                                 type=str,
-                                                default='AgentGhostRandom'
+                                                default='AgentPacmanGhostRandom'
                                                 )
     group_ghost_selection_implicit.add_argument('-aga', '--AgentGhostArgs',
                                                 dest='str_agent_ghost_kwargs',
@@ -368,7 +368,7 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     #     str_pacman_ghost_agent = namespace.str_pacman_ghost_agent  # FIXME: GHOST AGENTS HERE
     #
     #     # print(namespace.str_pacman_ghost_agent,
-    #     #       type(namespace.str_pacman_ghost_agent))  # FIXME: str_pacman_ghost_agent is AgentGhostRandom
+    #     #       type(namespace.str_pacman_ghost_agent))  # FIXME: str_pacman_ghost_agent is AgentPacmanGhostRandom
     #
     #     dict_k_name_arg_v_arg['list_str_pacman_ghost_agent'] = (
     #         [str_pacman_ghost_agent for _ in range(namespace.num_of_agent_ghost)]
@@ -469,7 +469,7 @@ def replay_game(layout, actions, display):  # FIXME: FIGURE THSI SHIT OUT LATER
     # import list_str_pacman_ghost_agent
 
     rules = ClassicGameRules()
-    agents = [pacmanAgents.AgentPacmanGreedy()] + [ghostAgents.AgentGhostRandom(i + 1)
+    agents = [pacmanAgents.AgentPacmanGreedy()] + [ghostAgents.AgentPacmanGhostRandom(i + 1)
                                                    for i in range(layout.getNumGhosts())]
     game = rules.create_and_get_game(layout, agents[0], agents[1:], display)
     state = game.state_pacman
@@ -477,7 +477,7 @@ def replay_game(layout, actions, display):  # FIXME: FIGURE THSI SHIT OUT LATER
 
     for action in actions:
         # Execute the action
-        state = state.get_container_position_vector_successor(*action)
+        state = state.get_container_position_direction_successor(*action)
         # Change the graphics
         display.update(state.state_data)
         # Allow for game specific conditions (winning, losing, etc.)

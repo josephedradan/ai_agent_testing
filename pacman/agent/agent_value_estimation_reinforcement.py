@@ -43,16 +43,16 @@ class ReinforcementAgent(ValueEstimationAgent):
 
         What you need to know:
                     - The environment will call
-                      observeTransition(state_pacman,action,nextState,deltaReward),
-                      which will call update(state_pacman, action, nextState, deltaReward)
+                      observeTransition(state,action,nextState,deltaReward),
+                      which will call update(state, action, nextState, deltaReward)
                       which you should override.
-        - Use self.getLegalActions(state_pacman) to know which actions
-                      are available in a state_pacman
+        - Use self.getLegalActions(state) to know which actions
+                      are available in a state
     """
 
     def __init__(self, alpha=0.5, epsilon=0.5, gamma=1, num_training=100, actionFn=None, **kwargs):
         """
-        actionFn: Function which takes a state_pacman and returns the list of legal actions
+        actionFn: Function which takes a state and returns the list of legal actions
 
         alpha    - learning rate
         epsilon  - exploration rate
@@ -99,8 +99,8 @@ class ReinforcementAgent(ValueEstimationAgent):
     def getLegalActions(self, state):
         """
           Get the actions available for a given
-          state_pacman. This is what you should use to
-          obtain legal actions for a state_pacman
+          state. This is what you should use to
+          obtain legal actions for a state
         """
         return self.actionFn(state, self)
 
@@ -159,7 +159,7 @@ class ReinforcementAgent(ValueEstimationAgent):
     def doAction(self, state, action):
         """
             Called by inherited class when
-            an action is taken in a state_pacman
+            an action is taken in a state
         """
         self.lastState = state
         self.lastAction = action
@@ -185,7 +185,7 @@ class ReinforcementAgent(ValueEstimationAgent):
 
     def final(self, state: State):
         """
-          Called by Pacman game at the terminal state_pacman
+          Called by Pacman game at the terminal state
         """
         deltaReward = state.getScore() - self.lastState.getScore()
         self.observeTransition(self.lastState, self.lastAction, state, deltaReward)

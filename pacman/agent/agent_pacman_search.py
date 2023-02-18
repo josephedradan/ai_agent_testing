@@ -41,8 +41,8 @@ from pacman.agent.search_problem import SearchProblem
 from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
 from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
-from pacman.game.directions import Action
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import Action
+from pacman.game.actiondirection import ActionDirection
 from pacman.game.grid_pacman import GridPacman
 
 if TYPE_CHECKING:
@@ -121,7 +121,7 @@ class SearchAgent(Agent):
         should compute the path to the goal and store it in a local variable.
         All of the work is done in this method!
 
-        state_pacman: a State object
+        state: a State object
         """
 
         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
@@ -141,10 +141,10 @@ class SearchAgent(Agent):
     def getAction(self, state):
         """
         Returns the next action in the path chosen earlier (in
-        registerInitialState).  Return Directions.STOP if there is no further
+        registerInitialState).  Return ActionDirection.STOP if there is no further
         action to take.
 
-        state_pacman: a State object
+        state: a State object
         """
         if 'actionIndex' not in dir(self):
             self.actionIndex = 0
@@ -154,15 +154,15 @@ class SearchAgent(Agent):
         if i < len(self.actions):
             return self.actions[i]
         else:
-            return Directions.STOP
+            return ActionDirection.STOP
 
 
 class StayEastSearchAgent(SearchAgent):
     """
-    An player for position search with a cost function that penalizes being in
+    An player for _position search with a cost function that penalizes being in
     positions on the West side of the board.
 
-    The cost function for stepping into a position (x,y) is 1/2^x.
+    The cost function for stepping into a _position (x,y) is 1/2^x.
     """
 
     def __init__(self):
@@ -174,10 +174,10 @@ class StayEastSearchAgent(SearchAgent):
 
 class StayWestSearchAgent(SearchAgent):
     """
-    An player for position search with a cost function that penalizes being in
+    An player for _position search with a cost function that penalizes being in
     positions on the East side of the board.
 
-    The cost function for stepping into a position (x,y) is 2^x.
+    The cost function for stepping into a _position (x,y) is 2^x.
     """
 
     def __init__(self):
@@ -221,7 +221,7 @@ class ClosestDotSearchAgent(SearchAgent):
                 if action not in legal:
                     t = (str(action), str(currentState))
                     raise Exception('findPathToClosestDot returned an illegal move: %s!\n%s' % t)
-                currentState = currentState.get_container_position_vector_successor(0, action)
+                currentState = currentState.get_container_position_direction_successor(0, action)
         self.actionIndex = 0
         print('Path found with cost {}.'.format(len(self.actions)))
 
@@ -232,9 +232,9 @@ class ClosestDotSearchAgent(SearchAgent):
         """
         # Here are some useful elements of the startState
 
-        # position_start: tuple = state_pacman.getPacmanPosition()
-        # food: GridPacman = state_pacman.getFood()
-        # walls: GridPacman = state_pacman.getWalls()
+        # position_start: tuple = state.getPacmanPosition()
+        # food: GridPacman = state.getFood()
+        # walls: GridPacman = state.getWalls()
         problem: AnyFoodSearchProblem = AnyFoodSearchProblem(state)
 
         "*** YOUR CODE HERE ***"

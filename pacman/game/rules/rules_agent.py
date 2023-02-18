@@ -28,14 +28,12 @@ from abc import ABC
 from abc import abstractmethod
 from typing import List
 from typing import TYPE_CHECKING
-from typing import Union
 
 from pacman.game.common import TYPE_REPRESENTATIVE
-from pacman.game.directions import Action
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import Action
+from pacman.game.actiondirection import ActionDirection
 
 if TYPE_CHECKING:
-    from pacman.game.common import TYPE_POSITION
 
     from common.state import State
 
@@ -44,7 +42,7 @@ class RulesAgent(ABC):
 
     @staticmethod
     @abstractmethod
-    def getLegalActions(state: State, representative: TYPE_REPRESENTATIVE) -> List[Directions]:
+    def getLegalActions(state: State, representative: TYPE_REPRESENTATIVE) -> List[ActionDirection]:
         """
         Returns a list of possible actions.
         """
@@ -54,6 +52,6 @@ class RulesAgent(ABC):
     @abstractmethod
     def applyAction(state: State, action: Action, representative: TYPE_REPRESENTATIVE):
         """
-        Edits the state_pacman to reflect the results of the action.
+        Edits the state to reflect the results of the action.
         """
         pass

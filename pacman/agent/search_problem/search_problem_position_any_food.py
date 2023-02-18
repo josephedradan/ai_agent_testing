@@ -35,7 +35,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     A search problem_multi_agent_tree for finding a path to any food.
 
     This search problem_multi_agent_tree is just like the PositionSearchProblem, but has a
-    different goal test, which you need to fill in below.  The state_pacman space and
+    different goal test, which you need to fill in below.  The state space and
     successor function do not need to be changed.
 
     The class definition above, AnyFoodSearchProblem(PositionSearchProblem),
@@ -59,7 +59,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
     def isGoalState(self, state):
         """
-        The state_pacman is Pacman's position. Fill this in with a goal test that will
+        The state is Pacman's _position. Fill this in with a goal test that will
         complete the problem_multi_agent_tree definition.
         """
         x, y = state
@@ -75,7 +75,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
         ####################
         """
-        Recall that list_position_food_remaining changes so just check if the state_pacman, which is a tuple of the position,
+        Recall that list_position_food_remaining changes so just check if the state, which is a tuple of the _position,
         is in the list_position_food_remaining.
 
         """

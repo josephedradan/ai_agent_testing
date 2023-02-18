@@ -34,7 +34,7 @@ from pacman.agent.evaluation_function import get_evaluation_function
 from pacman.agent.evaluation_function.evaluation_function_state_score import (
     evaluation_function_state_score
 )
-from pacman.game.directions import Action
+from pacman.game.actiondirection import Action
 
 if TYPE_CHECKING:
     from common.state import State
@@ -68,7 +68,7 @@ class AgentPacman(Agent):
         getAction chooses among the best options according to the evaluation function.
 
         Just like in the previous name_project, getAction takes a State and returns
-        some Directions.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
+        some ActionDirection.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
         """
         # Collect legal moves and successor states
         legalMoves = state.getLegalActions(self)

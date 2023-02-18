@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 
 def _get_path_distance(position_initial: tuple, permutation: Iterable):
     """
-    Given a path (iterable of position), find the distance for those positions starting from the state_pacman.position
+    Given a path (iterable of _position), find the distance for those positions starting from the state._position
 
     :param position_initial:
     :param permutation:
@@ -91,8 +91,8 @@ def _get_heuristic_cost_ucs_crude(grid_wall: List[List],
         IT MEANING AT THIS ALGO DOES WORK, BUT IT'S SLOW.
 
     :param grid_wall:
-    :param position_start: Starting position tuple
-    :param position_goal: Goal position tuple
+    :param position_start: Starting _position tuple
+    :param position_goal: Goal _position tuple
     :param cost_min_current: Current smallest cost obtained from another call to _get_heuristic_cost_ucs_crude,
         It is used to prevent this algorithm from calculating lengths to a goal that are longer than cost_min_current.
         Basically, this value is used to decrease computation time ONLY FOR FINDING THE SHORTEST DISTANCE.
@@ -124,7 +124,7 @@ def _get_heuristic_cost_ucs_crude(grid_wall: List[List],
             if position_with_cost[0] > cost_min_current:
                 continue
 
-        # Return cost if this algo has reached its goal position
+        # Return cost if this algo has reached its goal _position
         if position_with_cost[1] == position_goal:
             return position_with_cost[0]
 
@@ -166,7 +166,7 @@ def _get_shortest_path_using_ucs_crude(position_initial: Tuple,
         one function. The cost is that the new function will look ugly plus _get_shortest_path_using_immediate does
         not rely on grid_wall.
 
-    :param position_initial: Initial position
+    :param position_initial: Initial _position
     :param set_position_remaining: Rest of the positions to travel to
     :return:
     """
@@ -220,7 +220,7 @@ def _get_shortest_path_using_immediate(position_initial: Tuple,
     """
     V5 Solution generalized
 
-    :param position_initial: Initial position
+    :param position_initial: Initial _position
     :param set_position_remaining: Rest of the positions to travel to
     :return:
     """
@@ -267,13 +267,13 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     """
     A heuristic for the CornersProblem that you defined.
 
-      state_pacman:   The current search state_pacman
+      state:   The current search state
                (a data structure you chose in your search problem_multi_agent_tree)
 
       problem_multi_agent_tree: The CornersProblem instance for this str_path_layout.
 
     This function should always return a number that is a lower bound on the
-    shortest path from the state_pacman to a goal of the problem_multi_agent_tree; i.e.  it should be
+    shortest path from the state to a goal of the problem_multi_agent_tree; i.e.  it should be
     admissible (as well as consistent).
     """
     corners: tuple = problem.corners  # These are the position_corner_local_shortest coordinates
@@ -319,17 +319,17 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
 
     #####
     # """
-    # V2: Select Min Manhattan Distance from Current position to Corner position
+    # V2: Select Min Manhattan Distance from Current _position to Corner _position
     # Points: 1/3
     # Result:
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
     #     *** FAIL: Heuristic resulted in expansion of 1760 nodes
     # """
     #
     # distance_position_corner_closest = min(set_position_corner_remaining,
-    #                               key=lambda position_corner_given: util.manhattanDistance(state_pacman.position,
+    #                               key=lambda position_corner_given: util.manhattanDistance(state._position,
     #                                                                                        position_corner_given))
     #
     # # print(dict_k_corner_v_distance_manhattan.get(distance_position_corner_closest))
@@ -342,17 +342,17 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     # V3:
     #     Get all permutations traveling to all corners
     #     For all permutations:
-    #         Get the manhattan distance starting from state_pacman.position traveling in the order of position corners
+    #         Get the manhattan distance starting from state._position traveling in the order of _position corners
     #         inside of the the permutation
-    #     Select the path with shortest distance from the loop, but return the permutation of position corners instead.
-    #     Return the distance of the 0th index position corner in the permutation
+    #     Select the path with shortest distance from the loop, but return the permutation of _position corners instead.
+    #     Return the distance of the 0th index _position corner in the permutation
     #
     #
     # Points: 1/3
     # Result:
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
     #     *** FAIL: Heuristic resulted in expansion of 1743 nodes
     # """
     #
@@ -360,12 +360,12 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     #
     # path_position_corner_shortest = min(list_tuple_path_position_corner,
     #                                     key=lambda tuple_path_position_corner: _get_path_distance(
-    #                                         state_pacman.position,
+    #                                         state._position,
     #                                         tuple_path_position_corner)
     #                                     )
     #
-    # # print("{:<30}{}".format(string_given(state_pacman.position),string_given(path_position_corner_shortest)))
-    # distance_position_corner_must_go_to = util.manhattanDistance(state_pacman.position, path_position_corner_shortest[0])
+    # # print("{:<30}{}".format(string_given(state._position),string_given(path_position_corner_shortest)))
+    # distance_position_corner_must_go_to = util.manhattanDistance(state._position, path_position_corner_shortest[0])
     #
     # return distance_position_corner_must_go_to
 
@@ -374,7 +374,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     V4:
         Get all permutations traveling to all corners
         For all permutations:
-            Get the manhattan distance starting from state_pacman.position traveling in the order of position corners
+            Get the manhattan distance starting from state._position traveling in the order of _position corners
             inside of the the permutation
         Select the path with shortest distance from the loop
         Return path with shortest distance
@@ -387,9 +387,9 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
 
     Points: 3/3
     Result:
-        *** PASS: heuristic value less than true cost at start state_pacman
-        *** PASS: heuristic value less than true cost at start state_pacman
-        *** PASS: heuristic value less than true cost at start state_pacman
+        *** PASS: heuristic value less than true cost at start state
+        *** PASS: heuristic value less than true cost at start state
+        *** PASS: heuristic value less than true cost at start state
         *** PASS: Heuristic resulted in expansion of 954 nodes
 
     """
@@ -400,43 +400,43 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     # """
     # V5:
     #     Assign distance total to 0
-    #     Assign position current to state_pacman.position
-    #     For each position corner in set position corner remaining
-    #         Get the Manhattan Distance from position current to position corner
-    #     Select the distance shortest from position current to position corner
+    #     Assign _position current to state._position
+    #     For each _position corner in set _position corner remaining
+    #         Get the Manhattan Distance from _position current to _position corner
+    #     Select the distance shortest from _position current to _position corner
     #     Add distance shortest to distance total
-    #     Assign position current to the position corner with the distance shortest
-    #     Remove position current to the position corner with the distance shortest from set position corner remaining
-    #     Repeat until no more position corner in from set position corner remaining
+    #     Assign _position current to the _position corner with the distance shortest
+    #     Remove _position current to the _position corner with the distance shortest from set _position corner remaining
+    #     Repeat until no more _position corner in from set _position corner remaining
     #     Return distance corner
     #
     # IMPORTANT NOTES:
     #     YOU ARE GETTING THE IMMEDIATE DISTANCE SHORTEST AND IT'S POSITION CORNER TO EACH POSITION CORNER FROM YOUR
     #     POSITION CURRENT. THIS IS DIFFERENT FROM V4 BECAUSE YOU DON'T KNOW THAT YOUR IMMEDIATE DISTANCE SHORTEST
-    #     ACTUALLY LEADS TO THE DISTANCE SHORTEST FULL (Shortest path distance to all position corners).
+    #     ACTUALLY LEADS TO THE DISTANCE SHORTEST FULL (Shortest path distance to all _position corners).
     #
     #     V4 DOES DISTANCE SHORTEST FULL, V5 IS JUST YOLO SELECT THE DISTANCE SHORTEST TO MAKE THE DISTANCE SHORTEST
     #     FULL VIA CALCULATING ALL POSSIBLE PERMUTATIONS OF PATHS AND THEIR DISTANCE SHORTEST FULL.
     #
     # Points: 3/3
     # Result:
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
     #     *** PASS: Heuristic resulted in expansion of 905 nodes
     # """
-    # return _get_shortest_path_using_immediate(state_pacman.position, set_position_corner_remaining)
+    # return _get_shortest_path_using_immediate(state._position, set_position_corner_remaining)
 
     #####
     # """
     # V6
-    #     Uniform Cost Search based on the walls grid to find the exact distance to each position corner
-    #     Return the shortest distance to a position corner
+    #     Uniform Cost Search based on the walls grid to find the exact distance to each _position corner
+    #     Return the shortest distance to a _position corner
     # Points: 2/3
     # Result:
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
     #     *** FAIL: Heuristic resulted in expansion of 1495 nodes
     # """
     #
@@ -447,7 +447,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     # # a = time.time()
     # for position_corner_local_shortest in set_position_corner_remaining:
     #     result_ucs: Union[int, None] = _get_heuristic_cost_ucs_crude(walls.data,
-    #                                                                  state_pacman.position,
+    #                                                                  state._position,
     #                                                                  position_corner_local_shortest,
     #                                                                  cost_heuristic_min_current)
     #
@@ -469,7 +469,7 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     #
     # # # print("TIME:", b - a)
     # # print("Remaining Corners:", set_position_corner_remaining)
-    # # print("Position Current:", state_pacman.position)
+    # # print("Position Current:", state._position)
     # # print("Cost:", cost_heuristic_min_current)
     # # print("List Distances:", list_distance)
     # # # print(walls)
@@ -480,19 +480,19 @@ def cornersHeuristic(state: HashableGoal, problem: CornersProblem):
     #####
     # """
     # V7
-    #     Uniform Cost Search based on the walls grid to find the exact distance to a position corner and then
-    #     find it's distance to another position corner and so on...
+    #     Uniform Cost Search based on the walls grid to find the exact distance to a _position corner and then
+    #     find it's distance to another _position corner and so on...
     #     Basically do V4 or V5 but using a UCS (V6) instead of Manhattan distance.
     #
-    #     Probably use V5 because V4 takes to long if there are too many position corners (making a lot of permutations)
+    #     Probably use V5 because V4 takes to long if there are too many _position corners (making a lot of permutations)
     # Results:
-    #     *** PASS: heuristic value less than true cost at start state_pacman
-    #     *** PASS: heuristic value less than true cost at start state_pacman
+    #     *** PASS: heuristic value less than true cost at start state
+    #     *** PASS: heuristic value less than true cost at start state
     #     *** FAIL: inconsistent heuristic
     #     *** PASS: Heuristic resulted in expansion of 131 nodes
     # """
     #
-    # return _get_shortest_path_using_ucs_crude(state_pacman.position, set_position_corner_remaining, walls.data)
+    # return _get_shortest_path_using_ucs_crude(state._position, set_position_corner_remaining, walls.data)
 
     #####
 

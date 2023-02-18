@@ -22,9 +22,6 @@ Reference:
 
 """
 
-# class PlayerType(Enum):
-#     PACMAN = auto()
-#     GHOST = auto()
 from typing import Callable
 from typing import List
 from typing import Tuple
@@ -36,12 +33,9 @@ from pacman.game.player_pacman import PlayerPacman
 
 TYPE_REPRESENTATIVE = Union[Agent, PlayerPacman]
 
-TYPE_POSITION = Union[Tuple[int, ...]]
-
 from pacman.agent.search_problem import SearchProblem
 
 TYPE_HEURISTIC_FUNCTION = Callable[[Tuple[int, int], SearchProblem], float]
-
 
 TYPE_SEARCH_FUNCTION = Callable[[SearchProblem, Union[TYPE_HEURISTIC_FUNCTION, None]],
                                 List[Action]]

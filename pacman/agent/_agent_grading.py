@@ -26,7 +26,7 @@ from __future__ import annotations
 import json
 import random
 # from multiagent.player.player import Agent
-# from multiagent.player.agent_ghost_directional import AgentGhostDirectional
+# from multiagent.player.agent_ghost_directional import AgentPacmanGhostDirectional
 # from multiagent._test_case import TestCase
 # from multiagent.player import *
 from typing import Any
@@ -37,7 +37,7 @@ from typing import Tuple
 
 from common.state import State
 from pacman.agent import Agent
-from pacman.game.directions import Action
+from pacman.game.actiondirection import Action
 
 TYPE_TUPLE__STATE__ACTION_WRONG__ACTION_CORRECT = Tuple[State, Action, Action]
 

@@ -26,7 +26,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pacman.game.directions import Action
+    from pacman.game.actiondirection import Action
     from common.state import State
 
 

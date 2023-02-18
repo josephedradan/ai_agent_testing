@@ -30,10 +30,10 @@ from common.graphics.gui_tkinter import formatColor
 from common.graphics.gui_tkinter import writePostscript
 from pacman.agent import Agent
 from pacman.agent.container_state import ContainerState
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import ActionDirection
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 if TYPE_CHECKING:
@@ -234,7 +234,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
         self.isBlue = isBlue
         self._startGraphics(state_data)
 
-        # self.drawDistributions(state_pacman)
+        # self.drawDistributions(state)
         self.distributionImages = None  # Initialized lazily
         self.drawStaticObjects(state_data)
         self._drawAgentObjects(state_data)
@@ -243,7 +243,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
         self.previousState = state_data
 
     def _startGraphics(self, state):
-        self.layout = state.layout
+        self.layout = state.layout_pacman
         layout = self.layout
 
         self.width = layout.width
@@ -253,7 +253,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
         self.currentState = layout
 
     def drawDistributions(self, state):
-        walls = state.layout.walls
+        walls = state.layout_pacman.walls
         dist = []
         for x in range(walls.width):
             distx = []
@@ -477,7 +477,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
         self.gui.refresh()
 
     def getGhostColor(self, ghost, ghostIndex):
-        if ghost.scaredTimer > 0:
+        if ghost.time_scared > 0:
             return SCARED_COLOR
         else:
             return GHOST_COLORS[ghostIndex]
@@ -516,7 +516,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
             self.gui.move_by(ghostImagePart, delta)
         self.gui.refresh()
 
-        if container_state.scaredTimer > 0:
+        if container_state.time_scared > 0:
             color = SCARED_COLOR
         else:
             color = GHOST_COLORS[player.index]
@@ -527,14 +527,14 @@ class GraphicsPacmanGUI(GraphicsPacman):
         self.gui.refresh()
 
     def getPosition(self, agentState):
-        if agentState.container_position_vector == None:
+        if agentState._container_position_direction == None:
             return (-1000, -1000)
         return agentState.get_position()
 
     def getDirection(self, agentState):
-        if agentState.container_position_vector == None:
-            return Directions.STOP
-        return agentState.container_position_vector.get_direction()
+        if agentState._container_position_direction == None:
+            return ActionDirection.STOP
+        return agentState._container_position_direction.get_direction()
 
     def finish(self):
         self.gui.end_graphics()
@@ -790,8 +790,8 @@ class GraphicsPacmanGUI(GraphicsPacman):
 
     def updateDistributions(self, distributions):
         "Draws an player's belief distributions"
-        # copy all distributions so we don't change their state_pacman
-        distributions = [x.copy() for x in distributions]
+        # copy all distributions so we don't change their state
+        distributions = [x.get_copy_deep() for x in distributions]
         if self.distributionImages == None:
             self.drawDistributions(self.previousState)
         for x in range(len(self.distributionImages)):
@@ -830,9 +830,9 @@ class FirstPersonGraphicsPacman(GraphicsPacmanGUI):
         self.isBlue = isBlue
         GraphicsPacmanGUI._startGraphics(self, state_data)
         # Initialize distribution images
-        walls = state_data.layout.walls
+        walls = state_data.layout_pacman.walls
         dist = []
-        self.layout = state_data.layout
+        self.layout = state_data.layout_pacman
 
         # Draw the rest
         self.distributionImages = None  # initialize lazily

@@ -37,7 +37,7 @@ from pacman.agent.search_problem import CornersProblem
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 from pacman.test_case.common import followPath
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
@@ -117,7 +117,7 @@ class CornerHeuristicSanity(TestCase):
         if heuristics[len(heuristics) - 1] != 0:
             grader.addMessage('FAIL: heuristic non-zero at goal')
             return False
-        grader.addMessage('PASS: heuristic value less than true cost at start state_pacman')
+        grader.addMessage('PASS: heuristic value less than true cost at start state')
         return True
 
     def write_solution(self, path_file_solution: str) -> bool:
@@ -126,8 +126,8 @@ class CornerHeuristicSanity(TestCase):
         # write comment
         handle = open(path_file_solution, 'w')
         handle.write('# In order for a heuristic to be admissible, the value\n')
-        handle.write('# of the heuristic must be less at each state_pacman than the\n')
-        handle.write('# true cost of the optimal path from that state_pacman to a goal.\n')
+        handle.write('# of the heuristic must be less at each state than the\n')
+        handle.write('# true cost of the optimal path from that state to a goal.\n')
 
         agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 

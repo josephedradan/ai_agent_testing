@@ -26,8 +26,8 @@ from typing import TYPE_CHECKING
 from typing import Tuple
 
 from pacman.agent.search_problem import SearchProblem
-from pacman.game.actions import Actions
-from pacman.game.directions import Directions
+from pacman.game.handleractiondirection import HandlerActionDirection
+from pacman.game.actiondirection import ActionDirection
 from pacman.graphics.graphics_pacman_gui import GraphicsPacmanGUI
 
 if TYPE_CHECKING:
@@ -36,11 +36,11 @@ if TYPE_CHECKING:
 
 class PositionSearchProblem(SearchProblem):
     """
-    A search problem_multi_agent_tree defines the state_pacman space, start state_pacman, goal test, successor
+    A search problem_multi_agent_tree defines the state space, start state, goal test, successor
     function and cost function.  This search problem_multi_agent_tree can be used to find paths
     to a particular point on the pacman board.
 
-    The state_pacman space consists of (x,y) positions in a pacman game.
+    The state space consists of (x,y) positions in a pacman game.
 
     Note: this search problem_multi_agent_tree is fully specified; you should NOT change it.
     """
@@ -50,8 +50,8 @@ class PositionSearchProblem(SearchProblem):
         Stores the start and goal.
 
         gameState: A State object (pacman.py)
-        costFn: A function from a search state_pacman (tuple) to a non-negative number
-        goal: A position in the gameState
+        costFn: A function from a search state (tuple) to a non-negative number
+        goal: A _position in the gameState
         """
         super().__init__()
         self.walls = gameState.getWalls()
@@ -95,17 +95,17 @@ class PositionSearchProblem(SearchProblem):
         Returns successor states, the actions they require, and a cost of 1.
 
          As noted in search.py:
-             For a given state_pacman, this should return a list of triples,
+             For a given state, this should return a list of triples,
          (successor, action, stepCost), where 'successor' is a
-         successor to the current state_pacman, 'action' is the action
+         successor to the current state, 'action' is the action
          required to get there, and 'stepCost' is the incremental
          cost of expanding to that successor
         """
 
         successors = []
-        for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+        for action in [ActionDirection.NORTH, ActionDirection.SOUTH, ActionDirection.EAST, ActionDirection.WEST]:
             x, y = state
-            dx, dy = Actions.directionToVector(action)
+            dx, dy = HandlerActionDirection.get_vector_from_action_direction(action)
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
@@ -129,8 +129,8 @@ class PositionSearchProblem(SearchProblem):
         x, y = self.getStartState()
         cost = 0
         for action in actions:
-            # Check figure out the next state_pacman and see whether its' legal
-            dx, dy = Actions.directionToVector(action)
+            # Check figure out the next state and see whether its' legal
+            dx, dy = HandlerActionDirection.get_vector_from_action_direction(action)
             x, y = int(x + dx), int(y + dy)
             if self.walls[x][y]: return 999999
             cost += self.costFn((x, y))

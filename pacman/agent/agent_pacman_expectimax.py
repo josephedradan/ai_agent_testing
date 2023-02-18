@@ -58,10 +58,6 @@ def _dfs_recursive_expectimax_v1_handler(agent_primary: Agent,
 
         # Return the score
         return score
-    from common.state_pacman import StatePacman
-
-    # if isinstance(state, StatePacman):
-    #     print("____EXPI",index_agent, agent_selected, state.state_data.dict_k_agent_v_index)
 
     # List of legal movements ("North")
     list_str_move_legal: List[str] = state.getLegalActions(agent_selected)

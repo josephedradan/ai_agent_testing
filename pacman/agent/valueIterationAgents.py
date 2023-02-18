@@ -56,10 +56,10 @@ class ValueIterationAgent(ValueEstimationAgent):
 
           Some useful mdp methods you will use:
               mdp.getStates()
-              mdp.getPossibleActions(state_pacman)
-              mdp.getTransitionStatesAndProbs(state_pacman, action)
-              mdp.getReward(state_pacman, action, nextState)
-              mdp.isTerminal(state_pacman)
+              mdp.getPossibleActions(state)
+              mdp.getTransitionStatesAndProbs(state, action)
+              mdp.getReward(state, action, nextState)
+              mdp.isTerminal(state)
         """
         self.mdp: Gridworld = mdp
         self.discount: float = discount
@@ -73,7 +73,6 @@ class ValueIterationAgent(ValueEstimationAgent):
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
 
-        # util.raiseNotDefined()
 
         r"""
         Question 1 (4 points): Value Iteration
@@ -112,21 +111,21 @@ class ValueIterationAgent(ValueEstimationAgent):
                     
                     Optimal Quantities
                         V =     Value
-                        V* =    Optimal Value (Value you achieve on average if you start on state_pacman s)
-                                * It is the value of being in a state_pacman and acting optimally    
+                        V* =    Optimal Value (Value you achieve on average if you start on state s)
+                                * It is the value of being in a state and acting optimally    
                         
-                        V_k =   ** Optimal value of a state_pacman and play optimally.
-                                ** It is the expected value of starting in that state_pacman and playing optimally if the
+                        V_k =   ** Optimal value of a state and play optimally.
+                                ** It is the expected value of starting in that state and playing optimally if the
                                 game is going to end in k more time steps (Makes the tree not inf)
                                 If you save repeatedly you have an even better algo
                         
                         Q =     Q State (chance node), there are good and bad ones
-                                Their values have to do with what happens from that Q state_pacman you act optimally 
+                                Their values have to do with what happens from that Q state you act optimally 
                                 in the future
                         
-                        Q* =    Optimal Q State (Best state_pacman)
+                        Q* =    Optimal Q State (Best state)
                         
-                        s =     state_pacman
+                        s =     state
                         a =     action
                         s' =    state_future
                         
@@ -145,9 +144,9 @@ class ValueIterationAgent(ValueEstimationAgent):
                             1. Visit each S, 
                             2. For each S you do Expectimax which is (max Summation from 0 to s') as you
                             consider each action which is A
-                            3. Foe each action you need to consider every possible state_pacman that results which is S
+                            3. Foe each action you need to consider every possible state that results which is S
                     
-                    **  Remember you only get score if you transition to the state_pacman from another state_pacman
+                    **  Remember you only get score if you transition to the state from another state
                     
                 Reference:
                     https://www.youtube.com/watch?v=4LW3H_Jinr4&list=PLsOUugYMBBJENfZ3XAToMsg44W7LeUVhF&index=9
@@ -160,8 +159,8 @@ class ValueIterationAgent(ValueEstimationAgent):
             Notes:
                 Use the "batch" version of value iteration where each vector Vk is computed from a fixed vector Vk-1 
                 (like in lecture), not the "online" version where one single weight vector is updated in place. This
-                means that when a state_pacman's value is updated in iteration k based on the values of its successor states,
-                the successor state_pacman values used in the value update computation should be those from iteration k-1 
+                means that when a state's value is updated in iteration k based on the values of its successor states,
+                the successor state values used in the value update computation should be those from iteration k-1 
                 (even if some of the successor states had already been updated in iteration k).
                 
                     Must copy counter because autograder will check during iteration.
@@ -180,7 +179,7 @@ class ValueIterationAgent(ValueEstimationAgent):
                 actions_possible = self.mdp.getPossibleActions(state)
 
                 """
-                It is the expected value of starting in that state_pacman and playing optimally 
+                It is the expected value of starting in that state and playing optimally 
                 if the game is going to end in k steps
                 """
                 v_star = max([self.computeQValueFromValues(state, action) for action in actions_possible])
@@ -191,13 +190,13 @@ class ValueIterationAgent(ValueEstimationAgent):
 
     def getValue(self, state):
         """
-          Return the value of the state_pacman (computed in __init__).
+          Return the value of the state (computed in __init__).
         """
         return self.values[state]
 
     def computeQValueFromValues(self, state, action) -> float:
         """
-          Compute the Q-value of action in state_pacman from the
+          Compute the Q-value of action in state from the
           value function stored in self.values.
         """
         "*** YOUR CODE HERE ***"
@@ -237,12 +236,12 @@ class ValueIterationAgent(ValueEstimationAgent):
             
             What do Reinforcement Learning Algorithms Learn - Optimal Policies
                 Notes:
-                    Optimal state_pacman-value function
-                        V* gives the largest expected return achievable by any policy pi for each state_pacman.
+                    Optimal state-value function
+                        V* gives the largest expected return achievable by any policy pi for each state.
                     
                     Optimal action-value function
                         Q* gives the largest expected return achievable by any policy pi for each possible 
-                        state_pacman-action pair
+                        state-action pair
                     
                     Bellman Optimality equation for q*
                         Q* (s, a) = E*[R_t+1 + gamma*max Q*(s', a')]
@@ -253,16 +252,16 @@ class ValueIterationAgent(ValueEstimationAgent):
             
             Foundations of Q-Learning
                 Notes:
-                    Q-value indicate the quality of a particular action a in a given state_pacman s Q(s, a)
+                    Q-value indicate the quality of a particular action a in a given state s Q(s, a)
                     Q-value are our current estimate of the sum of future rewards
                         Q-values estimate how much additional reward we can accumulate through
-                        all remaining steps in the current episode if the AI player is in state_pacman s and takes action a
+                        all remaining steps in the current episode if the AI player is in state s and takes action a
                         Q values therefore increase as the AI player gets closer and closer to the highest reward
                     
-                    Q-values are stored in a Q-table, which has one row for each possible state_pacman, and one
+                    Q-values are stored in a Q-table, which has one row for each possible state, and one
                     column for each possible action
                         An optimal Q-table contains values that allow the AI player to take the best action
-                        in any possible state_pacman, thus providing the player with the optimal path to the highest reward'
+                        in any possible state, thus providing the player with the optimal path to the highest reward'
                         *The Q-table therefore represents the AI player's policy for acting in the current environment
                     
                 Reference:
@@ -271,7 +270,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
 
         # print(self.computeQValueFromValues.__name__)
-        # print("State: {}\nAction: {}".format(state_pacman, action))
+        # print("State: {}\nAction: {}".format(state, action))
         # print()
 
         # Q*
@@ -294,12 +293,12 @@ class ValueIterationAgent(ValueEstimationAgent):
 
     def computeActionFromValues(self, state: tuple) -> Union[None, str]:
         """
-          The policy is the best action in the given state_pacman
+          The policy is the best action in the given state
           according to the values currently stored in self.values.
 
           You may break ties any way you see fit.  Note that if
           there are no legal actions, which is the case at the
-          terminal state_pacman, you should return None.
+          terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
@@ -315,7 +314,7 @@ class ValueIterationAgent(ValueEstimationAgent):
                     *** THIS IS A POLICY (GIVE A STATE, GET AN ACTION)*** 
 
                     pi* == optimal policy
-                    Policy: Committed to an action, but not resulted is called a Q state_pacman
+                    Policy: Committed to an action, but not resulted is called a Q state
                     
                     Defining MDPs
                         Markov Decision Processes:
@@ -327,30 +326,30 @@ class ValueIterationAgent(ValueEstimationAgent):
                         
                         
                         MDP Quantities so far:
-                            Policy = Choice of action for each state_pacman
+                            Policy = Choice of action for each state
                             Utility = Sum of (discounted) rewards
                    
                     Optimal Quantities
                         V =     Value
-                        V* =    Optimal Value (Value you achieve on average if you start on state_pacman s)
-                                * It is the value of being in a state_pacman and acting optimally    
+                        V* =    Optimal Value (Value you achieve on average if you start on state s)
+                                * It is the value of being in a state and acting optimally    
                         
-                        V_k =   ** Optimal value of a state_pacman and play optimally.
-                                ** It is the expected value of starting in that state_pacman and playing optimally if the
+                        V_k =   ** Optimal value of a state and play optimally.
+                                ** It is the expected value of starting in that state and playing optimally if the
                                 game is going to end in k more time steps (Makes the tree not inf)
                                 If you save repeatedly you have an even better algo
                         
                         Q =     Q State (chance node), there are good and bad ones
-                                Their values have to do with what happens from that Q state_pacman you act optimally 
+                                Their values have to do with what happens from that Q state you act optimally 
                                 in the future
                         
-                        Q* =    Optimal Q State (Best state_pacman)
+                        Q* =    Optimal Q State (Best state)
                         
-                        pi*(s) = Optimal action from State s (Example: In this state_pacman, go north)
+                        pi*(s) = Optimal action from State s (Example: In this state, go north)
 
                     Racing Search Tree
                         Too much work for expectimax
-                        Problem state_pacman are repeated (You can cache it)
+                        Problem state are repeated (You can cache it)
                         Tree goes forever (You can truncate the tree at level 100)
                         
                         * If you cache and do truncate you just made value iteration
@@ -364,8 +363,8 @@ class ValueIterationAgent(ValueEstimationAgent):
                 Notes:
                     Policy = map of states to actions
                     Utility = sum of discounted rewards
-                    Values = expected future utility from a state_pacman (max node)
-                    Q-Values = expected future utility from a q-state_pacman (change node)
+                    Values = expected future utility from a state (max node)
+                    Q-Values = expected future utility from a q-state (change node)
                     
                 Rerference:
                     https://www.youtube.com/watch?v=ZToWj64rxvQ&list=PLsOUugYMBBJENfZ3XAToMsg44W7LeUVhF&index=10
@@ -385,7 +384,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
 
         # # Unnecessary check, use it runValueIteration instead
-        # if self.mdp.isTerminal(state_pacman):
+        # if self.mdp.isTerminal(state):
         #     return None
 
         # Dict of all key action and value Q*
@@ -402,14 +401,14 @@ class ValueIterationAgent(ValueEstimationAgent):
         # print("counter_k_action_v_q_star.argMax()", counter_k_action_v_q_star.argMax())
         # print()
 
-        # Return V*'s action (So this function is a policy since you give this function an state_pacman and you get an action)
+        # Return V*'s action (So this function is a policy since you give this function an state and you get an action)
         return counter_k_action_v_q_star.argMax()
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
 
     def getAction(self, state):
-        "Returns the policy at the state_pacman (no exploration)."
+        "Returns the policy at the state (no exploration)."
         return self.computeActionFromValues(state)
 
     def getQValue(self, state, action):
@@ -431,16 +430,16 @@ class AsynchronousValueIterationAgent(ValueIterationAgent):
           Your cyclic value iteration player should take an mdp on
           construction, run the indicated number of iterations,
           and then act according to the resulting policy. Each iteration
-          updates the value of only one state_pacman, which cycles through
-          the states list. If the chosen state_pacman is terminal, nothing
+          updates the value of only one state, which cycles through
+          the states list. If the chosen state is terminal, nothing
           happens in that iteration.
 
           Some useful mdp methods you will use:
               mdp.getStates()
-              mdp.getPossibleActions(state_pacman)
-              mdp.getTransitionStatesAndProbs(state_pacman, action)
-              mdp.getReward(state_pacman)
-              mdp.isTerminal(state_pacman)
+              mdp.getPossibleActions(state)
+              mdp.getTransitionStatesAndProbs(state, action)
+              mdp.getReward(state)
+              mdp.isTerminal(state)
         """
         ValueIterationAgent.__init__(self, mdp, discount, iterations)
 
@@ -460,19 +459,19 @@ class AsynchronousValueIterationAgent(ValueIterationAgent):
 
         Notes:
             The reason this class is called AsynchronousValueIterationAgent is because we will update 
-            only one state_pacman in each iteration, as opposed to doing a batch-style update. Here is how 
+            only one state in each iteration, as opposed to doing a batch-style update. Here is how 
             cyclic value iteration works. In the first iteration, only update the value of the first 
-            state_pacman in the states list. In the second iteration, only update the value of the second. 
-            Keep going until you have updated the value of each state_pacman once, then start back at the 
-            first state_pacman for the subsequent iteration. If the state_pacman picked for updating is terminal, 
+            state in the states list. In the second iteration, only update the value of the second. 
+            Keep going until you have updated the value of each state once, then start back at the 
+            first state for the subsequent iteration. If the state picked for updating is terminal, 
             nothing happens in that iteration. You can implement it as indexing into the states 
             variable defined in the code skeleton.
 
-                1.  In the first iteration, only update the value of the first state_pacman in the states list
-                2.  In the second iteration, only update the value of the second state_pacman in the states list
-                3.  Keep going until you have updated the value of each state_pacman once, then start 
-                    back at the first state_pacman for the subsequent iteration
-                4.  If the state_pacman picked for updating is terminal, nothing happens in that iteration
+                1.  In the first iteration, only update the value of the first state in the states list
+                2.  In the second iteration, only update the value of the second state in the states list
+                3.  Keep going until you have updated the value of each state once, then start 
+                    back at the first state for the subsequent iteration
+                4.  If the state picked for updating is terminal, nothing happens in that iteration
                 
         Results:
             *** PASS: test_cases\q4\1-tinygrid.test
@@ -496,7 +495,7 @@ class AsynchronousValueIterationAgent(ValueIterationAgent):
 
             list_state: list = self.mdp.getStates()
 
-            # Cycle state_pacman based on the iteration
+            # Cycle state based on the iteration
             state = list_state[index_iteration % len(list_state)]
 
             if self.mdp.isTerminal(state):
@@ -505,7 +504,7 @@ class AsynchronousValueIterationAgent(ValueIterationAgent):
             actions_possible = self.mdp.getPossibleActions(state)
 
             """
-            It is the expected value of starting in that state_pacman and playing optimally 
+            It is the expected value of starting in that state and playing optimally 
             if the game is going to end in k steps
             """
             v_star = max([self.computeQValueFromValues(state, action) for action in actions_possible])
@@ -571,7 +570,7 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
         1. Compute predecessors of all states.
 
         Notes:
-            When you compute predecessors of a state_pacman, make sure to store them in a set, not a list,
+            When you compute predecessors of a state, make sure to store them in a set, not a list,
             to avoid duplicates.
         """
         dict_k_state_v_set_predecessor = defaultdict(set)
@@ -586,7 +585,7 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
         pq = util.PriorityQueue()
 
         """
-        3. For each non-terminal state_pacman s, do:
+        3. For each non-terminal state s, do:
         (note: to make the autograder work for this question, you must iterate over states in the order returned 
         by self.mdp.getStates())
         """
@@ -607,7 +606,7 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
             Notes:
                 Custom computeActionFromValues
                 Need this to have access to specific scopes
-                    used for dict_k_state_v_set_predecessor[state_possible].add(state_pacman)
+                    used for dict_k_state_v_set_predecessor[state_possible].add(state)
             """
 
             list_q_star = []
@@ -638,8 +637,8 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
                     """
                     From this loop, we have the parent and so we can get the children.
                     Now we can use the dict where
-                        key == state_possible   # State (not to be confused with state_pacman)
-                        value == state_pacman          # Predecessor (state_pacman is the parent which is the predecessor)
+                        key == state_possible   # State (not to be confused with state)
+                        value == state          # Predecessor (state is the parent which is the predecessor)
                     """
                     dict_k_state_v_set_predecessor[state_possible].add(state)
 
@@ -653,7 +652,7 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
                 #####
 
             """
-            It is the expected value of starting in that state_pacman and playing optimally
+            It is the expected value of starting in that state and playing optimally
             if the game is going to end in k steps
 
             1b. highest Q-value across all possible actions from s (this represents what the value should be)
@@ -687,12 +686,12 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
             if pq.isEmpty():
                 return
 
-            # 2. Pop a state_pacman s off the priority queue.
+            # 2. Pop a state s off the priority queue.
             state_popped = pq.pop()
 
             list_actions_possible_state_popped = self.mdp.getPossibleActions(state_popped)
 
-            # 3. Update s's value (if it is not a terminal state_pacman) in self.values.
+            # 3. Update s's value (if it is not a terminal state) in self.values.
             if not self.mdp.isTerminal(state_popped):
                 v_star_max = max(
                     [self.computeQValueFromValues(state_popped,

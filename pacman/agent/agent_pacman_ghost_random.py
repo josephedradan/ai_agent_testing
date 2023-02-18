@@ -28,13 +28,13 @@ from typing import TYPE_CHECKING
 
 from common import util
 from common.action import Action
-from pacman.agent.agent_ghost import AgentGhost
+from pacman.agent.agent_pacman_ghost import AgentPacmanGhost
 
 if TYPE_CHECKING:
     from common.state import State
 
 
-class AgentGhostRandom(AgentGhost) :
+class AgentPacmanGhostRandom(AgentPacmanGhost) :
     "A ghost that chooses a legal action uniformly at random."
 
     def getDistribution(self, state: State) -> Dict[Action: float]:

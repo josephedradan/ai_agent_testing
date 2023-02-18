@@ -22,9 +22,10 @@ from typing import Union
 
 from common.util import manhattanDistance
 from pacman import constants
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import ActionDirection
 from pacman.game.grid_pacman import GridPacman
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.types_ import TYPE_VECTOR
 
 if TYPE_CHECKING:
     pass
@@ -44,9 +45,9 @@ class LayoutPacman:
 
         self.walls: GridPacman = GridPacman(self.width, self.height, False)
         self.food: GridPacman = GridPacman(self.width, self.height, False)
-        self.list_capsule: List[Tuple[int, ...]] = []
+        self.list_capsule: List[TYPE_VECTOR] = []
 
-        self.list_tuple__type_player__position: List[Tuple[TypePlayerPacman, Tuple[int, ...]]] = []
+        self.list_tuple__type_player__position: List[Tuple[TypePlayerPacman, TYPE_VECTOR]] = []
         self.numGhosts: int = 0
 
         self._processLayoutText(list_str_layout_line)
@@ -65,18 +66,18 @@ class LayoutPacman:
             vecs = [(-0.5, 0), (0.5, 0), (0, -0.5), (0, 0.5)]
 
             directions = [
-                Directions.NORTH,
-                Directions.SOUTH,
-                Directions.WEST,
-                Directions.EAST
+                ActionDirection.NORTH,
+                ActionDirection.SOUTH,
+                ActionDirection.WEST,
+                ActionDirection.EAST
             ]
 
             visibility = GridPacman(self.width, self.height, {
-                Directions.NORTH: set(),
-                Directions.SOUTH: set(),
-                Directions.EAST: set(),
-                Directions.WEST: set(),
-                Directions.STOP: set()
+                ActionDirection.NORTH: set(),
+                ActionDirection.SOUTH: set(),
+                ActionDirection.EAST: set(),
+                ActionDirection.WEST: set(),
+                ActionDirection.STOP: set()
             })
 
             for x in range(self.width):
@@ -169,7 +170,7 @@ class LayoutPacman:
         Makes the actual objects in the str_path_layout
 
         Notes:
-            Given position and char, add that tuple to
+            Given _position and char, add that tuple to
 
         """
 

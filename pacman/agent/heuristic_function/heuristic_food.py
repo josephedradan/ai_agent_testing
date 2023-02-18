@@ -39,8 +39,8 @@ if TYPE_CHECKING:
 def mazeDistance(point1, point2, gameState):
     """
     Returns the maze distance between any two points, using the search functions
-    you have already built. The gameState can be any game state_pacman -- Pacman's
-    position in that state_pacman is ignored.
+    you have already built. The gameState can be any game state -- Pacman's
+    _position in that state is ignored.
 
     Example usage: mazeDistance( (2,4), (5,6), gameState)
 
@@ -68,7 +68,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     other hand, inadmissible or inconsistent heuristics may find optimal
     solutions, so be careful.
 
-    The state_pacman is a tuple ( pacmanPosition, foodGrid ) where foodGrid is a GridPacman
+    The state is a tuple ( pacmanPosition, foodGrid ) where foodGrid is a GridPacman
     (see game.py) of either True or False. You can call foodGrid.asList() to get
     a list of food coordinates instead.
 
@@ -110,7 +110,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     # Set of remaining food
     #
     # IMPORTANT NOTES:
-    #     state_pacman is not a HashableGoal but a tuple, therefore it is not possible to transfer information about where
+    #     state is not a HashableGoal but a tuple, therefore it is not possible to transfer information about where
     #     the pacman has legitimately traveled to.
     #
     # """
@@ -123,7 +123,7 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     # r"""
     # V1
     #     Solve problem_multi_agent_tree using V4 or V5 from the previous problem_multi_agent_tree (Problem 6) which were to do the full
-    #     path to each position corner by making your corner
+    #     path to each _position corner by making your corner
     #
     # Notes:
     #     Both V4 and V5 from Problem 6 have problems here...
@@ -202,8 +202,8 @@ def foodHeuristic(state: Tuple, problem: FoodSearchProblem) -> float:
     # r"""
     # V3
     #     Use a modified version of V6 from the previous problem_multi_agent_tree (Problem 6)
-    #         "Uniform Cost Search based on the walls grid to find the exact distance to each position corner
-    #         Return the shortest distance to a position corner"
+    #         "Uniform Cost Search based on the walls grid to find the exact distance to each _position corner
+    #         Return the shortest distance to a _position corner"
     #     The modification is to support both min() and max() distance selection.
     #
     # Notes:

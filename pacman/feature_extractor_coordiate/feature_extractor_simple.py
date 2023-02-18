@@ -27,7 +27,7 @@ from typing import TYPE_CHECKING
 
 from common import util
 from pacman.feature_extractor_coordiate.feature_extrator import FeatureExtractor
-from pacman.game.actions import Actions
+from pacman.game.handleractiondirection import HandlerActionDirection
 
 if TYPE_CHECKING:
     from common.state_pacman import StatePacman
@@ -48,7 +48,7 @@ def closestFood(pos, food, walls):
         if food[pos_x][pos_y]:
             return dist
         # otherwise spread out from the location to its neighbours
-        nbrs = Actions.getLegalNeighbors((pos_x, pos_y), walls)
+        nbrs = HandlerActionDirection.get_list_action_direction_legal((pos_x, pos_y), walls)
         for nbr_x, nbr_y in nbrs:
             fringe.append((nbr_x, nbr_y, dist + 1))
     # no food found
@@ -76,12 +76,12 @@ class SimpleExtractor(FeatureExtractor):
 
         # compute the location of pacman after he takes the action
         x, y = state_pacman.getPacmanPosition()
-        dx, dy = Actions.directionToVector(action)
+        dx, dy = HandlerActionDirection.get_vector_from_action_direction(action)
         next_x, next_y = int(x + dx), int(y + dy)
 
         # count the number of ghosts 1-step away
         features["#-of-ghosts-1-step-away"] = sum(
-            (next_x, next_y) in Actions.getLegalNeighbors(g, walls) for g in ghosts)
+            (next_x, next_y) in HandlerActionDirection.get_list_action_direction_legal(g, walls) for g in ghosts)
 
         # if there is no danger of ghosts then add the food feature
         if not features["#-of-ghosts-1-step-away"] and food[next_x][next_y]:

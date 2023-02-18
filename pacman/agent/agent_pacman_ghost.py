@@ -20,30 +20,31 @@ from typing import TYPE_CHECKING
 
 from common import util
 from pacman.agent.agent import Agent
-from pacman.game.directions import Action
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import Action
+from pacman.game.actiondirection import ActionDirection
 
 if TYPE_CHECKING:
     from common.state import State
 
 
-class AgentGhost(Agent, ABC):
+class AgentPacmanGhost(Agent, ABC):
 
     def __init__(self, **kwargs):
-        super(AgentGhost, self).__init__(**kwargs)
+        super(AgentPacmanGhost, self).__init__(**kwargs)
 
     def getAction(self, state: State) -> Action:
 
         dist = self.getDistribution(state)
         if len(dist) == 0:
-             x= Directions.STOP
+            x = ActionDirection.STOP
         else:
-             x = util.chooseFromDistribution(dist)
+            x = util.chooseFromDistribution(dist)
 
         return x
+
     @abstractmethod
     def getDistribution(self, state: State) -> Dict[Action, float]:
-        "Returns a Counter encoding a distribution over actions from the provided state_pacman."
+        "Returns a Counter encoding a distribution over actions from the provided state."
         pass
 
     # def get_legal_actions(self, state: StatePacman):
@@ -51,11 +52,11 @@ class AgentGhost(Agent, ABC):
     #
     #     legalActions = state.getLegalActions(self)
     #
-    #     reverse = Actions.reverseDirection(container_position_vector.direction)
+    #     reverse = HandlerActionDirection.reverseDirection(_container_position_direction._direction)
     #
     #     # GHOST DONT STOP SO REMOVE IT
-    #     if Directions.STOP in possibleActions:
-    #         possibleActions.remove(Directions.STOP)
+    #     if ActionDirection.STOP in possibleActions:
+    #         possibleActions.remove(ActionDirection.STOP)
     #
     #     # DONT REVERSE IF GHOST HAS MORE THAN 1 MOVE
     #     if reverse in possibleActions and len(possibleActions) > 1:

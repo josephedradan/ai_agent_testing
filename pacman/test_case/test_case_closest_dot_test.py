@@ -33,7 +33,7 @@ from pacman.agent import AgentPacman
 from pacman.agent import ClosestDotSearchAgent
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:

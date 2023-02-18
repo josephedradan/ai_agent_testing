@@ -25,20 +25,22 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
+from pacman.types_ import TYPE_VECTOR
+
 
 class HashableGoal:
     # Use less memory
     __slots__ = ["position", "list_tuple_order_traveled"]
 
-    def __init__(self, position: Tuple[int, ...], list_tuple_order_traveled: List[Union[Tuple[int, ...], None]]):
+    def __init__(self, position: TYPE_VECTOR, list_tuple_order_traveled: List[Union[TYPE_VECTOR, None]]):
         """
-        Probably because all of the algorithms inside of search.py prevent you from moving into a position that you
+        Probably because all of the algorithms inside of search.py prevent you from moving into a _position that you
         already traversed, you can use an additional parameter to act similar to changing universes once you have
         reached a goal.
 
-        Basically, you hash the position along side the length of the set that contains the goal positions.
-        When you reach a goal position, the set's length is changed because you remove that position from that set.
-        The removal of a goal position and the creation of the set is done before the creation of this object based
+        Basically, you hash the _position along side the length of the set that contains the goal positions.
+        When you reach a goal _position, the set's length is changed because you remove that _position from that set.
+        The removal of a goal _position and the creation of the set is done before the creation of this object based
         on the previous HashableGoal object's list_tuple_order_traveled.
 
         """
@@ -48,7 +50,7 @@ class HashableGoal:
 
     def __hash__(self):
         """
-        Hash the position along side the length of the set of goal positions that you haven't reached
+        Hash the _position along side the length of the set of goal positions that you haven't reached
 
         Notes:
             tuple (No Nones)
@@ -72,7 +74,7 @@ class HashableGoal:
                 Can probably not cause different paths to enter the same universe because the hash
                 is based on the order of tuple corners visited and the tuple corner itself.
 
-             tuple (Just adding the position of a corner in a list of corners visited, then hashing
+             tuple (Just adding the _position of a corner in a list of corners visited, then hashing
              that list as a tuple)
                 with check in isGoalState -> Fail, Search nodes expanded: 447, cost of 28
                 No check in isGoalState -> Success, Search nodes expanded: 494, cost of 29

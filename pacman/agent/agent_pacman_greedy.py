@@ -29,8 +29,8 @@ from typing import TYPE_CHECKING
 from typing import Tuple
 
 from pacman.agent.agent_pacman import AgentPacman
-from pacman.game.directions import Action
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import Action
+from pacman.game.actiondirection import ActionDirection
 
 if TYPE_CHECKING:
     from common.state import State
@@ -46,8 +46,8 @@ class AgentPacmanGreedy(AgentPacman):
         # Generate candidate actions
         legal: List[Action] = state.getLegalActions(self)
 
-        if Directions.STOP in legal:
-            legal.remove(Directions.STOP)
+        if ActionDirection.STOP in legal:
+            legal.remove(ActionDirection.STOP)
 
         successors: List[Tuple[State, Action]] = (
             [(state.generateSuccessor(self, action), action) for action in legal]

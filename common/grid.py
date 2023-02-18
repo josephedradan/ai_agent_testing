@@ -42,7 +42,7 @@ class Grid:
     The __str__ method constructs an output that is oriented like a pacman board.
     """
 
-    def __init__(self, width: int, height: int, initialValue: bool=False, bitRepresentation=None):
+    def __init__(self, width: int, height: int, initialValue: bool = False, bitRepresentation=None):
 
         if initialValue not in [False, True]:
             raise Exception('Grids can only contain booleans')
@@ -87,7 +87,6 @@ class Grid:
 
         return hash(tuple(i for b in self.data for i in b))
 
-
     def copy(self):
         g = Grid(self.width, self.height)
         g.data = [x[:] for x in self.data]
@@ -101,14 +100,14 @@ class Grid:
         g.data = self.data
         return g
 
-    def count(self, item: bool=True):
+    def count(self, item: bool = True):
         return sum([x.count(item) for x in self.data])
 
-    def asList(self, key: bool=True):
+    def asList(self, bool_key: bool = True):
         list = []
         for x in range(self.width):
             for y in range(self.height):
-                if self[x][y] == key:
+                if self[x][y] == bool_key:
                     list.append((x, y))
         return list
 

@@ -46,7 +46,7 @@ def question2():
     """
     answerDiscount = 0.9
 
-    # How often an player ends up in an unintended successor state_pacman when they perform an action
+    # How often an player ends up in an unintended successor state when they perform an action
     answerNoise = 0  # You want 0 because rng sucks
     return answerDiscount, answerNoise
 

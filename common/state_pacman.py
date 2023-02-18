@@ -35,12 +35,12 @@ from pacman.agent.container_state import ContainerState
 from pacman.game.rules.common import TIME_PENALTY
 from pacman.game.rules.rules_ghost import GhostRules
 from pacman.game.rules.rules_pacman import PacmanRules
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 
 if TYPE_CHECKING:
+    from pacman.types_ import TYPE_VECTOR
     from pacman.game.player_pacman import PlayerPacman
-    from pacman.game.directions import Action
-    from pacman.game.common import TYPE_POSITION
+    from pacman.game.actiondirection import Action
     from pacman.game.layoutpacman import LayoutPacman
 
 
@@ -49,18 +49,25 @@ class StatePacman(State):
 
     def __init__(self, state_previous: Union[StatePacman, None] = None):
         """
-        Generates a new state_pacman by copying information from its predecessor.
+        Generates a new StatePacman by copying information from its predecessor.
         """
 
-        if isinstance(state_previous, StatePacman):  # Initial state_pacman
+        if isinstance(state_previous, StatePacman):
             self.state_data = StateDataPacman(state_previous.state_data)
         else:
             self.state_data = StateDataPacman()
 
-    def get_deep_copy(self) -> State:  # TODO: game.py calls this a lot
-        state = type(self)(self)
-        state.state_data = self.state_data.get_deep_copy()
-        return state
+    def initialize(self, layout: LayoutPacman, list_player: List[PlayerPacman]):
+        """
+        Initializes self.state_data, this should be called once
+
+        """
+        self.state_data.initialize(layout, list_player)
+
+    def get_deep_copy(self) -> State:
+        state_pacman = type(self)(self)
+        state_pacman.state_data = self.state_data.get_deep_copy()
+        return state_pacman
 
     def __eq__(self, other):
         """
@@ -79,17 +86,7 @@ class StatePacman(State):
         return hash(self.state_data)
 
     def __str__(self):
-
         return str(self.state_data)
-
-    def initialize(self, layout: LayoutPacman, list_player: List[PlayerPacman]):
-        """
-        Creates an initial game state_pacman from a str_path_layout array (see str_path_layout.py).
-
-        Notes:
-            Should be called once
-        """
-        self.state_data.initialize(layout, list_player)
 
     def get_agent_by_index(self, index: int) -> Union[Agent, None]:
         return self.state_data.get_agent_by_index(index)
@@ -136,13 +133,13 @@ class StatePacman(State):
 
     def generateSuccessor(self, agent: Agent, action: Action) -> StatePacman:
         """
-        Returns the successor state_pacman after the specified player takes the action.
+        Returns the successor state after the specified player takes the action.
         """
         # Check that successors exist
         if self.isWin() or self.isLose():
-            raise Exception('Can\'t generate a successor of a terminal state_pacman.')
+            raise Exception('Can\'t generate a successor of a terminal state.')
 
-        # Copy current state_pacman
+        # Copy current state
         state_pacman = type(self)(self)
 
         player: PlayerPacman = state_pacman.get_player_from_agent(agent)
@@ -188,7 +185,7 @@ class StatePacman(State):
     # TODO: DONT USE, USE THIS -> self.generateSuccessor
     # def generatePacmanSuccessor(self, action: Action):
     #     """
-    #     Generates the successor state_pacman after the specified pacman move
+    #     Generates the successor state after the specified pacman move
     #     """
     #     return self.generateSuccessor(self.state_data.pacamn, action)
 
@@ -197,12 +194,12 @@ class StatePacman(State):
     #     """
     #     Returns an ContainerState object for pacman (in game.py)
     #
-    #     state_pacman.position gives the current position
-    #     state_pacman.direction gives the travel vector
+    #     state._position gives the current _position
+    #     state._direction gives the travel vector
     #     """
     #     return self.state_data.dict_k_player_v_container_state[0].copy()
 
-    def getPacmanPosition(self, agent: Agent = None) -> Union[TYPE_POSITION, None]:
+    def getPacmanPosition(self, agent: Agent = None) -> Union[TYPE_VECTOR, None]:
 
         if agent is None:
             return self.get_position_of_agent(
@@ -228,7 +225,7 @@ class StatePacman(State):
         #     raise Exception("Invalid index passed to getGhostState")
         # return self.state_data.dict_k_player_v_container_state[agent]   # TODO: LOOK IN state_data.dict_k_player_v_container_state BASED ON INDEX
 
-    def get_position_of_agent(self, agent: Agent) -> Union[TYPE_POSITION, None]:
+    def get_position_of_agent(self, agent: Agent) -> Union[TYPE_VECTOR, None]:
 
         player = self.state_data.dict_k_agent_v_player.get(agent)
 
@@ -243,7 +240,7 @@ class StatePacman(State):
         #     raise Exception("Pacman's index passed to getGhostPosition")
         # return self.state_data.dict_k_player_v_container_state[agent].get_position()
 
-    def get_list_position_ghost(self) -> List[TYPE_POSITION]:
+    def get_list_position_ghost(self) -> List[TYPE_VECTOR]:
         return [s.get_position() for s in self.get_list_container_state_ghost()]
 
     def getNumAgents(self):
@@ -268,7 +265,7 @@ class StatePacman(State):
         Grids can be accessed via list notation, so to check
         if there is food at (x,y), just call
 
-        currentFood = state_pacman.getFood()
+        currentFood = state.getFood()
         if currentFood[x][y] == True: ...
         """
         return self.state_data.grid_food
@@ -280,16 +277,16 @@ class StatePacman(State):
         Grids can be accessed via list notation, so to check
         if there is a wall at (x,y), just call
 
-        walls = state_pacman.getWalls()
+        walls = state.getWalls()
         if walls[x][y] == True: ...
         """
-        return self.state_data.layout.walls
+        return self.state_data.layout_pacman.walls
 
     def hasFood(self, x: int, y: int):
         return self.state_data.grid_food[x][y]
 
     def hasWall(self, x: int, y: int):
-        return self.state_data.layout.walls[x][y]
+        return self.state_data.layout_pacman.walls[x][y]
 
     def isLose(self):
         return self.state_data._lose

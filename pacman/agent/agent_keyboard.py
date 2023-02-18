@@ -18,8 +18,8 @@ from typing import TYPE_CHECKING
 from typing import Union
 
 from pacman.agent.agent import Agent
-from pacman.game.directions import Action
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import Action
+from pacman.game.actiondirection import ActionDirection
 from common.graphics.gui import GUI
 from common.graphics.gui_tkinter import GUITkinter
 
@@ -41,7 +41,7 @@ class AgentKeyboard(Agent):
     def __init__(self, **kwargs):
         super(AgentKeyboard, self).__init__(**kwargs)
 
-        self.lastMove = Directions.STOP
+        self.lastMove = ActionDirection.STOP
         self.keys = []
 
         ###
@@ -67,13 +67,13 @@ class AgentKeyboard(Agent):
         legal = state.getLegalActions(self)
         move = self.getMove(legal)
 
-        if move == Directions.STOP:
-            # Try to move in the same direction as before
+        if move == ActionDirection.STOP:
+            # Try to move in the same _direction as before
             if self.lastMove in legal:
                 move = self.lastMove
 
-        if (self.STOP_KEY in self.keys) and Directions.STOP in legal:
-            move = Directions.STOP
+        if (self.STOP_KEY in self.keys) and ActionDirection.STOP in legal:
+            move = ActionDirection.STOP
 
         if move not in legal:
             move = random.choice(legal)
@@ -82,15 +82,15 @@ class AgentKeyboard(Agent):
         return move
 
     def getMove(self, legal):
-        move = Directions.STOP
-        if (self.WEST_KEY in self.keys or 'Left' in self.keys) and Directions.WEST in legal:
-            move = Directions.WEST
-        if (self.EAST_KEY in self.keys or 'Right' in self.keys) and Directions.EAST in legal:
-            move = Directions.EAST
-        if (self.NORTH_KEY in self.keys or 'Up' in self.keys) and Directions.NORTH in legal:
-            move = Directions.NORTH
-        if (self.SOUTH_KEY in self.keys or 'Down' in self.keys) and Directions.SOUTH in legal:
-            move = Directions.SOUTH
+        move = ActionDirection.STOP
+        if (self.WEST_KEY in self.keys or 'Left' in self.keys) and ActionDirection.WEST in legal:
+            move = ActionDirection.WEST
+        if (self.EAST_KEY in self.keys or 'Right' in self.keys) and ActionDirection.EAST in legal:
+            move = ActionDirection.EAST
+        if (self.NORTH_KEY in self.keys or 'Up' in self.keys) and ActionDirection.NORTH in legal:
+            move = ActionDirection.NORTH
+        if (self.SOUTH_KEY in self.keys or 'Down' in self.keys) and ActionDirection.SOUTH in legal:
+            move = ActionDirection.SOUTH
         return move
 
 
@@ -106,13 +106,13 @@ class AgentKeyboard2(AgentKeyboard):
     STOP_KEY = 'u'
 
     def getMove(self, legal):
-        move = Directions.STOP
-        if (self.WEST_KEY in self.keys) and Directions.WEST in legal:
-            move = Directions.WEST
-        if (self.EAST_KEY in self.keys) and Directions.EAST in legal:
-            move = Directions.EAST
-        if (self.NORTH_KEY in self.keys) and Directions.NORTH in legal:
-            move = Directions.NORTH
-        if (self.SOUTH_KEY in self.keys) and Directions.SOUTH in legal:
-            move = Directions.SOUTH
+        move = ActionDirection.STOP
+        if (self.WEST_KEY in self.keys) and ActionDirection.WEST in legal:
+            move = ActionDirection.WEST
+        if (self.EAST_KEY in self.keys) and ActionDirection.EAST in legal:
+            move = ActionDirection.EAST
+        if (self.NORTH_KEY in self.keys) and ActionDirection.NORTH in legal:
+            move = ActionDirection.NORTH
+        if (self.SOUTH_KEY in self.keys) and ActionDirection.SOUTH in legal:
+            move = ActionDirection.SOUTH
         return move

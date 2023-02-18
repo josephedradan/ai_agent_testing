@@ -91,7 +91,7 @@ class GridPolicyTest(TestCase):
         #    _ is empty space
         #    numbers are terminal states with that value
         #    # is a wall
-        #    S is a start state_pacman
+        #    S is a start state
         #
         self.gridText = testDict['grid']
         self.grid = Gridworld(parseGrid(testDict['grid']))
@@ -105,12 +105,12 @@ class GridPolicyTest(TestCase):
 
         # State the most probable path must visit
         #    (x,y) for a particular location; (0,0) is bottom left
-        #    terminal for the terminal state_pacman
+        #    terminal for the terminal state
         self.pathVisits = testDict.get('pathVisits', None)
 
         # State the most probable path must not visit
         #    (x,y) for a particular location; (0,0) is bottom left
-        #    terminal for the terminal state_pacman
+        #    terminal for the terminal state
         self.pathNotVisits = testDict.get('pathNotVisits', None)
 
     def execute(self, grader: Grader, dict_file_solution: Dict[str, Any]) -> bool:
@@ -188,7 +188,7 @@ class GridPolicyTest(TestCase):
         path = followPath(policy, self.grid.getStartState())
 
         if self.pathVisits != None and self.pathVisits not in path:
-            self.add_message_to_messages('Policy does not visit state_pacman %s when moving without noise.' % (self.pathVisits,))
+            self.add_message_to_messages('Policy does not visit state %s when moving without noise.' % (self.pathVisits,))
             self.add_message_to_messages('    States visited: %s' % (path,))
             self.add_message_to_messages('    Student policy:')
             self.printPolicy(policy, False)
@@ -198,7 +198,7 @@ class GridPolicyTest(TestCase):
             return self._procedure_test_fail(grader)
 
         if self.pathNotVisits != None and self.pathNotVisits in path:
-            self.add_message_to_messages('Policy visits state_pacman %s when moving without noise.' % (self.pathNotVisits,))
+            self.add_message_to_messages('Policy visits state %s when moving without noise.' % (self.pathNotVisits,))
             self.add_message_to_messages('    States visited: %s' % (path,))
             self.add_message_to_messages('    Student policy:')
             self.printPolicy(policy, False)
@@ -229,9 +229,9 @@ class GridPolicyTest(TestCase):
             else:
                 self.add_message_to_messages("        %s" % (
                     "    ".join([legend[policy.get((x, y), '.')] for x in range(self.grid.grid.width)]),))
-        # for state_pacman in sorted(self.grid.getStates()):
-        #     if state_pacman != 'TERMINAL_STATE':
-        #         self.addMessage('      (%s,%s) %s' % (state_pacman[0], state_pacman[1], policy[state_pacman]))
+        # for state in sorted(self.grid.getStates()):
+        #     if state != 'TERMINAL_STATE':
+        #         self.addMessage('      (%s,%s) %s' % (state[0], state[1], policy[state]))
 
     def write_solution(self, path_file_solution: str) -> bool:
         with open(path_file_solution, 'w') as handle:

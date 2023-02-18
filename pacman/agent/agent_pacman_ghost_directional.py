@@ -29,15 +29,15 @@ from typing import TYPE_CHECKING
 from common.action import Action
 from common import util
 from common.util import manhattanDistance
-from pacman.agent.agent_ghost import AgentGhost
-from pacman.game.actions import Actions
+from pacman.agent.agent_pacman_ghost import AgentPacmanGhost
+from pacman.game.handleractiondirection import HandlerActionDirection
 
 if TYPE_CHECKING:
     from common.state import State
     from common.state_pacman import StatePacman
 
 
-class AgentGhostDirectional(AgentGhost):
+class AgentPacmanGhostDirectional(AgentPacmanGhost):
     """
     A ghost that prefers to rush Pacman, or flee when scared.
 
@@ -51,22 +51,22 @@ class AgentGhostDirectional(AgentGhost):
 
     def getDistribution(self, state: StatePacman) -> Dict[Action, float]:
 
-        # Read variables from state_pacman
+        # Read variables from state
         ghostState = state.get_container_state_GHOST(self)
         legalActions = state.getLegalActions(self)
         pos = state.get_position_of_agent(self)
-        isScared = ghostState.scaredTimer > 0
+        isScared = ghostState.time_scared > 0
 
         speed = 1
         if isScared:
             speed = 0.5
 
-        actionVectors = [Actions.directionToVector(
+        actionVectors = [HandlerActionDirection.get_vector_from_action_direction(
             a, speed) for a in legalActions]
         newPositions = [(pos[0] + a[0], pos[1] + a[1]) for a in actionVectors]
         pacmanPosition = state.getPacmanPosition()
 
-        # Select best actions given the state_pacman
+        # Select best actions given the state
         distancesToPacman = [manhattanDistance(
             pos, pacmanPosition) for pos in newPositions]
         if isScared:

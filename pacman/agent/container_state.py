@@ -23,70 +23,79 @@ Reference:
 """
 from __future__ import annotations
 
-from functools import cache
-from typing import Tuple
 from typing import Union
 
-from pacman.game.container_position_vector import ContainerPositionVector
-from pacman.game.directions import Directions
+from pacman.game.container_position_direction import ContainerPositionDirection
+from pacman.game.actiondirection import ActionDirection
+from pacman.types_ import TYPE_VECTOR
 
 
 class ContainerState:
     """
-    AgentStates hold the state_pacman of an player (container_position_vector, speed, scared, etc).
+    Holds the state of an player (_container_position_direction, speed, scared, etc).
 
     NOTES:
         CREATED ONCE IN state_data_pacman
 
     """
+    _container_position_direction: ContainerPositionDirection
+    _container_position_direction_start: ContainerPositionDirection
 
-    def __init__(self, container_position_vector: ContainerPositionVector):
-        self.container_position_vector_start: ContainerPositionVector = container_position_vector
+    def __init__(self, container_position_direction: ContainerPositionDirection):
+        self._container_position_direction_start = container_position_direction
 
         # This one will differ on copies
-        self.container_position_vector: ContainerPositionVector = container_position_vector
+        self._container_position_direction = container_position_direction
 
-        self.scaredTimer: int = 0
+        self.time_scared: int = 0
 
-        # state_pacman below potentially used for contest only
+        # state below potentially used for contest only
         self.numCarrying: int = 0
         self.numReturned: int = 0
 
-    def __str__(self):
-        # if self.is_pacman:
-        #     return "Pacman: " + str(self.container_position_vector)
-        # else:
-        #     return "Ghost: " + str(self.container_position_vector)
+    def __repr__(self):
+        return self.__str__()
 
-        return str(self.container_position_vector)
+    def __str__(self):
+        return str(self._container_position_direction)
 
     def __eq__(self, other: Union[ContainerState, None]):
         if isinstance(other, ContainerState):
             return (
-                    self.container_position_vector == other.container_position_vector and
-                    self.scaredTimer == other.scaredTimer
+                    self._container_position_direction == other._container_position_direction and
+                    self.time_scared == other.time_scared and
+                    self.numCarrying == other.numCarrying and
+                    self.numReturned == other.numReturned
             )
         return False
 
     def __hash__(self):
-        # return hash(hash(self.container_position_vector) + 13 * hash(self.scaredTimer))
         return hash((
-            self.container_position_vector,
-            self.scaredTimer
+            self._container_position_direction,
+            self.time_scared
         ))
 
-    def copy(self) -> ContainerState:
-        state = ContainerState(self.container_position_vector_start)
-        state.container_position_vector = self.container_position_vector
-        state.scaredTimer = self.scaredTimer
-        state.numCarrying = self.numCarrying
-        state.numReturned = self.numReturned
-        return state
+    def get_copy_deep(self) -> ContainerState:
+        container_state_new = ContainerState(self._container_position_direction_start)
 
-    def get_position(self) -> Union[Tuple[int, ...], None]:
-        if self.container_position_vector == None:
+        container_state_new._container_position_direction = self._container_position_direction
+        container_state_new.time_scared = self.time_scared
+        container_state_new.numCarrying = self.numCarrying
+        container_state_new.numReturned = self.numReturned
+
+        return container_state_new
+
+    def get_position(self) -> Union[TYPE_VECTOR, None]:
+        if self._container_position_direction is None:
             return None
-        return self.container_position_vector.get_position()
 
-    def get_direction(self) -> Directions:
-        return self.container_position_vector.get_direction()
+        return self._container_position_direction.get_position()
+
+    def get_direction(self) -> ActionDirection:
+        return self._container_position_direction.get_direction()
+
+    def get_container_position_direction(self) -> ContainerPositionDirection:
+        return self._container_position_direction
+
+    def get_container_position_direction_start(self) -> ContainerPositionDirection:
+        return self._container_position_direction_start

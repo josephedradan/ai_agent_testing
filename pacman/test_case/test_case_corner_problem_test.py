@@ -34,10 +34,10 @@ from pacman.agent import Agent
 from pacman.agent import AgentPacman
 from pacman.agent.search.search import bfs
 from pacman.agent.search_problem import CornersProblem
-from pacman.game.actions import Actions
+from pacman.game.handleractiondirection import HandlerActionDirection
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player import TypePlayerPacman
+from pacman.game.type_player_pacman import TypePlayerPacman
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -51,7 +51,7 @@ def getStatesFromPath(start, path):
     curr = start
     for a in path:
         x, y = curr
-        dx, dy = Actions.directionToVector(a)
+        dx, dy = HandlerActionDirection.get_vector_from_action_direction(a)
         curr = (int(x + dx), int(y + dy))
         vis.append(curr)
     return vis

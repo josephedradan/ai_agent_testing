@@ -24,7 +24,7 @@ class CrawlingRobotEnvironment(environment.Environment):
 
         self.crawlingRobot = crawlingRobot
 
-        # The state_pacman is of the form (armAngle, handAngle)
+        # The state is of the form (armAngle, handAngle)
         # where the angles are bucket numbers, not actual
         # degree measurements
         self.state = None
@@ -33,7 +33,7 @@ class CrawlingRobotEnvironment(environment.Environment):
         self.nHandStates = 13
 
         # create a list of arm buckets and hand buckets to
-        # discretize the state_pacman space
+        # discretize the state space
         minArmAngle,maxArmAngle = self.crawlingRobot.getMinAndMaxArmAngles()
         minHandAngle,maxHandAngle = self.crawlingRobot.getMinAndMaxHandAngles()
         armIncrement = (maxArmAngle - minArmAngle) / (self.nArmStates-1)
@@ -48,7 +48,7 @@ class CrawlingRobotEnvironment(environment.Environment):
 
     def getCurrentState(self):
         """
-          Return the current state_pacman
+          Return the current state
           of the crawling robot
         """
         return self.state
@@ -57,7 +57,7 @@ class CrawlingRobotEnvironment(environment.Environment):
         """
           Returns possible actions
           for the states in the
-          current state_pacman
+          current state
         """
 
         actions = list()
@@ -73,9 +73,9 @@ class CrawlingRobotEnvironment(environment.Environment):
     def doAction(self, action):
         """
           Perform the action and update
-          the current state_pacman of the Environment
+          the current state of the Environment
           and return the reward for the
-          current state_pacman, the next state_pacman
+          current state, the next state
           and the taken action.
 
           Returns:
@@ -115,12 +115,12 @@ class CrawlingRobotEnvironment(environment.Environment):
 
     def reset(self):
         """
-         Resets the Environment to the initial state_pacman
+         Resets the Environment to the initial state
         """
-        ## Initialize the state_pacman to be the middle
+        ## Initialize the state to be the middle
         ## value for each parameter e.g. if there are 13 and 19
         ## buckets for the arm and hand parameters, then the intial
-        ## state_pacman should be (6,9)
+        ## state should be (6,9)
         ##
         ## Also call self.crawlingRobot.setAngles()
         ## to the initial arm and hand angle

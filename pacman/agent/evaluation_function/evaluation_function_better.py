@@ -36,7 +36,7 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
     evaluation_function_food_and_ghost_helper
 
 if TYPE_CHECKING:
-    from pacman.game.directions import Action
+    from pacman.game.actiondirection import Action
     from common.state import State
     from pacman.game.grid_pacman import GridPacman
     from common.state_pacman import StatePacman
@@ -54,8 +54,8 @@ def _get_heuristic_cost_ucs_crude(grid_wall: GridPacman,
         If no cost_min_current given, then it's a BFS
 
     :param grid_wall:
-    :param position_start: Starting position tuple
-    :param position_goal: Goal position tuple
+    :param position_start: Starting _position tuple
+    :param position_goal: Goal _position tuple
     :param cost_min_current: Current smallest cost obtained from another call to _get_heuristic_cost_ucs_crude,
         It is used to prevent this algorithm from calculating lengths to a goal that are longer than cost_min_current.
         Basically, this value is used to decrease computation time ONLY FOR FINDING THE SHORTEST DISTANCE.
@@ -89,7 +89,7 @@ def _get_heuristic_cost_ucs_crude(grid_wall: GridPacman,
             if position_with_cost[0] > cost_min_current:
                 continue
 
-        # Return cost if this algo has reached its goal position
+        # Return cost if this algo has reached its goal _position
         if position_with_cost[1] == position_goal:
             return position_with_cost[0]
 
@@ -146,7 +146,7 @@ def evaluation_function_better(currentGameState: State,
     # position_food_new: GridPacman = state_successor_pacman.getFood()
     #
     # list_agent_state_ghost_new: List[ContainerState] = state_successor_pacman.getGhostStates()
-    # list_agent_state_ghost_scared_time: List[float] = [container_state.scaredTimer for container_state in
+    # list_agent_state_ghost_scared_time: List[float] = [container_state.time_scared for container_state in
     #                                                    list_agent_state_ghost_new]
 
     # print("state_current", type(state_current), state_current)
@@ -155,7 +155,7 @@ def evaluation_function_better(currentGameState: State,
     #       type(state_successor_pacman),
     #       state_successor_pacman)
     #
-    # print("position_pacman_new (Pacman new position after movement)",
+    # print("position_pacman_new (Pacman new _position after movement)",
     #       type(position_pacman_new),
     #       position_pacman_new)
     #

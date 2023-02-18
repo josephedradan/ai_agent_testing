@@ -61,8 +61,8 @@
 #         totalTime = time.time() - startTime
 #         numGames = len(games)
 #
-#         stats = {'time': totalTime, 'wins': [g.state_pacman.isWin() for g in games].count(True),
-#                  'games': games, 'scores': [g.state_pacman.getScore() for g in games],
+#         stats = {'time': totalTime, 'wins': [g.state.isWin() for g in games].count(True),
+#                  'games': games, 'scores': [g.state.getScore() for g in games],
 #                  'timeouts': [g.agentTimeout for g in games].count(True),
 #                  'crashes': [g.agentCrashed for g in games].count(True)}
 #

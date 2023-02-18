@@ -104,7 +104,7 @@ def runEpisode(agent: ValueEstimationAgent,
         callback_display(state)  # TODO: HERERERSR
         callback_pause()
 
-        print("state_pacman", state)
+        print("state", state)
 
         # display_.pause()
         actions = environment_gridworld.getPossibleActions(state)
@@ -122,9 +122,9 @@ def runEpisode(agent: ValueEstimationAgent,
         # EXECUTE ACTION
         nextState, reward = environment_gridworld.doAction(action)
 
-        callback_message("Started in state_pacman: " + str(state) +
+        callback_message("Started in state: " + str(state) +
                          "\nTook action: " + str(action) +
-                         "\nEnded in state_pacman: " + str(nextState) +
+                         "\nEnded in state: " + str(nextState) +
                          "\nGot reward: " + str(reward) + "\n")
         # UPDATE LEARNER
         if 'observeTransition' in dir(agent):
@@ -161,7 +161,7 @@ def arg_parser_gridworld(argv: Union[Sequence[str], None] = None) -> argparse.Na
                         dest='noise',
                         default=0.2,
                         metavar="P",
-                        help='How often action results in ' + 'unintended direction (default %default)'
+                        help='How often action results in ' + 'unintended _direction (default %default)'
                         )
     parser.add_argument('-e', '--epsilon',
                         action='store',
@@ -320,7 +320,7 @@ if __name__ == '__main__':
         agent = ValueIterationAgent(mdp, argparse_args.discount, argparse_args.iters)
     elif argparse_args.agent == 'q':
         # env.getPossibleActions, argparse_args.discount, argparse_args.learningRate, argparse_args.epsilon
-        # simulationFn = lambda player, state_pacman: simulation.GridworldSimulation(player,state_pacman,mdp)
+        # simulationFn = lambda player, state: simulation.GridworldSimulation(player,state,mdp)
         gridWorldEnv = EnvironmentGridworld(mdp)
         actionFn = lambda state: mdp.getPossibleActions(state)
         qLearnOpts = {'gamma': argparse_args.discount,

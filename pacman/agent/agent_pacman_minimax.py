@@ -31,7 +31,7 @@ from pacman.agent import Agent
 from pacman.agent import AgentPacman
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
 from pacman.agent.evaluation_function import evaluation_function_state_score
-from pacman.game.directions import Action
+from pacman.game.actiondirection import Action
 
 
 class AgentContainer:
@@ -199,10 +199,10 @@ def get_list_last_ghost_agent_state(state: State,
                                     list_state: List[float] = None
                                     ) -> List[AgentGhostContainer]:
     """
-    This gets the state_pacman based on the last ghost before it becomes pacmans's turn to move
+    This gets the state based on the last ghost before it becomes pacmans's turn to move
 
     Notes:
-        Needs the first of the ghosts -> returns list of state_pacman that are the last state_pacman
+        Needs the first of the ghosts -> returns list of state that are the last state
         before pacmans's turn
 
     """
@@ -226,9 +226,9 @@ def get_list_last_ghost_agent_state(state: State,
 
         if index_agent >= state.getNumAgents() - 1:
 
-            # print("ADD TO LIST", agent, action, state_pacman.getGhostPosition(agent))
+            # print("ADD TO LIST", agent, action, state.getGhostPosition(agent))
             # if agent == 2:
-            #     print(state_pacman.getGhostPosition(agent - 1))
+            #     print(state.getGhostPosition(agent - 1))
             # print()
 
             agent_ghost_container = AgentGhostContainer(state,
@@ -238,9 +238,9 @@ def get_list_last_ghost_agent_state(state: State,
 
             list_state.append(agent_ghost_container)
         else:
-            # print("RECURSIVE CALL", agent, action, state_pacman.getGhostPosition(agent))
+            # print("RECURSIVE CALL", agent, action, state.getGhostPosition(agent))
             # if agent == 2:
-            #     print(state_pacman.getGhostPosition(agent - 1))
+            #     print(state.getGhostPosition(agent - 1))
 
             if state.isWin() or state.isLose():
                 agent_ghost_container = AgentGhostContainer(state,
@@ -377,7 +377,7 @@ def dfs_recursive_minimax_v2(state: State,
         #
         #     for last_ghost_agent_state in list_last_ghost_agent_state:
         #
-        #         state_last = last_ghost_agent_state.state_pacman
+        #         state_last = last_ghost_agent_state.state
         #         # print("last_ghost_agent_state.agent", last_ghost_agent_state.agent)
         #
         #         index_agent_last = last_ghost_agent_state.agent
@@ -386,7 +386,7 @@ def dfs_recursive_minimax_v2(state: State,
         #         agent_container_current = AgentContainer(index_agent_last, action)
         #
         #         # Agent selection (Select next player for the next call)
-        #         if index_agent_last >= state_pacman.getNumAgents() - 1:
+        #         if index_agent_last >= state.getNumAgents() - 1:
         #             index_agent_new = 0
         #             depth -= 1  # Depth is only decremented when all agents have moved
         #         else:
@@ -397,7 +397,7 @@ def dfs_recursive_minimax_v2(state: State,
         #                                                                               evaluation_function,
         #                                                                               index_agent_new,
         #                                                                               agent_container_current,
-        #                                                                               state_pacman,
+        #                                                                               state,
         #                                                                               )
         #
         #         _LIST_TEMP.append(score_calculated)
@@ -564,7 +564,7 @@ def _dfs_recursive_minimax_v4_handler(agent_primary: Agent,
 
     agent_selected: Agent = state.get_agent_by_index(index_agent)
 
-    # from common.state_pacman import StatePacman
+    # from common.state import StatePacman
     # if isinstance(state, StatePacman):
     #     print("_____agent_selected",
     #           agent_selected,
@@ -835,26 +835,26 @@ class AgentPacmanMinimax(AgentPacman):
 
     def getAction(self, state: State) -> Action:
         """
-        Returns the minimax action from the current state_pacman using self.depth
+        Returns the minimax action from the current state using self.depth
         and self.evaluationFunction.
 
         Here are some method calls that might be useful when implementing minimax.
 
-        state_pacman.getLegalActions(agentIndex):
+        state.getLegalActions(agentIndex):
         Returns a list of legal actions for an player
         agentIndex=0 means Pacman, ghosts are >= 1
 
-        state_pacman.generateSuccessor(agentIndex, action):
-        Returns the successor game state_pacman after an player takes an action
+        state.generateSuccessor(agentIndex, action):
+        Returns the successor game state after an player takes an action
 
-        state_pacman.getNumAgents():
+        state.getNumAgents():
         Returns the total number of agents in the game
 
-        state_pacman.isWin():
-        Returns whether or not the game state_pacman is a winning state_pacman
+        state.isWin():
+        Returns whether or not the game state is a winning state
 
-        state_pacman.isLose():
-        Returns whether or not the game state_pacman is a losing state_pacman
+        state.isLose():
+        Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
@@ -862,12 +862,12 @@ class AgentPacmanMinimax(AgentPacman):
         """
 
         Notes:
-            In this function, we need to select a direction of movement that is the best to make.
+            In this function, we need to select a _direction of movement that is the best to make.
             Basically, do a DFS Minimax, write that here pls.
 
-            Recall that evaluationFunction does the score stuff related to direction and food
+            Recall that evaluationFunction does the score stuff related to _direction and food
 
-            self.evaluationFunction(state_pacman) returns a score (float)
+            self.evaluationFunction(state) returns a score (float)
 
             Use getAction From PacmanReflex as a reference too
         Run:
@@ -887,17 +887,17 @@ class AgentPacmanMinimax(AgentPacman):
 
         ####################
 
-        # print('state_pacman.getLegalActions(0)',
-        #       type(state_pacman.getLegalActions(0)),
-        #       state_pacman.getLegalActions(0))
-        # print('state_pacman.generateSuccessor(0, "North")',
-        #       type(state_pacman.generateSuccessor(0, "North")),
-        #       state_pacman.generateSuccessor(0, "North"))
-        # print('state_pacman.getNumAgents()',
-        #       type(state_pacman.getNumAgents()),
-        #       state_pacman.getNumAgents())
-        # print('state_pacman.isWin()', type(state_pacman.isWin()), state_pacman.isWin())
-        # print('state_pacman.isLose()', type(state_pacman.isLose()), state_pacman.isLose())
+        # print('state.getLegalActions(0)',
+        #       type(state.getLegalActions(0)),
+        #       state.getLegalActions(0))
+        # print('state.generateSuccessor(0, "North")',
+        #       type(state.generateSuccessor(0, "North")),
+        #       state.generateSuccessor(0, "North"))
+        # print('state.getNumAgents()',
+        #       type(state.getNumAgents()),
+        #       state.getNumAgents())
+        # print('state.isWin()', type(state.isWin()), state.isWin())
+        # print('state.isLose()', type(state.isLose()), state.isLose())
         #
         # print("#" * 100)
 
@@ -923,7 +923,7 @@ class AgentPacmanMinimax(AgentPacman):
         #             Win Rate:      0/1 (0.00)
         #             Record:        Loss
         # """
-        # result = dfs_recursive_minimax_v1(state_pacman, self.depth, self.evaluationFunction)
+        # result = dfs_recursive_minimax_v1(state, self.depth, self.evaluationFunction)
         #
         # score_final: float = result[0]
         #
@@ -940,23 +940,23 @@ class AgentPacmanMinimax(AgentPacman):
         # """
         # V2
         #     Like v1 (standard minimax algorithm) but tries to compress all ghost player actions together
-        #     based on the assumption that all ghost actions must be made before a win or loss game state_pacman is reached.
+        #     based on the assumption that all ghost actions must be made before a win or loss game state is reached.
         #
         # Notes:
         #     I generated the call graph and my assumption is wrong. The game can end even when not all ghost actions
-        #     have been processed. This means you need to constantly check state_pacman if the game is a win or a loss.
+        #     have been processed. This means you need to constantly check state if the game is a win or a loss.
         #
         # Results:
         #     Crashes because dfs_recursive_minimax_v2 runs all ghost player actions and during that process the game
         #     may have ended via pacman win or loss (most likely loss because only ghosts move at this time).
-        #     So any further state_pacman past the winning/losing state_pacman DOES NOT RETURN A SCORE which is needed
+        #     So any further state past the winning/losing state DOES NOT RETURN A SCORE which is needed
         #     to determine the action for pacman.
         #
         #     Basically, it crashes because None is returned when selecting the score and a score needs to be a number
         #
         # """
         #
-        # result = dfs_recursive_minimax_v2(state_pacman, self.depth, self.evaluationFunction)
+        # result = dfs_recursive_minimax_v2(state, self.depth, self.evaluationFunction)
         #
         # score_final: float = result[0]
         #
@@ -1025,7 +1025,7 @@ class AgentPacmanMinimax(AgentPacman):
         #             RecursionError: maximum recursion depth exceeded in comparison
         # """
         #
-        # result = dfs_recursive_minimax_v3(state_pacman, self.depth, self.evaluationFunction)
+        # result = dfs_recursive_minimax_v3(state, self.depth, self.evaluationFunction)
         #
         # score_final: float = result[0]
         #

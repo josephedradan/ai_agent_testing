@@ -23,12 +23,11 @@ Reference:
 """
 from __future__ import annotations
 
-from typing import Callable
 from typing import Dict
+from typing import Protocol
 from typing import Union
 
 from common.state import State
-from pacman.agent import Agent
 from pacman.agent.evaluation_function.evaluation_function_better import evaluation_function_better
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import evaluation_function_food_and_ghost
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import (
@@ -37,7 +36,7 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
 from pacman.agent.evaluation_function.evaluation_function_state_score import (
     evaluation_function_state_score
 )
-from pacman.game.directions import Action
+from pacman.game.actiondirection import Action
 
 """
 TYPE_EVALUATION_FUNCTION
@@ -45,6 +44,7 @@ TYPE_EVALUATION_FUNCTION
 Notes:
     The real TYPE_EVALUATION_FUNCTION wanted is something like
         Callable[[State, Union[Action, None]] 
+        
     Where the None is optional as in the callable can be 
         _callable(State)
     OR
@@ -64,13 +64,18 @@ Notes:
     should be solved in cPython
         https://mypy.readthedocs.io/en/latest/protocols.html#callback-protocols
 """
-TYPE_EVALUATION_FUNCTION = Callable[[Agent, State, Union[Action, None]], float]
 
-# class EvaluationFunction(Protocol):
-#
-#     def __call__(self, state_pacman: State, action: Union[Action, None]) -> float:
-#         ...
-#
+
+class EvaluationFunction(Protocol):
+
+    def __call__(self, state: State, action: Action) -> float:
+        ...
+
+
+TYPE_EVALUATION_FUNCTION = EvaluationFunction
+
+# TYPE_EVALUATION_FUNCTION = Callable[[Agent, State, Union[Action, None]], float]
+
 
 TYPE_EVALUATION_FUNCTION_POSSIBLE = Union[TYPE_EVALUATION_FUNCTION, str]
 

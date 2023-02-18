@@ -39,10 +39,10 @@ if TYPE_CHECKING:
 
 class State(ABC):
     """
-    A State specifies the full game state_pacman, including the food, list_capsule,
+    A State specifies the full game state, including the food, list_capsule,
     player configurations and score changes.
 
-    GameStates are used by the Game object to capture the actual state_pacman of the game and
+    GameStates are used by the Game object to capture the actual state of the game and
     can be used by agents to reason about the game.
 
     Much of the information in a State is stored in a StateDataPacman object.  We

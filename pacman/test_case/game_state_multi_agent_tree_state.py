@@ -61,15 +61,15 @@ class MultiAgentTreeState(State):
                   (self.state, self.problem.dict_evaluation_k_state_v_value[self.state]))
         if self.state not in self.problem.dict_evaluation_k_state_v_value:
             raise Exception(
-                'getScore() called on non-terminal state_pacman or before maximum depth achieved.')
+                'getScore() called on non-terminal state or before maximum depth achieved.')
         return float(self.problem.dict_evaluation_k_state_v_value[self.state])
 
     def getLegalActions(self, agentIndex=0):
         if VERBOSE:
             print("getLegalActions(%s) -> %s" %
                   (self.state, self.problem.stateToActions[self.state]))
-        # if len(self.problem_multi_agent_tree.stateToActions[self.state_pacman]) == 0:
-        #    print "WARNING: getLegalActions called on leaf state_pacman %s" % (self.state_pacman,)
+        # if len(self.problem_multi_agent_tree.stateToActions[self.state]) == 0:
+        #    print "WARNING: getLegalActions called on leaf state %s" % (self.state,)
         return list(self.problem.stateToActions[self.state])
 
     def isWin(self):

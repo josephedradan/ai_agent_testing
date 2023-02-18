@@ -29,10 +29,11 @@ from typing import Tuple
 
 from common import util
 from pacman.agent import Agent
+from pacman.types_ import TYPE_VECTOR
 
 if TYPE_CHECKING:
     from pacman.agent.container_state import ContainerState
-    from pacman.game.directions import Action
+    from pacman.game.actiondirection import Action
     from common.state_pacman import StatePacman
     from pacman.game.grid_pacman import GridPacman
 
@@ -79,7 +80,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
     list_agent_state_ghost_scared: List[ContainerState] = []
 
     for agent_state_ghost in list_agent_state_ghost:
-        if agent_state_ghost.scaredTimer > 0:
+        if agent_state_ghost.time_scared > 0:
             list_agent_state_ghost_scared.append(agent_state_ghost)
         else:
             list_agent_state_ghost_active.append(agent_state_ghost)
@@ -195,8 +196,8 @@ def evaluation_function_food_and_ghost(agent: Agent, state_current: StatePacman,
     The evaluation function takes in the current and proposed successor
     GameStates (pacman.py) and returns a number, where higher numbers are better.
 
-    The code below extracts some useful information from the state_pacman, like the
-    remaining food (newFood) and Pacman position after moving (newPos).
+    The code below extracts some useful information from the state, like the
+    remaining food (newFood) and Pacman _position after moving (newPos).
     newScaredTimes holds the number of moves that each ghost will remain
     scared because of Pacman having eaten a power pellet.
 
@@ -205,10 +206,10 @@ def evaluation_function_food_and_ghost(agent: Agent, state_current: StatePacman,
     """
     # Useful information you can extract from a State (pacman.py)
     state_successor: StatePacman = state_current.generateSuccessor(agent, action)
-    newPos: Tuple[int, int] = state_successor.get_container_state_GHOST(agent).get_position()
+    newPos: TYPE_VECTOR = state_successor.get_container_state_GHOST(agent).get_position()
     newFood: GridPacman = state_successor.getFood()
     newGhostStates: List[ContainerState] = state_successor.get_list_container_state_ghost()
-    newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
+    newScaredTimes: List[float] = [ghostState.time_scared for ghostState in newGhostStates]
 
     "*** YOUR CODE HERE ***"
     """
@@ -231,7 +232,7 @@ def evaluation_function_food_and_ghost(agent: Agent, state_current: StatePacman,
     # print("action", type(action), action)
     #
     # print("state_successor", type(state_successor), state_successor)
-    # print("newPos (Pacman new position after movement)", type(newPos), newPos)
+    # print("newPos (Pacman new _position after movement)", type(newPos), newPos)
     # print("newFood", type(newFood), newFood)
     # print("newGhostStates", type(newGhostStates), newGhostStates)
     # print("newScaredTimes", type(newScaredTimes), newScaredTimes)
@@ -320,15 +321,15 @@ def evaluation_function_food_and_ghost(agent: Agent, state_current: StatePacman,
 ########################################################################################################################
 
 
-def evaluation_function_food_and_ghost__attempt_1(agent: Agent, currentGameState: StatePacman, action) -> float:
+def evaluation_function_food_and_ghost__attempt_1(agent: Agent, currentGameState: StatePacman, action: Action) -> float:
     """
     Design a better evaluation function here.
 
     The evaluation function takes in the current and proposed successor
     GameStates (pacman.py) and returns a number, where higher numbers are better.
 
-    The code below extracts some useful information from the state_pacman, like the
-    remaining food (newFood) and Pacman position after moving (newPos).
+    The code below extracts some useful information from the state, like the
+    remaining food (newFood) and Pacman _position after moving (newPos).
     newScaredTimes holds the number of moves that each ghost will remain
     scared because of Pacman having eaten a power pellet.
 
@@ -337,10 +338,10 @@ def evaluation_function_food_and_ghost__attempt_1(agent: Agent, currentGameState
     """
     # Useful information you can extract from a State (pacman.py)
     state_successor: StatePacman = currentGameState.generateSuccessor(agent, action)
-    newPos: Tuple[int, int] = state_successor.get_container_state_GHOST(agent).get_position()
+    newPos: TYPE_VECTOR = state_successor.get_container_state_GHOST(agent).get_position()
     newFood: GridPacman = state_successor.getFood()
     newGhostStates: List[ContainerState] = state_successor.get_list_container_state_ghost()
-    newScaredTimes: List[float] = [ghostState.scaredTimer for ghostState in newGhostStates]
+    newScaredTimes: List[float] = [ghostState.time_scared for ghostState in newGhostStates]
 
     "*** YOUR CODE HERE ***"
     """
@@ -363,7 +364,7 @@ def evaluation_function_food_and_ghost__attempt_1(agent: Agent, currentGameState
     # print("action", type(action), action)
     #
     # print("state_successor", type(state_successor), state_successor)
-    # print("newPos (Pacman new position after movement)", type(newPos), newPos)
+    # print("newPos (Pacman new _position after movement)", type(newPos), newPos)
     # print("newFood", type(newFood), newFood)
     # print("newGhostStates", type(newGhostStates), newGhostStates)
     # print("newScaredTimes", type(newScaredTimes), newScaredTimes)
@@ -386,7 +387,7 @@ def evaluation_function_food_and_ghost__attempt_1(agent: Agent, currentGameState
 
     """
     V1
-        Involve the influence of closest food position and closest ghost position onto pacman's score
+        Involve the influence of closest food _position and closest ghost _position onto pacman's score
 
     IMPORTANT NOTES:
         VALUE PACMAN'S LIFE (AVOID GHOSTS) OVER FOOD

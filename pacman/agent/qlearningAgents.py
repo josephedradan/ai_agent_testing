@@ -36,8 +36,8 @@ class QLearningAgent(ReinforcementAgent):
         - self.discount (discount rate)
 
       Functions you should use
-        - self.getLegalActions(state_pacman)
-          which returns legal actions for a state_pacman
+        - self.getLegalActions(state)
+          which returns legal actions for a state
     """
 
     def __init__(self, alpha, epsilon, gamma, num_training=0, **kwargs):
@@ -76,10 +76,10 @@ class QLearningAgent(ReinforcementAgent):
             Foundations of Q-Learning
                 Notes:
                     Q-values are stored in a Q-table which has one row for each
-                    possible state_pacman and one column for each possible action
+                    possible state and one column for each possible action
                     
                     An optimal Q-table contains values that allow the AI player to take the best
-                    action in any possible state_pacman, thus providing the player with the optimal path to the
+                    action in any possible state, thus providing the player with the optimal path to the
                     highest reward
                     
                     The Q-table therefore represents the AI player's policy for acting in the current 
@@ -95,8 +95,8 @@ class QLearningAgent(ReinforcementAgent):
 
     def getQValue(self, state: State, action: str) -> float:
         """
-          Returns Q(state_pacman,action)
-              Should return 0.0 if we have never seen a state_pacman
+          Returns Q(state,action)
+              Should return 0.0 if we have never seen a state
               or the Q node value otherwise
         """
         "*** YOUR CODE HERE ***"
@@ -106,10 +106,10 @@ class QLearningAgent(ReinforcementAgent):
 
     def computeValueFromQValues(self, state: State) -> float:
         """
-          Returns max_action Q(state_pacman,action)
+          Returns max_action Q(state,action)
           where the max is over legal actions.  Note that if
           there are no legal actions, which is the case at the
-          terminal state_pacman, you should return a value of 0.0.
+          terminal state, you should return a value of 0.0.
         """
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
@@ -117,7 +117,7 @@ class QLearningAgent(ReinforcementAgent):
         """
         Important: Make sure that in your computeValueFromQValues and computeActionFromQValues functions, you only 
         access Q values by calling getQValue . This abstraction will be useful for question 10 when you override 
-        getQValue to use features of state_pacman-action pairs rather than state_pacman-action pairs directly.
+        getQValue to use features of state-action pairs rather than state-action pairs directly.
         """
 
         actions = self.getLegalActions(state)  # TODO: THIS IS INTERNAL
@@ -128,8 +128,8 @@ class QLearningAgent(ReinforcementAgent):
 
     def computeActionFromQValues(self, state) -> Union[None, str]:
         """
-          Compute the best action to take in a state_pacman.  Note that if there
-          are no legal actions, which is the case at the terminal state_pacman,
+          Compute the best action to take in a state.  Note that if there
+          are no legal actions, which is the case at the terminal state,
           you should return None.
         """
         "*** YOUR CODE HERE ***"
@@ -138,7 +138,7 @@ class QLearningAgent(ReinforcementAgent):
         """
         Important: Make sure that in your computeValueFromQValues and computeActionFromQValues functions, you only 
         access Q values by calling getQValue . This abstraction will be useful for question 10 when you override 
-        getQValue to use features of state_pacman-action pairs rather than state_pacman-action pairs directly.
+        getQValue to use features of state-action pairs rather than state-action pairs directly.
         """
         actions = self.getLegalActions(state)
         # print(state)
@@ -153,10 +153,10 @@ class QLearningAgent(ReinforcementAgent):
 
     def getAction(self, state) -> str:
         """
-          Compute the action to take in the current state_pacman.  With
+          Compute the action to take in the current state.  With
           probability self.epsilon, we should take a random action and
           take the best policy action otherwise.  Note that if there are
-          no legal actions, which is the case at the terminal state_pacman, you
+          no legal actions, which is the case at the terminal state, you
           should choose None as the action.
 
           HINT: You might want to use util.flipCoin(prob)
@@ -230,7 +230,7 @@ class QLearningAgent(ReinforcementAgent):
     def update(self, state, action, nextState, reward) -> None:
         """
           The parent class calls this to observe a
-          state_pacman = action => nextState and reward transition.
+          state = action => nextState and reward transition.
           You should do your Q-Value update here
 
           NOTE: You should never call this function,
@@ -245,28 +245,28 @@ class QLearningAgent(ReinforcementAgent):
                 Notes:
                     Temporal Differences
                         Notes:
-                            method of calculating how much Q-value for the action taken in teh previous state_pacman
+                            method of calculating how much Q-value for the action taken in teh previous state
                             should be changed based on what teh AI player has learned about the Q-value for the current
-                            state_pacman's actions
+                            state's actions
                             
                             Previous Q-values are therefore updated after each step
                             
                         Equation:
                             TD(s_t, a_t) = r_t + (gamma * max_a Q(s_t+1, a)) - Q(s_t, a_t)
         
-                            TD =    Temporal Difference for the action taken in the previous state_pacman 
-                            r_t =   Reward received for the action taken in the previous state_pacman
+                            TD =    Temporal Difference for the action taken in the previous state 
+                            r_t =   Reward received for the action taken in the previous state
                             gamma = Discount factor (between 0 and 1)
-                            max_a Q(s_t+1, a) = The largest Q-value available for any action in the current state_pacman
+                            max_a Q(s_t+1, a) = The largest Q-value available for any action in the current state
                                                 (the largest predicted sum of future rewards)    
-                            Q =     Quality of state_pacman and action
+                            Q =     Quality of state and action
                     
                     Bellman Equation
                         Notes:
-                            Tells what new value to use as the Q-value for the action taken in the previous state_pacman
+                            Tells what new value to use as the Q-value for the action taken in the previous state
                             
-                            Relies on both old Q-value for the action taken in the previous state_pacman and what has
-                            been learned after moving to the next state_pacman.
+                            Relies on both old Q-value for the action taken in the previous state and what has
+                            been learned after moving to the next state.
                             
                             Includes a learning rate parameter (alpha) that defines how quickly Q-values are adjusted
                             invented by Richard Bellman                    
@@ -274,8 +274,8 @@ class QLearningAgent(ReinforcementAgent):
                         Equation:
                             Q^new(s_t, a_t) = Q^old(s_t, a_t) + alpha * TD(s_t, a_t)
                             
-                            Q^new = New Q-value for the action taken in the previous state_pacman
-                            Q^old = The old Q-value for the action taken in the previous state_pacman
+                            Q^new = New Q-value for the action taken in the previous state
+                            Q^old = The old Q-value for the action taken in the previous state
                             alpha = The learning rate (between 0 and 1)
                             TD =    Temporal Difference
                     

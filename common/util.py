@@ -243,7 +243,7 @@ def manhattanDistance(xy1, xy2):
 
 def nearestPoint(pos):
     """
-    Finds the nearest grid point to a position (discretizes).
+    Finds the nearest grid point to a _position (discretizes).
     """
     (current_row, current_col) = pos
 

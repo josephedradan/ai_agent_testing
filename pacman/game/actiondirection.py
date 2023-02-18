@@ -25,7 +25,7 @@ Reference:
 from common.action import Action
 
 
-class Directions(Action):
+class ActionDirection(Action):
     NORTH = 'North'
     SOUTH = 'South'
     EAST = 'East'

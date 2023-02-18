@@ -53,7 +53,7 @@
 #     list_agent_state_ghost_scared: List[ContainerState] = []
 #
 #     for agent_state_ghost in list_agent_state_ghost:
-#         if agent_state_ghost.scaredTimer > 0:
+#         if agent_state_ghost.time_scared > 0:
 #             list_agent_state_ghost_scared.append(agent_state_ghost)
 #         else:
 #             list_agent_state_ghost_active.append(agent_state_ghost)
@@ -165,27 +165,27 @@
 # class AgentPacmanReflex(Agent):
 #     """
 #     A reflex player chooses an action at each choice point by examining
-#     its alternatives via a state_pacman evaluation function.
+#     its alternatives via a state evaluation function.
 #
 #     The code below is provided as a guide.  You are welcome to change
 #     it in any way you see fit, so long as you don't touch our method
 #     headers.
 #     """
 #
-#     def getAction(self, state_pacman: State) -> string_given:
+#     def getAction(self, state: State) -> string_given:
 #         """
 #         You do not need to change this method, but you're welcome to.
 #
 #         getAction chooses among the best options according to the evaluation function.
 #
 #         Just like in the previous name_project, getAction takes a State and returns
-#         some Directions.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
+#         some ActionDirection.X for some X in the set {NORTH, SOUTH, WEST, EAST, STOP}
 #         """
 #         # Collect legal moves and successor states
-#         legalMoves = state_pacman.getLegalActions()
+#         legalMoves = state.getLegalActions()
 #
 #         # Choose one of the best actions
-#         scores = [self.evaluationFunction(state_pacman, action) for action in legalMoves]
+#         scores = [self.evaluationFunction(state, action) for action in legalMoves]
 #         bestScore = max(scores)
 #         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
 #         chosenIndex = random.choice(bestIndices)  # Pick randomly among the best
@@ -213,8 +213,8 @@
 #         The evaluation function takes in the current and proposed successor
 #         GameStates (pacman.py) and returns a number, where higher numbers are better.
 #
-#         The code below extracts some useful information from the state_pacman, like the
-#         remaining food (newFood) and Pacman position after moving (newPos).
+#         The code below extracts some useful information from the state, like the
+#         remaining food (newFood) and Pacman _position after moving (newPos).
 #         newScaredTimes holds the number of moves that each ghost will remain
 #         scared because of Pacman having eaten a power pellet.
 #
@@ -226,7 +226,7 @@
 #         newPos: Tuple[int, int] = successorGameState.getPacmanPosition()
 #         newFood: GridPacman = successorGameState.getFood()
 #         newGhostStates: List[ContainerState] = successorGameState.getGhostStates()
-#         newScaredTimes: List[float] = [container_state.scaredTimer for container_state in newGhostStates]
+#         newScaredTimes: List[float] = [container_state.time_scared for container_state in newGhostStates]
 #
 #         "*** YOUR CODE HERE ***"
 #         """
@@ -249,7 +249,7 @@
 #         # print("action", type(action), action)
 #         #
 #         # print("successorGameState", type(successorGameState), successorGameState)
-#         # print("newPos (Pacman new position after movement)", type(newPos), newPos)
+#         # print("newPos (Pacman new _position after movement)", type(newPos), newPos)
 #         # print("newFood", type(newFood), newFood)
 #         # print("newGhostStates", type(newGhostStates), newGhostStates)
 #         # print("newScaredTimes", type(newScaredTimes), newScaredTimes)
@@ -271,7 +271,7 @@
 #
 #         # """
 #         # V1
-#         #     Involve the influence of closest food position and closest ghost position onto pacman's score
+#         #     Involve the influence of closest food _position and closest ghost _position onto pacman's score
 #         #
 #         # IMPORTANT NOTES:
 #         #     VALUE PACMAN'S LIFE (AVOID GHOSTS) OVER FOOD
@@ -433,7 +433,7 @@
 
 def scoreEvaluationFunction(currentGameState):
     """
-    This default evaluation function just returns the score of the state_pacman.
+    This default evaluation function just returns the score of the state.
     The score is the same one displayed in the Pacman GUI.
 
     This evaluation function is meant for use with adversarial search agents

@@ -230,7 +230,7 @@ class PacmanGameTreeTest(TestCaseAgent):
         #     [json.loads(x) for x in dict_file_solution['partialPlyBugActions'].split('\n')]
         # )
 
-        # set up game state_pacman and play a game
+        # set up game state and play a game
         random.seed(self.seed)
 
         # lay = layoutpacman.LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
@@ -262,9 +262,9 @@ class PacmanGameTreeTest(TestCaseAgent):
 
         list_agent_pacman = [agent_grading]
 
-        # THE OLD [AgentGhostDirectional(i + 1) for i in range(2)],
+        # THE OLD [AgentPacmanGhostDirectional(i + 1) for i in range(2)],
         list_container_object_construct_ghost = get_list_container_object_construct_implicit(
-            AgentGhostDirectional.__name__,
+            AgentPacmanGhostDirectional.__name__,
             "",
             2
         )
@@ -354,7 +354,7 @@ class PacmanGameTreeTest(TestCaseAgent):
             lay,
             self.layout_name,
             pac,
-            [AgentGhostDirectional(i + 1) for i in range(2)],
+            [AgentPacmanGhostDirectional(i + 1) for i in range(2)],
             disp,
             _name=self.str_class_agent
         )

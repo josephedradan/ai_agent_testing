@@ -198,9 +198,9 @@ DICT_K_STR_QUESTION_V_STR_ERROR_HINT = {
         "<type 'exceptions.IndexError'>": """
       We noticed that your name_project threw an IndexError on q1.
       While many things may cause this, it may have been from
-      assuming a certain number of successors from a state_pacman space
+      assuming a certain number of successors from a state space
       or assuming a certain number of actions available from a given
-      state_pacman. Try making your code more general (no hardcoded indices)
+      state. Try making your code more general (no hardcoded indices)
       and submit again!
     """
     },
@@ -208,9 +208,9 @@ DICT_K_STR_QUESTION_V_STR_ERROR_HINT = {
         "<type 'exceptions.AttributeError'>": """
         We noticed that your name_project threw an AttributeError on q3.
         While many things may cause this, it may have been from assuming
-        a certain size or structure to the state_pacman space. For example, if you have
-        a line of code assuming that the state_pacman is (x, y) and we run your code
-        on a state_pacman space with (x, y, z), this error could be thrown. Try
+        a certain size or structure to the state space. For example, if you have
+        a line of code assuming that the state is (x, y) and we run your code
+        on a state space with (x, y, z), this error could be thrown. Try
         making your code more general and submit again!
 
     """

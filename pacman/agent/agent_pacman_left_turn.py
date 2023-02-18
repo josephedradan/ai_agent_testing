@@ -40,8 +40,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from pacman.agent.agent_pacman import AgentPacman
-from pacman.game.directions import Action
-from pacman.game.directions import Directions
+from pacman.game.actiondirection import Action
+from pacman.game.actiondirection import ActionDirection
 
 if TYPE_CHECKING:
     from common.state import State
@@ -56,19 +56,19 @@ class AgentPacmanLeftTurn(AgentPacman):
     def getAction(self, state: State) -> Action:
         legal = state.getLegalActions(self)
 
-        current = state.get_container_state_GHOST(self).container_position_vector.direction
+        current = state.get_container_state_GHOST(self)._container_position_direction._direction
 
-        if current == Directions.STOP:
-            current = Directions.NORTH
+        if current == ActionDirection.STOP:
+            current = ActionDirection.NORTH
 
-        left = Directions.LEFT[current]
+        left = ActionDirection.LEFT[current]
 
         if left in legal:
             return left
         if current in legal:
             return current
-        if Directions.RIGHT[current] in legal:
-            return Directions.RIGHT[current]
-        if Directions.LEFT[left] in legal:
-            return Directions.LEFT[left]
-        return Directions.STOP
+        if ActionDirection.RIGHT[current] in legal:
+            return ActionDirection.RIGHT[current]
+        if ActionDirection.LEFT[left] in legal:
+            return ActionDirection.LEFT[left]
+        return ActionDirection.STOP

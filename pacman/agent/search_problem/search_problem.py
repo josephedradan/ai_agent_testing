@@ -40,7 +40,7 @@ class SearchProblem(ABC):
     You do not need to change anything in this class, ever.
     """
 
-    def __init__(self):  # FIXME: THIS IS MISSING state_pacman
+    def __init__(self):  # FIXME: THIS IS MISSING state
 
         self.graphics: Union[Graphics, None] = None
 
@@ -52,27 +52,27 @@ class SearchProblem(ABC):
     @abstractmethod
     def getStartState(self) -> Union[Tuple[int, int], Hashable]:
         """
-        Returns the start state_pacman for the search problem_multi_agent_tree.
+        Returns the start state for the search problem_multi_agent_tree.
         """
         pass
 
     @abstractmethod
     def isGoalState(self, state) -> bool:
         """
-          state_pacman: Search state_pacman
+          state: Search state
 
-        Returns True if and only if the state_pacman is a valid goal state_pacman.
+        Returns True if and only if the state is a valid goal state.
         """
         pass
 
     @abstractmethod
     def getSuccessors(self, state) -> List[Union[tuple, str, int]]:
         """
-          state_pacman: Search state_pacman
+          state: Search state
 
-        For a given state_pacman, this should return a list of triples, (successor,
+        For a given state, this should return a list of triples, (successor,
         action, stepCost), where 'successor' is a successor to the current
-        state_pacman, 'action' is the action required to get there, and 'stepCost' is
+        state, 'action' is the action required to get there, and 'stepCost' is
         the incremental cost of expanding to that successor.
         """
         pass
