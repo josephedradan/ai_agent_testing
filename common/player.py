@@ -1,7 +1,4 @@
 """
-Created by Joseph Edradan
-Github: https://github.com/josephedradan
-
 Date created: 2/11/2023
 
 Purpose:
@@ -18,10 +15,16 @@ Explanation:
 
 Tags:
 
+Contributors:
+    https://github.com/josephedradan
+
 Reference:
     python Generics (intermediate) anthony explains #430
         Notes:
-        Reference:
+        Contributors:
+    https://github.com/josephedradan
+
+Reference:
             https://www.youtube.com/watch?v=LcfxUU1A-RQ
 
 """

@@ -105,7 +105,10 @@ class ValueIterationAgent(ValueEstimationAgent):
             ------------------
             Total: 4/4
             
-        Reference:
+        Contributors: 
+    https://github.com/josephedradan
+
+Reference:
             COMPSCI 188 - 2018-09-18
                 Notes:
                     
@@ -148,7 +151,10 @@ class ValueIterationAgent(ValueEstimationAgent):
                     
                     **  Remember you only get score if you transition to the state from another state
                     
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://www.youtube.com/watch?v=4LW3H_Jinr4&list=PLsOUugYMBBJENfZ3XAToMsg44W7LeUVhF&index=9
         
         """
@@ -217,9 +223,15 @@ class ValueIterationAgent(ValueEstimationAgent):
             5. Solve for Summation from to s' of T(s, a, s') * (R(s, a, s') + gamma * V*(s'))
             6. Return the Summation from step 5
             
-        Reference:
+        Contributors: 
+    https://github.com/josephedradan
+
+Reference:
             Lecture 8: Markov Decision Processes (MDPs)
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://youtu.be/i0o-ui1N35U?t=3136
 
             COMPSCI 188 - 2018-09-18
@@ -231,7 +243,10 @@ class ValueIterationAgent(ValueEstimationAgent):
                         money and it has something to do with stationary preferences which only holds for the 
                         exponential case
                     
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://www.youtube.com/watch?v=4LW3H_Jinr4&list=PLsOUugYMBBJENfZ3XAToMsg44W7LeUVhF&index=9
             
             What do Reinforcement Learning Algorithms Learn - Optimal Policies
@@ -247,7 +262,10 @@ class ValueIterationAgent(ValueEstimationAgent):
                         Q* (s, a) = E*[R_t+1 + gamma*max Q*(s', a')]
                     
                     
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://www.youtube.com/watch?v=rP4oEpQbDm4&list=PLZbbT5o_s2xoWNVdDudn51XM8lOuZ_Njv&index=5
             
             Foundations of Q-Learning
@@ -264,7 +282,10 @@ class ValueIterationAgent(ValueEstimationAgent):
                         in any possible state, thus providing the player with the optimal path to the highest reward'
                         *The Q-table therefore represents the AI player's policy for acting in the current environment
                     
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://www.youtube.com/watch?v=__t2XRxXGxI
 
         """
@@ -308,7 +329,10 @@ class ValueIterationAgent(ValueEstimationAgent):
         # print(type(self.iterations))
         # print(type(self.values))
         """
-        Reference:
+        Contributors: 
+    https://github.com/josephedradan
+
+Reference:
             COMPSCI 188 - 2018-09-18
                 Notes:
                     *** THIS IS A POLICY (GIVE A STATE, GET AN ACTION)*** 
@@ -356,7 +380,10 @@ class ValueIterationAgent(ValueEstimationAgent):
                         *** What we need to do is start bottom to teh top
                         Use V_k
                         
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://www.youtube.com/watch?v=4LW3H_Jinr4&list=PLsOUugYMBBJENfZ3XAToMsg44W7LeUVhF&index=9
             
             COMPSCI 188 - 2018-09-20

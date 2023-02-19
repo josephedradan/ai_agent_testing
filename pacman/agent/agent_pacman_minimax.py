@@ -1,7 +1,4 @@
 """
-Created by Joseph Edradan
-Github: https://github.com/josephedradan
-
 Date created: 12/29/2022
 
 Purpose:
@@ -17,6 +14,9 @@ IMPORTANT NOTES:
 Explanation:
 
 Tags:
+
+Contributors: 
+    https://github.com/josephedradan
 
 Reference:
 
@@ -71,9 +71,15 @@ def dfs_recursive_minimax_v1(state: State,
 
         DO NOT USE THIS CODE, IT IS NOT CORRECT AND THE ASSUMPTIONS ARE WRONG
 
-    Reference:
+    Contributors: 
+    https://github.com/josephedradan
+
+Reference:
         Algorithms Explained – minimax and alpha-beta pruning
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
 
@@ -443,9 +449,15 @@ def dfs_recursive_minimax_v3(state: State,
         BECAUSE OF MINOR CODE CHANGE, dfs_recursive_minimax_v3 MUST EXIST SO THAT FUTURE ME WILL NOTICE MY MISTAKE
         AND WILL NOT HAVE TO REPEAT THIS DEBUGGING PROCESS.
 
-    Reference:
+    Contributors: 
+    https://github.com/josephedradan
+
+Reference:
         Algorithms Explained – minimax and alpha-beta pruning
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
 
@@ -556,9 +568,15 @@ def _dfs_recursive_minimax_v4_handler(agent_primary: Agent,
         This is the correct implementation of the algorithm needed to get all the points for autograder.py's
         Q2 and Q3
 
-    Reference:
+    Contributors: 
+    https://github.com/josephedradan
+
+Reference:
         Algorithms Explained – minimax and alpha-beta pruning
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
 
@@ -737,9 +755,15 @@ def dfs_recursive_minimax_v4(agent_primary: Agent,
 
         Basically, the code would look uglier if you didn't have this header.
 
-    Reference:
+    Contributors: 
+    https://github.com/josephedradan
+
+Reference:
         Algorithms Explained – minimax and alpha-beta pruning
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://www.youtube.com/watch?v=l-hh51ncgDI
     """
 

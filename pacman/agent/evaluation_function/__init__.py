@@ -1,7 +1,4 @@
 """
-Created by Joseph Edradan
-Github: https://github.com/josephedradan
-
 Date created: 12/29/2022
 
 Purpose:
@@ -18,6 +15,9 @@ Explanation:
 
 Tags:
 
+Contributors: 
+    https://github.com/josephedradan
+
 Reference:
 
 """
@@ -28,6 +28,9 @@ from typing import Protocol
 from typing import Union
 
 from common.state import State
+from pacman.agent import Agent
+from pacman.game.actiondirection import Action
+
 from pacman.agent.evaluation_function.evaluation_function_better import evaluation_function_better
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import evaluation_function_food_and_ghost
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import (
@@ -36,7 +39,6 @@ from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import 
 from pacman.agent.evaluation_function.evaluation_function_state_score import (
     evaluation_function_state_score
 )
-from pacman.game.actiondirection import Action
 
 """
 TYPE_EVALUATION_FUNCTION
@@ -68,7 +70,7 @@ Notes:
 
 class EvaluationFunction(Protocol):
 
-    def __call__(self, state: State, action: Action) -> float:
+    def __call__(self, agent: Agent, state: State, action: Action) -> float:
         ...
 
 

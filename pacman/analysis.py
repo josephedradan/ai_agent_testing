@@ -198,14 +198,20 @@ def question8():
 
         epsilon =   Exploitation or Exploration (low epsilon -> Exploitation, high epsilon -> Exploration)
 
-    Reference:
+    Contributors: 
+    https://github.com/josephedradan
+
+Reference:
         Exploration vs. Exploitation - Learning the Optimal Reinforcement Learning Policy
 
             Notes:
                 If epsilon low then you will most likely do Exploitation
                 If epsilon high then you will most likely do Exploration
 
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://youtu.be/mo96Nqlo1L8?list=PLZbbT5o_s2xoWNVdDudn51XM8lOuZ_Njv&t=32
 
     Results:

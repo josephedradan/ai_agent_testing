@@ -1,7 +1,4 @@
 """
-Created by Joseph Edradan
-Github: https://github.com/josephedradan
-
 Date created: 12/30/2022
 
 Purpose:
@@ -17,6 +14,9 @@ IMPORTANT NOTES:
 Explanation:
 
 Tags:
+
+Contributors: 
+    https://github.com/josephedradan
 
 Reference:
 
@@ -43,11 +43,17 @@ def _dfs_recursive_expectimax_v1_handler(agent_primary: Agent,
     Notes:
         This does not have probably for the summation part of the algorithm
 
-    Reference:
+    Contributors: 
+    https://github.com/josephedradan
+
+Reference:
         Lecture 7: Expectimax
             Notes:
                 How to do it
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://youtu.be/jaFRyzp7yWw?t=707
     """
     agent_selected: Agent = state.get_agent_by_index(index_agent)
@@ -131,11 +137,17 @@ def dfs_recursive_expectimax_v1(agent_primary: Agent,
     Notes:
         The header is needed to make selection of the action easier
 
-    Reference:
+    Contributors: 
+    https://github.com/josephedradan
+
+Reference:
         Lecture 7: Expectimax
             Notes:
                 How to do it
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://youtu.be/jaFRyzp7yWw?t=707
 
     """

@@ -1,7 +1,4 @@
 """
-Created by Joseph Edradan
-Github: https://github.com/josephedradan
-
 Date created: 1/3/2023
 
 Purpose:
@@ -17,6 +14,9 @@ IMPORTANT NOTES:
 Explanation:
 
 Tags:
+
+Contributors: 
+    https://github.com/josephedradan
 
 Reference:
 
@@ -116,7 +116,7 @@ def _get_heuristic_cost_ucs_crude(grid_wall: GridPacman,
     return 0  # Return 0 to imply no path
 
 
-def evaluation_function_better(currentGameState: State,
+def evaluation_function_better(state: State,
                                action: Action) -> float:  # TODO: HOT MESS, USES STATE PACMAN WHICH SHOULD BE GENERALZIED
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
@@ -140,7 +140,7 @@ def evaluation_function_better(currentGameState: State,
             py -3.6 autograder.py -q q5 --no-graphics  # Use this one
     """
 
-    state_successor_pacman: StatePacman = currentGameState
+    state_successor_pacman: StatePacman = state
 
     # position_pacman_new: Tuple[int, int] = state_successor_pacman.getPacmanPosition()
     # position_food_new: GridPacman = state_successor_pacman.getFood()

@@ -490,13 +490,22 @@ def uniform_cost_search(problem: SearchProblem, heuristic: Callable = nullHeuris
 
     """
     
-    Reference:
+    Contributors: 
+    https://github.com/josephedradan
+
+Reference:
         Dijkstra's Algorithm - Computerphile
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://www.youtube.com/watch?v=GazC3A4OQTE&t=346s
                 
         Uniform Cost Search
-            Reference:
+            Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                 https://www.youtube.com/watch?v=dRMvK76xQJI
     """
 

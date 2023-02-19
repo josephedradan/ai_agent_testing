@@ -72,7 +72,10 @@ class QLearningAgent(ReinforcementAgent):
         """
 
         """
-        Reference:
+        Contributors: 
+    https://github.com/josephedradan
+
+Reference:
             Foundations of Q-Learning
                 Notes:
                     Q-values are stored in a Q-table which has one row for each
@@ -85,7 +88,10 @@ class QLearningAgent(ReinforcementAgent):
                     The Q-table therefore represents the AI player's policy for acting in the current 
                     environment
                     
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://youtu.be/__t2XRxXGxI?t=597
                     https://youtu.be/__t2XRxXGxI?t=757
         """
@@ -196,14 +202,20 @@ class QLearningAgent(ReinforcementAgent):
         """
         Flip a coin and only allow the random number generated if less than self.epsilon
         
-        Reference:
+        Contributors: 
+    https://github.com/josephedradan
+
+Reference:
             Exploration vs. Exploitation - Learning the Optimal Reinforcement Learning Policy
 
                 Notes:
                     If epsilon low then you will most likely do Exploitation
                     If epsilon high then you will most likely do Exploration
                 
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://youtu.be/mo96Nqlo1L8?list=PLZbbT5o_s2xoWNVdDudn51XM8lOuZ_Njv&t=32
         
         
@@ -240,7 +252,10 @@ class QLearningAgent(ReinforcementAgent):
         # util.raiseNotDefined()
         """
 
-        Reference:
+        Contributors: 
+    https://github.com/josephedradan
+
+Reference:
             Foundations of Q-Learning
                 Notes:
                     Temporal Differences
@@ -285,7 +300,10 @@ class QLearningAgent(ReinforcementAgent):
                         Q^new(s_t, a_t) =  
                         Q^old(s_t, a_t) + alpha * (r_t + (gamma * max_a Q(s_t+1, a)) - Q^old(s_t, a_t))
                         
-                Reference:
+                Contributors: 
+    https://github.com/josephedradan
+
+Reference:
                     https://youtu.be/__t2XRxXGxI?t=597
                     https://youtu.be/__t2XRxXGxI?t=757
                     

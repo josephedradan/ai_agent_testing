@@ -1,7 +1,4 @@
 """
-Created by Joseph Edradan
-Github: https://github.com/josephedradan
-
 Date created: 12/29/2022
 
 Purpose:
@@ -17,6 +14,9 @@ IMPORTANT NOTES:
 Explanation:
 
 Tags:
+
+Contributors: 
+    https://github.com/josephedradan
 
 Reference:
 
@@ -69,7 +69,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
 
     list_position_food: List[Tuple[int, int]] = grid_food.asList()
 
-    agent_state_pacman: ContainerState = state.get_container_state_GHOST(agent)
+    container_state_pacman: ContainerState = state.get_container_state_GHOST(agent)
 
     score_new: float = state.getScore()
 
@@ -95,7 +95,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
     # if list_position_capsule:
     #     # Get the closest capsule to Pacman
     #     distance_pacman_to_capsule_closest = min(
-    #         [function_get_distance(agent_state_pacman.getPosition(), position_capsule) for position_capsule in
+    #         [function_get_distance(container_state_pacman.getPosition(), position_capsule) for position_capsule in
     #          list_position_capsule]
     #     )
     #
@@ -117,7 +117,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
     if list_agent_state_ghost_active:
         # Get the closest ghost to Pacman
         distance_pacman_to_ghost_closest = min(
-            [function_get_distance(agent_state_pacman.get_position(), agent_state_ghost_active.get_position()) for
+            [function_get_distance(container_state_pacman.get_position(), agent_state_ghost_active.get_position()) for
              agent_state_ghost_active in list_agent_state_ghost_active]
         )
 
@@ -140,7 +140,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
     if list_agent_state_ghost_scared:
         # Get the closest scared ghost to Pacman
         distance_pacman_to_ghost_scared_closest = min(
-            [function_get_distance(agent_state_pacman.get_position(), agent_state_ghost_scared.get_position()) for
+            [function_get_distance(container_state_pacman.get_position(), agent_state_ghost_scared.get_position()) for
              agent_state_ghost_scared in list_agent_state_ghost_scared]
         )
 
@@ -162,7 +162,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
     if list_position_food:
         # Get the closest food to Pacman
         distance_pacman_to_food_closest = min(
-            [function_get_distance(agent_state_pacman.get_position(), position_food) for position_food in
+            [function_get_distance(container_state_pacman.get_position(), position_food) for position_food in
              list_position_food]
         )
 
@@ -321,7 +321,7 @@ def evaluation_function_food_and_ghost(agent: Agent, state_current: StatePacman,
 ########################################################################################################################
 
 
-def evaluation_function_food_and_ghost__attempt_1(agent: Agent, currentGameState: StatePacman, action: Action) -> float:
+def evaluation_function_food_and_ghost__attempt_1(agent: Agent, state: StatePacman, action: Action) -> float:
     """
     Design a better evaluation function here.
 
@@ -337,11 +337,12 @@ def evaluation_function_food_and_ghost__attempt_1(agent: Agent, currentGameState
     to create a masterful evaluation function.
     """
     # Useful information you can extract from a State (pacman.py)
-    state_successor: StatePacman = currentGameState.generateSuccessor(agent, action)
-    newPos: TYPE_VECTOR = state_successor.get_container_state_GHOST(agent).get_position()
+    state_successor: StatePacman = state.generateSuccessor(agent, action)
+
+    # newPos: TYPE_VECTOR = state_successor.get_container_state_GHOST(agent).get_position()
     newFood: GridPacman = state_successor.getFood()
-    newGhostStates: List[ContainerState] = state_successor.get_list_container_state_ghost()
-    newScaredTimes: List[float] = [ghostState.time_scared for ghostState in newGhostStates]
+    # newGhostStates: List[ContainerState] = state_successor.get_list_container_state_ghost()
+    # newScaredTimes: List[float] = [ghostState.time_scared for ghostState in newGhostStates]
 
     "*** YOUR CODE HERE ***"
     """
