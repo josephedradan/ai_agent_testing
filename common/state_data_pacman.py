@@ -319,7 +319,7 @@ class StateDataPacman:
                     self.dict_k_index_v_agent[_index_agent] = player.get_agent()
 
                     #############
-                    # FUCK ULTRA BYPASS  # TODO: FIX ME TO SUPPORT MORE PACMAN
+                    # TEMP ULTRA BYPASS  # TODO: FIX ME TO SUPPORT MORE PACMAN
 
                     if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
                         self._player_pacman = player

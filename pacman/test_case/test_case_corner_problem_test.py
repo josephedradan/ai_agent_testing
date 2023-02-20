@@ -88,7 +88,7 @@ class CornerProblemTest(TestCase):
 
         state_pacman = StatePacman()
         state_pacman.initialize(lay, list_player)
-        print("---- FUCK SOLUTION",list_player, state_pacman.get_dict_k_player_v_container_state())
+        print("---- TEMP SOLUTION",list_player, state_pacman.get_dict_k_player_v_container_state())
         visited = getStatesFromPath(state_pacman.getPacmanPosition(), path)
         top, right = state_pacman.getWalls().height - 2, state_pacman.getWalls().width - 2
         missedCorners = [p for p in ((1, 1), (1, top), (right, 1), (right, top)) if p not in visited]

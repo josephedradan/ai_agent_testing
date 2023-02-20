@@ -166,7 +166,7 @@ class StayEastSearchAgent(SearchAgent):
     """
 
     def __init__(self):
-        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
+        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS TEMPY
         self.searchFunction = search.uniform_cost_search
         costFn = lambda pos: .5 ** pos[0]
         self.searchType = lambda state: PositionSearchProblem(state, costFn, (1, 1), None, False)
@@ -181,7 +181,7 @@ class StayWestSearchAgent(SearchAgent):
     """
 
     def __init__(self):
-        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
+        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS TEMPY
         self.searchFunction = search.uniform_cost_search
         costFn = lambda pos: 2 ** pos[0]
         self.searchType = lambda state: PositionSearchProblem(state, costFn)
@@ -191,7 +191,7 @@ class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
 
     def __init__(self):
-        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
+        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS TEMPY
 
         self.searchFunction = lambda prob: search.a_star_search(prob, cornersHeuristic)
         self.searchType = CornersProblem
@@ -201,7 +201,7 @@ class AStarFoodSearchAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
 
     def __init__(self):
-        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS FUCKY
+        # FIXME: SHOULD CALL SUPER, BUT THE PARTIAL FUNCTION BELOW IS TEMPY
 
         self.searchFunction = lambda prob: search.a_star_search(prob, foodHeuristic)
         self.searchType = FoodSearchProblem

@@ -344,7 +344,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
             print(state_data_pacman)
             print(type(state_data_pacman))
 
-            raise Exception("FUCK ME WTF WE GOT HERE")
+            raise Exception("TEMP ME WTF WE GOT HERE")
             self.infoPane.update_ghost_distances(state_data_pacman.ghostDistances)
 
     def _make_window(self, width, height):

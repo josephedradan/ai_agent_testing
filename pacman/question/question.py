@@ -39,8 +39,10 @@ TYPE_LIST_TUPLE__TEST_CASE__TYPE_CALLABLE_THAT_NEEDS_GRADER = List[Tuple[TestCas
 
 
 class Question(ABC):
-    graphics: Graphics
     DICT_K_NAME_SUBCLASS_QUESTION_V_SUBCLASS_QUESTION = {}
+
+
+    graphics: Graphics
 
     def __init__(self, dict_question: Dict[str, Any], graphics: Graphics):  # TODO: GENERIC GRAPHICS
         self.graphics = graphics

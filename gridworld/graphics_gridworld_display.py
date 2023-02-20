@@ -291,7 +291,7 @@ class GraphicsGridworldDisplay:
         text_color = TEXT_COLOR
 
         if not isObstacle and isCurrent:
-            print('FUCK YOU', (screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR)
+            print('TEMP YOU', (screen_x, screen_y), 0.1 * GRID_SIZE, LOCATION_COLOR)
             x = self.gui.draw_circle(
                 (screen_x, screen_y),
                 0.1 * GRID_SIZE,

@@ -1,4 +1,6 @@
 
+# Remake of UC Berkeley Pacman Assignment
+
 # Mapping correct test cases
     1 8
     9 14 (14 is extra)

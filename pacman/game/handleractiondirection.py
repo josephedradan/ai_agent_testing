@@ -56,6 +56,12 @@ class HandlerActionDirection:
         (ActionDirection.SOUTH, (0, -1))
     ]
 
+    dict_action_direction_reverse = {
+        ActionDirection.NORTH: ActionDirection.SOUTH,
+        ActionDirection.SOUTH: ActionDirection.NORTH,
+
+    }
+
     TOLERANCE = .001
 
     @staticmethod
