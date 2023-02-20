@@ -23,6 +23,7 @@ Reference:
 """
 from __future__ import annotations
 
+from typing import Callable
 from typing import Dict
 from typing import Protocol
 from typing import Union
@@ -43,43 +44,29 @@ from pacman.agent.evaluation_function.evaluation_function_state_score import (
 """
 TYPE_EVALUATION_FUNCTION
 
-Notes:
-    The real TYPE_EVALUATION_FUNCTION wanted is something like
-        Callable[[State, Union[Action, None]] 
-        
-    Where the None is optional as in the callable can be 
-        _callable(State)
-    OR
-        _callable(State, Action)
-    OR
-        _callable(State, None)
-
-    The closest you can can get to mimic this type is 
-        Union[
-        Callable[[State], float],
-        Callable[[State, Action], float]
-    ]
-    HOWEVER; it does not support
-        _callable(State)
-
-    The solution to this problem_multi_agent_tree is to use mypy, but I don't want to implement that because this problem_multi_agent_tree
-    should be solved in cPython
-        https://mypy.readthedocs.io/en/latest/protocols.html#callback-protocols
+Reference:
+    Protocol
+        Notes:
+            Callable and Protocol Callable type hinting
+            
+            PyCharm does not support it yet i guess...
+            
+        Reference:
+            https://mypy.readthedocs.io/en/latest/protocols.html#callback-protocols
 """
+# class EvaluationFunction(Protocol):
+#
+#     def __call__(self, *args, **kwargs):
+#         ...
+#
+# TYPE_EVALUATION_FUNCTION = EvaluationFunction
 
-
-class EvaluationFunction(Protocol):
-
-    def __call__(self, agent: Agent, state: State, action: Action) -> float:
-        ...
-
-
-TYPE_EVALUATION_FUNCTION = EvaluationFunction
-
-# TYPE_EVALUATION_FUNCTION = Callable[[Agent, State, Union[Action, None]], float]
+TYPE_EVALUATION_FUNCTION = Callable[[Agent, State, Union[Action, None]], float]
 
 
 TYPE_EVALUATION_FUNCTION_POSSIBLE = Union[TYPE_EVALUATION_FUNCTION, str]
+
+x: TYPE_EVALUATION_FUNCTION = evaluation_function_better
 
 LIST_EVALUATION_FUNCTION = [
     evaluation_function_food_and_ghost,

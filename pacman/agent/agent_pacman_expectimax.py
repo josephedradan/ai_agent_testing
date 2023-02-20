@@ -29,12 +29,13 @@ from common.action import Action
 from common.state import State
 from pacman.agent import Agent
 from pacman.agent import AgentPacman
+from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION
 
 
 def _dfs_recursive_expectimax_v1_handler(agent_primary: Agent,
                                          state: State,
                                          depth: int,
-                                         function_evaluation: callable,
+                                         evaluation_function: TYPE_EVALUATION_FUNCTION,
                                          index_agent: int = 0,
                                          ) -> float:
     """
@@ -60,7 +61,7 @@ Reference:
 
     # Check if game is over via pacman dead or pacman got all food and survived
     if state.isWin() or state.isLose() or depth <= 0:
-        score = function_evaluation(state, None)
+        score = evaluation_function(agent_primary, state, None)
 
         # Return the score
         return score
@@ -82,7 +83,7 @@ Reference:
             score_calculated = _dfs_recursive_expectimax_v1_handler(agent_primary,
                                                                     state_new,
                                                                     depth,
-                                                                    function_evaluation,
+                                                                    evaluation_function,
                                                                     index_agent_new,
                                                                     )
 
@@ -115,7 +116,7 @@ Reference:
             score_calculated = _dfs_recursive_expectimax_v1_handler(agent_primary,
                                                                     state_new,
                                                                     depth_new,
-                                                                    function_evaluation,
+                                                                    evaluation_function,
                                                                     index_agent_new,
                                                                     )
 
@@ -128,7 +129,7 @@ Reference:
 def dfs_recursive_expectimax_v1(agent_primary: Agent,
                                 state: State,
                                 depth: int,
-                                function_evaluation: callable,
+                                evaluation_function: TYPE_EVALUATION_FUNCTION,
                                 index_agent: int = 0,
                                 ) -> Union[str, None]:
     """
@@ -167,7 +168,7 @@ Reference:
         score_calculated = _dfs_recursive_expectimax_v1_handler(agent_primary,
                                                                 state_new,
                                                                 depth,
-                                                                function_evaluation,
+                                                                evaluation_function,
                                                                 index_agent_new,
                                                                 )
 

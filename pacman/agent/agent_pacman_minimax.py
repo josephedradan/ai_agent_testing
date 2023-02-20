@@ -21,7 +21,6 @@ Contributors:
 Reference:
 
 """
-from pprint import pprint
 from typing import List
 from typing import Tuple
 from typing import Union
@@ -29,7 +28,7 @@ from typing import Union
 from common.state import State
 from pacman.agent import Agent
 from pacman.agent import AgentPacman
-from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
+from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION
 from pacman.agent.evaluation_function import evaluation_function_state_score
 from pacman.game.actiondirection import Action
 
@@ -556,7 +555,7 @@ def _dfs_recursive_minimax_v4_handler(agent_primary: Agent,
                                       depth: int,
                                       alpha: Union[None, float],
                                       beta: Union[None, float],
-                                      evaluation_function: callable,
+                                      evaluation_function: TYPE_EVALUATION_FUNCTION,
                                       index_agent: int = 0,
                                       alpha_beta_pruning: bool = False,
                                       # _callgraph_special: Any = None
@@ -596,7 +595,7 @@ Reference:
 
     # Check if game is over via pacman dead or pacman got all food and survived
     if state.isWin() or state.isLose() or depth <= 0:
-        score = evaluation_function(state, None)
+        score = evaluation_function(agent_primary, state, None)
 
         # Return the score
         return score
@@ -740,7 +739,7 @@ Reference:
 def dfs_recursive_minimax_v4(agent_primary: Agent,
                              state: State,
                              depth: int,
-                             evaluation_function: callable,
+                             evaluation_function: TYPE_EVALUATION_FUNCTION,
                              index_agent: int = 0,
                              alpha_beta_pruning: bool = False,
                              ) -> Union[Action, None]:
@@ -777,7 +776,6 @@ Reference:
     # alpha and beta for alpha beta pruning
     alpha: Union[None, float] = None
     beta: Union[None, float] = None
-
 
     for action in list_str_move_legal:
 
@@ -849,7 +847,7 @@ class AgentPacmanMinimax(AgentPacman):
     """
 
     def __init__(self,
-                 evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = (
+                 evaluation_function: TYPE_EVALUATION_FUNCTION = (
                          evaluation_function_state_score
                  ),
                  depth: int = 2,

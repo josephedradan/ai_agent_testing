@@ -22,11 +22,13 @@ Reference:
 
 """
 from abc import ABC
-from typing import Callable
-from typing import Union
+from typing import TYPE_CHECKING
 
 from pacman.agent import AgentPacman
 from pacman.agent.evaluation_function.evaluation_function_state_score import evaluation_function_state_score
+
+if TYPE_CHECKING:
+    from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION_POSSIBLE
 
 
 class AgentPacmanMultiAgentSearch(AgentPacman, ABC):
@@ -46,10 +48,9 @@ class AgentPacmanMultiAgentSearch(AgentPacman, ABC):
 
     # evaluation_function='scoreEvaluationFunction'
     def __init__(self,
-                 evaluation_function: Union[Callable, None] = evaluation_function_state_score,
+                 evaluation_function: TYPE_EVALUATION_FUNCTION_POSSIBLE = evaluation_function_state_score,
                  depth='2',
                  **kwargs
                  ):
-
-        super().__init__(evaluation_function,**kwargs)
+        super().__init__(evaluation_function, **kwargs)
         self.depth = int(depth)

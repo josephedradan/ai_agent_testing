@@ -25,10 +25,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
-    from pacman.game.actiondirection import Action
+    from pacman.agent import Agent
     from common.state import State
+    from pacman.game.actiondirection import Action
 
 
-def evaluation_function_state_score(state: State, action: Action) -> float:
+def evaluation_function_state_score(agent: Agent, state: State, action: Action) -> float:
     return state.getScore()

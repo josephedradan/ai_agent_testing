@@ -32,6 +32,7 @@ from typing import TYPE_CHECKING
 from typing import Tuple
 from typing import Union
 
+from pacman.agent import Agent
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import \
     evaluation_function_food_and_ghost_helper
 
@@ -116,7 +117,8 @@ def _get_heuristic_cost_ucs_crude(grid_wall: GridPacman,
     return 0  # Return 0 to imply no path
 
 
-def evaluation_function_better(state: State,
+def evaluation_function_better(agent: Agent,
+                               state: State,
                                action: Action) -> float:  # TODO: HOT MESS, USES STATE PACMAN WHICH SHOULD BE GENERALZIED
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
@@ -313,7 +315,7 @@ def evaluation_function_better(state: State,
         return _get_heuristic_cost_ucs_crude(grid_wall, position_1, position_2, None)
 
     result = evaluation_function_food_and_ghost_helper(
-        state_successor_pacman.state_data._player_pacman,
+        agent,
         state_successor_pacman,
         evaluation_function_heuristic_cost_ucs_crude)
 

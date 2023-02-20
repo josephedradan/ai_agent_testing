@@ -56,7 +56,7 @@ class AgentPacmanGreedy(AgentPacman):
         # print("-- successors", successors, type(successors))
 
         scored: List[Tuple[float, Action]] = (
-            [(self.evaluation_function(_state, action), action) for _state, action in successors]
+            [(self.evaluation_function(self, _state, action), action) for _state, action in successors]
         )
 
         # print("scored", scored, type(scored))
