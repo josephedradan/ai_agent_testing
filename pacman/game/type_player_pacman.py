@@ -23,10 +23,10 @@ Reference:
 """
 from enum import auto
 
-from common.type_player import TypePlayer
+from common.type_player import EnumPlayer
 
 
-class TypePlayerPacman(TypePlayer):
+class EnumPlayerPacman(EnumPlayer):
     """
     Order of Enum constants determines player action order
 

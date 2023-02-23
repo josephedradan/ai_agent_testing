@@ -15,7 +15,7 @@ Explanation:
 
 Tags:
 
-Contributors: 
+Contributors:
     https://github.com/josephedradan
 
 Reference:
@@ -24,7 +24,7 @@ Reference:
 from enum import Enum
 
 
-class TypePlayer(Enum):
+class EnumPlayer(Enum):
 
     def __lt__(self, other):
         if isinstance(other, type(self)):

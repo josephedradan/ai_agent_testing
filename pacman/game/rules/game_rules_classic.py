@@ -35,7 +35,7 @@ from pacman.game.game import Game
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.layoutpacman import get_layout_pacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 
@@ -52,7 +52,7 @@ class ClassicGameRules:
 
     def get_players(self,
                     list_agent: List[Agent],
-                    type_player: TypePlayerPacman,
+                    type_player: EnumPlayerPacman,
                     graphics_pacman: GraphicsPacman
                     ) -> List[PlayerPacman]:
 
@@ -83,11 +83,11 @@ class ClassicGameRules:
         layout_pacman: LayoutPacman = get_layout_pacman(str_path_layout)
 
         list_player_pacman = self.get_players(list_agent_pacman,
-                                              TypePlayerPacman.PACMAN,
+                                              EnumPlayerPacman.PACMAN,
                                               graphics_pacman)
 
         list_player_ghost = self.get_players(list_agent_ghost,
-                                             TypePlayerPacman.GHOST,
+                                             EnumPlayerPacman.GHOST,
                                              graphics_pacman)
 
         list_player_all: List[PlayerPacman] = [*list_player_pacman, *list_player_ghost]

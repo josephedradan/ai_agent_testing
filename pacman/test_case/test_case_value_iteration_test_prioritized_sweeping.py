@@ -29,14 +29,18 @@ from pacman.test_case import ValueIterationTest
 
 class PrioritizedSweepingValueIterationTest(ValueIterationTest):
     def runAgent(self, numIterations):
-        agent = PrioritizedSweepingValueIterationAgent(self.grid,
-                                                       discount=self.discount,
-                                                       iterations=numIterations)
+
+        agent = PrioritizedSweepingValueIterationAgent(
+            self.grid,
+            discount=self.discount,
+            iterations=numIterations
+        )
         states = self.grid.getStates()
         actions = list(reduce(lambda a, b: set(a).union(b), [self.grid.getPossibleActions(state) for state in states]))
         values = {}
         qValues = {}
         policy = {}
+
         for state in states:
             values[state] = agent.getValue(state)
             policy[state] = agent.computeActionFromValues(state)

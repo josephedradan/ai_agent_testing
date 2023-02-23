@@ -37,7 +37,7 @@ from pacman.agent.search.search import astar
 from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.common import checkSolution
 from pacman.test_case.test_case import TestCase
 
@@ -63,7 +63,7 @@ class HeuristicGrade(TestCase):
         list_player = [PlayerPacman(self.question.get_graphics().get_gui(),
                                     self.question.get_graphics(),
                                     agent,
-                                    TypePlayerPacman.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+                                    EnumPlayerPacman.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
         #####
 

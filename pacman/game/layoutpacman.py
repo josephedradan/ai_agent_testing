@@ -24,7 +24,7 @@ from common.util import manhattanDistance
 from pacman import constants
 from pacman.game.actiondirection import ActionDirection
 from pacman.game.grid_pacman import GridPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.types_ import TYPE_VECTOR
 
 if TYPE_CHECKING:
@@ -47,7 +47,7 @@ class LayoutPacman:
         self.food: GridPacman = GridPacman(self.width, self.height, False)
         self.list_capsule: List[TYPE_VECTOR] = []
 
-        self.list_tuple__type_player__position: List[Tuple[TypePlayerPacman, TYPE_VECTOR]] = []
+        self.list_tuple__type_player__position: List[Tuple[EnumPlayerPacman, TYPE_VECTOR]] = []
         self.numGhosts: int = 0
 
         self._processLayoutText(list_str_layout_line)
@@ -181,9 +181,9 @@ class LayoutPacman:
         elif char_from_layout == 'o':
             self.list_capsule.append((x, y))
         elif char_from_layout == 'P':
-            self.list_tuple__type_player__position.append((TypePlayerPacman.PACMAN, (x, y)))
+            self.list_tuple__type_player__position.append((EnumPlayerPacman.PACMAN, (x, y)))
         elif char_from_layout in ['G']:
-            self.list_tuple__type_player__position.append((TypePlayerPacman.GHOST, (x, y)))
+            self.list_tuple__type_player__position.append((EnumPlayerPacman.GHOST, (x, y)))
             self.numGhosts += 1
         elif char_from_layout in ['1', '2', '3',
                                   '4']:  # TODO: THIS IS IF THE MAP SPECIFIES GHOSTS EXACTLY # TOOD: ACTUALLY, IDK

@@ -29,25 +29,33 @@ from typing import Dict
 from gridworld.main_grid_world import Gridworld
 from pacman.agent.valueIterationAgents import ValueIterationAgent
 from common.grader import Grader
+from pacman.question import Question
 from pacman.test_case import TestCase
 from pacman.test_case.test_case_grid_policy_test import parseGrid
 
 
 class ValueIterationTest(TestCase):
 
-    def __init__(self, question, testDict):
-        super(ValueIterationTest, self).__init__(question, testDict)
-        self.discount = float(testDict['discount'])
-        self.grid = Gridworld(parseGrid(testDict['grid']))
-        iterations = int(testDict['valueIterations'])
-        if 'noise' in testDict: self.grid.setNoise(float(testDict['noise']))
-        if 'livingReward' in testDict: self.grid.setLivingReward(float(testDict['livingReward']))
+    def __init__(self, question: Question, dict_file_test: Dict[str, Any]):
+        super(ValueIterationTest, self).__init__(question, dict_file_test)
+
+        self.discount = float(dict_file_test['discount'])
+        self.grid: Gridworld = Gridworld(parseGrid(dict_file_test['grid']))
+
+        iterations = int(dict_file_test['valueIterations'])
+
+        if 'noise' in dict_file_test:
+            self.grid.setNoise(float(dict_file_test['noise']))
+
+        if 'livingReward' in dict_file_test:
+            self.grid.setLivingReward(float(dict_file_test['livingReward']))
 
         maxPreIterations = 10
+
         self.numsIterationsForDisplay = list(range(min(iterations, maxPreIterations)))
 
         # pprint(testDict)
-        self.testOutFile = testDict['path_test_output']
+        self.testOutFile = dict_file_test['path_test_output']
 
         if maxPreIterations < iterations:
             self.numsIterationsForDisplay.append(iterations)

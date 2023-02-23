@@ -37,7 +37,7 @@ from pacman.agent.search_problem import CornersProblem
 from pacman.game.handleractiondirection import HandlerActionDirection
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -75,7 +75,7 @@ class CornerProblemTest(TestCase):
             self.question.get_graphics().get_gui(),
             self.question.get_graphics(),
             agent,
-            TypePlayerPacman.PACMAN)
+            EnumPlayerPacman.PACMAN)
         ]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
         ################

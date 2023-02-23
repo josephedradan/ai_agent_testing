@@ -45,7 +45,7 @@ class TextGridworldDisplay:
         qValues = util.Counter()
         states = self.gridworld.getStates()
         for state in states:
-            for action in self.gridworld.getPossibleActions(state):
+            for action in self.gridworld.getPossibleActionDirections(state):
                 qValues[(state, action)] = agent.getQValue(state, action)
         prettyPrintQValues(self.gridworld, qValues, currentState)
 
@@ -62,7 +62,7 @@ def prettyPrintValues(gridWorld, values, policy=None, currentState = None):
             action = None
             if policy != None and state in policy:
                 action = policy[state]
-            actions = gridWorld.getPossibleActions(state)
+            actions = gridWorld.getPossibleActionDirections(state)
             if action not in actions and 'exit' in actions:
                 action = 'exit'
             valString = None
@@ -121,7 +121,7 @@ def prettyPrintNullValues(gridWorld, currentState = None):
             # if policy != None and state in policy:
             #   action = policy[state]
             #
-            actions = gridWorld.getPossibleActions(state)
+            actions = gridWorld.getPossibleActionDirections(state)
 
             if action not in actions and 'exit' in actions:
                 action = 'exit'
@@ -181,7 +181,7 @@ def prettyPrintQValues(gridWorld, qValues, currentState=None):
         newRow = []
         for x in range(grid.width):
             state = (x, y)
-            actions = gridWorld.getPossibleActions(state)
+            actions = gridWorld.getPossibleActionDirections(state)
             if actions == None or len(actions) == 0:
                 actions = [None]
             bestQ = max([qValues[(state, action)] for action in actions])
@@ -316,7 +316,7 @@ if __name__ == '__main__':
     values = util.Counter(dict([(state,1000.23) for state in grid.getStates()]))
     prettyPrintValues(grid, values, policy, currentState = (0,0))
 
-    stateCrossActions = [[(state, action) for action in grid.getPossibleActions(state)] for state in grid.getStates()]
+    stateCrossActions = [[(state, action) for action in grid.getPossibleActionDirections(state)] for state in grid.getStates()]
     qStates = reduce(lambda x,y: x+y, stateCrossActions, [])
     qValues = util.Counter(dict([((state, action), 10.5) for state, action in qStates]))
     qValues = util.Counter(dict([((state, action), 10.5) for state, action in reduce(lambda x,y: x+y, stateCrossActions, [])]))

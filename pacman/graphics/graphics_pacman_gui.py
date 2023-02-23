@@ -33,7 +33,7 @@ from pacman.agent.container_state import ContainerState
 from pacman.game.actiondirection import ActionDirection
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 if TYPE_CHECKING:
@@ -282,7 +282,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
             agent = player.get_agent()
             container_state = tuple__player__container_state[1]
 
-            if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
+            if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
                 image = self._draw_pacman(container_state, index)
             else:
                 image = self._draw_ghost(container_state, index)
@@ -327,7 +327,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
 
         container_state_previous, image_previous = self.dict_k_agent_v_tuple__container_state__image.get(agent)
 
-        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
+        if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
             self.animatePacman(container_state, container_state_previous, image_previous)
         else:
             self.moveGhost(container_state, player, container_state_previous, image_previous)
@@ -529,7 +529,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
     def getPosition(self, agentState):
         if agentState._container_position_direction == None:
             return (-1000, -1000)
-        return agentState.get_position()
+        return agentState.get_vector_position()
 
     def getDirection(self, agentState):
         if agentState._container_position_direction == None:
@@ -860,7 +860,7 @@ class FirstPersonGraphicsPacman(GraphicsPacmanGUI):
         return GHOST_COLORS[ghostIndex]
 
     def getPosition(self, ghostState):
-        if not self.showGhosts and not ghostState.is_pacman and ghostState.get_position()[1] > 1:
+        if not self.showGhosts and not ghostState.is_pacman and ghostState.get_vector_position()[1] > 1:
             return (-1000, -1000)
         else:
             return GraphicsPacmanGUI.getPosition(self, ghostState)

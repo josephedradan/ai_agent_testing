@@ -26,7 +26,7 @@ from typing import TYPE_CHECKING
 from common.graphics.gui import GUI
 from common.player import Player
 from pacman.agent import Agent
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
 
 if TYPE_CHECKING:
@@ -34,10 +34,10 @@ if TYPE_CHECKING:
 
 
 class PlayerPacman(Player[GUI, GraphicsPacman]):
-    type_player: TypePlayerPacman
+    type_player: EnumPlayerPacman
     __counter = 1
 
-    def __init__(self, gui: GUI, graphics: GraphicsPacman, agent: Agent, type_player: TypePlayerPacman):
+    def __init__(self, gui: GUI, graphics: GraphicsPacman, agent: Agent, type_player: EnumPlayerPacman):
         super().__init__(gui, graphics, agent)
 
         self.type_player = type_player
@@ -47,9 +47,9 @@ class PlayerPacman(Player[GUI, GraphicsPacman]):
         self.index = PlayerPacman.__counter
         PlayerPacman.__counter += 1
 
-    def set_type_player_pacman(self, type_player: TypePlayerPacman):
+    def set_type_player_pacman(self, type_player: EnumPlayerPacman):
         self.type_player = type_player
 
-    def get_type_player_pacman(self) -> TypePlayerPacman:
+    def get_type_player_pacman(self) -> EnumPlayerPacman:
         return self.type_player
 

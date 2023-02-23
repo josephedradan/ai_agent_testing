@@ -234,7 +234,7 @@ class Application:
         simulationFn = lambda agent: \
             simulation.SimulationEnvironment(self.robotEnvironment, agent)
         actionFn = lambda state: \
-            self.robotEnvironment.getPossibleActions(state)
+            self.robotEnvironment.getPossibleActionDirections(state)
         self.learner = QLearningAgent(actionFn=actionFn)
 
         self.learner.setEpsilon(self.epsilon)
@@ -264,11 +264,11 @@ class Application:
         self.stepCount += 1
 
         state = self.robotEnvironment.getCurrentState()
-        actions = self.robotEnvironment.getPossibleActions(state)
+        actions = self.robotEnvironment.getPossibleActionDirections(state)
         if len(actions) == 0.0:
             self.robotEnvironment.reset()
             state = self.robotEnvironment.getCurrentState()
-            actions = self.robotEnvironment.getPossibleActions(state)
+            actions = self.robotEnvironment.getPossibleActionDirections(state)
             print('Reset!')
         action = self.learner.getAction(state)
         if action == None:

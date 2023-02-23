@@ -35,7 +35,7 @@ from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.game.actiondirection import ActionDirection
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
 
@@ -68,7 +68,7 @@ class PacmanSearchTest(TestCase):
         state_pacman_start.initialize(lay, [PlayerPacman(self.question.get_graphics().get_gui(),
                                                          self.question.get_graphics(),
                                                          AgentPacman(),
-                                                         TypePlayerPacman.PACMAN)])
+                                                         EnumPlayerPacman.PACMAN)])
 
         # class_problem = getattr(searchAgents, self.searchProblemClassName)
         class_problem = get_subclass_search_problem(self.searchProblemClassName)

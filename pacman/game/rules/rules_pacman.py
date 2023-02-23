@@ -34,7 +34,7 @@ from pacman.game.handleractiondirection import HandlerActionDirection
 from pacman.game.actiondirection import Action
 from pacman.game.actiondirection import ActionDirection
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.game.rules.common import SCARED_TIME
 from pacman.game.rules.rules_agent import RulesAgent
 
@@ -54,7 +54,7 @@ class PacmanRules(RulesAgent):
 
         container_position_direction = state_pacman.get_container_state_GHOST(player.get_agent())._container_position_direction
 
-        return HandlerActionDirection.getPossibleActions(
+        return HandlerActionDirection.getPossibleActionDirections(
             container_position_direction,
             state_pacman.state_data.layout_pacman.walls
         )
@@ -76,7 +76,7 @@ class PacmanRules(RulesAgent):
         )
 
         # Eat
-        next = pacmanState._container_position_direction.get_position()
+        next = pacmanState._container_position_direction.get_vector_position()
         nearest = nearestPoint(next)
         if manhattanDistance(nearest, next) <= 0.5:
             # Remove food
@@ -109,5 +109,5 @@ class PacmanRules(RulesAgent):
             # Reset all ghosts' scared timers
             for player in state_pacman.state_data.dict_k_player_v_container_state:
 
-                if player.type_player == TypePlayerPacman.GHOST:
+                if player.type_player == EnumPlayerPacman.GHOST:
                     state_pacman.state_data.dict_k_player_v_container_state.get(player).time_scared = SCARED_TIME

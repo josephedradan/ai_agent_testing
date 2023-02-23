@@ -35,7 +35,7 @@ from pacman.game.actiondirection import ActionDirection
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.rules.common import COLLISION_TOLERANCE
 from pacman.game.rules.rules_agent import RulesAgent
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.types_ import TYPE_VECTOR
 
 if TYPE_CHECKING:
@@ -78,7 +78,7 @@ class GhostRules(RulesAgent):
 
         container_position_direction = state_pacman.get_container_state_GHOST(agent)._container_position_direction
 
-        possibleActions = HandlerActionDirection.getPossibleActions(
+        possibleActions = HandlerActionDirection.getPossibleActionDirections(
             container_position_direction,
             state_pacman.state_data.layout_pacman.walls
         )
@@ -121,7 +121,7 @@ class GhostRules(RulesAgent):
 
         if timer == 1:
             container_state._container_position_direction.set_position(
-                nearestPoint(container_state._container_position_direction.get_position()))
+                nearestPoint(container_state._container_position_direction.get_vector_position()))
         container_state.time_scared = max(0, timer - 1)
 
     @staticmethod
@@ -129,19 +129,19 @@ class GhostRules(RulesAgent):
 
         position_pacman = state_pacman.getPacmanPosition()
 
-        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:  # Pacman just moved; Anyone can kill him
+        if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:  # Pacman just moved; Anyone can kill him
             # for index in range(1, len(state.state_data.dict_k_player_v_container_state)):
 
             for player_inner, container_state in state_pacman.state_data.dict_k_player_v_container_state.items():
 
-                if player_inner.get_type_player_pacman() == TypePlayerPacman.GHOST:
-                    position_ghost = container_state._container_position_direction.get_position()
+                if player_inner.get_type_player_pacman() == EnumPlayerPacman.GHOST:
+                    position_ghost = container_state._container_position_direction.get_vector_position()
 
                     if GhostRules.canKill(position_pacman, position_ghost):
                         GhostRules.collide(state_pacman, container_state, player_inner)
         else:
             container_state_ghost = state_pacman.state_data.dict_k_player_v_container_state.get(player)
-            position_ghost = container_state_ghost._container_position_direction.get_position()
+            position_ghost = container_state_ghost._container_position_direction.get_vector_position()
 
             if GhostRules.canKill(position_pacman, position_ghost):
                 GhostRules.collide(state_pacman, container_state_ghost, player)

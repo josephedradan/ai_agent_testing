@@ -34,7 +34,7 @@ from pacman.agent.container_state import ContainerState
 from pacman.game.container_position_direction import ContainerPositionDirection
 from pacman.game.actiondirection import ActionDirection
 from pacman.game.grid_pacman import GridPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.types_ import TYPE_VECTOR
 
 if TYPE_CHECKING:
@@ -227,11 +227,11 @@ class StateDataPacman:
             if container_state.get_container_position_direction() is None:
                 continue
 
-            x, y = [int(i) for i in nearestPoint(container_state.get_container_position_direction().get_position())]
+            x, y = [int(i) for i in nearestPoint(container_state.get_container_position_direction().get_vector_position())]
 
             agent_dir = container_state._container_position_direction._direction
 
-            if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
+            if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
                 map[x][y] = self._get_str_pacman_from_direction(agent_dir)
             else:
                 map[x][y] = self._get_str_ghost_from_direction(agent_dir)
@@ -321,7 +321,7 @@ class StateDataPacman:
                     #############
                     # TEMP ULTRA BYPASS  # TODO: FIX ME TO SUPPORT MORE PACMAN
 
-                    if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
+                    if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
                         self._player_pacman = player
 
                     break

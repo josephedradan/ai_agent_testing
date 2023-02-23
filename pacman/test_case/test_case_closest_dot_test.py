@@ -33,7 +33,7 @@ from pacman.agent import AgentPacman
 from pacman.agent import ClosestDotSearchAgent
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -57,7 +57,7 @@ class ClosestDotTest(TestCase):
         state_pacman_start.initialize(layout, [PlayerPacman(self.question.get_graphics().get_gui(),
                                                             self.question.get_graphics(),
                                                             AgentPacman(),
-                                                            TypePlayerPacman.PACMAN)])
+                                                            EnumPlayerPacman.PACMAN)])
 
         path = ClosestDotSearchAgent().get_list_action_to_closest_dot(state_pacman_start)
         return path

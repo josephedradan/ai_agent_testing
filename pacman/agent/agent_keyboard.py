@@ -15,13 +15,11 @@ from __future__ import annotations
 
 import random
 from typing import TYPE_CHECKING
-from typing import Union
 
-from pacman.agent.agent import Agent
+from common.agent.agent import Agent
 from pacman.game.actiondirection import Action
 from pacman.game.actiondirection import ActionDirection
 from common.graphics.gui import GUI
-from common.graphics.gui_tkinter import GUITkinter
 
 if TYPE_CHECKING:
     from common.state import State

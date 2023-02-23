@@ -56,7 +56,7 @@ class ContainerPositionDirection:
 
         #####
 
-    def get_position(self) -> TYPE_VECTOR:
+    def get_vector_position(self) -> TYPE_VECTOR:
         return self._position
 
     def set_position(self, vector: TYPE_VECTOR):

@@ -41,11 +41,11 @@ class HandlerActionDirection:
     A collection of static methods for manipulating move actions.
     """
     # ActionDirection
-    dict_k_direction_v_position = {ActionDirection.WEST: (-1, 0),
-                                   ActionDirection.STOP: (0, 0),
-                                   ActionDirection.EAST: (1, 0),
-                                   ActionDirection.NORTH: (0, 1),
-                                   ActionDirection.SOUTH: (0, -1)}
+    dict_k_direction_v_type_vector = {ActionDirection.WEST: (-1, 0),
+                                      ActionDirection.STOP: (0, 0),
+                                      ActionDirection.EAST: (1, 0),
+                                      ActionDirection.NORTH: (0, 1),
+                                      ActionDirection.SOUTH: (0, -1)}
 
     # IMPORTANT: DO NOT CHANGE THIS ORDER OR ELSE TESTCASES WILL FAIL
     _list_tuple__action_direction__type_vector: List[Tuple[ActionDirection, TYPE_VECTOR]] = [
@@ -59,22 +59,15 @@ class HandlerActionDirection:
     dict_action_direction_reverse = {
         ActionDirection.NORTH: ActionDirection.SOUTH,
         ActionDirection.SOUTH: ActionDirection.NORTH,
-
+        ActionDirection.WEST: ActionDirection.EAST,
+        ActionDirection.EAST: ActionDirection.WEST
     }
 
     TOLERANCE = .001
 
     @staticmethod
     def reverse_action_direction(action: ActionDirection) -> ActionDirection:
-        if action == ActionDirection.NORTH:
-            return ActionDirection.SOUTH
-        if action == ActionDirection.SOUTH:
-            return ActionDirection.NORTH
-        if action == ActionDirection.EAST:
-            return ActionDirection.WEST
-        if action == ActionDirection.WEST:
-            return ActionDirection.EAST
-        return action
+        return HandlerActionDirection.dict_action_direction_reverse.get(action, action)
 
     @staticmethod
     def get_action_direction_from_vector(vector: TYPE_VECTOR) -> ActionDirection:
@@ -93,28 +86,33 @@ class HandlerActionDirection:
 
     @staticmethod
     def get_vector_from_action_direction(action: Action, speed: float = 1.0) -> TYPE_VECTOR:
-        dx, dy = HandlerActionDirection.dict_k_direction_v_position[action]
+        dx, dy = HandlerActionDirection.dict_k_direction_v_type_vector[action]
         return (dx * speed, dy * speed)
 
     @staticmethod
-    def getPossibleActions(container_position_direction: ContainerPositionDirection,
-                           walls: Grid) -> List[ActionDirection]:
-        possible = []
-        x, y = container_position_direction._position
+    def getPossibleActionDirections(container_position_direction: ContainerPositionDirection,
+                                    walls: Grid) -> List[ActionDirection]:
+        list_action_possible = []
+
+        x, y = container_position_direction.get_vector_position()
+
         x_int, y_int = int(x + 0.5), int(y + 0.5)
 
         # In between grid points, all agents must continue straight
         if (abs(x - x_int) + abs(y - y_int) > HandlerActionDirection.TOLERANCE):
             return [container_position_direction.get_direction()]
 
-        for dir, vec in HandlerActionDirection._list_tuple__action_direction__type_vector:
-            dx, dy = vec
-            next_y = y_int + dy
-            next_x = x_int + dx
-            if not walls[next_x][next_y]:
-                possible.append(dir)
+        for action_direction, vector in HandlerActionDirection._list_tuple__action_direction__type_vector:
+            dx, dy = vector
 
-        return possible
+            y_next = y_int + dy
+            x_next = x_int + dx
+
+            # If the next vector position is not a wall then its action direction is a possible action
+            if not walls[x_next][y_next]:
+                list_action_possible.append(action_direction)
+
+        return list_action_possible
 
     @staticmethod
     def get_list_action_direction_legal(vector_position: TYPE_VECTOR, grid: Grid) -> List[TYPE_VECTOR]:
@@ -144,7 +142,8 @@ class HandlerActionDirection:
         return list_type_vector
 
     @staticmethod
-    def get_type_vector_successor(position: TYPE_VECTOR, action: ActionDirection)-> TYPE_VECTOR:  # TODO FUNCTION NEEDS TO BE GENERALIZED
+    def get_type_vector_successor(position: TYPE_VECTOR,
+                                  action: ActionDirection) -> TYPE_VECTOR:  # TODO FUNCTION NEEDS TO BE GENERALIZED
         dx, dy = HandlerActionDirection.get_vector_from_action_direction(action)
         x, y = position
         return (x + dx, y + dy)

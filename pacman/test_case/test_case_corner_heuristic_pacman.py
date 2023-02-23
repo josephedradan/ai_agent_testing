@@ -36,7 +36,7 @@ from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeur
 from pacman.agent.search_problem.search_problem_corners import CornersProblem
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.common import wrap_solution
 from pacman.test_case.test_case import TestCase
 
@@ -69,7 +69,7 @@ class CornerHeuristicPacman(TestCase):
             self.question.get_graphics().get_gui(),
             self.question.get_graphics(),
             agent,
-            TypePlayerPacman.PACMAN)
+            EnumPlayerPacman.PACMAN)
         ]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
         #####
@@ -114,7 +114,7 @@ class CornerHeuristicPacman(TestCase):
 
         agent: Agent = AgentPacman()  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
-        list_player = [PlayerPacman(agent, TypePlayerPacman.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
+        list_player = [PlayerPacman(agent, EnumPlayerPacman.PACMAN)]  # TODO: VERY GHETTO, MAKE GOOD SOLUTION
 
         ######
 

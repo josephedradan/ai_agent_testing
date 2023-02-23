@@ -25,12 +25,15 @@ import random
 
 from common.environment import Environment
 from common.state import State
+from gridworld.main_grid_world import Gridworld
 from pacman.agent import Agent
 
 
 class EnvironmentGridworld(Environment):
+    gridworld: Gridworld
 
-    def __init__(self, gridWorld):
+
+    def __init__(self, gridWorld: Gridworld):
         self.gridWorld = gridWorld
         self.reset()
 

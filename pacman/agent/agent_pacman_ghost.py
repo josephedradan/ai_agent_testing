@@ -19,7 +19,7 @@ from typing import Dict
 from typing import TYPE_CHECKING
 
 from common import util
-from pacman.agent.agent import Agent
+from common.agent.agent import Agent
 from pacman.game.actiondirection import Action
 from pacman.game.actiondirection import ActionDirection
 

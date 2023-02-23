@@ -35,7 +35,7 @@ from pacman.agent.container_state import ContainerState
 from pacman.game.rules.common import TIME_PENALTY
 from pacman.game.rules.rules_ghost import GhostRules
 from pacman.game.rules.rules_pacman import PacmanRules
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 
 if TYPE_CHECKING:
     from pacman.types_ import TYPE_VECTOR
@@ -125,7 +125,7 @@ class StatePacman(State):
         player = self.state_data.get_player_from_agent(agent)
         # print("---- getLegalActions agent", agent, player)
 
-        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
+        if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
             list_actions = PacmanRules.getLegalActions(self, player)
         else:
             list_actions = GhostRules.getLegalActions(self, player)
@@ -145,7 +145,7 @@ class StatePacman(State):
         player: PlayerPacman = state_pacman.get_player_from_agent(agent)
 
         # Let player's logic deal with its action's effects on the board
-        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
+        if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
 
             _dict_k_player_v_bool_eaten = state_pacman.state_data._dict_k_player_v_bool_eaten
 
@@ -159,7 +159,7 @@ class StatePacman(State):
             GhostRules.applyAction(state_pacman, action, player)
 
         # Time passes
-        if player.get_type_player_pacman() == TypePlayerPacman.PACMAN:
+        if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
             state_pacman.state_data.scoreChange += -TIME_PENALTY  # Penalty for waiting around
         else:
 
@@ -212,7 +212,7 @@ class StatePacman(State):
 
         return [container_state_ghost for player, container_state_ghost in
                 self.state_data.dict_k_player_v_container_state.items()
-                if player.get_type_player_pacman() == TypePlayerPacman.GHOST]
+                if player.get_type_player_pacman() == EnumPlayerPacman.GHOST]
 
     # TODO: POSSIBLY RENAME
     def get_container_state_GHOST(self, agent: Agent) -> Union[ContainerState, None]:

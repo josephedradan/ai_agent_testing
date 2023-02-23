@@ -34,7 +34,7 @@ from pacman.agent.search.search import astar
 from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.game.layoutpacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.type_player_pacman import TypePlayerPacman
+from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.test_case import TestCase
 
 if TYPE_CHECKING:
@@ -57,7 +57,7 @@ class HeuristicTest(TestCase):
         state_pacman_start.initialize(layout, [PlayerPacman(self.question.get_graphics().get_gui(),
                                                             self.question.get_graphics(),
                                                             AgentPacman(),
-                                                            TypePlayerPacman.PACMAN)])
+                                                            EnumPlayerPacman.PACMAN)])
 
         # class_problem = getattr(searchAgents, self.searchProblemClassName)
         class_problem = get_subclass_search_problem(self.searchProblemClassName)

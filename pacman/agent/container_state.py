@@ -89,7 +89,7 @@ class ContainerState:
         if self._container_position_direction is None:
             return None
 
-        return self._container_position_direction.get_position()
+        return self._container_position_direction.get_vector_position()
 
     def get_direction(self) -> ActionDirection:
         return self._container_position_direction.get_direction()
