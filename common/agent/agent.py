@@ -31,7 +31,7 @@ from typing import Hashable
 from typing import TYPE_CHECKING
 from typing import Union
 
-from pacman.game.actiondirection import Action
+from pacman.game.action_direction import Action
 
 if TYPE_CHECKING:
     from common.state import State

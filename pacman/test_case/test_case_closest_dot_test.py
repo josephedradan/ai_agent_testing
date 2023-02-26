@@ -31,7 +31,7 @@ from typing import Union
 from common.state_pacman import StatePacman
 from pacman.agent import AgentPacman
 from pacman.agent import ClosestDotSearchAgent
-from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.layout_pacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.test_case import TestCase

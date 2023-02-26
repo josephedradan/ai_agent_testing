@@ -36,11 +36,11 @@ from typing import TYPE_CHECKING
 from common.common import get_list_agent_from_list_container_object_construct
 from pacman.agent import *
 from pacman.agent._agent_grading import _GradingAgent
-from pacman.game import layoutpacman
+from pacman.game import layout_pacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
 from pacman.main import run_pacman_games
 from pacman.parser import ContainerObjectConstruct
-from pacman.parser import get_list_container_object_construct_implicit
+from pacman.parser import get_list_container_object_construct_from_implicit
 from pacman.test_case.test_case_agent import TestCaseAgent
 
 if TYPE_CHECKING:
@@ -263,7 +263,7 @@ class PacmanGameTreeTest(TestCaseAgent):
         list_agent_pacman = [agent_grading]
 
         # THE OLD [AgentPacmanGhostDirectional(i + 1) for i in range(2)],
-        list_container_object_construct_ghost = get_list_container_object_construct_implicit(
+        list_container_object_construct_ghost = get_list_container_object_construct_from_implicit(
             AgentPacmanGhostDirectional.__name__,
             "",
             2
@@ -336,7 +336,7 @@ class PacmanGameTreeTest(TestCaseAgent):
         # multiAgents = moduleDict['projectTestClasses']
 
         random.seed(self.seed)
-        lay = layoutpacman.LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
+        lay = layout_pacman.LayoutPacman([l.strip() for l in self.layout_text.split('\n')])
         if self.str_class_agent == 'AgentPacmanExpectimax':
             ourPacOptions = {'expectimax': 'True'}
         elif self.str_class_agent == 'AgentPacmanMinimaxAlphaBeta':

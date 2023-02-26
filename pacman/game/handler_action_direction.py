@@ -29,7 +29,7 @@ from typing import Tuple
 
 from common.action import Action
 from common.grid import Grid
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import ActionDirection
 
 if TYPE_CHECKING:
     from pacman.types_ import TYPE_VECTOR

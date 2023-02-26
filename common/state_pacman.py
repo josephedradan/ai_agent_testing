@@ -40,8 +40,8 @@ from pacman.game.type_player_pacman import EnumPlayerPacman
 if TYPE_CHECKING:
     from pacman.types_ import TYPE_VECTOR
     from pacman.game.player_pacman import PlayerPacman
-    from pacman.game.actiondirection import Action
-    from pacman.game.layoutpacman import LayoutPacman
+    from pacman.game.action_direction import Action
+    from pacman.game.layout_pacman import LayoutPacman
 
 
 class StatePacman(State):
@@ -232,7 +232,7 @@ class StatePacman(State):
         container_state = self.state_data.dict_k_player_v_container_state.get(player)
 
         if container_state:
-            return container_state.get_position()
+            return container_state.get_vector_position()
 
         return None
 
@@ -241,7 +241,7 @@ class StatePacman(State):
         # return self.state_data.dict_k_player_v_container_state[agent].get_position()
 
     def get_list_position_ghost(self) -> List[TYPE_VECTOR]:
-        return [s.get_position() for s in self.get_list_container_state_ghost()]
+        return [s.get_vector_position() for s in self.get_list_container_state_ghost()]
 
     def getNumAgents(self):
         return len(self.state_data.dict_k_player_v_container_state)

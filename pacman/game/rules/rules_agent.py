@@ -30,8 +30,8 @@ from typing import List
 from typing import TYPE_CHECKING
 
 from pacman.game.common import TYPE_REPRESENTATIVE
-from pacman.game.actiondirection import Action
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import Action
+from pacman.game.action_direction import ActionDirection
 
 if TYPE_CHECKING:
 

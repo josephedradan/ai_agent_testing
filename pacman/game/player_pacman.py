@@ -35,7 +35,9 @@ if TYPE_CHECKING:
 
 class PlayerPacman(Player[GUI, GraphicsPacman]):
     type_player: EnumPlayerPacman
-    __counter = 1
+    __counter = 1  # FIXME: REDESIGN COLOR SELECTION
+    __color = __counter % 7
+
 
     def __init__(self, gui: GUI, graphics: GraphicsPacman, agent: Agent, type_player: EnumPlayerPacman):
         super().__init__(gui, graphics, agent)
@@ -44,7 +46,7 @@ class PlayerPacman(Player[GUI, GraphicsPacman]):
 
         # DIRTY COLORING TRICK
 
-        self.index = PlayerPacman.__counter
+        self.index = PlayerPacman.__color
         PlayerPacman.__counter += 1
 
     def set_type_player_pacman(self, type_player: EnumPlayerPacman):

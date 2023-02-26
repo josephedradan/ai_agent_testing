@@ -22,7 +22,7 @@ from typing import Union
 
 from common.util import manhattanDistance
 from pacman import constants
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import ActionDirection
 from pacman.game.grid_pacman import GridPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.types_ import TYPE_VECTOR

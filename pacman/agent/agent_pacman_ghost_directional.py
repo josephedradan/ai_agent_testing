@@ -30,7 +30,7 @@ from common.action import Action
 from common import util
 from common.util import manhattanDistance
 from pacman.agent.agent_pacman_ghost import AgentPacmanGhost
-from pacman.game.handleractiondirection import HandlerActionDirection
+from pacman.game.handler_action_direction import HandlerActionDirection
 
 if TYPE_CHECKING:
     from common.state import State

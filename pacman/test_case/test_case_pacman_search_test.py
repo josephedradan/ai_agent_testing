@@ -32,8 +32,8 @@ from pacman.agent import AgentPacman
 from pacman.agent.heuristic_function import get_heuristic_function
 from pacman.agent.search import get_search_function
 from pacman.agent.search_problem import get_subclass_search_problem
-from pacman.game.actiondirection import ActionDirection
-from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.action_direction import ActionDirection
+from pacman.game.layout_pacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.common import wrap_solution

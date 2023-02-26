@@ -32,8 +32,8 @@ from typing import Union
 from common.state_pacman import StatePacman
 from pacman.agent import Agent
 from pacman.game.game import Game
-from pacman.game.layoutpacman import LayoutPacman
-from pacman.game.layoutpacman import get_layout_pacman
+from pacman.game.layout_pacman import LayoutPacman
+from pacman.game.layout_pacman import get_layout_pacman
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman

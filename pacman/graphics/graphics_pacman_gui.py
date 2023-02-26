@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import math
 import time
-from pprint import pprint
 from typing import List
 from typing import TYPE_CHECKING
 from typing import Union
@@ -30,8 +29,8 @@ from common.graphics.gui_tkinter import formatColor
 from common.graphics.gui_tkinter import writePostscript
 from pacman.agent import Agent
 from pacman.agent.container_state import ContainerState
-from pacman.game.actiondirection import ActionDirection
-from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.action_direction import ActionDirection
+from pacman.game.layout_pacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.graphics.graphics_pacman import GraphicsPacman
@@ -318,7 +317,6 @@ class GraphicsPacmanGUI(GraphicsPacman):
         agent: Agent = state_data_pacman._agentMoved
         player: PlayerPacman = state_data_pacman.get_player_from_agent(agent)
 
-
         container_state: ContainerState = state_data_pacman.dict_k_player_v_container_state.get(player)
 
         # TODO: THIS FUNCTION IS UNNEEDED BECAUSE JOSEPH USE DICT
@@ -454,7 +452,10 @@ class GraphicsPacmanGUI(GraphicsPacman):
         self.gui.move_circle(image[0], screenPosition, r, endpoints)
         self.gui.refresh()
 
-    def animatePacman(self, pacman, prevPacman, image):
+    def animatePacman(self,
+                      container_state: ContainerState,
+                      container_state_previous: ContainerState,
+                      image: str):
         if self.time_frame < 0:
             print('Press any key to step forward, "q" to play')
             keys = self.gui.get_wait_for_keys()
@@ -462,18 +463,18 @@ class GraphicsPacmanGUI(GraphicsPacman):
                 self.time_frame = 0.1
         if self.time_frame > 0.01 or self.time_frame < 0:
             start = time.time()
-            fx, fy = self.getPosition(prevPacman)
-            px, py = self.getPosition(pacman)
+            fx, fy = self.getPosition(container_state_previous)
+            px, py = self.getPosition(container_state)
             frames = 4.0
             for i in range(1, int(frames) + 1):
                 pos = px * i / frames + fx * \
                       (frames - i) / frames, py * i / frames + fy * (frames - i) / frames
-                self.movePacman(pos, self.getDirection(pacman), image)
+                self.movePacman(pos, self.getDirection(container_state), image)
                 self.gui.refresh()
                 self.gui.sleep(abs(self.time_frame) / frames)
         else:
-            self.movePacman(self.getPosition(pacman),
-                            self.getDirection(pacman), image)
+            self.movePacman(self.getPosition(container_state),
+                            self.getDirection(container_state), image)
         self.gui.refresh()
 
     def getGhostColor(self, ghost, ghostIndex):
@@ -507,7 +508,11 @@ class GraphicsPacmanGUI(GraphicsPacman):
                                        self.gridSize * GHOST_SIZE * (0.3 - dy)),
                              self.gridSize * GHOST_SIZE * 0.08)
 
-    def moveGhost(self, container_state, player: PlayerPacman, container_state_previous, image_previous):
+    def moveGhost(self,
+                  container_state: ContainerState,
+                  player: PlayerPacman,
+                  container_state_previous: ContainerState,
+                  image_previous):
         old_x, old_y = self.to_screen(self.getPosition(container_state_previous))
         new_x, new_y = self.to_screen(self.getPosition(container_state))
         delta = new_x - old_x, new_y - old_y
@@ -526,15 +531,15 @@ class GraphicsPacmanGUI(GraphicsPacman):
                       self.getDirection(container_state), image_previous[-4:])
         self.gui.refresh()
 
-    def getPosition(self, agentState):
-        if agentState._container_position_direction == None:
+    def getPosition(self, container_state: ContainerState):
+        if container_state._container_position_direction == None:
             return (-1000, -1000)
-        return agentState.get_vector_position()
+        return container_state.get_vector_position()
 
-    def getDirection(self, agentState):
-        if agentState._container_position_direction == None:
+    def getDirection(self, container_state: ContainerState):
+        if container_state._container_position_direction == None:
             return ActionDirection.STOP
-        return agentState._container_position_direction.get_direction()
+        return container_state._container_position_direction.get_direction()
 
     def finish(self):
         self.gui.end_graphics()

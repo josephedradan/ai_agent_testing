@@ -30,9 +30,9 @@ from typing import Union
 
 from common.util import manhattanDistance
 from common.util import nearestPoint
-from pacman.game.handleractiondirection import HandlerActionDirection
-from pacman.game.actiondirection import Action
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.handler_action_direction import HandlerActionDirection
+from pacman.game.action_direction import Action
+from pacman.game.action_direction import ActionDirection
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.game.rules.common import SCARED_TIME

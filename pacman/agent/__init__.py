@@ -27,6 +27,7 @@ from typing import Type
 from typing import Union
 
 from common.agent.agent import Agent
+from pacman.agent.agent_go_west import AgentGoWest
 from pacman.agent.agent_pacman_ghost import AgentPacmanGhost
 from pacman.agent.agent_pacman_ghost_directional import AgentPacmanGhostDirectional
 from pacman.agent.agent_pacman_ghost_random import AgentPacmanGhostRandom
@@ -73,6 +74,7 @@ LIST_SUBCLASS_AGENT = [
     StayEastSearchAgent,
     StayWestSearchAgent,
     ClosestDotSearchAgent,
+    AgentGoWest,
     #
     PacmanQAgent,
     ContestAgent,

@@ -29,8 +29,8 @@ from typing import TYPE_CHECKING
 from typing import Tuple
 
 from pacman.agent.agent_pacman import AgentPacman
-from pacman.game.actiondirection import Action
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import Action
+from pacman.game.action_direction import ActionDirection
 
 if TYPE_CHECKING:
     from common.state import State

@@ -34,7 +34,7 @@ from pacman.agent import AgentPacman
 from pacman.agent.search.search import astar
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
 from pacman.agent.search_problem.search_problem_corners import CornersProblem
-from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.layout_pacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.common import wrap_solution

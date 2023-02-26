@@ -34,8 +34,8 @@ from pacman.agent import Agent
 from pacman.agent import AgentPacman
 from pacman.agent.search.search import bfs
 from pacman.agent.search_problem import CornersProblem
-from pacman.game.handleractiondirection import HandlerActionDirection
-from pacman.game.layoutpacman import LayoutPacman
+from pacman.game.handler_action_direction import HandlerActionDirection
+from pacman.game.layout_pacman import LayoutPacman
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.test_case.test_case import TestCase

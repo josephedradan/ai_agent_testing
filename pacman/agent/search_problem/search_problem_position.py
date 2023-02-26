@@ -26,8 +26,8 @@ from typing import TYPE_CHECKING
 from typing import Tuple
 
 from pacman.agent.search_problem import SearchProblem
-from pacman.game.handleractiondirection import HandlerActionDirection
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.handler_action_direction import HandlerActionDirection
+from pacman.game.action_direction import ActionDirection
 from pacman.graphics.graphics_pacman_gui import GraphicsPacmanGUI
 
 if TYPE_CHECKING:

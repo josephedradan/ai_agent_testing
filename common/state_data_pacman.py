@@ -32,14 +32,14 @@ from common.grid import reconstituteGrid
 from common.util import nearestPoint
 from pacman.agent.container_state import ContainerState
 from pacman.game.container_position_direction import ContainerPositionDirection
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import ActionDirection
 from pacman.game.grid_pacman import GridPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.types_ import TYPE_VECTOR
 
 if TYPE_CHECKING:
     from pacman.game.player_pacman import PlayerPacman
-    from pacman.game.layoutpacman import LayoutPacman
+    from pacman.game.layout_pacman import LayoutPacman
     from pacman.agent import Agent
 
 

@@ -27,7 +27,7 @@ from typing import Union
 from common import util
 from pacman.agent.heuristic_function import nullHeuristic
 from pacman.agent.search_problem import SearchProblem
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import ActionDirection
 
 
 def tinyMazeSearch(problem) -> List[str]:

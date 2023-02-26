@@ -34,7 +34,7 @@ from pacman.agent.evaluation_function import get_evaluation_function
 from pacman.agent.evaluation_function.evaluation_function_state_score import (
     evaluation_function_state_score
 )
-from pacman.game.actiondirection import Action
+from pacman.game.action_direction import Action
 
 if TYPE_CHECKING:
     from common.state import State

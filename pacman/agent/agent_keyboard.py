@@ -17,8 +17,8 @@ import random
 from typing import TYPE_CHECKING
 
 from common.agent.agent import Agent
-from pacman.game.actiondirection import Action
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import Action
+from pacman.game.action_direction import ActionDirection
 from common.graphics.gui import GUI
 
 if TYPE_CHECKING:

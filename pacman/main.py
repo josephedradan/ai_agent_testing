@@ -51,8 +51,8 @@ from typing import Dict
 from common.common import get_list_agent_from_list_container_object_construct
 from pacman.agent import Agent
 from pacman.parser import ContainerObjectConstruct
-from pacman.parser import get_list_container_object_construct_explicit
-from pacman.parser import get_list_container_object_construct_implicit
+from pacman.parser import get_list_container_object_construct_from_implicit
+from pacman.parser import get_list_container_object_construct_from_str
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -264,17 +264,20 @@ def get_argparse_namespace_for_pacman(argv: Union[Sequence[str], None] = None) -
                         help='Maximum length of time an player can spend computing in a single game',
                         default=30
                         )
-    print("MAIN.py argv")
+
+    print("----- MAIN.py argv START -----")
     print(argv)
+    print("-----MAIN.py argv END -----")
+
     namespace_ = parser.parse_args(argv)
 
     return namespace_
 
 
 def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
-    print("get_dict_namespace VARS")
+    print("----- get_dict_namespace VARS START -----")
     pprint(vars(namespace))
-    print("=------=")
+    print("----- get_dict_namespace VARS END -----")
 
     dict_k_name_arg_v_arg = {}
 
@@ -299,18 +302,18 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     _list_container_object_construct_pacman: List[ContainerObjectConstruct]
 
     if namespace.str_list_agent_pacman is not None:
-        _list_container_object_construct_pacman = get_list_container_object_construct_explicit(
-            namespace.str_list_agent_pacman,
-            namespace.str_list_agent_pacman_kwargs
-        )
+        _list_container_object_construct_pacman = get_list_container_object_construct_from_str(
+            namespace.str_list_agent_pacman)
 
     else:  # Implicit is default
 
-        _list_container_object_construct_pacman = get_list_container_object_construct_implicit(
+        _list_container_object_construct_pacman = get_list_container_object_construct_from_implicit(
             namespace.str_agent_pacman,
             namespace.str_agent_pacman_kwargs,
             namespace.num_of_agent_pacman
         )
+
+
 
     if namespace.num_training > 0:
         dict_k_name_arg_v_arg['num_training'] = namespace.num_training
@@ -324,8 +327,7 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
                 _dict_kwargs['num_training'] = namespace.num_training
 
     _list_agent_pacman: List[Agent] = get_list_agent_from_list_container_object_construct(
-        _list_container_object_construct_pacman
-    )
+        _list_container_object_construct_pacman)
 
     dict_k_name_arg_v_arg['list_agent_pacman'] = _list_agent_pacman
 
@@ -378,14 +380,12 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
 
     if namespace.str_list_agent_ghost is not None:
 
-        _list_container_object_construct_ghost = get_list_container_object_construct_explicit(
-            namespace.str_list_agent_ghost,
-            namespace.str_list_agent_ghost_kwargs
-        )
+        _list_container_object_construct_ghost = get_list_container_object_construct_from_str(
+            namespace.str_list_agent_ghost)
 
     else:  # Implicit is default
 
-        _list_container_object_construct_ghost = get_list_container_object_construct_implicit(
+        _list_container_object_construct_ghost = get_list_container_object_construct_from_implicit(
             namespace.str_agent_ghost,
             namespace.str_agent_ghost_kwargs,
             namespace.num_of_agent_ghost
@@ -402,11 +402,9 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
             if 'num_training' not in _dict_kwargs:
                 _dict_kwargs['num_training'] = namespace.num_training
 
-
     _list_agent_ghost: List[Agent] = get_list_agent_from_list_container_object_construct(
         _list_container_object_construct_ghost
     )
-
 
     dict_k_name_arg_v_arg['list_agent_ghost'] = _list_agent_ghost
 
@@ -459,9 +457,6 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
         sys.exit(0)
 
     return dict_k_name_arg_v_arg
-
-
-
 
 
 def replay_game(layout, actions, display):  # FIXME: FIGURE THSI SHIT OUT LATER
@@ -553,13 +548,13 @@ def run_pacman_games(str_path_layout: str,
             graphics_pacman = GraphicsPacmanNull()
             classic_game_rules.set_quiet(True)
         else:
-            graphics_pacman = graphics_pacman
+            # graphics_pacman = GraphicsPacmanGUI()  # TODO: NEED TO GIVE ARG IF YOU WANT TO DISPLAY GAME IN TEH FUNCTION CALL run_pacman_games
+            graphics_pacman = GraphicsPacmanNull()
             classic_game_rules.set_quiet(False)
 
         #####
 
         ####
-
         game = classic_game_rules.create_and_get_game(
             str_path_layout,
             list_agent_pacman,
@@ -613,7 +608,9 @@ if __name__ == '__main__':
 
     dict_namespace = get_dict_namespace(namespace)
 
+    print("----- pprint(dict_namespace) START -----")
     pprint(dict_namespace)
+    print("----- pprint(dict_namespace) END -----")
     run_pacman_games(**dict_namespace)
 
     # import cProfile

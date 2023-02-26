@@ -26,7 +26,7 @@ from __future__ import annotations
 from typing import Union
 
 from pacman.game.container_position_direction import ContainerPositionDirection
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import ActionDirection
 from pacman.types_ import TYPE_VECTOR
 
 
@@ -85,7 +85,7 @@ class ContainerState:
 
         return container_state_new
 
-    def get_position(self) -> Union[TYPE_VECTOR, None]:
+    def get_vector_position(self) -> Union[TYPE_VECTOR, None]:
         if self._container_position_direction is None:
             return None
 

@@ -25,8 +25,8 @@ from __future__ import annotations
 
 from typing import Union
 
-from pacman.game.handleractiondirection import HandlerActionDirection
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.handler_action_direction import HandlerActionDirection
+from pacman.game.action_direction import ActionDirection
 
 from pacman.types_ import TYPE_VECTOR
 

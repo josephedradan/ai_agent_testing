@@ -37,7 +37,7 @@ from typing import Tuple
 
 from common.state import State
 from pacman.agent import Agent
-from pacman.game.actiondirection import Action
+from pacman.game.action_direction import Action
 
 TYPE_TUPLE__STATE__ACTION_WRONG__ACTION_CORRECT = Tuple[State, Action, Action]
 

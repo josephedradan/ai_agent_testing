@@ -190,6 +190,7 @@ def get_list_container_object_construct_from_str(str_object_construction: str) -
     list_ast_object = [ast_object for ast_object in ast.walk(ast_parse) if isinstance(ast_object, ast.Call)]
 
     list_container_object_construct: List[ContainerObjectConstruct] = []
+
     for ast_object in list_ast_object:
         name_class: str = ast_object.func.id
 
@@ -218,7 +219,7 @@ def get_list_container_object_construct_from_str(str_object_construction: str) -
     return list_container_object_construct
 
 
-def get_list_container_object_construct_implicit(
+def get_list_container_object_construct_from_implicit(
         name_class: str,
         str_args_kwargs: str,
         amount_to_create: int) -> List[ContainerObjectConstruct]:
@@ -239,7 +240,7 @@ def get_list_container_object_construct_implicit(
     return _list_list_container_object_construct
 
 
-def get_list_container_object_construct_explicit(
+def get_list_container_object_construct_from_space_separated(
         name_class_space_separated: str,
         str_args_kwargs_space_separated: str) -> List[ContainerObjectConstruct]:
     """

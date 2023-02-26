@@ -27,7 +27,7 @@ from typing import TYPE_CHECKING
 
 from common import util
 from pacman.feature_extractor_coordiate.feature_extrator import FeatureExtractor
-from pacman.game.handleractiondirection import HandlerActionDirection
+from pacman.game.handler_action_direction import HandlerActionDirection
 
 if TYPE_CHECKING:
     from common.state_pacman import StatePacman

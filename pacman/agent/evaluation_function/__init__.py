@@ -30,7 +30,7 @@ from typing import Union
 
 from common.state import State
 from pacman.agent import Agent
-from pacman.game.actiondirection import Action
+from pacman.game.action_direction import Action
 
 from pacman.agent.evaluation_function.evaluation_function_better import evaluation_function_better
 from pacman.agent.evaluation_function.evaluation_function_food_and_ghost import evaluation_function_food_and_ghost

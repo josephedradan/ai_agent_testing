@@ -41,8 +41,8 @@ from pacman.agent.search_problem import SearchProblem
 from pacman.agent.search_problem import get_subclass_search_problem
 from pacman.agent.search_problem.agent_pacman__search_problem import cornersHeuristic
 from pacman.agent.search_problem.search_problem_position import PositionSearchProblem
-from pacman.game.actiondirection import Action
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.action_direction import Action
+from pacman.game.action_direction import ActionDirection
 from pacman.game.grid_pacman import GridPacman
 
 if TYPE_CHECKING:

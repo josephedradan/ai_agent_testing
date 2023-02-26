@@ -33,7 +33,7 @@ from pacman.types_ import TYPE_VECTOR
 
 if TYPE_CHECKING:
     from pacman.agent.container_state import ContainerState
-    from pacman.game.actiondirection import Action
+    from pacman.game.action_direction import Action
     from common.state_pacman import StatePacman
     from pacman.game.grid_pacman import GridPacman
 
@@ -117,7 +117,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
     if list_agent_state_ghost_active:
         # Get the closest ghost to Pacman
         distance_pacman_to_ghost_closest = min(
-            [function_get_distance(container_state_pacman.get_position(), agent_state_ghost_active.get_position()) for
+            [function_get_distance(container_state_pacman.get_vector_position(), agent_state_ghost_active.get_vector_position()) for
              agent_state_ghost_active in list_agent_state_ghost_active]
         )
 
@@ -140,7 +140,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
     if list_agent_state_ghost_scared:
         # Get the closest scared ghost to Pacman
         distance_pacman_to_ghost_scared_closest = min(
-            [function_get_distance(container_state_pacman.get_position(), agent_state_ghost_scared.get_position()) for
+            [function_get_distance(container_state_pacman.get_vector_position(), agent_state_ghost_scared.get_vector_position()) for
              agent_state_ghost_scared in list_agent_state_ghost_scared]
         )
 
@@ -162,7 +162,7 @@ def evaluation_function_food_and_ghost_helper(agent: Agent,
     if list_position_food:
         # Get the closest food to Pacman
         distance_pacman_to_food_closest = min(
-            [function_get_distance(container_state_pacman.get_position(), position_food) for position_food in
+            [function_get_distance(container_state_pacman.get_vector_position(), position_food) for position_food in
              list_position_food]
         )
 
@@ -206,7 +206,7 @@ def evaluation_function_food_and_ghost(agent: Agent, state_current: StatePacman,
     """
     # Useful information you can extract from a State (pacman.py)
     state_successor: StatePacman = state_current.generateSuccessor(agent, action)
-    newPos: TYPE_VECTOR = state_successor.get_container_state_GHOST(agent).get_position()
+    newPos: TYPE_VECTOR = state_successor.get_container_state_GHOST(agent).get_vector_position()
     newFood: GridPacman = state_successor.getFood()
     newGhostStates: List[ContainerState] = state_successor.get_list_container_state_ghost()
     newScaredTimes: List[float] = [ghostState.time_scared for ghostState in newGhostStates]
@@ -426,9 +426,9 @@ def evaluation_function_food_and_ghost__attempt_1(agent: Agent, state: StatePacm
     # Handle ghost positions
     for list_container in state_successor.get_list_container_state_ghost():
 
-        position = list_container.get_position()
+        position = list_container.get_vector_position()
 
-        distance_pacman_to_ghost = util.manhattanDistance(state_container_pacman.get_position(), position)
+        distance_pacman_to_ghost = util.manhattanDistance(state_container_pacman.get_vector_position(), position)
 
         # The further away ghosts are, add to score_new
         # score_new += distance_pacman_to_ghost
@@ -455,7 +455,7 @@ def evaluation_function_food_and_ghost__attempt_1(agent: Agent, state: StatePacm
 
     # Handle food positions
     for position_food in newFood.asList():
-        distance_pacman_to_food = util.manhattanDistance(state_container_pacman.get_position(), position_food)
+        distance_pacman_to_food = util.manhattanDistance(state_container_pacman.get_vector_position(), position_food)
 
         # The closer the food is, add to score_new
         # score_new += (1 / distance_pacman_to_food)

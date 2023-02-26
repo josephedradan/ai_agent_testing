@@ -57,8 +57,36 @@
     python main.py -a value -i 100 -g BridgeGrid --discount 0.9 --noise 0.2
 
     python main.py -a q -ng 5 -m
-    
 
+
+# Guaranteed to work
+
+    main -ap AgentGoWest
+    main -gs "AgentGhostRandom AgentGhostRandom AgentGhostRandom"
+    main -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic 
+    main -ap PacmanQAgent -x 2000 -n 2010 -l smallGrid 
+    main -l mediumScaryMaze -p StayWestSearchAgent
+    main --quietTextGraphics
+    main -p AgentPacmanMinimaxAlphaBeta -a evaluation_function=evaluation_function_better
+    autograder -q q4
+    autograder -q q2
+    autograder -q q5
+    autograder -q q12
+    autograder -q q23
+    autograder -q q24
+    
+    autograder -t "test_cases/q11/2-1a-vary-depth"
+    autograder -q q9 --no-graphics
+    autograder -t "test_cases/multiagent/q4/7-pacman-game"
+    autograder -t "test_cases/q10/1-1-minmax"
+    gridworld.py -g MazeGrid
+    gridworld.py -a q -K 5 -m ???????????????
+    
+    # QUESTIONABLE, NEED TO CHANGE THE RULES FOR GHOSTS SO THEY MOVE IF MAKING AN ILLEGAL MOVE
+    main -ap AgentPacmanExpectimax -ags "[AgentPacmanGhostRandom(), AgentGoWest(), AgentPacmanGhostDirectional()]"  
+    
+    # FINE
+    main -ap AgentPacmanExpectimax -ags "[AgentPacmanGhostRandom(), AgentPacmanGhostDirectional(), AgentPacmanGhostDirectional()]"
 #####################################################################
 
 # JOSEPH FIX THIS SHIT BELOW
@@ -122,7 +150,7 @@ THE PROBLEMS ARE WITH q10
    2. Make virtual environment for python 3.11 (pip install virtualenv)
       
    
-      virtualenv .venv -ap python3.11
+      virtualenv .venv -p python3.11
    
    3. Activate virtual environment (Unix)
 

@@ -29,7 +29,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from pacman.agent import Agent
     from common.state import State
-    from pacman.game.actiondirection import Action
+    from pacman.game.action_direction import Action
 
 
 def evaluation_function_state_score(agent: Agent, state: State, action: Action) -> float:

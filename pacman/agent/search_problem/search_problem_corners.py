@@ -32,8 +32,8 @@ from typing import Union
 from pacman.agent import Agent
 from pacman.agent.search_problem import SearchProblem
 from pacman.agent.search_problem.common import HashableGoal
-from pacman.game.handleractiondirection import HandlerActionDirection
-from pacman.game.actiondirection import ActionDirection
+from pacman.game.handler_action_direction import HandlerActionDirection
+from pacman.game.action_direction import ActionDirection
 
 if TYPE_CHECKING:
     pass

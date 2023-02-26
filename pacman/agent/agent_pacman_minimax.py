@@ -30,7 +30,7 @@ from pacman.agent import Agent
 from pacman.agent import AgentPacman
 from pacman.agent.evaluation_function import TYPE_EVALUATION_FUNCTION
 from pacman.agent.evaluation_function import evaluation_function_state_score
-from pacman.game.actiondirection import Action
+from pacman.game.action_direction import Action
 
 
 class AgentContainer:
