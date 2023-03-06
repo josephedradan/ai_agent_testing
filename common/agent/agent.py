@@ -31,6 +31,7 @@ from typing import Hashable
 from typing import TYPE_CHECKING
 from typing import Union
 
+from common.graphics.graphics import Graphics
 from pacman.game.action_direction import Action
 
 if TYPE_CHECKING:
@@ -48,8 +49,9 @@ class Agent(ABC):
 
     def registerInitialState(self, state: State): # inspects the starting state
     """
-    player: Union[Player, None]
     kwargs: Dict[Hashable, Any]
+    graphics: Union[Graphics, None]
+    player: Union[Player, None]
 
     def __init_subclass__(cls, **kwargs):
         print("THINGY", cls)
@@ -57,9 +59,11 @@ class Agent(ABC):
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
+        self.graphics = None
         self.player = None
 
-    def initialize(self, player: Player):
+    def initialize(self, graphics: Graphics, player: Player):
+        self.graphics = graphics
         self.player: Player = player
 
     @abstractmethod

@@ -65,7 +65,7 @@ class ClassicGameRules:
                                   agent,
                                   type_player)
 
-            agent.initialize(player)
+            agent.initialize(graphics_pacman, player)
 
             list_player.append(player)
 

@@ -514,7 +514,7 @@ def run_pacman_games(str_path_layout: str,
     :param str_path_layout:
     :param list_agent_pacman:
     :param list_agent_ghost:
-    :param graphics_pacman:
+    :param _graphics_pacman:
     :param number_of_games:
     :param bool_record:
     :param num_training:
@@ -523,7 +523,7 @@ def run_pacman_games(str_path_layout: str,
     :return:
     """
 
-    print("#" * 100, "run_pacman_games")
+    print("#" * 100, run_pacman_games.__name__)
     __ALL = (
         str_path_layout,
         list_agent_pacman,
@@ -545,11 +545,15 @@ def run_pacman_games(str_path_layout: str,
 
         if bool_quiet:
             # Suppress output and graphics
-            graphics_pacman = GraphicsPacmanNull()
+            _graphics_pacman = GraphicsPacmanNull()
             classic_game_rules.set_quiet(True)
         else:
-            # graphics_pacman = GraphicsPacmanGUI()  # TODO: NEED TO GIVE ARG IF YOU WANT TO DISPLAY GAME IN TEH FUNCTION CALL run_pacman_games
-            graphics_pacman = GraphicsPacmanNull()
+
+            # Set the current graphics pacman to the given graphics_pacman
+            _graphics_pacman = graphics_pacman
+
+            # _graphics_pacman = GraphicsPacmanGUI()  # TODO: NEED TO GIVE ARG IF YOU WANT TO DISPLAY GAME IN TEH FUNCTION CALL run_pacman_games
+            # _graphics_pacman = GraphicsPacmanNull()
             classic_game_rules.set_quiet(False)
 
         #####
@@ -559,7 +563,7 @@ def run_pacman_games(str_path_layout: str,
             str_path_layout,
             list_agent_pacman,
             list_agent_ghost,
-            graphics_pacman,
+            _graphics_pacman,
             bool_quiet,
             bool_catch_exceptions
         )

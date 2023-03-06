@@ -45,10 +45,6 @@ class AgentKeyboard(Agent):
         ###
         # TODO JOSEPH SPEICAL
 
-    # FIXME: GHETTO SOLUTIOn
-    def set_gui(self, gui: GUI):
-        self.gui = gui
-
     def getAction(self, state: State) -> Action:
         # from graphicsUtils import get_keys_waiting
         # from graphicsUtils import get_keys_pressed
@@ -57,7 +53,7 @@ class AgentKeyboard(Agent):
         # print(f"getAction {graphicsUtils._root_window=}")
 
         # TODO: THIS IS CRASHABLE JOSEPH
-        keys = self.gui.get_keys_waiting() + self.gui.get_keys_pressed()
+        keys = self.graphics.get_gui().get_keys_waiting() + self.graphics.get_gui().get_keys_pressed()
 
         if keys != []:
             self.keys = keys
