@@ -28,11 +28,10 @@ from typing import TYPE_CHECKING
 
 from common.util import manhattanDistance
 from common.util import nearestPoint
-from pacman.agent import AgentPacmanGhostRandom
 from pacman.agent.container_state import ContainerState
-from pacman.game.handler_action_direction import HandlerActionDirection
 from pacman.game.action_direction import Action
 from pacman.game.action_direction import ActionDirection
+from pacman.game.handler_action_direction import HandlerActionDirection
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.rules.common import COLLISION_TOLERANCE
 from pacman.game.rules.rules_agent import RulesPacman
@@ -79,7 +78,7 @@ class RulesPacmanGhost(RulesPacman):
 
         container_position_direction = state_pacman.get_container_state_GHOST(agent).get_container_position_direction()
 
-        possibleActions = HandlerActionDirection.getPossibleActionDirections(
+        list_action_direction_possible = HandlerActionDirection.get_list_action_direction_possible(
             container_position_direction,
             state_pacman.state_data.layout_pacman.walls
         )
@@ -87,33 +86,58 @@ class RulesPacmanGhost(RulesPacman):
         reverse = HandlerActionDirection.reverse_action_direction(container_position_direction._direction)
 
         # GHOST DONT STOP SO REMOVE IT
-        if ActionDirection.STOP in possibleActions:
-            possibleActions.remove(ActionDirection.STOP)
+        # if ActionDirection.STOP in list_action_direction_possible:
+        #     list_action_direction_possible.remove(ActionDirection.STOP)
+
+        # GHOST DONT STOP SO REMOVE IT (discard removes the item but does not throw if it does not exist)
+        # list_action_direction_possible.discard(ActionDirection.STOP)
+
+        # Remove throws if item does not exist
+        try:
+            # GHOST DONT STOP SO REMOVE IT
+            list_action_direction_possible.remove(ActionDirection.STOP)
+        except ValueError as e:
+            pass
 
         # DONT REVERSE IF GHOST HAS MORE THAN 1 MOVE
-        if reverse in possibleActions and len(possibleActions) > 1:
-            possibleActions.remove(reverse)
+        # if reverse in list_action_direction_possible and len(list_action_direction_possible) > 1:
+        #     list_action_direction_possible.remove(reverse)
 
-        return possibleActions
+        # Remove throws if item does not exist
+        try:
+            # DONT REVERSE IF GHOST HAS MORE THAN 1 MOVE
+            if len(list_action_direction_possible) > 1:
+                list_action_direction_possible.remove(reverse)
+        except ValueError as e:
+            pass
+
+        return list_action_direction_possible
 
     @staticmethod
-    def applyAction(state_pacman: StatePacman, action: Action, player_pacman: PlayerPacman):
+    def applyAction(state_pacman_current: StatePacman, action: ActionDirection, player_pacman: PlayerPacman):
+        """
+        Applies the action to appropriate ContainerState given PlayerPacman
 
-        legal = RulesPacmanGhost.getLegalActions(state_pacman, player_pacman)
+        :param state_pacman_current:
+        :param action:
+        :param player_pacman:
+        :return:
+        """
+        list_action_direction_legal = RulesPacmanGhost.getLegalActions(state_pacman_current, player_pacman)
 
         # if not isinstance(player_pacman.get_agent(), AgentPacmanGhostRandom):
         #     print("---------ASD")
         #     print(player_pacman)
 
-        # if action in legal:
+        # if action in list_action_direction_legal:
         #     print("FFFFFFFFFFFFFFFA")
-        #     print(player_pacman, legal, action)
+        #     print(player_pacman, list_action_direction_legal, action)
 
-        if action not in legal:
-            print("Illegal ghost action AAAAA ACTION NOT IN LEGAL", player_pacman, action, legal)
+        if action not in list_action_direction_legal:
+            print("Illegal ghost action AAAAA ACTION NOT IN LEGAL", player_pacman, action, list_action_direction_legal)
             raise Exception("Illegal ghost action " + str(action))
 
-        container_state_ghost = state_pacman.state_data.dict_k_player_v_container_state[player_pacman]
+        container_state_ghost = state_pacman_current.state_data.dict_k_player_v_container_state[player_pacman]
 
         speed = RulesPacmanGhost.GHOST_SPEED
 

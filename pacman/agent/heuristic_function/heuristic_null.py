@@ -22,7 +22,7 @@ Reference:
 
 """
 
-# FIXME: THIS SHIT DOES NOT TAKE state, IT SHOULD BE GENERAL LIKE A TUPLE OR VECTOR OF DIMENSIONS (x, y, z , ...)
+# FIXME: THIS DOES NOT TAKE state, IT SHOULD BE GENERAL LIKE A TUPLE OR VECTOR OF DIMENSIONS (x, y, z , ...)
 
 from pacman.agent.search_problem import SearchProblem
 

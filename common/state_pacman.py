@@ -124,7 +124,7 @@ class StatePacman(State):
         Returns the legal actions for the player specified.
         """
         #        State.set_state_explored.add(self)
-        if self.isWin() or self.isLose():  # TODO: ADDED or agent is None BECAUSE SHIT IS TEMPED
+        if self.isWin() or self.isLose():  # TODO: ADDED or agent is None BECAUSE  TEMPED
             return []
 
         # return PacmanRules.getLegalActions(self, agent)  # TODO: JOSEPH COMMENT JOSEPH JUMP

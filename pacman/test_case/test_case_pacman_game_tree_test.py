@@ -82,7 +82,7 @@ class PolyAgent(Agent):
         """
         return [list[i] for i in indices]
 
-    def construct_our_pacs(self, keyword_dict):  # TODO: WTF IS THIS SHIT
+    def construct_our_pacs(self, keyword_dict):  # TODO: WTF IS THIS
 
         multiAgents = None
 

@@ -89,7 +89,7 @@
     main -ap AgentPacmanExpectimax -ags "[AgentPacmanGhostRandom(), AgentPacmanGhostDirectional(), AgentPacmanGhostDirectional()]"
 #####################################################################
 
-# JOSEPH FIX THIS SHIT BELOW
+# JOSEPH FIX THIS BELOW
 
 CHECK .test FILES FOR THE BELOW JOSEPH
 

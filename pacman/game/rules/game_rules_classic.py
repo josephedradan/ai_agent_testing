@@ -104,7 +104,7 @@ class ClassicGameRules:
         state_pacman_start = StatePacman()
         state_pacman_start.initialize(layout_pacman, list_player_all)
 
-        list_player_all_allowed_by_map: List[PlayerPacman] = list(  # TODO: FIX MOVE ME IN A GAME CREATOR OS SOMESHIT
+        list_player_all_allowed_by_map: List[PlayerPacman] = list(  # TODO: FIX MOVE ME IN A GAME CREATOR OS SOME
             state_pacman_start.get_dict_k_player_v_container_state().keys()
         )
         # print("----- create_and_get_game ALL PLAYERS", list_player_all_allowed_by_map)

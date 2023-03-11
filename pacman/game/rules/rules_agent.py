@@ -51,7 +51,7 @@ class RulesPacman(ABC):
         container_position_direction = state_pacman.get_container_state_GHOST(
             player_pacman.get_agent()).get_container_position_direction()
 
-        return HandlerActionDirection.getPossibleActionDirections(
+        return HandlerActionDirection.get_list_action_direction_possible(
             container_position_direction,
             state_pacman.state_data.layout_pacman.walls
         )

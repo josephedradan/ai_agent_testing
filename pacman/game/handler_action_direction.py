@@ -24,6 +24,7 @@ Reference:
 from __future__ import annotations
 
 from typing import List
+from typing import Set
 from typing import TYPE_CHECKING
 from typing import Tuple
 
@@ -90,9 +91,18 @@ class HandlerActionDirection:
         return (dx * speed, dy * speed)
 
     @staticmethod
-    def getPossibleActionDirections(container_position_direction: ContainerPositionDirection,
-                                    walls: Grid) -> List[ActionDirection]:
-        list_action_possible = []
+    def get_list_action_direction_possible(container_position_direction: ContainerPositionDirection,
+                                           walls: Grid) -> List[ActionDirection]:
+        """
+
+        Notes:
+            Cannot use set because it will break some functionality
+
+        :param container_position_direction:
+        :param walls:
+        :return:
+        """
+        list_action_direction_possible = []
 
         x, y = container_position_direction.get_vector_position()
 
@@ -110,9 +120,9 @@ class HandlerActionDirection:
 
             # If the next vector position is not a wall then its action direction is a possible action
             if not walls[x_next][y_next]:
-                list_action_possible.append(action_direction)
+                list_action_direction_possible.append(action_direction)
 
-        return list_action_possible
+        return list_action_direction_possible
 
     @staticmethod
     def get_list_action_direction_legal(vector_position: TYPE_VECTOR, grid: Grid) -> List[TYPE_VECTOR]:

@@ -90,7 +90,7 @@ class GraphicsGridworldDisplay:
         qValues = util.Counter()
         states = self.gridworld.getStates()
         for state in states:
-            for action in self.gridworld.getPossibleActionDirections(state):
+            for action in self.gridworld.get_list_action_direction_possible(state):
                 qValues[(state, action)] = agent.getQValue(state, action)
         self.drawQValues(qValues, currentState, message)
         self.gui.sleep(0.05 / self.speed)
@@ -133,7 +133,7 @@ class GraphicsGridworldDisplay:
         pos = to_screen(((grid.width - 1.0) / 2.0, - 0.8))
         self.gui.draw_text(pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
 
-    # TODO: IMPORTANT SHIT
+    # TODO: IMPORTANT
     def drawValues(self, values, policy, currentState=None, message='State Values'):
         grid = self.gridworld.grid
 
@@ -154,7 +154,7 @@ class GraphicsGridworldDisplay:
                     action = None
                     if policy != None and state in policy:
                         action = policy[state]
-                        actions = self.gridworld.getPossibleActionDirections(state)
+                        actions = self.gridworld.get_list_action_direction_possible(state)
                     if action not in actions and 'exit' in actions:
                         action = 'exit'
                     valString = '%.2f' % value
@@ -168,7 +168,7 @@ class GraphicsGridworldDisplay:
         grid = self.gridworld.grid
 
         self.blank()
-        stateCrossActions = [[(state, action) for action in self.gridworld.getPossibleActionDirections(state)] for state in
+        stateCrossActions = [[(state, action) for action in self.gridworld.get_list_action_direction_possible(state)] for state in
                              self.gridworld.getStates()]
         qStates = reduce(lambda x, y: x + y, stateCrossActions, [])
         qValueList = [qValues[(state, action)] for state, action in qStates] + [0.0]
@@ -180,7 +180,7 @@ class GraphicsGridworldDisplay:
                 gridType = grid[x][y]
                 isExit = (str(gridType) != gridType)
                 isCurrent = (currentState == state)
-                actions = self.gridworld.getPossibleActionDirections(state)
+                actions = self.gridworld.get_list_action_direction_possible(state)
                 if actions == None or len(actions) == 0:
                     actions = [None]
                 bestQ = max([qValues[(state, action)] for action in actions])

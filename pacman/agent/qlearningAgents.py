@@ -202,22 +202,17 @@ Reference:
         """
         Flip a coin and only allow the random number generated if less than self.epsilon
         
-        Contributors: 
-    https://github.com/josephedradan
-
-Reference:
-            Exploration vs. Exploitation - Learning the Optimal Reinforcement Learning Policy
-
-                Notes:
-                    If epsilon low then you will most likely do Exploitation
-                    If epsilon high then you will most likely do Exploration
-                
-                Contributors: 
-    https://github.com/josephedradan
-
-Reference:
-                    https://youtu.be/mo96Nqlo1L8?list=PLZbbT5o_s2xoWNVdDudn51XM8lOuZ_Njv&t=32
         
+        Reference:
+                    Exploration vs. Exploitation - Learning the Optimal Reinforcement Learning Policy
+        
+                        Notes:
+                            If epsilon low then you will most likely do Exploitation
+                            If epsilon high then you will most likely do Exploration
+
+        Reference:
+            https://youtu.be/mo96Nqlo1L8?list=PLZbbT5o_s2xoWNVdDudn51XM8lOuZ_Njv&t=32
+                
         
         """
         boolean: bool = util.flipCoin(self.epsilon)

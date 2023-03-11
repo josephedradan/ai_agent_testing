@@ -146,7 +146,7 @@ class GraphGameTreeTest(TestCaseAgent):
             Give
 
         """
-        self.problem_multi_agent_tree.reset()  # TODO: WTF IS THIS SHIT
+        self.problem_multi_agent_tree.reset()  # TODO: WTF IS THIS
 
         # agent_being_tested = getattr(multiAgents, self.str_class_agent)(depth=self.depth)
 

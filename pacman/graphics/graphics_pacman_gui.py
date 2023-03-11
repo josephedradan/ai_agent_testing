@@ -818,7 +818,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
         self.gui.refresh()
 
 
-# TODO: WTF IS THIS SHIT
+# TODO: WTF IS THIS
 class FirstPersonGraphicsPacman(GraphicsPacmanGUI):
     # def __init__(self, zoom=1.0, showGhosts=True, capture=False, frameTime=0):
     #     GraphicsPacmanDisplay.__init__(self, zoom, time_frame=frameTime)

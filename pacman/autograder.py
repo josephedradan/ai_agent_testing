@@ -361,7 +361,7 @@ def evaluate(bool_generate_solutions: bool,
 
     dict_k_name_question_v_callable_that_wraps_question: Dict[str, Callable] = {}
 
-    # TODO: THIS SHIT GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
+    # TODO: THIS GETS MAKES THIS ['q1', 'q2', 'q3', 'q4', 'q5']
     list_str_question_to_grade = get_list_str_question(path_abs_test_cases, str_question_to_grade)
     print("autograder.evaluate", list_str_question_to_grade)
 

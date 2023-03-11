@@ -95,7 +95,7 @@ class Grader:
                 # TimeoutFunction(getattr(dict_k_name_question_v_callable, q),1200)(self)
 
                 # Call the str_question's function
-                util.TimeoutFunction(dict_k_name_question_v_callable_that_wraps_question.get(q), 1800)(self)  # TODO: CHANGE THAT 1800 TO A CONST OR SOMESHIT
+                util.TimeoutFunction(dict_k_name_question_v_callable_that_wraps_question.get(q), 1800)(self)  # TODO: CHANGE THAT 1800 TO A CONST
 
             except Exception as inst:
                 self.addExceptionMessage(q, inst, traceback)

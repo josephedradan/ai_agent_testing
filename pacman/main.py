@@ -459,7 +459,7 @@ def get_dict_namespace(namespace: argparse.Namespace) -> Dict[str, Any]:
     return dict_k_name_arg_v_arg
 
 
-def replay_game(layout, actions, display):  # FIXME: FIGURE THSI SHIT OUT LATER
+def replay_game(layout, actions, display):  # FIXME: FIGURE THSI OUT LATER
     # import pacmanAgents
     # import list_str_pacman_ghost_agent
 
