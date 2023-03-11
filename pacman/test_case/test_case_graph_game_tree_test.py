@@ -54,7 +54,6 @@ class MultiagentTreeProblem(object):
                  dict_evaluation_k_state_v_value: Dict[str, float]
                  ):
 
-        print("-- MultiagentTreeProblem", self, state_start)
         # self.state_start: MultiAgentTreeState = MultiAgentTreeState(self, state_start)
         self.start_start_str = state_start
 

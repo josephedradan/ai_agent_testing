@@ -22,6 +22,7 @@ from common import util
 from common.agent.agent import Agent
 from pacman.game.action_direction import Action
 from pacman.game.action_direction import ActionDirection
+from pacman.game.handler_action_direction import HandlerActionDirection
 
 if TYPE_CHECKING:
     from common.state import State
@@ -61,3 +62,22 @@ class AgentPacmanGhost(Agent, ABC):
     #     # DONT REVERSE IF GHOST HAS MORE THAN 1 MOVE
     #     if reverse in possibleActions and len(possibleActions) > 1:
     #         possibleActions.remove(reverse)
+
+
+    # def get_actions_legal(self, state: State):
+    #
+    #     container_position_direction = state.get_container_state_GHOST(self).get_container_position_direction()
+    #
+    #     possibleActions = state.getLegalActions(self)
+    #
+    #     reverse = HandlerActionDirection.reverse_action_direction(container_position_direction._direction)
+    #
+    #     # GHOST DONT STOP SO REMOVE IT
+    #     if ActionDirection.STOP in possibleActions:
+    #         possibleActions.remove(ActionDirection.STOP)
+    #
+    #     # DONT REVERSE IF GHOST HAS MORE THAN 1 MOVE
+    #     if reverse in possibleActions and len(possibleActions) > 1:
+    #         possibleActions.remove(reverse)
+    #
+    #     return possibleActions

@@ -36,13 +36,13 @@ from pacman.game.action_direction import ActionDirection
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.game.rules.common import SCARED_TIME
-from pacman.game.rules.rules_agent import RulesAgent
+from pacman.game.rules.rules_agent import RulesPacman
 
 if TYPE_CHECKING:
     from common.state_pacman import StatePacman
 
 
-class PacmanRules(RulesAgent):
+class RulesPacmanPacman(RulesPacman):
     """
     These functions govern how pacman interacts with his environment under
     the classic game rules.
@@ -50,9 +50,10 @@ class PacmanRules(RulesAgent):
     PACMAN_SPEED = 1
 
     @staticmethod
-    def getLegalActions(state_pacman: StatePacman, player: PlayerPacman) -> List[ActionDirection]:
+    def getLegalActions(state_pacman: StatePacman, player_pacman: PlayerPacman) -> List[ActionDirection]:
 
-        container_position_direction = state_pacman.get_container_state_GHOST(player.get_agent())._container_position_direction
+        container_position_direction = state_pacman.get_container_state_GHOST(
+            player_pacman.get_agent()).get_container_position_direction()
 
         return HandlerActionDirection.getPossibleActionDirections(
             container_position_direction,
@@ -60,17 +61,17 @@ class PacmanRules(RulesAgent):
         )
 
     @staticmethod
-    def applyAction(state_pacman: StatePacman, action: Action, player: PlayerPacman):
+    def applyAction(state_pacman: StatePacman, action: Action, player_pacman: PlayerPacman):
 
-        actions_legal = PacmanRules.getLegalActions(state_pacman, player)
+        actions_legal = RulesPacmanPacman.getLegalActions(state_pacman, player_pacman)
 
         if action not in actions_legal:
             raise Exception("Illegal action " + str(action))
 
-        pacmanState = state_pacman.get_container_state_GHOST(player.get_agent())
+        pacmanState = state_pacman.get_container_state_GHOST(player_pacman.get_agent())
 
         # Update ContainerVector
-        vector = HandlerActionDirection.get_vector_from_action_direction(action, PacmanRules.PACMAN_SPEED)
+        vector = HandlerActionDirection.get_vector_from_action_direction(action, RulesPacmanPacman.PACMAN_SPEED)
         pacmanState._container_position_direction = pacmanState._container_position_direction.get_container_position_direction_successor(
             vector
         )
@@ -80,7 +81,7 @@ class PacmanRules(RulesAgent):
         nearest = nearestPoint(next)
         if manhattanDistance(nearest, next) <= 0.5:
             # Remove food
-            PacmanRules._consume(nearest, state_pacman)
+            RulesPacmanPacman._consume(nearest, state_pacman)
 
     @staticmethod
     def _consume(position: Tuple[int, int], state_pacman: StatePacman):

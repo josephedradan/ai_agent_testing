@@ -28,6 +28,7 @@ from abc import abstractmethod
 from typing import Any
 from typing import Dict
 from typing import Hashable
+from typing import Iterable
 from typing import TYPE_CHECKING
 from typing import Union
 
@@ -83,3 +84,6 @@ class Agent(ABC):
 
     def get_player(self) -> Union[Player, None]:
         return self.player
+
+    def get_actions_legal(self, state: State) -> Iterable[Action]:
+        return state.getLegalActions(self)

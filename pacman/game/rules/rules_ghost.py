@@ -28,13 +28,14 @@ from typing import TYPE_CHECKING
 
 from common.util import manhattanDistance
 from common.util import nearestPoint
+from pacman.agent import AgentPacmanGhostRandom
 from pacman.agent.container_state import ContainerState
 from pacman.game.handler_action_direction import HandlerActionDirection
 from pacman.game.action_direction import Action
 from pacman.game.action_direction import ActionDirection
 from pacman.game.player_pacman import PlayerPacman
 from pacman.game.rules.common import COLLISION_TOLERANCE
-from pacman.game.rules.rules_agent import RulesAgent
+from pacman.game.rules.rules_agent import RulesPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 from pacman.types_ import TYPE_VECTOR
 
@@ -42,14 +43,14 @@ if TYPE_CHECKING:
     from common.state_pacman import StatePacman
 
 
-class GhostRules(RulesAgent):
+class RulesPacmanGhost(RulesPacman):
     """
     These functions dictate how ghosts interact with their environment.
     """
     GHOST_SPEED = 1.0
 
     @staticmethod
-    def getLegalActions(state_pacman: StatePacman, player: PlayerPacman) -> List[ActionDirection]:
+    def getLegalActions(state_pacman: StatePacman, player_pacman: PlayerPacman) -> List[ActionDirection]:
         """
         Ghosts cannot stop, and cannot turn around unless they
         reach a dead end, but can turn 90 degrees at intersections.
@@ -74,9 +75,9 @@ class GhostRules(RulesAgent):
         # print("state.get_state_container_GHOST(player)",
         #       state.get_state_container_GHOST(player))
 
-        agent = player.get_agent()
+        agent = player_pacman.get_agent()
 
-        container_position_direction = state_pacman.get_container_state_GHOST(agent)._container_position_direction
+        container_position_direction = state_pacman.get_container_state_GHOST(agent).get_container_position_direction()
 
         possibleActions = HandlerActionDirection.getPossibleActionDirections(
             container_position_direction,
@@ -96,23 +97,34 @@ class GhostRules(RulesAgent):
         return possibleActions
 
     @staticmethod
-    def applyAction(state_pacman: StatePacman, action: Action, player: PlayerPacman):
+    def applyAction(state_pacman: StatePacman, action: Action, player_pacman: PlayerPacman):
 
-        legal = GhostRules.getLegalActions(state_pacman, player)
+        legal = RulesPacmanGhost.getLegalActions(state_pacman, player_pacman)
+
+        # if not isinstance(player_pacman.get_agent(), AgentPacmanGhostRandom):
+        #     print("---------ASD")
+        #     print(player_pacman)
+
+        # if action in legal:
+        #     print("FFFFFFFFFFFFFFFA")
+        #     print(player_pacman, legal, action)
+
         if action not in legal:
+            print("Illegal ghost action AAAAA ACTION NOT IN LEGAL", player_pacman, action, legal)
             raise Exception("Illegal ghost action " + str(action))
 
-        container_ghost_state = state_pacman.state_data.dict_k_player_v_container_state[player]
+        container_state_ghost = state_pacman.state_data.dict_k_player_v_container_state[player_pacman]
 
-        speed = GhostRules.GHOST_SPEED
+        speed = RulesPacmanGhost.GHOST_SPEED
 
-        if container_ghost_state.time_scared > 0:
+        # If ghost is scared, decrease their speed
+        if container_state_ghost.time_scared > 0:
             speed /= 2.0
 
         vector = HandlerActionDirection.get_vector_from_action_direction(action, speed)
 
-        container_ghost_state._container_position_direction = (
-            container_ghost_state._container_position_direction.get_container_position_direction_successor(vector)
+        container_state_ghost._container_position_direction = (
+            container_state_ghost._container_position_direction.get_container_position_direction_successor(vector)
         )
 
     @staticmethod
@@ -137,20 +149,20 @@ class GhostRules(RulesAgent):
                 if player_inner.get_type_player_pacman() == EnumPlayerPacman.GHOST:
                     position_ghost = container_state._container_position_direction.get_vector_position()
 
-                    if GhostRules.canKill(position_pacman, position_ghost):
-                        GhostRules.collide(state_pacman, container_state, player_inner)
+                    if RulesPacmanGhost.canKill(position_pacman, position_ghost):
+                        RulesPacmanGhost.collide(state_pacman, container_state, player_inner)
         else:
             container_state_ghost = state_pacman.state_data.dict_k_player_v_container_state.get(player)
             position_ghost = container_state_ghost._container_position_direction.get_vector_position()
 
-            if GhostRules.canKill(position_pacman, position_ghost):
-                GhostRules.collide(state_pacman, container_state_ghost, player)
+            if RulesPacmanGhost.canKill(position_pacman, position_ghost):
+                RulesPacmanGhost.collide(state_pacman, container_state_ghost, player)
 
     @staticmethod
     def collide(state_pacman: StatePacman, container_ghost_state: ContainerState, player: PlayerPacman):
         if container_ghost_state.time_scared > 0:
             state_pacman.state_data.scoreChange += 200
-            GhostRules.placeGhost(state_pacman, container_ghost_state)
+            RulesPacmanGhost.placeGhost(state_pacman, container_ghost_state)
             container_ghost_state.time_scared = 0
 
             # Added for first-person

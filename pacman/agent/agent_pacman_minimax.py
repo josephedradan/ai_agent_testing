@@ -601,11 +601,15 @@ Reference:
         return score
 
     # List of legal movements ("North")
-    list_str_move_legal: List[str] = state.getLegalActions(agent_selected)
+    list_str_move_legal_agent_selected: List[str] = state.getLegalActions(agent_selected)
+    # list_str_move_legal_agent_selected: List[str] = agent_selected.get_actions_legal(state)
+
+    if agent_selected is None:
+        print("--------AAA",list_str_move_legal_agent_selected, agent_selected)
 
     # print("state")
     # print(state)
-    # print(list_str_move_legal)
+    # print(list_str_move_legal_agent_selected)
     # print()
     # print("#" * 10)
 
@@ -616,7 +620,7 @@ Reference:
 
         # _LIST_SCORE_DEBUG = []
 
-        for action in list_str_move_legal:
+        for action in list_str_move_legal_agent_selected:
 
             state_new = state.generateSuccessor(agent_selected, action)
 
@@ -663,7 +667,7 @@ Reference:
                     break
 
         # print("P Depth", depth)
-        # print("P MOVE", list_str_move_legal)
+        # print("P MOVE", list_str_move_legal_agent_selected)
         # print("P CALCULATED", _LIST_SCORE_DEBUG)
         # print("P Score: {} ".format(score_max))
         # print()
@@ -676,8 +680,8 @@ Reference:
 
         # _LIST_SCORE_DEBUG = []
 
-        for action in list_str_move_legal:
-
+        print("list_str_move_legal_agent_selected", list_str_move_legal_agent_selected)
+        for action in list_str_move_legal_agent_selected:
             state_new = state.generateSuccessor(agent_selected, action)
 
             # Agent selection (Select next player for the next call)
@@ -728,10 +732,11 @@ Reference:
                     break
 
         # print(f"G{agent} Depth", depth)
-        # print(f"G{agent} MOVE", list_str_move_legal)
+        # print(f"G{agent} MOVE", list_str_move_legal_agent_selected)
         # print(f"G{agent} CALCULATED", _LIST_SCORE_DEBUG)
         # print("G{} Score: {}".format(agent, score_min))
         # print()
+
         return score_min
 
 

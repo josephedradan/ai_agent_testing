@@ -44,4 +44,8 @@ class AgentPacmanGhostRandom(AgentPacmanGhost) :
             dist[a] = 1.0
         dist.normalize()
 
+        # for a in self.get_actions_legal(state):
+        #     dist[a] = 1.0
+        # dist.normalize()
+
         return dist

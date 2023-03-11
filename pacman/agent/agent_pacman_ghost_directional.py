@@ -54,6 +54,7 @@ class AgentPacmanGhostDirectional(AgentPacmanGhost):
         # Read variables from state
         ghostState = state.get_container_state_GHOST(self)
         legalActions = state.getLegalActions(self)
+        # legalActions = self.get_actions_legal(state)
         pos = state.get_position_of_agent(self)
         isScared = ghostState.time_scared > 0
 

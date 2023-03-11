@@ -33,8 +33,9 @@ from common.state_data_pacman import StateDataPacman
 from pacman.agent import Agent
 from pacman.agent.container_state import ContainerState
 from pacman.game.rules.common import TIME_PENALTY
-from pacman.game.rules.rules_ghost import GhostRules
-from pacman.game.rules.rules_pacman import PacmanRules
+from pacman.game.rules.rules_agent import RulesPacman
+from pacman.game.rules.rules_ghost import RulesPacmanGhost
+from pacman.game.rules.rules_pacman import RulesPacmanPacman
 from pacman.game.type_player_pacman import EnumPlayerPacman
 
 if TYPE_CHECKING:
@@ -45,6 +46,11 @@ if TYPE_CHECKING:
 
 
 class StatePacman(State):
+    dict_k_type_player_pacman_v_rules_pacmanL: Dict[EnumPlayerPacman, RulesPacman] = {
+        EnumPlayerPacman.PACMAN: RulesPacmanPacman,
+        EnumPlayerPacman.GHOST: RulesPacmanGhost
+    }
+
     state_data: StateDataPacman
 
     def __init__(self, state_previous: Union[StatePacman, None] = None):
@@ -65,9 +71,13 @@ class StatePacman(State):
         self.state_data.initialize(layout, list_player)
 
     def get_deep_copy(self) -> State:
-        state_pacman = type(self)(self)
-        state_pacman.state_data = self.state_data.get_deep_copy()
-        return state_pacman
+
+        # state_pacman_new = type(self)(self)
+        state_pacman_new = StatePacman(self)
+
+        state_pacman_new.state_data = self.state_data.get_deep_copy()
+
+        return state_pacman_new
 
     def __eq__(self, other):
         """
@@ -114,7 +124,7 @@ class StatePacman(State):
         Returns the legal actions for the player specified.
         """
         #        State.set_state_explored.add(self)
-        if self.isWin() or self.isLose():  # TODO: ADDED or agent is None BECAUSE SHTI IS TEMPED
+        if self.isWin() or self.isLose():  # TODO: ADDED or agent is None BECAUSE SHIT IS TEMPED
             return []
 
         # return PacmanRules.getLegalActions(self, agent)  # TODO: JOSEPH COMMENT JOSEPH JUMP
@@ -125,10 +135,21 @@ class StatePacman(State):
         player = self.state_data.get_player_from_agent(agent)
         # print("---- getLegalActions agent", agent, player)
 
-        if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
-            list_actions = PacmanRules.getLegalActions(self, player)
-        else:
-            list_actions = GhostRules.getLegalActions(self, player)
+        # list_actions = RulesPacman.getLegalActions(self, player)
+
+        # list_actions = player.get_agent().get_actions_legal(self)
+
+
+        list_actions = StatePacman.dict_k_type_player_pacman_v_rules_pacmanL.get(
+            player.get_type_player_pacman(),
+            RulesPacman  # TODO: Can crash since Abstract method FIX ME
+        ).getLegalActions(self, player)
+
+        # if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
+        #     list_actions = RulesPacmanPacman.getLegalActions(self, player)
+        # else:
+        #     list_actions = RulesPacmanGhost.getLegalActions(self, player)
+
         return list_actions
 
     def generateSuccessor(self, agent: Agent, action: Action) -> StatePacman:
@@ -140,43 +161,44 @@ class StatePacman(State):
             raise Exception('Can\'t generate a successor of a terminal state.')
 
         # Copy current state
-        state_pacman = type(self)(self)
+        # state_pacman_new = type(self)(self)
+        state_pacman_new = StatePacman(self)
 
-        player: PlayerPacman = state_pacman.get_player_from_agent(agent)
+        player: PlayerPacman = state_pacman_new.get_player_from_agent(agent)
 
         # Let player's logic deal with its action's effects on the board
         if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
 
-            _dict_k_player_v_bool_eaten = state_pacman.state_data._dict_k_player_v_bool_eaten
+            _dict_k_player_v_bool_eaten = state_pacman_new.state_data._dict_k_player_v_bool_eaten
 
             # TODO: JOSEPH NOTE: THE CODE MAKES THE GHOST NOT SCARED I THINK
-            state_pacman.state_data._dict_k_player_v_bool_eaten = (
+            state_pacman_new.state_data._dict_k_player_v_bool_eaten = (
                 {player: False for player in _dict_k_player_v_bool_eaten}
             )
 
-            PacmanRules.applyAction(state_pacman, action, player)
+            RulesPacmanPacman.applyAction(state_pacman_new, action, player)
         else:  # A ghost is moving
-            GhostRules.applyAction(state_pacman, action, player)
+            RulesPacmanGhost.applyAction(state_pacman_new, action, player)
 
         # Time passes
         if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
-            state_pacman.state_data.scoreChange += -TIME_PENALTY  # Penalty for waiting around
+            state_pacman_new.state_data.scoreChange += -TIME_PENALTY  # Penalty for waiting around
         else:
 
-            container_state_ghost = state_pacman.state_data.dict_k_player_v_container_state.get(player)
+            container_state_ghost = state_pacman_new.state_data.dict_k_player_v_container_state.get(player)
 
-            GhostRules.decrementTimer(container_state_ghost)
+            RulesPacmanGhost.decrementTimer(container_state_ghost)
 
         # Resolve multi-player effects
-        GhostRules.checkDeath(state_pacman, player)
+        RulesPacmanGhost.checkDeath(state_pacman_new, player)
 
         # Book keeping
-        state_pacman.state_data._agentMoved = player.get_agent()
-        state_pacman.state_data.score += state_pacman.state_data.scoreChange
+        state_pacman_new.state_data._agentMoved = player.get_agent()
+        state_pacman_new.state_data.score += state_pacman_new.state_data.scoreChange
 
         type(self).set_state_explored.add(self)
-        type(self).set_state_explored.add(state_pacman)
-        return state_pacman
+        type(self).set_state_explored.add(state_pacman_new)
+        return state_pacman_new
 
     # TODO: DONT NEED NO MORE Use getLegalAction
     # def getLegalPacmanActions(self) -> List[Action]:

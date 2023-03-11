@@ -63,11 +63,11 @@ class State(ABC):
         pass
 
     @abstractmethod  # MultiagentTreeState DOES NOT HAVE THIS WHICH IS WHY ITS NOT ABSTRACT
-    def get_index_by_agent(self, agent: Agent) -> Union[int, None]:
+    def get_index_by_agent(self, agent: Union[Agent, None]) -> Union[int, None]:
         pass
 
     @abstractmethod
-    def getLegalActions(self, agent: Agent):
+    def getLegalActions(self, agent: Union[Agent, None]):
         pass
 
     @abstractmethod
