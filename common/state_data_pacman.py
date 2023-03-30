@@ -23,6 +23,7 @@ Reference:
 """
 from __future__ import annotations
 
+from collections import defaultdict
 from typing import Dict
 from typing import List
 from typing import TYPE_CHECKING
@@ -60,6 +61,7 @@ class StateDataPacman:
     layout_pacman: LayoutPacman
     _dict_k_player_v_bool_eaten: Dict[PlayerPacman, bool]
     dict_k_player_v_container_state: Dict[PlayerPacman, ContainerState]
+    dict_k_enum_type_player_pacman_v_list_player_pacman: Dict[EnumPlayerPacman, List[PlayerPacman]]
 
     dict_k_agent_v_player: Dict[Agent, PlayerPacman]
     dict_k_agent_v_index: Dict[Agent, int]
@@ -83,6 +85,11 @@ class StateDataPacman:
                     state_date_previous.dict_k_player_v_container_state
                 )
             )
+
+            self.dict_k_enum_type_player_pacman_v_list_player_pacman = (
+                state_date_previous.dict_k_enum_type_player_pacman_v_list_player_pacman
+            )
+
 
             self.layout_pacman: LayoutPacman = state_date_previous.layout_pacman
             self._dict_k_player_v_bool_eaten = (
@@ -116,6 +123,12 @@ class StateDataPacman:
         self.scoreChange = 0
 
         ######
+
+    def set_agent_moved(self, agent: Agent):
+        self._agentMoved = agent
+
+    def get_agent_moved(self) -> Agent:
+        return self._agentMoved
 
     def get_agent_by_index(self, index: int) -> Union[Agent, None]:
         return self.dict_k_index_v_agent.get(index)
@@ -269,7 +282,7 @@ class StateDataPacman:
             return '3'
         return 'E'
 
-    def initialize(self, layout: LayoutPacman, list_player: List[PlayerPacman]):
+    def initialize(self, layout: LayoutPacman, list_player_pacman: List[PlayerPacman]):
         """
         Creates an initial game state from a str_path_layout array (see str_path_layout.py).
 
@@ -280,17 +293,17 @@ class StateDataPacman:
 
         self.list_capsule: List[TYPE_VECTOR] = layout.list_capsule[:]
         self.layout_pacman: LayoutPacman = layout
-        self.score = 0
-        self.scoreChange = 0
+        self.score = 0  # Total score
+        self.scoreChange = 0  #
+        self.dict_k_player_v_container_state = {}
+        self.dict_k_enum_type_player_pacman_v_list_player_pacman = {}
 
-        self.dict_k_player_v_container_state: Dict[PlayerPacman, ContainerState] = {}
+        list_player_pacman_temp = list_player_pacman.copy()  # Shallow copy
 
-        list_player_temp = list_player.copy()  # Shallow copy
-
-        for type_player, position in layout.list_tuple__type_player__position:
+        for enum_player_pacman, position in layout.list_tuple__enum_player_pacman__position:
 
             # # Ghost adder
-            # if not type_player:
+            # if not enum_player_pacman:
             #     if count_number_of_agent_ghosts == number_of_agent_ghost:
             #         continue  # Max ghosts reached already
             #     else:
@@ -300,29 +313,38 @@ class StateDataPacman:
             #     ContainerState(ContainerPositionDirection(_position, ActionDirection.STOP), is_pacman)  # TODO: CONSTRUCTOR HERE
             # )
 
-            for index_player, player in enumerate(list_player_temp):
+            for index_player_pacman, player_pacman in enumerate(list_player_pacman_temp):
 
-                if player.get_type_player_pacman() == type_player:
-                    list_player_temp.pop(index_player)
+                if player_pacman.get_type_player_pacman() == enum_player_pacman:
+                    list_player_pacman_temp.pop(index_player_pacman)
 
                     container_position_direction = ContainerPositionDirection(position, ActionDirection.STOP)
 
-                    self.dict_k_player_v_container_state[player] = (
+                    self.dict_k_player_v_container_state[player_pacman] = (
                         ContainerState(container_position_direction)
                     )
 
-                    self.dict_k_agent_v_player[player.get_agent()] = player
+                    ##
+
+                    if self.dict_k_enum_type_player_pacman_v_list_player_pacman.get(enum_player_pacman) is None:
+                        self.dict_k_enum_type_player_pacman_v_list_player_pacman[enum_player_pacman] = []
+
+                    self.dict_k_enum_type_player_pacman_v_list_player_pacman[enum_player_pacman].append(player_pacman)
+
+                    ##
+
+                    self.dict_k_agent_v_player[player_pacman.get_agent()] = player_pacman
 
                     _index_agent = len(self.dict_k_agent_v_player) - 1
 
-                    self.dict_k_agent_v_index[player.get_agent()] = _index_agent
-                    self.dict_k_index_v_agent[_index_agent] = player.get_agent()
+                    self.dict_k_agent_v_index[player_pacman.get_agent()] = _index_agent
+                    self.dict_k_index_v_agent[_index_agent] = player_pacman.get_agent()
 
                     #############
                     # TEMP ULTRA BYPASS  # TODO: FIX ME TO SUPPORT MORE PACMAN
 
-                    if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
-                        self._player_pacman = player
+                    if player_pacman.get_type_player_pacman() == EnumPlayerPacman.PACMAN:
+                        self._player_pacman = player_pacman
 
                     break
 

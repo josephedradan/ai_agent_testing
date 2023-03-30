@@ -47,7 +47,7 @@ class LayoutPacman:
         self.food: GridPacman = GridPacman(self.width, self.height, False)
         self.list_capsule: List[TYPE_VECTOR] = []
 
-        self.list_tuple__type_player__position: List[Tuple[EnumPlayerPacman, TYPE_VECTOR]] = []
+        self.list_tuple__enum_player_pacman__position: List[Tuple[EnumPlayerPacman, TYPE_VECTOR]] = []
         self.numGhosts: int = 0
 
         self._processLayoutText(list_str_layout_line)
@@ -161,7 +161,7 @@ class LayoutPacman:
                 self._process_char_from_layout(x, y, layoutChar)
 
         # IMPORTANT: SORT IS NECESSARY FOR ORDERING AGENT MOVING ORDER
-        self.list_tuple__type_player__position.sort(key=lambda tuple_: tuple_[0] )
+        self.list_tuple__enum_player_pacman__position.sort(key=lambda tuple_: tuple_[0])
 
         # self.list_tuple__class_player__position = [(i == 0, pos) for i, pos in self.list_tuple__class_player__position]
 
@@ -181,13 +181,13 @@ class LayoutPacman:
         elif char_from_layout == 'o':
             self.list_capsule.append((x, y))
         elif char_from_layout == 'P':
-            self.list_tuple__type_player__position.append((EnumPlayerPacman.PACMAN, (x, y)))
+            self.list_tuple__enum_player_pacman__position.append((EnumPlayerPacman.PACMAN, (x, y)))
         elif char_from_layout in ['G']:
-            self.list_tuple__type_player__position.append((EnumPlayerPacman.GHOST, (x, y)))
+            self.list_tuple__enum_player_pacman__position.append((EnumPlayerPacman.GHOST, (x, y)))
             self.numGhosts += 1
         elif char_from_layout in ['1', '2', '3',
                                   '4']:  # TODO: THIS IS IF THE MAP SPECIFIES GHOSTS EXACTLY # TOOD: ACTUALLY, IDK
-            self.list_tuple__type_player__position.append((int(char_from_layout), (x, y)))
+            self.list_tuple__enum_player_pacman__position.append((int(char_from_layout), (x, y)))
             self.numGhosts += 1
 
 

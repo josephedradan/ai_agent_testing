@@ -26,17 +26,12 @@ from __future__ import annotations
 from typing import List
 from typing import TYPE_CHECKING
 
-from common.util import manhattanDistance
 from common.util import nearestPoint
 from pacman.agent.container_state import ContainerState
-from pacman.game.action_direction import Action
 from pacman.game.action_direction import ActionDirection
 from pacman.game.handler_action_direction import HandlerActionDirection
 from pacman.game.player_pacman import PlayerPacman
-from pacman.game.rules.common import COLLISION_TOLERANCE
-from pacman.game.rules.rules_agent import RulesPacman
-from pacman.game.type_player_pacman import EnumPlayerPacman
-from pacman.types_ import TYPE_VECTOR
+from pacman.game.rules.rules_pacman import RulesPacman
 
 if TYPE_CHECKING:
     from common.state_pacman import StatePacman
@@ -74,16 +69,18 @@ class RulesPacmanGhost(RulesPacman):
         # print("state.get_state_container_GHOST(player)",
         #       state.get_state_container_GHOST(player))
 
-        agent = player_pacman.get_agent()
-
-        container_position_direction = state_pacman.get_container_state_GHOST(agent).get_container_position_direction()
+        container_position_direction = state_pacman.get_container_state_GHOST(
+            player_pacman.get_agent()
+        ).get_container_position_direction()
 
         list_action_direction_possible = HandlerActionDirection.get_list_action_direction_possible(
             container_position_direction,
-            state_pacman.state_data.layout_pacman.walls
+            state_pacman.state_data_pacman.layout_pacman.walls
         )
 
-        reverse = HandlerActionDirection.reverse_action_direction(container_position_direction._direction)
+        reverse = HandlerActionDirection.reverse_action_direction(
+            container_position_direction._direction
+        )
 
         # GHOST DONT STOP SO REMOVE IT
         # if ActionDirection.STOP in list_action_direction_possible:
@@ -114,16 +111,16 @@ class RulesPacmanGhost(RulesPacman):
         return list_action_direction_possible
 
     @staticmethod
-    def applyAction(state_pacman_current: StatePacman, action: ActionDirection, player_pacman: PlayerPacman):
+    def applyAction(state_pacman_current: StatePacman, action: ActionDirection, player_pacman_ghost: PlayerPacman):
         """
-        Applies the action to appropriate ContainerState given PlayerPacman
+        Applies the action to appropriate ContainerState given PlayerPacman (Should be a ghost)
 
         :param state_pacman_current:
         :param action:
-        :param player_pacman:
+        :param player_pacman_ghost:
         :return:
         """
-        list_action_direction_legal = RulesPacmanGhost.getLegalActions(state_pacman_current, player_pacman)
+        list_action_direction_legal = RulesPacmanGhost.getLegalActions(state_pacman_current, player_pacman_ghost)
 
         # if not isinstance(player_pacman.get_agent(), AgentPacmanGhostRandom):
         #     print("---------ASD")
@@ -134,10 +131,14 @@ class RulesPacmanGhost(RulesPacman):
         #     print(player_pacman, list_action_direction_legal, action)
 
         if action not in list_action_direction_legal:
-            print("Illegal ghost action AAAAA ACTION NOT IN LEGAL", player_pacman, action, list_action_direction_legal)
+            print("Illegal ghost action AAAAA ACTION NOT IN LEGAL",
+                  player_pacman_ghost,
+                  action,
+                  list_action_direction_legal)
             raise Exception("Illegal ghost action " + str(action))
 
-        container_state_ghost = state_pacman_current.state_data.dict_k_player_v_container_state[player_pacman]
+        container_state_ghost = state_pacman_current.state_data_pacman.dict_k_player_v_container_state[
+            player_pacman_ghost]
 
         speed = RulesPacmanGhost.GHOST_SPEED
 
@@ -152,7 +153,7 @@ class RulesPacmanGhost(RulesPacman):
         )
 
     @staticmethod
-    def decrementTimer(container_state: ContainerState):
+    def _decrementTimer(container_state: ContainerState):
         timer = container_state.time_scared
 
         if timer == 1:
@@ -161,45 +162,50 @@ class RulesPacmanGhost(RulesPacman):
         container_state.time_scared = max(0, timer - 1)
 
     @staticmethod
-    def checkDeath(state_pacman: StatePacman, player: PlayerPacman):
+    def update_state_pacman_and_player_pacman(state_pacman: StatePacman, player_pacman: PlayerPacman):
 
+        container_state = state_pacman.state_data_pacman.dict_k_player_v_container_state.get(player_pacman)
+
+        RulesPacmanGhost._decrementTimer(container_state)
+
+    @staticmethod
+    def process_state_pacman_and_player_position(state_pacman: StatePacman, player_pacman: PlayerPacman):
+        """
+
+        Notes:
+            Only called in StatePacman generate_successor
+
+        :param state_pacman:
+        :param player_pacman:
+        :return:
+        """
         position_pacman = state_pacman.getPacmanPosition()
 
-        if player.get_type_player_pacman() == EnumPlayerPacman.PACMAN:  # Pacman just moved; Anyone can kill him
-            # for index in range(1, len(state.state_data.dict_k_player_v_container_state)):
+        # if player_pacman.get_type_player_pacman() == EnumPlayerPacman.PACMAN:  # Pacman just moved; Anyone can kill him
+        #     # for index in range(1, len(state.state_data.dict_k_player_v_container_state)):
+        #
+        #     list_player_pacman_ghost = (
+        #         state_pacman.state_data_pacman.dict_k_enum_type_player_pacman_v_list_player_pacman.get(
+        #             EnumPlayerPacman.GHOST)
+        #     )
+        #
+        #     for player_pacman_ghost in list_player_pacman_ghost:
+        #
+        #         container_state = state_pacman.state_data_pacman.dict_k_player_v_container_state.get(player_pacman_ghost)
+        #
+        #         position_ghost = container_state._container_position_direction.get_vector_position()
+        #
+        #         if RulesPacmanGhost._check_collision(position_pacman, position_ghost):
+        #             RulesPacmanGhost._process_player_pacman_collision(state_pacman, container_state, player_pacman_ghost)
+        # else:
+        #     container_state_ghost = state_pacman.state_data_pacman.dict_k_player_v_container_state.get(player_pacman)
+        #     position_ghost = container_state_ghost._container_position_direction.get_vector_position()
+        #
+        #     if RulesPacmanGhost._check_collision(position_pacman, position_ghost):
+        #         RulesPacmanGhost._process_player_pacman_collision(state_pacman, container_state_ghost, player_pacman)
 
-            for player_inner, container_state in state_pacman.state_data.dict_k_player_v_container_state.items():
+        container_state_ghost = state_pacman.state_data_pacman.dict_k_player_v_container_state.get(player_pacman)
+        position_ghost = container_state_ghost._container_position_direction.get_vector_position()
 
-                if player_inner.get_type_player_pacman() == EnumPlayerPacman.GHOST:
-                    position_ghost = container_state._container_position_direction.get_vector_position()
-
-                    if RulesPacmanGhost.canKill(position_pacman, position_ghost):
-                        RulesPacmanGhost.collide(state_pacman, container_state, player_inner)
-        else:
-            container_state_ghost = state_pacman.state_data.dict_k_player_v_container_state.get(player)
-            position_ghost = container_state_ghost._container_position_direction.get_vector_position()
-
-            if RulesPacmanGhost.canKill(position_pacman, position_ghost):
-                RulesPacmanGhost.collide(state_pacman, container_state_ghost, player)
-
-    @staticmethod
-    def collide(state_pacman: StatePacman, container_ghost_state: ContainerState, player: PlayerPacman):
-        if container_ghost_state.time_scared > 0:
-            state_pacman.state_data.scoreChange += 200
-            RulesPacmanGhost.placeGhost(state_pacman, container_ghost_state)
-            container_ghost_state.time_scared = 0
-
-            # Added for first-person
-            state_pacman.state_data._dict_k_player_v_bool_eaten[player] = True
-        else:
-            if not state_pacman.state_data._win:
-                state_pacman.state_data.scoreChange -= 500
-                state_pacman.state_data._lose = True
-
-    @staticmethod
-    def canKill(pacmanPosition: TYPE_VECTOR, ghostPosition: TYPE_VECTOR):
-        return manhattanDistance(ghostPosition, pacmanPosition) <= COLLISION_TOLERANCE
-
-    @staticmethod
-    def placeGhost(state_pacman: StatePacman, container_ghost_state: ContainerState):
-        container_ghost_state._container_position_direction = container_ghost_state._container_position_direction_start
+        if RulesPacmanGhost._check_collision(position_pacman, position_ghost):
+            RulesPacmanGhost._process_player_pacman_collision(state_pacman, container_state_ghost, player_pacman)

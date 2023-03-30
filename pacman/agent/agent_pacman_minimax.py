@@ -105,7 +105,7 @@ Reference:
 
         for action in list_str_move_legal:
 
-            state_new = state.generateSuccessor(index_agent, action)
+            state_new = state.generate_successor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
@@ -147,7 +147,7 @@ Reference:
 
         for action in list_str_move_legal:
 
-            state_new = state.generateSuccessor(index_agent, action)
+            state_new = state.generate_successor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
@@ -224,7 +224,7 @@ def get_list_last_ghost_agent_state(state: State,
 
     for action in list_str_move_legal:
 
-        state_new = state.generateSuccessor(index_agent, action)
+        state_new = state.generate_successor(index_agent, action)
 
         index_agent_new = index_agent + 1
         # print(index_agent_new)
@@ -306,7 +306,7 @@ def dfs_recursive_minimax_v2(state: State,
 
         for action in list_str_move_legal:
 
-            state_new = state.generateSuccessor(index_agent, action)
+            state_new = state.generate_successor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
@@ -386,7 +386,7 @@ def dfs_recursive_minimax_v2(state: State,
         #         # print("last_ghost_agent_state.agent", last_ghost_agent_state.agent)
         #
         #         index_agent_last = last_ghost_agent_state.agent
-        #         state_new = state_last.generateSuccessor(index_agent_last, action)
+        #         state_new = state_last.generate_successor(index_agent_last, action)
         #
         #         agent_container_current = AgentContainer(index_agent_last, action)
         #
@@ -478,7 +478,7 @@ Reference:
 
         for action in list_str_move_legal:
 
-            state_new = state.generateSuccessor(index_agent, action)
+            state_new = state.generate_successor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
@@ -513,7 +513,7 @@ Reference:
 
         for action in list_str_move_legal:
 
-            state_new = state.generateSuccessor(index_agent, action)
+            state_new = state.generate_successor(index_agent, action)
 
             agent_container_current = AgentContainer(index_agent, action)
 
@@ -622,7 +622,7 @@ Reference:
 
         for action in list_str_move_legal_agent_selected:
 
-            state_new = state.generateSuccessor(agent_selected, action)
+            state_new = state.generate_successor(agent_selected, action)
 
             # Agent selection (Select next player for the next call)
             index_agent_new = index_agent + 1
@@ -682,7 +682,7 @@ Reference:
 
         print("list_str_move_legal_agent_selected", list_str_move_legal_agent_selected)
         for action in list_str_move_legal_agent_selected:
-            state_new = state.generateSuccessor(agent_selected, action)
+            state_new = state.generate_successor(agent_selected, action)
 
             # Agent selection (Select next player for the next call)
             if index_agent >= state.getNumAgents() - 1:
@@ -784,7 +784,7 @@ Reference:
 
     for action in list_str_move_legal:
 
-        state_new = state.generateSuccessor(agent_primary, action)
+        state_new = state.generate_successor(agent_primary, action)
 
         # Agent selection (Select next player for the next call)
         index_agent_new = index_agent + 1
@@ -871,7 +871,7 @@ class AgentPacmanMinimax(AgentPacman):
         Returns a list of legal actions for an player
         agentIndex=0 means Pacman, ghosts are >= 1
 
-        state.generateSuccessor(agentIndex, action):
+        state.generate_successor(agentIndex, action):
         Returns the successor game state after an player takes an action
 
         state.getNumAgents():
@@ -917,9 +917,9 @@ class AgentPacmanMinimax(AgentPacman):
         # print('state.getLegalActions(0)',
         #       type(state.getLegalActions(0)),
         #       state.getLegalActions(0))
-        # print('state.generateSuccessor(0, "North")',
-        #       type(state.generateSuccessor(0, "North")),
-        #       state.generateSuccessor(0, "North"))
+        # print('state.generate_successor(0, "North")',
+        #       type(state.generate_successor(0, "North")),
+        #       state.generate_successor(0, "North"))
         # print('state.getNumAgents()',
         #       type(state.getNumAgents()),
         #       state.getNumAgents())

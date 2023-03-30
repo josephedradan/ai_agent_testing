@@ -45,9 +45,9 @@ class MultiAgentTreeState(State):
 
         self._agent_BYPASS = agent
 
-    def generateSuccessor(self, agentIndex, action):
+    def generate_successor(self, agentIndex, action):
         if VERBOSE:
-            print("generateSuccessor(%s, %s, %s) -> %s" % (self.state, agentIndex,
+            print("generate_successor(%s, %s, %s) -> %s" % (self.state, agentIndex,
                                                            action,
                                                            self.problem.stateToSuccessorMap[self.state][action]))
 

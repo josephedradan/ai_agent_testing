@@ -71,7 +71,7 @@ class State(ABC):
         pass
 
     @abstractmethod
-    def generateSuccessor(self, agent: Agent, action):
+    def generate_successor(self, agent: Agent, action):
         pass
 
     @abstractmethod  # MultiagentTreeState DOES NOT HAVE THIS WHICH IS WHY ITS NOT ABSTRACT

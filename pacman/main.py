@@ -27,7 +27,7 @@ code to run a game.  This file is divided into three sections:
   (ii)  The hidden secrets of pacman:
           This section contains all of the logic code that the pacman
           environment uses to decide who can move where, who dies when
-          things collide, etc.  You shouldn't need to read this section
+          things _process_player_pacman_collision, etc.  You shouldn't need to read this section
           of code, but you can if you want.
 
   (iii) Framework to start a game:
@@ -468,13 +468,13 @@ def replay_game(layout, actions, display):  # FIXME: FIGURE THSI OUT LATER
                                                    for i in range(layout.getNumGhosts())]
     game = rules.create_and_get_game(layout, agents[0], agents[1:], display)
     state = game.state_pacman
-    display.initialize(state.state_data)
+    display.initialize(state.state_data_pacman)
 
     for action in actions:
         # Execute the action
         state = state.get_container_position_direction_successor(*action)
         # Change the graphics
-        display.update(state.state_data)
+        display.update(state.state_data_pacman)
         # Allow for game specific conditions (winning, losing, etc.)
         rules.process(state, game)
 

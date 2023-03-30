@@ -493,20 +493,20 @@ def uniform_cost_search(problem: SearchProblem, heuristic: Callable = nullHeuris
     Contributors: 
     https://github.com/josephedradan
 
-Reference:
-        Dijkstra's Algorithm - Computerphile
-            Contributors: 
-    https://github.com/josephedradan
-
-Reference:
-                https://www.youtube.com/watch?v=GazC3A4OQTE&t=346s
-                
-        Uniform Cost Search
-            Contributors: 
-    https://github.com/josephedradan
-
-Reference:
-                https://www.youtube.com/watch?v=dRMvK76xQJI
+    Reference:
+            Dijkstra's Algorithm - Computerphile
+                Contributors: 
+        https://github.com/josephedradan
+    
+    Reference:
+                    https://www.youtube.com/watch?v=GazC3A4OQTE&t=346s
+                    
+            Uniform Cost Search
+                Contributors: 
+        https://github.com/josephedradan
+    
+    Reference:
+                    https://www.youtube.com/watch?v=dRMvK76xQJI
     """
 
     # Just swap out the util.Queue callable with a util.PriorityQueue callable

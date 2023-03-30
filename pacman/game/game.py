@@ -131,7 +131,7 @@ class Game:
         """
         Main control loop for game play.
         """
-        self.graphics_pacman.initialize(self.state_pacman.state_data)
+        self.graphics_pacman.initialize(self.state_pacman.state_data_pacman)
 
         # print(self.state, type(self.state), "self.state", type(self.state.data))
 
@@ -313,7 +313,7 @@ class Game:
             # Execute the action
             if self.bool_catch_exceptions:
                 try:
-                    self.state_pacman = self.state_pacman.generateSuccessor(agent, action)
+                    self.state_pacman = self.state_pacman.generate_successor(agent, action)
                 except Exception as data:
                     # raise Exception("JOSEPH WTF")
 
@@ -322,10 +322,10 @@ class Game:
                     self._unmute()
                     return
             else:
-                self.state_pacman = self.state_pacman.generateSuccessor(agent, action)
+                self.state_pacman = self.state_pacman.generate_successor(agent, action)
 
             # Change the graphics
-            self.graphics_pacman.update(self.state_pacman.state_data)  # TODO: DRAWING THE state IS HERE
+            self.graphics_pacman.update(self.state_pacman.state_data_pacman)  # TODO: DRAWING THE state IS HERE
 
             ###idx = agent - agent % 2 + 1
             ###self.graphics.update( self.state.makeObservation(idx).data )

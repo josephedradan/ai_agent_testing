@@ -75,7 +75,7 @@ Reference:
         score_max: Union[float, None] = None
 
         for action in list_str_move_legal:
-            state_new = state.generateSuccessor(agent_selected, action)
+            state_new = state.generate_successor(agent_selected, action)
 
             # Agent selection (Select next agent for the next call)
             index_agent_new = index_agent + 1
@@ -103,7 +103,7 @@ Reference:
 
         for action in list_str_move_legal:
 
-            state_new = state.generateSuccessor(agent_selected, action)
+            state_new = state.generate_successor(agent_selected, action)
 
             # Agent selection (Select next player for the next call)
             if index_agent >= state.getNumAgents() - 1:
@@ -160,7 +160,7 @@ Reference:
     list_pair: List[Tuple[float, str]] = []
 
     for action in list_str_move_legal:
-        state_new = state.generateSuccessor(agent_primary, action)
+        state_new = state.generate_successor(agent_primary, action)
 
         # Agent selection (Select next player for the next call)
         index_agent_new = index_agent + 1

@@ -50,7 +50,7 @@ class AgentPacmanGreedy(AgentPacman):
             legal.remove(ActionDirection.STOP)
 
         successors: List[Tuple[State, Action]] = (
-            [(state.generateSuccessor(self, action), action) for action in legal]
+            [(state.generate_successor(self, action), action) for action in legal]
         )
 
         # print("-- successors", successors, type(successors))

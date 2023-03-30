@@ -314,7 +314,7 @@ class GraphicsPacmanGUI(GraphicsPacman):
 
     def update(self, state_data_pacman: StateDataPacman):
 
-        agent: Agent = state_data_pacman._agentMoved
+        agent: Agent = state_data_pacman.get_agent_moved()
         player: PlayerPacman = state_data_pacman.get_player_from_agent(agent)
 
         container_state: ContainerState = state_data_pacman.dict_k_player_v_container_state.get(player)

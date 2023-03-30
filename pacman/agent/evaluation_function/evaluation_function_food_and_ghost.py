@@ -205,7 +205,7 @@ def evaluation_function_food_and_ghost(agent: Agent, state_current: StatePacman,
     to create a masterful evaluation function.
     """
     # Useful information you can extract from a State (pacman.py)
-    state_successor: StatePacman = state_current.generateSuccessor(agent, action)
+    state_successor: StatePacman = state_current.generate_successor(agent, action)
     newPos: TYPE_VECTOR = state_successor.get_container_state_GHOST(agent).get_vector_position()
     newFood: GridPacman = state_successor.getFood()
     newGhostStates: List[ContainerState] = state_successor.get_list_container_state_ghost()
@@ -337,7 +337,7 @@ def evaluation_function_food_and_ghost__attempt_1(agent: Agent, state: StatePacm
     to create a masterful evaluation function.
     """
     # Useful information you can extract from a State (pacman.py)
-    state_successor: StatePacman = state.generateSuccessor(agent, action)
+    state_successor: StatePacman = state.generate_successor(agent, action)
 
     # newPos: TYPE_VECTOR = state_successor.get_container_state_GHOST(agent).get_position()
     newFood: GridPacman = state_successor.getFood()
